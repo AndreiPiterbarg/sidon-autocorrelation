@@ -33,24 +33,71 @@ Methods that produce feasible solutions $f \geq 0$, $\|f\|_1 = 1$ and report $\|
 
 ### Polyak Subgradient on Simplex
 
-- **Best loss: 1.5200** (P=50, exact=1.520036)
-- Source: `primal_optimizer.ipynb`, Strategy B
-- Polyak step with target values 1.50/1.49/1.48, 50k iterations, 10 restarts per target.
-- Consistently the best strategy in the notebook across all $P$ values tested.
-- Full sweep results (exact peak autoconvolution):
+- **Best loss: 1.5199** (P=200, exact=1.519926)
+- Source: `primal_optimizer.ipynb` (Strategy B), `logsumexp_optimizer.ipynb` (JIT parallel baseline)
+- Polyak step with target values 1.51/1.505/1.50/1.495/1.49/1.48, 100k iterations, 30 restarts per target (180 total runs), parallelized with Numba JIT + joblib.
+- Full sweep results (exact peak autoconvolution, JIT parallel version):
 
 | P   | Loss     |
 |-----|----------|
-| 10  | 1.569309 |
-| 20  | 1.542988 |
-| 30  | 1.529321 |
-| 50  | 1.520036 |
-| 75  | 1.525705 |
-| 100 | 1.524759 |
-| 150 | 1.522328 |
-| 200 | 1.520114 |
+| 10  | 1.569110 |
+| 20  | 1.537814 |
+| 30  | 1.532157 |
+| 50  | 1.524243 |
+| 75  | 1.520272 |
+| 100 | 1.520211 |
+| 150 | 1.516242 |
+| 200 | 1.519926 |
 
-Best at P=50 (1.520036), with P=200 close behind (1.520114). Non-monotonic in P due to local minima.
+Non-monotonic in P due to local minima. Consistently worse than LSE continuation at every P.
+
+### LogSumExp Continuation (Nesterov + Armijo)
+
+- **Best loss: 1.5092** (P=200, hybrid with Polyak polish)
+- Source: `logsumexp_optimizer.ipynb`
+- Replaces the non-smooth $\max_k c_k$ with $\mathrm{LSE}_\beta(c) = (1/\beta)\log\sum\exp(\beta c_k)$, a smooth surrogate.
+- Addresses peak-locking (bottleneck S4): gradient distributes across all near-peak positions via softmax weights, rather than concentrating on a single active constraint.
+- $\beta$-continuation schedule: 15 stages from $\beta=1$ (smooth) to $\beta=2000$ (close to true max), each stage warm-starts from the previous solution.
+- Nesterov accelerated projected gradient descent with Armijo backtracking line search.
+- All inner loops Numba JIT-compiled; 30 restarts run in parallel across CPU cores (16 cores).
+- **Wins 8/8 head-to-head comparisons** against Polyak subgradient at equal restart budget.
+- LSE-only results (exact peak autoconvolution):
+
+| P   | LSE      | Polyak   | Delta    |
+|-----|----------|----------|----------|
+| 10  | 1.566445 | 1.569110 | -0.0027  |
+| 20  | 1.534157 | 1.537814 | -0.0037  |
+| 30  | 1.524704 | 1.532157 | -0.0075  |
+| 50  | 1.521646 | 1.524243 | -0.0026  |
+| 75  | 1.517313 | 1.520272 | -0.0030  |
+| 100 | 1.513841 | 1.520211 | -0.0064  |
+| 150 | 1.511188 | 1.516242 | -0.0051  |
+| 200 | 1.512395 | 1.519926 | -0.0075  |
+
+- **Hybrid** (LSE continuation -> adaptive Polyak polish) results:
+
+| P   | Hybrid   | LSE only | Polyak only |
+|-----|----------|----------|-------------|
+| 20  | 1.540243 | 1.534157 | 1.537814    |
+| 50  | 1.521775 | 1.521646 | 1.524243    |
+| 100 | 1.515366 | 1.513841 | 1.520211    |
+| 200 | **1.509246** | 1.512395 | 1.519926 |
+
+- The hybrid achieves the best result at P=200: **1.5092**, beating LSE-only (1.5124) and Polyak-only (1.5199).
+- At smaller P, LSE-only tends to beat the hybrid — suggesting Polyak polishing is most useful at higher P where the basin structure is more complex.
+
+#### Beta Schedule Ablation (P=50, 20 restarts)
+
+| Schedule    | Stages | Loss     |
+|-------------|--------|----------|
+| gentle      | 19     | 1.520894 |
+| fine_15     | 15     | 1.522239 |
+| moderate    | 10     | 1.523715 |
+| aggressive  | 4      | 1.569054 |
+| fixed_high  | 10     | 1.547495 |
+| fixed_low   | 10     | 1.572650 |
+
+Continuation is essential: fixed $\beta$ (low or high) is much worse. Gentler schedules with more stages perform best.
 
 ### Adam with Reduce-on-Plateau Scheduler
 
@@ -126,9 +173,12 @@ Methods attempting to certify $C_{1a} \geq \text{something}$ from below.
 
 | Method                          | Best Loss | Pieces | Notes                        |
 |---------------------------------|-----------|--------|------------------------------|
+| **LSE hybrid (LSE+Polyak)**     | **1.5092**| 200    | Best this project has found  |
+| LSE continuation (Nesterov)     | 1.5112    | 150    | Wins 8/8 vs Polyak           |
 | LP iteration (MV10)             | 1.5123    | 600    | Closest to published 1.5029 |
 | SQP / Prox-linear               | 1.5168    | 1000   |                              |
-| Polyak subgradient               | 1.5200    | 50     | Best in notebook sweep       |
+| Polyak subgradient (JIT)        | 1.5163    | 150    | 180 parallel runs, 100k iter |
+| Polyak subgradient (original)   | 1.5200    | 50     | From primal_optimizer.ipynb  |
 | L-BFGS (weak Wolfe)             | 1.5380    | --     | 100k iters, history=1000     |
 | Gaussian mixture                 | 1.545     | --     | Grid-evaluated max           |
 | Adam (reduce on plateau)        | 1.5754    | --     | Limited tuning               |
