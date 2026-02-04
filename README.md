@@ -6,78 +6,100 @@
 
 ## Problem Statement
 
-For any nonnegative function $f : \mathbb{R} \to \mathbb{R}_{\geq 0}$ supported on $[-1/4, 1/4]$ with $\int f = 1$, we have:
+For any nonnegative function $f : \mathbb{R} \to \mathbb{R}_{\geq 0}$ supported on $[-1/4, 1/4]$ with $\int f = 1$:
 
 $$\max_{|t| \le 1/2} (f * f)(t) \;\geq\; C_{1a}$$
 
-We are solving the **dual optimization problem**: find $f^*$ that **minimizes** the autoconvolution peak.
+We solve the dual: find $f^*$ that **minimizes** the autoconvolution peak.
 
 $$\min_{f \,\geq\, 0,\;\int f = 1} \;\max_{|t| \le 1/2} \int_{\mathbb{R}} f(x)\, f(t - x)\, dx$$
 
-Any $f^*$ achieving a value below 1.5029 improves the known upper bound. The function itself is the proof — the result is machine-verifiable.
+Any $f^*$ achieving a value below 1.5029 is an improved upper bound. The function itself is the proof — the result is machine-verifiable.
 
 ## Context
 
-This constant appears in [Tao et al.'s optimization constants repository](https://teorth.github.io/optimizationproblems/constants/1a.html) and connects to the asymptotic size of Sidon sets in additive combinatorics. Recent progress has come from AI-driven search (AlphaEvolve → 1.503164, ThetaEvolve → 1.503133, TTT-Discover → 1.5029), but [Boyer–Li (2025)](https://arxiv.org/abs/2506.16750) showed that classical optimization (simulated annealing + gradient descent) can compete on related autoconvolution problems.
+This constant appears in [Tao et al.'s optimization constants repository](https://teorth.github.io/optimizationproblems/constants/1a.html) and connects to the asymptotic size of Sidon sets in additive combinatorics. Recent progress on the upper bound has come from AI-driven search (AlphaEvolve → 1.503164, ThetaEvolve → 1.503133, TTT-Discover → 1.5029), but [Boyer–Li (2025)](https://arxiv.org/abs/2506.16750) showed that classical optimization (simulated annealing + gradient descent on step functions) can compete on related autoconvolution problems without LLMs or TPU clusters.
 
-## Core Difficulty
+## Core Difficulty: Peak-Locking
 
-The objective $\max_t (f*f)(t)$ creates **peak-locking** under gradient descent: whichever $t$ currently achieves the max gets reinforced, trapping the search in local basins. This is explicitly flagged as open in [arXiv:2508.02803](https://arxiv.org/abs/2508.02803). The AI lab approaches sidestep this via evolutionary search at massive scale rather than solving the optimization structure directly.
+The objective $\max_t (f*f)(t)$ creates **peak-locking** under gradient descent: whichever $t$ currently achieves the max gets reinforced by gradient updates, trapping the search in local basins. This is explicitly flagged as an open problem in [arXiv:2508.02803](https://arxiv.org/abs/2508.02803). Circumventing peak-locking is the central technical challenge.
 
 ## Research Plan
 
-### Phase 1 — Literature and Landscape
+### Phase 1 — Literature Review
 
-Read and extract the technical core from these papers. The goal is to understand the structure of known near-optimal functions and the techniques that produced them.
+Read and extract the technical core from these papers. For each, identify: (a) how $f$ is parameterized, (b) the optimization method, (c) the structure of the resulting near-optimal function, (d) stated limitations.
 
 | Paper | Why it matters |
 |-------|---------------|
-| [Matolcsi–Vinuesa (2010)](https://arxiv.org/abs/0907.1379) | Established the 1.5099 upper bound. Need to understand the shape and Fourier structure of their extremal step functions. |
-| [Cloninger–Steinerberger (2017)](https://arxiv.org/abs/1403.7988) | Finite reduction framework for the lower bound. Key insight: the problem can be reduced to finitely many computational cases. Their stated bottleneck is runtime. |
-| [White (2022)](https://arxiv.org/abs/2210.16437) | Turned the **L² autoconvolution** variant into a **convex program** via Fourier analysis. The central question is whether this convexification transfers to the L∞ objective. |
-| [Boyer–Li (2025)](https://arxiv.org/abs/2506.16750) | Beat AlphaEvolve on the second autoconvolution inequality using coarse-to-fine gradient + simulated annealing with 575-interval step functions. No LLMs. Directly relevant pipeline. |
-| [arXiv:2508.02803](https://arxiv.org/abs/2508.02803) | Concurrent work on gradient methods for autoconvolution. Documents the peak-locking phenomenon and why the L∞-numerator case resists gradient search. |
+| [Matolcsi–Vinuesa (2010)](https://arxiv.org/abs/0907.1379) | Established the 1.5099 upper bound via explicit step functions. Need to understand the shape and symmetry of their extremal $f$. |
+| [Cloninger–Steinerberger (2017)](https://arxiv.org/abs/1403.7988) | Finite reduction framework for the lower bound side. Bottleneck is runtime — relevant if we later attempt lower bound improvements. |
+| [White (2022)](https://arxiv.org/abs/2210.16437) | Turned the **L² autoconvolution** variant into a **convex program** via Fourier analysis. Central question: does this convexification transfer to the L∞ objective? |
+| [Boyer–Li (2025)](https://arxiv.org/abs/2506.16750) | Beat AlphaEvolve on the second autoconvolution inequality using coarse-to-fine gradient + simulated annealing with 575-interval step functions. Directly relevant pipeline. |
+| [arXiv:2508.02803](https://arxiv.org/abs/2508.02803) | Documents the peak-locking phenomenon and why the L∞-numerator case specifically resists gradient search. |
 
-**Deliverable:** For each paper, extract (a) the parameterization of $f$ used, (b) the optimization method, (c) the structure of the resulting near-optimal function, (d) stated limitations.
+**Of particular interest:** the approximate shapes of $f$ that produce the smallest constants. Understanding this structure (where mass concentrates, what symmetries appear, what $(f*f)$ looks like) determines whether smarter parameterizations are worth pursuing.
 
-### Phase 2 — Reproduce and Benchmark
+### Phase 2 — Piecewise Constant Baseline (v0.1)
 
-Implement the baseline approaches and verify known results.
+Start with the simplest possible approach. This is what every successful method has used as a foundation.
 
-- [ ] Discretize $f$ as an $N$-bin step function on $[-1/4, 1/4]$, compute $(f*f)(t)$ via direct convolution
-- [ ] Reproduce the Matolcsi–Vinuesa extremal function and verify the 1.5099 bound
-- [ ] Implement Boyer–Li's coarse-to-fine pipeline (simulated annealing → gradient refinement) adapted to the $L^\infty$ objective
-- [ ] Benchmark: what bound does naive gradient descent + random restarts achieve at $N = 50, 200, 500, 1000$?
-- [ ] Profile the peak-locking phenomenon: visualize gradient flow and track which $t$ dominates across iterations
+**Parameterization:** Divide $[-1/4, 1/4]$ into $N$ bins with heights $h_i \geq 0$, normalized so total mass equals 1. **Do not hardcode uniform bins.** The code should accept arbitrary bin edges from the start — we will want to concentrate points in regions of fine structure once we see what the optimal $f$ looks like. Start with uniform spacing for simplicity, but the implementation must support non-uniform meshes without refactoring.
 
-### Phase 3 — Fourier-Space Reformulation
+**Convolution:** The autoconvolution of a piecewise constant function on non-uniform bins is still closed-form: each bin-pair contributes a trapezoidal piece whose area depends on the two bin widths and heights. This is $O(N^2)$ via direct summation — no quadrature needed.
 
-This is the core technical bet. Parameterize $f$ via its Fourier coefficients and exploit:
+**Optimizer:** Use `scipy.optimize.dual_annealing` or `scipy.optimize.differential_evolution` (global search, handles non-convexity). Not plain `scipy.optimize.minimize` — the landscape is non-convex and L-BFGS-B alone will get trapped.
 
-- $(f * f)(t)$ is the inverse Fourier transform of $|\hat{f}(\xi)|^2$
+**Target:** $N = 50$ bins, uniform. Reproduce something close to the known 1.5099 bound. Visualize $f^*$ and $(f^* * f^*)(t)$.
+
+- [ ] Implement piecewise constant $f$ with arbitrary bin edges and heights as variables
+- [ ] Implement direct autoconvolution computation (closed-form, supports non-uniform bins)
+- [ ] Minimize peak of autoconvolution using `dual_annealing` with box constraints $h_i \geq 0$
+- [ ] Visualize: plot $f^*$, plot $(f^* * f^*)(t)$ on $[-1/2, 1/2]$, annotate peak value and location
+- [ ] Compare result against known 1.5099 (Matolcsi–Vinuesa)
+
+### Phase 3 — Scale and Coarse-to-Fine (v0.2)
+
+Scale to higher resolution and adopt Boyer–Li's coarse-to-fine strategy.
+
+**FFT convolution:** At $N > 200$, switch from direct $O(N^2)$ to FFT-based $O(N \log N)$. For uniform bins this is standard FFT with zero-padding. For non-uniform bins, evaluate $f$ on a fine uniform grid (this is $O(M)$ for piecewise constant — just a bin lookup) and then FFT on that grid. Alternatively, use the [Non-uniform FFT](https://en.wikipedia.org/wiki/Non-uniform_discrete_Fourier_transform) (Type 1: non-uniform spatial → uniform frequency) via `finufft` to compute $\hat{f}(\xi_k)$, then $|\hat{f}|^2$, then inverse FFT. Either way, non-uniform bins do not force $O(N^2)$.
+
+**Adaptive mesh refinement:** After Phase 2, inspect $f^*$. Identify regions with sharp features (spikes, transitions). Rebuild the mesh with higher density there — e.g., 2–3× more bins near the spike, fewer in flat regions. Re-optimize on the refined mesh using the Phase 2 solution as initialization.
+
+**Coarse-to-fine:** Optimize at $N = 50$ → upsample to $N = 200$ → refine → upsample to $N = 500$ → refine. This avoids the curse of starting a global search in 500 dimensions.
+
+**Peak-locking diagnosis:** Run gradient-based refinement (L-BFGS-B) from the global-search solution. Track which $t$ achieves the max across iterations. If the peak location locks prematurely, we have empirical confirmation of peak-locking and motivation for Phase 4.
+
+- [ ] Implement FFT-based autoconvolution (uniform bins: standard FFT; non-uniform bins: fine-grid evaluation + FFT or NUFFT via `finufft`)
+- [ ] Implement adaptive mesh refinement: inspect $f^*$, concentrate bins in high-structure regions
+- [ ] Implement coarse-to-fine pipeline: global search at low $N$ → upsample → local refinement at high $N$
+- [ ] Benchmark: what bound does this achieve at $N = 200, 500, 1000$?
+- [ ] Visualize peak-locking: plot $\arg\max_t (f*f)(t)$ across optimization iterations
+- [ ] Compare result against current best 1.5029 (TTT-Discover)
+
+### Phase 4 — Fourier Parameterization (v0.3)
+
+This is the core technical bet to circumvent peak-locking.
+
+**Key idea:** If $\hat{f}(\xi) = \int f(x) e^{-2\pi i \xi x} dx$, then $(f*f)(t)$ is the inverse Fourier transform of $|\hat{f}(\xi)|^2$. Parameterize $f$ via truncated Fourier coefficients rather than pointwise values. The hypothesis is that smooth spectral coefficients don't couple to a single spatial peak the way bin heights do, mitigating peak-locking.
+
+**Constraints in Fourier space:**
 - $\int f = 1$ becomes $\hat{f}(0) = 1$
-- The nonnegativity constraint $f \geq 0$ is the hard part — it becomes a condition on the Fourier coefficients
+- $f \geq 0$ is the hard constraint — options: penalty method ($\lambda \int \min(f, 0)^2$), projection after inverse FFT, or SDP relaxation via Bochner's theorem
 
-Key questions to resolve:
+**Precedent:** White (2022) used exactly this Fourier convexification for the $L^2$ autoconvolution variant with great success. The question is whether it extends to the $L^\infty$ objective.
 
-- [ ] Can the $L^\infty$ peak objective be relaxed to something convex in Fourier space? (White did this for $L^2$ — investigate whether an analogous dual formulation exists here)
-- [ ] Does Fourier parameterization mitigate peak-locking? (The hypothesis: smooth spectral coefficients don't couple to a single peak location the way pointwise values do)
-- [ ] What's the right way to handle $f \geq 0$? Options: SDP relaxation via Bochner's theorem (autocovariance must be positive semidefinite), penalty methods, projection onto the nonneg cone after inverse FFT
+- [ ] Parameterize $f(x) = \sum_{k=0}^{K} a_k \cos(2\pi k x / (1/2))$ with nonnegativity penalty
+- [ ] Compare optimization landscape: same global search methods, Fourier params vs. bin heights
+- [ ] Test hypothesis: does peak-locking diminish in Fourier parameterization?
+- [ ] If yes, push resolution ($K = 50, 100, 200$)
+- [ ] If no, try CMA-ES or population-based search in the step-function parameterization at high $N$
 
-### Phase 4 — Search and Improve
+### Phase 5 — Verify and Submit
 
-Based on what Phase 3 reveals, run the actual optimization.
-
-- [ ] If Fourier convexification works: solve the convex program at increasing resolution
-- [ ] If not: combine Fourier parameterization with global search (CMA-ES, basin-hopping, or population-based methods) to escape peak-locking
-- [ ] Explore hybrid strategies: Fourier-space global search → real-space local refinement
-- [ ] Try alternative parameterizations: splines, wavelets, mixtures of bump functions
-
-### Phase 5 — Verify and Document
-
-- [ ] Any candidate $f^*$ must be verified at high numerical precision (multiprecision arithmetic)
-- [ ] Cross-validate: compute $(f^* * f^*)(t)$ on a fine grid of $t$ values and confirm the peak
-- [ ] If the bound improves: write up the function, the method, and submit to the [optimization constants repo](https://github.com/teorth/optimizationproblems)
+- [ ] Verify any candidate $f^*$ at high numerical precision (multiprecision arithmetic, e.g. `mpmath`)
+- [ ] Cross-validate: compute $(f^* * f^*)(t)$ on a fine grid ($>10{,}000$ points) and confirm the peak
+- [ ] If the bound improves: write up the function and method, submit to the [optimization constants repo](https://github.com/teorth/optimizationproblems)
 
 ## Success Criterion
 
