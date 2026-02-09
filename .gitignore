@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
+
+# Project artifacts (not part of deliverable)
+checkpoint.json
+cloud_checkpoint.json
+week4_results.json
+CLAUDE.md
+next_steps_cloud.md
+
+# Root-level duplicate (canonical copy is in notebooks/)
+/week4_implementation.ipynb
+
+# Folders not part of deliverable
+exploration/
+cloud_results/
+prompts_IGNORE/

@@ -8,7 +8,8 @@
 
 | Method | Best Loss | Pieces | Notebook | Notes |
 |--------|-----------|--------|----------|-------|
-| **LSE hybrid (LSE+Polyak)** | **1.5092** | 200 | `logsumexp_optimizer.ipynb` | Best this project found |
+| **Cloud LSE hybrid (Modal)** | **1.5055** | 1500 | `sidon_cloud.py` | **New project best** — 9-round pipeline, warm_perturb |
+| LSE hybrid (LSE+Polyak) | 1.5092 | 200 | `logsumexp_optimizer.ipynb` | Previous project best |
 | LSE continuation (Nesterov) | 1.5112 | 150 | `logsumexp_optimizer.ipynb` | Wins 8/8 vs Polyak |
 | LP iteration (MV10) | 1.5123 | 600 | — | Published method |
 | SQP / Prox-linear | 1.5168 | 1000 | — | |
@@ -38,6 +39,25 @@
 | 50 | 1.521775 | 1.521646 | 1.524243 |
 | 100 | 1.515366 | 1.513841 | 1.520211 |
 | 200 | **1.509246** | 1.512395 | 1.519926 |
+
+### Cloud Run Results (Modal, 32-core, 9 rounds)
+
+Full pipeline: strategy tournament at P=200, progressive upsampling through P=1500, cross-pollination. Best strategy: `warm_perturb` (perturb + re-optimize from best known solution).
+
+| P | Best Peak | Round | Strategy |
+|---|-----------|-------|----------|
+| 200 | 1.509734 | r1 | cosine_shaped |
+| 300 | 1.507367 | r2 | — |
+| 500 | 1.506877 | r3 | — |
+| 750 | 1.506413 | r4/r5 | — |
+| 1000 | 1.505695 | r6/r7 | — |
+| **1500** | **1.505549** | **r8** | **warm_perturb** |
+
+Round 1 strategy ranking (P=200, top 6 advanced): cosine_shaped, random_sparse_k, dirichlet_uniform, boundary_heavy, triangle, dirichlet_concentrated.
+
+Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P=1500 gave 1.5076 — all worse than warm_perturb results at the same P.
+
+**Key observation**: Monotone improvement with increasing P (1.5097 at P=200 → 1.5055 at P=1500), consistent with literature trend toward ~1.503 at very high P.
 
 ---
 
@@ -77,7 +97,7 @@
 
 **All approaches hit the same fundamental wall**: non-convexity of $\|f*f\|_\infty$ (S1).
 
-**Evidence**: Five independent paradigms (LP iteration, Polyak, LLM-evolved, RL, LogSumExp) converge to [1.500, 1.516]. Qualitatively different local minima have nearly identical values.
+**Evidence**: Six independent paradigms (LP iteration, Polyak, LLM-evolved, RL, LogSumExp, cloud multi-strategy) converge to [1.500, 1.516]. Qualitatively different local minima have nearly identical values. Cloud run at P=1500 reached 1.5055, further narrowing the gap.
 
 **Slack decomposition**:
 - Upper bound slack: ~0.003–0.05 (dominated by non-uniform discretization unknowns)
