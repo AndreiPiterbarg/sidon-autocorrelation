@@ -86,7 +86,7 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 **Resolved — NO.** Shor+RLT gives $2P/(2P-1) \to 1$. Full-rank $X^*$ at every P. Structural, not numerical. Lasserre-2 helps at P≤4 but not at practical sizes.
 
 ### K4: Moment/SOS convexification?
-**Open.** Most promising unexploited direction. Fourier-domain SDP with full basis (sine+cosine) + Fejér-Riesz never attempted.
+**Partially answered — Fourier-domain Shor lift FAILS.** Tested full sine+cosine basis with K=3-20, grid-sampled autoconvolution, and symmetry-breaking constraints. All converge to eta=2.0 (even-function bound) with zero sine coefficients. Fourier truncation + Shor lift is too weak to represent the extremizer. Higher Lasserre levels (degree ≥3) remain untested but computationally expensive.
 
 ### K5: Fourier kernel lower bound ceiling?
 **Open.** Estimated ~1.276 by [MV10], essentially saturated by current 1.2802.
@@ -109,11 +109,11 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 
 ## Recommended Attack Priorities
 
-1. **SDP certification at moderate P** — bound local-vs-global gap
-2. **Non-uniform grid experiments** — test for boundary singularity
-3. **Fourier-domain SDP** (Fejér-Riesz + moment) — highest risk/reward
+1. **Non-uniform grid experiments** — test for boundary singularity (K2, highest upside)
+2. **Warm-start polishing** from [AE25]/[TTT26] solutions — beat 1.5029
+3. **Lasserre level-3+** in spatial domain — expensive but might certify
 4. **Euler-Lagrange analysis** — necessary conditions for extremizer
-5. **Warm-start polishing** from best known solutions
+5. ~~**Fourier-domain SDP**~~ — **TESTED: Failed** (converges to eta=2.0)
 
 ---
 
