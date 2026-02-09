@@ -14,15 +14,9 @@ where $(f * f)(t) = \int f(x) f(t-x)\,dx$ is the autoconvolution. We discretize 
 
 This problem appears as one of the unsolved mathematical optimization problems in [Davis et al.'s optimization constants repository](https://github.com/teorth/optimizationproblems) as an open problem (this was one of the project ideas Professor Damek Davis suggested). The current bounds are $1.2802 \leq C_{1a} \leq 1.5029$, a gap of ~0.22. Recent AI-driven methods (AlphaEvolve, TTT-Discover) have pushed the upper bound, but classical optimization has shown it can compete without LLMs or TPU clusters.
 
-### How will you measure success?
+### How will you measure success
 
-| Metric | Target | Stretch |
-|--------|--------|---------|
-| Peak autoconvolution (P=200) | < 1.520 | < 1.515 |
-| Peak autoconvolution (P=500) | < 1.515 | < 1.510 |
-| Peak autoconvolution (P=1000) | < 1.512 | < 1.510 |
-| Literature best (MV10, n=208) | 1.5098 | -- |
-| Literature best (AE25, n=50) | 1.5032 | -- |
+The current best upper bound is $1.5029$, achieved by researchers at Stanford University, Nvidia, and Together AI. The dream goal is to reduce this upper bound and hence produce a new tightest bound. A more realistic goal is to beat Professor Davis's best upper bound ($1.50972$).|
 
 ### What are your constraints?
 
