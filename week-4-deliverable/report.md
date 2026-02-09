@@ -12,7 +12,7 @@ where $(f * f)(t) = \int f(x) f(t-x)\,dx$ is the autoconvolution. We discretize 
 
 ### Why does this problem matter?
 
-The constant $C_{1a}$ arises in additive combinatorics, specifically in the asymptotic size of Sidon sets. It appears in [Davis et al.'s optimization constants repository](https://github.com/teorth/optimizationproblems) as an open problem. The current bounds are $1.2802 \leq C_{1a} \leq 1.5029$, a gap of ~0.22. Recent AI-driven methods (AlphaEvolve, TTT-Discover) have pushed the upper bound, but classical optimization has shown it can compete without LLMs or TPU clusters.
+This problem appears as one of the unsolved mathematical optimization problems in [Davis et al.'s optimization constants repository](https://github.com/teorth/optimizationproblems) as an open problem (this was one of the project ideas Professor Damek Davis suggested). The current bounds are $1.2802 \leq C_{1a} \leq 1.5029$, a gap of ~0.22. Recent AI-driven methods (AlphaEvolve, TTT-Discover) have pushed the upper bound, but classical optimization has shown it can compete without LLMs or TPU clusters.
 
 ### How will you measure success?
 
