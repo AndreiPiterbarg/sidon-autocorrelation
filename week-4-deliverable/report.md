@@ -19,10 +19,11 @@ This problem appears as one of the unsolved mathematical optimization problems i
 The current best upper bound is $1.5029$, achieved by researchers at Stanford University, Nvidia, and Together AI. The dream goal is to reduce this upper bound and hence produce a new tightest bound. A more realistic goal is to beat Professor Davis's best upper bound ($1.50972$).|
 
 ### What are your constraints?
-
+- **Fundamental uncertainty:** It is unknown whether the upper bound on $C_{1a}$ can be reduced significantly below the current best of ~1.503. Five independent optimization paradigms converge to $C_{1a} \approx 1.50$.
 - **Feasibility:** $x \geq 0$ and $\sum_i x_i = 1$ (probability simplex).
 - **Computational:** All optimization runs on CPU only. The $O(P^2)$ autoconvolution cost limits scalability beyond $P \approx 1000$.
 - **Non-convexity:** The objective $\max_k c_k$ is non-smooth and non-convex (supremum of quadratic forms), so only local optima are guaranteed.
+
 
 ### What data do you need?
 
