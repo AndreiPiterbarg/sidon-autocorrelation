@@ -8,7 +8,8 @@
 
 | Method | Best Loss | Pieces | Notebook | Notes |
 |--------|-----------|--------|----------|-------|
-| **Cloud LSE hybrid (Modal)** | **1.5055** | 1500 | `sidon_cloud.py` | **New project best** — 9-round pipeline, warm_perturb |
+| **Cloud LSE hybrid (Modal)** | **1.5055** | 1500 | `sidon_cloud.py` | **Project best** — 9-round pipeline, warm_perturb |
+| Curriculum learning (Modal) | 1.5065 | 1000 | `curriculum_cloud.py` | 90K restarts at low P + cascade; did not beat cloud |
 | LSE hybrid (LSE+Polyak) | 1.5092 | 200 | `logsumexp_optimizer.ipynb` | Previous project best |
 | LSE continuation (Nesterov) | 1.5112 | 150 | `logsumexp_optimizer.ipynb` | Wins 8/8 vs Polyak |
 | LP iteration (MV10) | 1.5123 | 600 | — | Published method |
@@ -59,6 +60,40 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 
 **Key observation**: Monotone improvement with increasing P (1.5097 at P=200 → 1.5055 at P=1500), consistent with literature trend toward ~1.503 at very high P.
 
+### Curriculum Learning Results (Modal, 32-core)
+
+Bottom-up approach: massive exploration at low P (30,000 restarts per P value at P=30,40,50), diversity-filtered top-10 solutions, then cascade upsampling P=50→100→200→500→1000.
+
+**Exploration phase** (6 strategies × 5,000 restarts each):
+
+| P | Best Peak | Total Restarts | Diverse Kept | Time |
+|---|-----------|---------------|-------------|------|
+| 30 | 1.524424 | 30,000 | 10 | 459s |
+| 40 | 1.520382 | 30,000 | 10 | 522s |
+| 50 | 1.517135 | 30,000 | 10 | 678s |
+
+**Cascade phase** (upsample + 1 direct polish + 50 warm perturbations per candidate):
+
+| P | Best Peak | Candidates | Time (per cand) |
+|---|-----------|-----------|----------------|
+| 100 | 1.510540 | 10 | ~36s |
+| 200 | 1.509646 | 3 | ~41s |
+| 500 | 1.507351 | 3 | ~144s |
+| 1000 | 1.506506 | 3 | ~546s |
+
+**Comparison: Curriculum vs Cloud Baseline**
+
+| P | Curriculum | Cloud Best | Delta | Winner |
+|---|-----------|-----------|-------|--------|
+| 200 | 1.509646 | 1.509734 | **-0.000088** | Curriculum |
+| 500 | 1.507351 | 1.506877 | +0.000474 | Cloud |
+| 1000 | 1.506506 | 1.505695 | +0.000811 | Cloud |
+| Global | 1.506506 (P=1000) | 1.505549 (P=1500) | +0.000957 | Cloud |
+
+**Verdict**: Curriculum learning **did not improve** the overall best. At P=200 it marginally beat the baseline (-0.09%), but at higher P the cloud tournament approach dominates. The curriculum best (1.5065) is 0.001 worse than the cloud best (1.5055).
+
+**Why it underperformed**: (1) Diversity filtering at P=50 kept 10 solutions, but all explored the same basin — the diverse_vals at P=50 cluster within 0.003 of each other. (2) Upsampled warm-starts get trapped in suboptimal basins at high P, unable to reach the better basins found by the cloud's fresh random restarts at P=750/1000/1500. (3) The cascade skipped P=1500, where the cloud achieved its best.
+
 ---
 
 ## Lower Bound Methods
@@ -86,7 +121,7 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 **Resolved — NO.** Shor+RLT gives $2P/(2P-1) \to 1$. Full-rank $X^*$ at every P. Structural, not numerical. Lasserre-2 helps at P≤4 but not at practical sizes.
 
 ### K4: Moment/SOS convexification?
-**Partially answered — Fourier-domain Shor lift FAILS.** Tested full sine+cosine basis with K=3-20, grid-sampled autoconvolution, and symmetry-breaking constraints. All converge to eta=2.0 (even-function bound) with zero sine coefficients. Fourier truncation + Shor lift is too weak to represent the extremizer. Higher Lasserre levels (degree ≥3) remain untested but computationally expensive.
+**Open.** Most promising unexploited direction. Fourier-domain SDP with full basis (sine+cosine) + Fejér-Riesz never attempted.
 
 ### K5: Fourier kernel lower bound ceiling?
 **Open.** Estimated ~1.276 by [MV10], essentially saturated by current 1.2802.
@@ -97,7 +132,7 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 
 **All approaches hit the same fundamental wall**: non-convexity of $\|f*f\|_\infty$ (S1).
 
-**Evidence**: Six independent paradigms (LP iteration, Polyak, LLM-evolved, RL, LogSumExp, cloud multi-strategy) converge to [1.500, 1.516]. Qualitatively different local minima have nearly identical values. Cloud run at P=1500 reached 1.5055, further narrowing the gap.
+**Evidence**: Seven independent paradigms (LP iteration, Polyak, LLM-evolved, RL, LogSumExp, cloud multi-strategy, curriculum learning) converge to [1.500, 1.516]. Qualitatively different local minima have nearly identical values. Cloud run at P=1500 reached 1.5055, further narrowing the gap. Curriculum learning (90,000 restarts at low P + cascade to P=1000) reached 1.5065, confirming the ceiling even with massive exploration.
 
 **Slack decomposition**:
 - Upper bound slack: ~0.003–0.05 (dominated by non-uniform discretization unknowns)
@@ -105,17 +140,6 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 
 **Actionable conclusion**: The most promising attack for the upper bound is **structural** (SOS/moment convexification or singular ansätze), not better optimization on uniform grids.
 
----
-
-## Recommended Attack Priorities
-
-1. **Non-uniform grid experiments** — test for boundary singularity (K2, highest upside)
-2. **Warm-start polishing** from [AE25]/[TTT26] solutions — beat 1.5029
-3. **Lasserre level-3+** in spatial domain — expensive but might certify
-4. **Euler-Lagrange analysis** — necessary conditions for extremizer
-5. ~~**Fourier-domain SDP**~~ — **TESTED: Failed** (converges to eta=2.0)
-
----
 
 ## Sources
 

@@ -123,7 +123,7 @@ def run_explore(config: dict) -> dict:
 
 @app.function(
     cpu=CPU_CORES,
-    memory=16384,
+    memory=32768,
     timeout=86400,
     volumes={VOLUME_PATH: volume},
     image=image,
@@ -477,13 +477,16 @@ def _run_test(global_best, best_per_P):
     explore_wall = explore_per * 5.0  # P=75 is bottleneck
     explore_cost = 5 * explore_per * 2.5 * rate_per_container_sec  # avg 2.5x
 
-    # Stages 2-5: Cascade at P=100, 200, 500, 1000
+    # Stages 2-8: Cascade at P=100, 200, 500, 1000, 1500, 2000, 3000
     # 15 candidates x (1 + 150) = 2265 restarts per level
     # Bench ran 6 restarts at P=100
     cascade_100_per = scale(t_cascade, 6, 151)  # per candidate
     cascade_200_per = cascade_100_per * 2.0
     cascade_500_per = cascade_100_per * 8.0
     cascade_1000_per = cascade_100_per * 25.0
+    cascade_1500_per = cascade_100_per * 50.0
+    cascade_2000_per = cascade_100_per * 80.0
+    cascade_3000_per = cascade_100_per * 160.0
 
     n_cand_explore = 15  # from exploration
     n_cand_cascade = 5   # after diversity filtering
@@ -492,8 +495,12 @@ def _run_test(global_best, best_per_P):
     c3_cost = n_cand_cascade * cascade_200_per * rate_per_container_sec
     c4_cost = n_cand_cascade * cascade_500_per * rate_per_container_sec
     c5_cost = n_cand_cascade * cascade_1000_per * rate_per_container_sec
+    c6_cost = n_cand_cascade * cascade_1500_per * rate_per_container_sec
+    c7_cost = n_cand_cascade * cascade_2000_per * rate_per_container_sec
+    c8_cost = n_cand_cascade * cascade_3000_per * rate_per_container_sec
 
-    total_cost = explore_cost + c2_cost + c3_cost + c4_cost + c5_cost
+    total_cost = (explore_cost + c2_cost + c3_cost + c4_cost
+                  + c5_cost + c6_cost + c7_cost + c8_cost)
     bench_cost = max(t_explore, t_cascade) * rate_per_container_sec * 2
 
     print(f"\n{'='*70}")
@@ -508,6 +515,9 @@ def _run_test(global_best, best_per_P):
     print(f"  Stage 3 (cascade P=200, {n_cand_cascade} cands):      ${c3_cost:6.2f}")
     print(f"  Stage 4 (cascade P=500, {n_cand_cascade} cands):      ${c4_cost:6.2f}")
     print(f"  Stage 5 (cascade P=1000, {n_cand_cascade} cands):     ${c5_cost:6.2f}")
+    print(f"  Stage 6 (cascade P=1500, {n_cand_cascade} cands):     ${c6_cost:6.2f}")
+    print(f"  Stage 7 (cascade P=2000, {n_cand_cascade} cands):     ${c7_cost:6.2f}")
+    print(f"  Stage 8 (cascade P=3000, {n_cand_cascade} cands):     ${c8_cost:6.2f}")
     print(f"  ────────────────────────────────────────────")
     print(f"  TOTAL ESTIMATED COST:                    ${total_cost:6.2f}")
     print(f"  This benchmark cost:                     ~${bench_cost:.2f}")
@@ -529,7 +539,7 @@ def _run_full(global_best, best_per_P, explore_diverse, completed_stage):
     import numpy as np
 
     EXPLORE_P = [30, 40, 50, 60, 75]
-    CASCADE = [100, 200, 500, 1000]
+    CASCADE = [100, 200, 500, 1000, 1500, 2000, 3000]
     N_RESTARTS = 15000
     N_WARM = 150
     THRESHOLD = 0.1
