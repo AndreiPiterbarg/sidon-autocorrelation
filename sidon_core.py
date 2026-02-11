@@ -679,6 +679,188 @@ def hybrid_strategy_run(P, strategy, beta_schedule, n_iters_lse=15000,
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# FFT-based high-P optimization (P >= 200)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Threshold above which FFT beats direct computation
+_FFT_THRESHOLD = 300
+
+
+def _autoconv_fft(x, P):
+    """FFT-based autoconvolution: O(P log P) instead of O(P²)."""
+    nc = 2 * len(x) - 1
+    X = np.fft.rfft(x, n=nc)
+    return np.fft.irfft(X * X, n=nc) * (2.0 * P)
+
+
+def _polyak_polish_fft(x_init, P, n_iters):
+    """Polyak polish using FFT autoconvolution for large P."""
+    x = x_init.copy()
+    n = len(x)
+    scale4P = 2.0 * (2.0 * P)
+
+    c = _autoconv_fft(x, P)
+    best_val = c.max()
+    best_x = x.copy()
+    no_improve = 0
+    stall_limit = 20000
+
+    avg_start = int(n_iters * 0.75)
+    x_avg = np.zeros(n)
+    n_avg = 0
+
+    g = np.zeros(n)
+
+    for t in range(n_iters):
+        c = _autoconv_fft(x, P)
+        fval = float(c.max())
+        k_star = int(c.argmax())
+
+        if fval < best_val:
+            best_val = fval
+            best_x = x.copy()
+            no_improve = 0
+        else:
+            no_improve += 1
+
+        if no_improve >= stall_limit:
+            no_improve = 0
+            perturb = 0.05 * (((np.arange(n) * 13 + t * 7) % 100) / 50.0 - 1.0)
+            x = best_x * (1.0 + perturb)
+            x = np.maximum(x, 0.0)
+            s = x.sum()
+            if s > 1e-12:
+                x /= s
+            else:
+                x = best_x.copy()
+            continue
+
+        offset = 0.01 / (1.0 + t * 1e-4)
+        target = best_val - offset
+
+        # Vectorized gradient: g[i] = scale4P * x[k_star - i]
+        i_lo = max(0, k_star - n + 1)
+        i_hi = min(k_star, n - 1)
+        g[:] = 0.0
+        j_lo = k_star - i_hi
+        j_hi = k_star - i_lo
+        g[i_lo:i_hi + 1] = scale4P * x[j_lo:j_hi + 1][::-1]
+
+        gnorm2 = float(np.dot(g, g))
+        if gnorm2 < 1e-20:
+            break
+
+        step = (fval - target) / gnorm2
+        if step < 0.0:
+            step = 1e-5 / (1.0 + t * 1e-4)
+
+        x = x - step * g
+        x = project_simplex_nb(x)
+
+        if t >= avg_start:
+            x_avg += x
+            n_avg += 1
+
+    if n_avg > 0:
+        x_avg /= n_avg
+        x_avg = project_simplex_nb(x_avg)
+        avg_val = float(_autoconv_fft(x_avg, P).max())
+        if avg_val < best_val:
+            best_val = avg_val
+            best_x = x_avg.copy()
+
+    return best_val, best_x
+
+
+def _lse_objgrad_fft(x, P, beta):
+    """FFT-based fused LSE objective + gradient for large P."""
+    c = _autoconv_fft(x, P)
+    # Logsumexp
+    bc = beta * c
+    bc_max = bc.max()
+    exp_bc = np.exp(bc - bc_max)
+    s = exp_bc.sum()
+    obj = bc_max / beta + np.log(s) / beta
+    # Softmax weights
+    w = exp_bc / s
+    # Gradient: g[i] = 2*(2P) * sum_j w[i+j] * x[j]
+    # This is a valid cross-correlation
+    scale = 2.0 * (2.0 * P)
+    g = np.correlate(w, x, mode='valid') * scale
+    return obj, g
+
+
+def _hybrid_single_restart_fft(x_init, P, beta_schedule, n_iters_lse, n_iters_polyak):
+    """High-P version of hybrid restart using FFT."""
+    x = x_init.copy()
+
+    # Phase 1: LSE continuation
+    for stage in range(len(beta_schedule)):
+        beta = beta_schedule[stage]
+        y = x.copy()
+        x_prev = x.copy()
+        alpha_init = 0.1
+        best_stage_val = 1e300
+        best_stage_x = x.copy()
+        no_improve = 0
+
+        for t in range(n_iters_lse):
+            fval_y, g = _lse_objgrad_fft(y, P, beta)
+
+            # Armijo backtracking
+            alpha = alpha_init
+            fval = fval_y
+            for _ in range(30):
+                x_new = project_simplex_nb(y - alpha * g)
+                c_new = _autoconv_fft(x_new, P)
+                bc = beta * c_new
+                bc_max = bc.max()
+                fval_new = bc_max / beta + np.log(np.exp(bc - bc_max).sum()) / beta
+                descent = float(np.dot(g, y - x_new))
+                if fval_new <= fval - 1e-4 * descent:
+                    break
+                alpha *= 0.5
+            alpha_init = min(alpha * 2.0, 1.0)
+
+            # Nesterov momentum
+            momentum = t / (t + 3.0)
+            y_new = project_simplex_nb(x_new + momentum * (x_new - x_prev))
+
+            x_prev = x_new.copy()
+            x = x_new
+            y = y_new
+
+            tv = float(_autoconv_fft(x, P).max())
+            if tv < best_stage_val:
+                best_stage_val = tv
+                best_stage_x = x.copy()
+                no_improve = 0
+            else:
+                no_improve += 1
+            if no_improve > 800:
+                break
+
+        x = best_stage_x
+
+    lse_val = float(_autoconv_fft(x, P).max())
+
+    # Phase 2: FFT Polyak polish
+    polished_val, polished_x = _polyak_polish_fft(x, P, n_iters_polyak)
+
+    return lse_val, polished_val, polished_x
+
+
+def hybrid_single_restart_dispatch(x_init, P, beta_schedule, n_iters_lse, n_iters_polyak):
+    """Dispatch to Numba (small P) or FFT (large P) version."""
+    if P >= _FFT_THRESHOLD:
+        return _hybrid_single_restart_fft(
+            x_init, P, beta_schedule, n_iters_lse, n_iters_polyak)
+    else:
+        return _hybrid_single_restart(
+            x_init, P, beta_schedule, n_iters_lse, n_iters_polyak)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # Warmup — trigger Numba JIT compilation
 # ═══════════════════════════════════════════════════════════════════════════════
 
