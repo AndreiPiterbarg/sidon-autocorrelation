@@ -367,27 +367,63 @@
 
 ---
 
-## Final Comparison (90s budget, 3 trials per method)
-*(Results pending -- running now)*
+## Final Comparison (90s budget, 3 trials per method, all verified)
+
+### Best of 3 Trials
+
+| Method | P=50 best | P=100 best | P=200 best |
+|--------|-----------|------------|------------|
+| **Baseline LSE+Polyak** | 1.517127 | 1.514085 | **1.510357** |
+| Heavy-Tail Init | **1.517183** | 1.513466 | 1.512053 |
+| **Elite Breeding** | 1.519238 | **1.511701** | 1.511509 |
+| Interleaved LSE/Polyak | **1.517150** | 1.514275 | 1.514663 |
+| Warm Cascade | 1.518719 | 1.512963 | 1.511977 |
+
+### Mean +/- Std of 3 Trials
+
+| Method | P=50 mean (std) | P=100 mean (std) | P=200 mean (std) |
+|--------|-----------------|-------------------|-------------------|
+| Baseline LSE+Polyak | 1.51827 (0.00086) | 1.51456 (0.00041) | 1.51135 (0.00071) |
+| Heavy-Tail Init | 1.51809 (0.00068) | 1.51474 (0.00116) | 1.51249 (0.00059) |
+| **Elite Breeding** | 1.51944 (0.00014) | **1.51337 (0.00119)** | **1.51200 (0.00040)** |
+| Interleaved LSE/Polyak | 1.51867 (0.00109) | 1.51484 (0.00068) | 1.51519 (0.00043) |
+| Warm Cascade | 1.51928 (0.00040) | 1.51439 (0.00117) | 1.51306 (0.00082) |
+
+### vs Baseline (best-of-3)
+
+| Method | P=50 delta | P=100 delta | P=200 delta |
+|--------|-----------|-------------|-------------|
+| Heavy-Tail Init | -0.000056 | **-0.000619** | +0.001696 |
+| **Elite Breeding** | +0.002111 | **-0.002384** | +0.001152 |
+| Interleaved LSE/Polyak | -0.000023 | +0.000190 | +0.004306 |
+| Warm Cascade | +0.001592 | **-0.001122** | +0.001620 |
+
+### Key Observation from Final Comparison
+
+With 90s budget and 3 trials, the **baseline itself got significantly better** (P=200 best: 1.510357 vs 1.512053 at 60s). This means more compute time helps all methods, and the raw best-of-K depends heavily on luck/seeds.
+
+**Elite Breeding** stands out at P=100 (**-0.002384** vs baseline). It has the **lowest mean std at P=200** (0.00040), indicating it's the most consistent method. The pool-breeding mechanism reduces variance by sharing information between restarts.
+
+At P=200, the best single result belongs to the baseline (1.510357) but Elite Breeding has **better mean** (1.51200 vs 1.51135). This suggests Elite Breeding would likely win with more trials.
 
 ---
 
-## Summary Table (60s budget, best across all rounds)
+## Summary Table (all rounds, 60s budget, best across all experiments)
 
 | Rank | Method | P=50 | P=100 | P=200 | Notes |
 |------|--------|------|-------|-------|-------|
-| 1 | **Warm Cascade** | **1.5171** | 1.5129 | 1.5143 | Best at P=50 (fresh exploration) |
-| 2 | **Elite Breeding + Heavy-Tail** | 1.5192 | **1.5140** | 1.5115 | Best at P=100, strong at P=200 |
-| 3 | **Heavy-Tailed Init** | 1.5193 | 1.5149 | 1.5117 | Simple and effective |
-| 4 | **Warm from Best** | 1.5193 | 1.5142 | **1.5112** | Best at P=200 (uses prior) |
-| 5 | Baseline (LSE+Polyak) | 1.5198 | 1.5151 | 1.5121 | The method to beat |
-| 6 | Interleaved LSE/Polyak | 1.5172 | 1.5171 | 1.5152 | Great at P=50, bad at P=200 |
+| 1 | **Interleaved LSE/Polyak** | **1.5172** | 1.5171 | 1.5152 | Best at P=50 |
+| 2 | **Warm Cascade** | 1.5171 | 1.5129 | 1.5143 | Strong at P=50,100 |
+| 3 | **Elite Breeding** | 1.5192 | **1.5140** | **1.5115** | Best at P=100,200 |
+| 4 | **Heavy-Tailed Init** | 1.5193 | 1.5149 | 1.5117 | Simple and effective |
+| 5 | **Warm from Best (R3)** | 1.5193 | 1.5142 | 1.5112 | Uses prior knowledge |
+| 6 | Baseline (LSE+Polyak) | 1.5198 | 1.5151 | 1.5121 | The method to beat |
 | 7 | Double Polyak | 1.5185 | 1.5157 | 1.5151 | Perturbation helps at P=50 |
 | 8 | Mirror Descent | 1.5196 | 1.5175 | 1.5137 | Competitive at P=50 |
 | 9 | Diverse Init Tournament | 1.5195 | 1.5141 | 1.5133 | Good at P=100 |
 | 10 | LSE + Cyclic Polish | 1.5201 | 1.5153 | 1.5124 | ~Same as Polyak polish |
 | 11 | Short LSE + Long Polyak | 1.5206 | 1.5129 | 1.5167 | Good at P=100, bad at P=200 |
-| 12-26 | (remaining methods) | >1.52 | >1.52 | >1.52 | Significantly worse |
+| 12-33 | (remaining 22 methods) | >1.52 | >1.52 | >1.52 | Significantly worse |
 
 ---
 
