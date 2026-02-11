@@ -67,32 +67,16 @@ def convolve_full(a, b):
 
 @nb.njit(cache=True)
 def autoconv_coeffs(x, P):
-    """c_k = 2P * sum_{i+j=k} x_i x_j.
-
-    Optimized self-convolution exploiting pair symmetry:
-    x[i]*x[k-i] = x[k-i]*x[i], so off-diagonal pairs are counted once and doubled.
-    """
+    """c_k = 2P * sum_{i+j=k} x_i x_j"""
     n = len(x)
     nc = 2 * n - 1
-    c = np.empty(nc)
+    c = np.zeros(nc)
+    for i in range(n):
+        for j in range(n):
+            c[i + j] += x[i] * x[j]
     scale = 2.0 * P
-
     for k in range(nc):
-        i_lo = max(0, k - n + 1)
-        i_hi = min(k, n - 1)
-        s = 0.0
-        # Off-diagonal pairs: i < k-i, i.e., i < k/2
-        i_upper = min((k - 1) // 2, i_hi)
-        for i in range(i_lo, i_upper + 1):
-            s += x[i] * x[k - i]
-        s *= 2.0
-        # Diagonal term: i = k/2 (only when k even)
-        if k % 2 == 0:
-            half = k // 2
-            if i_lo <= half <= i_hi:
-                s += x[half] * x[half]
-        c[k] = s * scale
-
+        c[k] *= scale
     return c
 
 
@@ -198,30 +182,14 @@ def armijo_step_nb_v2(x, g, fval, P, beta, alpha_init, rho=0.5, c1=1e-4, max_bt=
 
 @nb.njit(cache=True)
 def _autoconv_max_argmax(x, P):
-    """Compute max and argmax of autoconv in one pass, no full array needed."""
-    n = len(x)
-    nc = 2 * n - 1
-    scale = 2.0 * P
-    c_max = -1e300
+    """Compute max and argmax of autoconv coefficients."""
+    c = autoconv_coeffs(x, P)
+    c_max = c[0]
     k_max = 0
-
-    for k in range(nc):
-        i_lo = max(0, k - n + 1)
-        i_hi = min(k, n - 1)
-        s = 0.0
-        i_upper = min((k - 1) // 2, i_hi)
-        for i in range(i_lo, i_upper + 1):
-            s += x[i] * x[k - i]
-        s *= 2.0
-        if k % 2 == 0:
-            half = k // 2
-            if i_lo <= half <= i_hi:
-                s += x[half] * x[half]
-        ck = s * scale
-        if ck > c_max:
-            c_max = ck
+    for k in range(1, len(c)):
+        if c[k] > c_max:
+            c_max = c[k]
             k_max = k
-
     return c_max, k_max
 
 
