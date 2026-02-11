@@ -1,0 +1,50 @@
+{
+  "P": 200,
+  "time_budget": 30,
+  "components": {
+    "autoconv_us": 5.242260001250543,
+    "autoconv_max_argmax_us": 5.304140000953339,
+    "lse_objgrad_us": 41.0156800004188,
+    "project_simplex_us": 2.812689999700524,
+    "polyak_50k_s": 0.4353055000246968,
+    "polyak_iters_per_s": 114861.86137589182,
+    "hybrid_500_10k_s": 1.0724750999943353
+  },
+  "methods": {
+    "iterated_warm": {
+      "name": "Iterated Warm Restart",
+      "value": 1.5103571333046388,
+      "restarts": 8,
+      "elapsed": 34.04901313781738,
+      "restarts_per_s": 0.2349554146435628
+    },
+    "mirrored_sampling": {
+      "name": "Mirrored Sampling",
+      "value": 1.5103571333046388,
+      "restarts": 9,
+      "elapsed": 32.807045459747314,
+      "restarts_per_s": 0.2743313173703061
+    },
+    "adaptive_perturbation": {
+      "name": "Adaptive Perturbation",
+      "value": 1.5103571333046388,
+      "restarts": 8,
+      "elapsed": 30.708174228668213,
+      "restarts_per_s": 0.2605169535781598
+    },
+    "heavy_elite_v2": {
+      "name": "Heavy-Tail Elite v2",
+      "value": 1.512113075863985,
+      "restarts": 8,
+      "elapsed": 33.10294508934021,
+      "restarts_per_s": 0.24167034015883243
+    },
+    "extreme_sparse": {
+      "name": "Extreme Sparse Init",
+      "value": 1.5101925274088823,
+      "restarts": 8,
+      "elapsed": 30.74093985557556,
+      "restarts_per_s": 0.2602392782258744
+    }
+  }
+}
