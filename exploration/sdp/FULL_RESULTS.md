@@ -8,63 +8,7 @@
 
 ---
 
-## Experiment 1: Shor + RLT Relaxation (`exp_sparse_sdp.py`)
-
-**Hypothesis**: Adding RLT (Reformulation-Linearization Technique) cuts to the Shor relaxation could tighten bounds while scaling to large P.
-
-**Result**: NEGATIVE. Shor+RLT gives exactly the Shor bound 2P/(2P-1) at every P tested. The RLT cuts are already implied by the Shor relaxation for this problem.
-
-| P | Shor+RLT LB | Baseline LB | Shor LB | Time |
-|---|-------------|-------------|---------|------|
-| 2 | 1.333333 | 1.777778 | 1.333333 | 0.0s |
-| 5 | 1.111111 | 1.632651 | 1.111111 | 0.0s |
-| 10 | 1.052632 | 1.524610 | 1.052632 | 0.1s |
-| 50 | 1.010101 | --- | 1.010101 | 2.2s |
-| 100 | 1.005025 | --- | 1.005025 | 23.5s |
-
-**Conclusion**: Shor+RLT fundamentally lacks the moment matrix structure that makes Lasserre Level-2 powerful. Fast but useless.
-
----
-
-## Experiment 1B: Banded Lasserre (`exp_sparse_sdp.py`)
-
-**Hypothesis**: Decomposing the moment matrix into overlapping cliques (bandwidth b) could scale Lasserre to large P.
-
-**Result**: NEGATIVE. Banded Lasserre gives exactly the Shor bound regardless of bandwidth parameter.
-
-| P | b=2 | b=3 | b=5 | b=10 | b=14 | Baseline |
-|---|-----|-----|-----|------|------|----------|
-| 15 | 1.034483 | 1.034483 | 1.034483 | 1.034483 | 1.034483 | 1.485952 |
-
-**Conclusion**: The chordal decomposition into small cliques loses the global moment structure. The full moment matrix is essential.
-
----
-
-## Experiment 2A: Doubly Nonnegative Relaxation (`exp_fourier_sdp.py`)
-
-**Hypothesis**: DNN (PSD + entrywise nonneg) relaxation of the copositivity constraint for the Fourier dual could improve on C*~1.0.
-
-**Result**: NEGATIVE. Gave C* = M^2 (normalization error) or Shor-level bounds.
-
-**Conclusion**: DNN relaxation of copositivity is equivalent to Shor for this problem structure.
-
----
-
-## Experiment 2D: Simplex Copositive Dual (`exp_fourier_sdp.py`)
-
-**Hypothesis**: Direct copositive formulation on the simplex could give bounds beyond Shor.
-
-**Result**: NEGATIVE. Exactly matches Shor bound at every P.
-
-| P | Simplex COP | Shor | Diff |
-|---|-------------|------|------|
-| 10 | 1.052632 | 1.052632 | 0.000000 |
-| 100 | 1.005025 | 1.005025 | 0.000000 |
-| 200 | 1.002506 | 1.002506 | 0.000000 |
-
----
-
-## Experiment 3: Simplex Cuts x_i(1-x_i) >= 0 (`exp_valid_ineq_v2.py`)
+## Experiment 1: Simplex Cuts x_i(1-x_i) >= 0 (`exp_valid_ineq_v2.py`)
 
 **Hypothesis**: Adding localizing matrices for x_i(1-x_i) >= 0 to Lasserre Level-2 could tighten the relaxation.
 
@@ -83,19 +27,7 @@
 
 ---
 
-## Experiment 4: Single-Solve Reformulation (`exp_single_solve.py`, `exp_single_solve_v2.py`)
-
-**Hypothesis**: Reformulating the binary search as a single SDP could give ~19x speedup.
-
-**Result**: NEGATIVE.
-- Scalar convolution constraints (replacing matrix localizing): gives only Shor bound.
-- Lambda reformulation (divide by eta): bilinear term lam * pk(y) is not DCP-compliant.
-
-**Conclusion**: The bilinear structure eta * M_1(y) in the convolution constraint is fundamental. Cannot be eliminated without losing bound quality or violating DCP rules.
-
----
-
-## Experiment 5: Fast Lasserre + Simplex Cuts (`exp_fast_lasserre.py`) — BEST RESULT
+## Experiment 2: Fast Lasserre + Simplex Cuts (`exp_fast_lasserre.py`) — BEST RESULT
 
 **Hypothesis**: Combining simplex cuts with coarse tolerance and tight initial brackets could push to P=16-20.
 
@@ -131,7 +63,7 @@
 
 ---
 
-## Experiment 6: Dual Certificate Extraction (`exp_dual_certificate.py`)
+## Experiment 3: Dual Certificate Extraction (`exp_dual_certificate.py`)
 
 **Result**: Successfully extracted and verified certificates for P=2-10.
 
@@ -161,21 +93,29 @@
 
 ---
 
-## Files Created
+## Failed Approaches (`failed/`)
+
+| File | Approach | Why it failed |
+|------|----------|---------------|
+| `exp_sparse_sdp.py` | Shor + RLT cuts | RLT cuts are already implied by Shor; gives exactly the Shor bound 2P/(2P-1) at every P. Lacks moment matrix structure. |
+| `exp_sparse_sdp.py` | Banded Lasserre (chordal decomposition) | Decomposing the moment matrix into overlapping cliques of bandwidth b loses the global structure. Gives Shor bound regardless of bandwidth (b=2 through b=14 all identical). |
+| `exp_fourier_sdp.py` | Doubly Nonneg (DNN) relaxation of Fourier dual | DNN inner approximation of copositivity is equivalent to Shor for this problem. Gave C* = M^2 (normalization error) or Shor-level bounds. |
+| `exp_fourier_sdp.py` | Simplex copositive dual | Direct copositive formulation on the simplex gives exactly the Shor bound at every P (tested up to P=200). |
+| `exp_single_solve.py` | Single-solve with scalar convolution | Replacing matrix localizing constraints with scalar convolution constraints loses bound quality — gives only Shor bound. |
+| `exp_single_solve_v2.py` | Single-solve lambda reformulation | Dividing by eta to get affine constraints introduces a bilinear term `lam * pk(y)` which violates CVXPY's DCP rules. Fundamental limitation. |
+| `exp_valid_ineq.py` | Simplex cuts v1 (CLARABEL solver) | Same approach as v2 but using CLARABEL solver, which crashed with `Eigval error: Eigen(1)` panic in Rust PSD cone code. Replaced by `exp_valid_ineq_v2.py` using MOSEK. |
+
+---
+
+## Files
 
 | File | Purpose |
 |------|---------|
 | `baseline_results.py` | Baseline V(P) values from notebook + comparison helper |
 | `core_utils.py` | Core utilities extracted from notebook |
-| `exp_sparse_sdp.py` | Shor+RLT and banded Lasserre (negative result) |
-| `exp_fourier_sdp.py` | Fourier/copositive approaches (negative result) |
-| `exp_valid_ineq.py` | Valid inequalities v1 (crashed on CLARABEL) |
 | `exp_valid_ineq_v2.py` | Simplex cuts validated at P=5-10 |
-| `exp_single_solve.py` | Scalar convolution single-solve (negative) |
-| `exp_single_solve_v2.py` | Lambda reformulation (DCP violation) |
 | `exp_fast_lasserre.py` | **BEST**: Simplex cuts + fast solver, P=5-19 |
 | `exp_dual_certificate.py` | Certificate extraction and verification |
 | `exp_refine_bounds.py` | Bound refinement (started but cut short) |
-| `exp_pairwise_cuts.py` | Pairwise cuts (not yet run) |
-| `experiment_results.md` | Short results summary |
-| `FULL_RESULTS.md` | This file |
+| `exp_pairwise_cuts.py` | Pairwise cuts x_i(1-x_i-x_j)>=0 (not yet run) |
+| `failed/` | All failed experiment implementations (see table above) |
