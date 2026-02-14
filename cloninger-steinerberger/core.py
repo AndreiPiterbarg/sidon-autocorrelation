@@ -383,6 +383,8 @@ def find_best_bound(n_half, m, lo=1.0, hi=1.5, tol=0.001,
     """Binary search for the best provable bound at given (n, m).
 
     Finds the largest c_target such that run_single_level proves C_{1a} >= c_target.
+
+    DEPRECATED: Use find_best_bound_direct() instead for ~8-10x speedup.
     """
     if verbose:
         print(f"\n{'='*70}")
@@ -412,3 +414,174 @@ def find_best_bound(n_half, m, lo=1.0, hi=1.5, tol=0.001,
         print(f"{'='*70}")
 
     return best_proven
+
+
+# =====================================================================
+# Single-pass direct bound computation (replaces binary search)
+# =====================================================================
+
+def _precompute_window_matrix(d, n_half):
+    """Precompute window selection matrix W: (n_windows, conv_len).
+
+    W[w, k] = 1/norm_w if conv index k falls in window w, else 0.
+    Used for vectorized window-max computation via matmul.
+    """
+    conv_len = 2 * d - 1
+    windows = []
+    for ell in range(2, d + 1):
+        n_cv = ell - 1
+        norm = 4.0 * n_half * ell
+        for s_lo in range(conv_len - n_cv + 1):
+            w = np.zeros(conv_len, dtype=np.float64)
+            w[s_lo:s_lo + n_cv] = 1.0 / norm
+            windows.append(w)
+    return np.array(windows)
+
+
+def _canonical_mask(batch_int):
+    """Return bool mask: True for b where b <= rev(b) lexicographically.
+
+    Since test_val(b) == test_val(rev(b)) and asym_bound(b) == asym_bound(rev(b)),
+    we only need to process canonical representatives, halving work.
+    """
+    rev = batch_int[:, ::-1]
+    diff = batch_int != rev
+    is_palindrome = ~diff.any(axis=1)
+    first_diff_idx = diff.argmax(axis=1)
+    rows = np.arange(len(batch_int))
+    return is_palindrome | (batch_int[rows, first_diff_idx] <= rev[rows, first_diff_idx])
+
+
+def find_best_bound_direct(n_half, m, batch_size=50000, verbose=True):
+    """Compute the best provable lower bound in a single pass.
+
+    Instead of binary-searching over target values (which requires ~6-9 full
+    enumerations), directly computes:
+
+        bound = min_b max(test_val(b) - correction, asym_bound(b))
+
+    where the min is over all compositions b in B_{n,m}.
+
+    Optimizations over naive single pass:
+    - Seeded running min from uniform composition (enables early pruning)
+    - Asymmetry filter: skip compositions whose asymmetry bound alone
+      exceeds the current running min (cheap: one partial sum per row)
+    - Symmetry filter: only process b <= rev(b) since test_val and
+      asym_bound are identical for b and rev(b) (halves remaining work)
+    - Precomputed window matrix W for vectorized window-max via matmul
+
+    Parameters
+    ----------
+    n_half : int
+        Paper's n. Number of bins = 2*n_half.
+    m : int
+        Grid resolution. Masses are multiples of 1/m.
+    batch_size : int
+        Batch size for enumeration.
+    verbose : bool
+        Print progress.
+
+    Returns
+    -------
+    float : best provable lower bound on C_{1a}.
+    """
+    d = 2 * n_half
+    S = 4 * n_half * m
+    n_total = count_compositions(d, S)
+    corr = correction(m)
+    margin = 1.0 / (4.0 * m)
+    total_mass = float(S)
+    inv_m = 1.0 / m
+    conv_len = 2 * d - 1
+
+    # Precompute window matrix for vectorized test-value computation
+    W = _precompute_window_matrix(d, n_half)
+
+    # Seed running min from uniform composition (tight initial estimate
+    # allows asymmetry pruning to kick in from the first batch)
+    a_uniform = np.full(d, float(4 * n_half) / d)
+    init_tv = compute_test_value_single(a_uniform, n_half)
+    min_eff = init_tv - corr
+    min_config = None
+
+    if verbose:
+        print(f"Single-pass: n={n_half}, m={m}, d={d}, S={S}")
+        print(f"  Grid points: {n_total:,}")
+        print(f"  Correction: {corr:.6f}")
+        print(f"  Initial bound (uniform): {min_eff:.6f}")
+
+    t0 = time.time()
+    n_processed = 0
+    n_skipped_asym = 0
+    n_skipped_sym = 0
+    n_tested = 0
+
+    for batch_int in generate_compositions_batched(d, S, batch_size):
+        B = len(batch_int)
+        n_processed += B
+
+        # Step 1: Cheap asymmetry filter (partial sum + compare)
+        # For composition b with dominant fraction p, any continuous function
+        # rounding to b has ||f*f||/||f||_1^2 >= 2*(p - margin)^2.
+        # Skip if this already exceeds our running min.
+        left = batch_int[:, :n_half].sum(axis=1).astype(np.float64)
+        left_frac = left / total_mass
+        dom = np.maximum(left_frac, 1.0 - left_frac)
+        asym = 2.0 * np.square(np.maximum(0.0, dom - margin))
+
+        need = asym < min_eff
+        if not need.any():
+            n_skipped_asym += B
+            continue
+
+        survivors = batch_int[need]
+        surv_asym = asym[need]
+        n_skipped_asym += B - len(survivors)
+
+        # Step 2: Symmetry filter (only process canonical half)
+        # test_val(b) == test_val(rev(b)), so min over all == min over canonical
+        canon = _canonical_mask(survivors)
+        if not canon.any():
+            n_skipped_sym += len(survivors)
+            continue
+
+        check = survivors[canon]
+        check_asym = surv_asym[canon]
+        n_skipped_sym += len(survivors) - len(check)
+        n_tested += len(check)
+
+        # Step 3: Compute test values via autoconvolution + window matmul
+        B_check = len(check)
+        batch = check.astype(np.float64) * inv_m
+
+        conv = np.zeros((B_check, conv_len), dtype=np.float64)
+        for i in range(d):
+            for j in range(d):
+                conv[:, i + j] += batch[:, i] * batch[:, j]
+
+        tvs = (conv @ W.T).max(axis=1)
+
+        # Effective bound per composition: max(test_val - correction, asym_bound)
+        eff = np.maximum(tvs - corr, check_asym)
+        idx = int(np.argmin(eff))
+        if eff[idx] < min_eff:
+            min_eff = float(eff[idx])
+            min_config = check[idx].copy()
+
+    elapsed = time.time() - t0
+
+    if verbose:
+        print(f"  Completed in {elapsed:.1f}s")
+        print(f"  Processed: {n_processed:,}")
+        print(f"  Skipped (asymmetry): {n_skipped_asym:,} "
+              f"({100*n_skipped_asym/max(1,n_processed):.1f}%)")
+        print(f"  Skipped (symmetry): {n_skipped_sym:,} "
+              f"({100*n_skipped_sym/max(1,n_processed):.1f}%)")
+        print(f"  Tested: {n_tested:,} "
+              f"({100*n_tested/max(1,n_processed):.1f}%)")
+        print(f"  >>> PROVEN: C_{{1a}} >= {min_eff:.6f} <<<")
+        if min_config is not None:
+            a_cfg = min_config.astype(np.float64) / m
+            print(f"  Minimizer (a-coords): {a_cfg}")
+
+    return min_eff

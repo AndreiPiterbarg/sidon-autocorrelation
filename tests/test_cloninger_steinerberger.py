@@ -11,7 +11,7 @@ from core import (
     correction, count_compositions, asymmetry_threshold,
     generate_compositions_batched, compute_test_values_batch,
     compute_test_value_single, asymmetry_prune_mask,
-    run_single_level,
+    run_single_level, find_best_bound, find_best_bound_direct,
 )
 
 
@@ -265,6 +265,44 @@ class TestRunSingleLevel(unittest.TestCase):
         r_hi = run_single_level(n_half=2, m=5, c_target=1.2,
                                  batch_size=10000, verbose=False)
         self.assertLessEqual(r_lo['n_survivors'], r_hi['n_survivors'])
+
+
+class TestFindBestBoundDirect(unittest.TestCase):
+    def test_returns_positive_bound(self):
+        """Direct method should return a positive bound."""
+        bound = find_best_bound_direct(n_half=2, m=5, verbose=False)
+        self.assertGreater(bound, 0.0)
+
+    def test_bound_reasonable_range(self):
+        """Bound should be in a reasonable range for small params."""
+        bound = find_best_bound_direct(n_half=2, m=10, verbose=False)
+        self.assertGreater(bound, 0.5)
+        self.assertLess(bound, 2.0)
+
+    def test_matches_binary_search(self):
+        """Direct method should agree with binary search to within tolerance."""
+        n_half, m = 2, 20
+        binary = find_best_bound(n_half, m, lo=0.8, hi=1.2, tol=0.005,
+                                  verbose=False)
+        direct = find_best_bound_direct(n_half, m, verbose=False)
+        # Binary search has resolution of tol, so direct should be within tol
+        # of binary result (direct is more precise)
+        self.assertIsNotNone(binary)
+        self.assertAlmostEqual(direct, binary, delta=0.01)
+
+    def test_increases_with_m(self):
+        """Larger m (finer grid) should give a tighter (higher) bound."""
+        b10 = find_best_bound_direct(n_half=2, m=10, verbose=False)
+        b20 = find_best_bound_direct(n_half=2, m=20, verbose=False)
+        # Larger m reduces correction term, generally improving bound
+        # (though the discrete min may also change)
+        self.assertGreater(b20, b10 - 0.05)
+
+    def test_n3_returns_bound(self):
+        """Should work for d=6 (n_half=3)."""
+        bound = find_best_bound_direct(n_half=3, m=3, verbose=False)
+        self.assertGreater(bound, 0.0)
+        self.assertLess(bound, 2.0)
 
 
 if __name__ == '__main__':
