@@ -16,5 +16,20 @@ from compositions import (
 from test_values import compute_test_values_batch, compute_test_value_single, _test_values_jit
 from solvers import (
     run_single_level, find_best_bound, find_best_bound_direct,
-    _find_min_eff_d4, _find_min_eff_d6, _build_interleaved_order,
+    _find_min_eff_d4, _find_min_eff_d6, _find_min_eff_generic,
+    _prove_target_generic, _build_interleaved_order,
 )
+
+# GPU acceleration (optional — requires CUDA toolkit and compatible GPU)
+try:
+    from gpu import (
+        is_available as gpu_is_available,
+        get_device_name as gpu_get_device_name,
+        gpu_find_best_bound_direct,
+        gpu_run_single_level,
+    )
+except ImportError:
+    gpu_is_available = lambda: False
+    gpu_get_device_name = lambda: "N/A"
+    gpu_find_best_bound_direct = None
+    gpu_run_single_level = None

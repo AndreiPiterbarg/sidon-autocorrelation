@@ -320,6 +320,500 @@ def _find_min_eff_d6(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
 
 
 # =====================================================================
+# Generic fused Numba kernel for any d (find_best_bound_direct)
+# =====================================================================
+
+@numba.njit(parallel=True, cache=True)
+def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_eff):
+    """Generic fused kernel for any d: canonical gen + pruning + test values.
+
+    Uses a state-machine to simulate d-2 nested loops for composition
+    generation, with pruning at each level:
+      - Left partial sum ell=d window bound
+      - Right remaining mass ell=d window bound
+      - Remaining mass < c0 early termination (canonical)
+      - Max element ell=2 window bound
+      - Asymmetry at the halfway point
+      - Early exit in test value computation
+    """
+    conv_len = 2 * d - 1
+    total_mass = float(S)
+    n_c0 = len(c0_order)
+    half_d = d // 2
+    norm_d_inv = inv_m * inv_m / (4.0 * n_half * d)
+    inv_ell2 = 1.0 / (4.0 * n_half * 2)
+
+    thread_mins = np.full(n_c0, 1e30, dtype=np.float64)
+    thread_cfg = np.zeros((n_c0, d), dtype=np.int32)
+
+    for c0_idx in numba.prange(n_c0):
+        c0 = c0_order[c0_idx]
+        local_min = init_min_eff
+        local_cfg = np.zeros(d, dtype=np.int32)
+        c = np.zeros(d, dtype=np.int32)
+        rem = np.zeros(d, dtype=np.int32)
+        conv = np.zeros(conv_len, dtype=np.float64)
+
+        c[0] = c0
+
+        # --- d=2 special case ---
+        if d == 2:
+            c[1] = S - c0
+            if c0 <= c[1]:
+                a0 = c0 * inv_m
+                a1 = c[1] * inv_m
+                # conv: [a0^2, 2*a0*a1, a1^2], then prefix sum
+                conv[0] = a0 * a0
+                conv[1] = conv[0] + 2.0 * a0 * a1
+                conv[2] = conv[1] + a1 * a1
+                # Only ell=2: 1 conv entry, 3 positions
+                inv_norm = 1.0 / (4.0 * n_half * 2)
+                best = 0.0
+                for s_lo in range(3):
+                    ws = conv[s_lo]
+                    if s_lo > 0:
+                        ws -= conv[s_lo - 1]
+                    tv = ws * inv_norm
+                    if tv > best:
+                        best = tv
+                eff = best - corr
+                left_frac = float(c0) / total_mass
+                if left_frac > 0.5:
+                    dom = left_frac
+                else:
+                    dom = 1.0 - left_frac
+                asym_base = dom - margin
+                if asym_base < 0.0:
+                    asym_base = 0.0
+                asym_val = 2.0 * asym_base * asym_base
+                if asym_val > eff:
+                    eff = asym_val
+                if eff < local_min:
+                    local_min = eff
+                    local_cfg[0] = c0
+                    local_cfg[1] = c[1]
+            thread_mins[c0_idx] = local_min
+            for i in range(d):
+                thread_cfg[c0_idx, i] = local_cfg[i]
+            continue
+
+        # --- General d >= 3: state machine over c[1..d-2] ---
+        # rem[p] = remaining mass for c[p] through c[d-1]
+        rem[1] = S - c0
+        pos = 1
+        c[1] = 0
+
+        while pos >= 1:
+            if pos == d - 2:
+                # Innermost free position: iterate c[d-2], c[d-1] determined
+                avail = rem[pos]
+                c_max = avail - c0  # canonical: c[d-1] >= c[0]
+
+                while c[pos] <= c_max:
+                    c[d - 1] = avail - c[pos]
+
+                    # Canonical check: c <= rev(c) lexicographically
+                    # c[0] <= c[d-1] enforced by loop bound; check inner pairs
+                    is_canon = True
+                    for i in range(half_d):
+                        j = d - 1 - i
+                        if i >= j:
+                            break
+                        if c[i] < c[j]:
+                            break
+                        if c[i] > c[j]:
+                            is_canon = False
+                            break
+                    if not is_canon:
+                        c[pos] += 1
+                        continue
+
+                    # ell=2 max element pruning
+                    early_thresh = local_min + corr
+                    max_c = c[0]
+                    for i in range(1, d):
+                        if c[i] > max_c:
+                            max_c = c[i]
+                    max_a = max_c * inv_m
+                    if max_a * max_a * inv_ell2 > early_thresh:
+                        c[pos] += 1
+                        continue
+
+                    # Asymmetry check
+                    left_sum = 0.0
+                    for i in range(half_d):
+                        left_sum += c[i]
+                    left_frac = left_sum / total_mass
+                    if left_frac > 0.5:
+                        dom = left_frac
+                    else:
+                        dom = 1.0 - left_frac
+                    asym_base = dom - margin
+                    if asym_base < 0.0:
+                        asym_base = 0.0
+                    asym_val = 2.0 * asym_base * asym_base
+                    if asym_val >= local_min:
+                        c[pos] += 1
+                        continue
+
+                    # Compute convolution a*a (symmetric: half the work)
+                    for k in range(conv_len):
+                        conv[k] = 0.0
+                    for ii in range(d):
+                        ai = c[ii] * inv_m
+                        conv[2 * ii] += ai * ai
+                        for jj in range(ii + 1, d):
+                            conv[ii + jj] += 2.0 * ai * (c[jj] * inv_m)
+                    # Prefix sum
+                    for k in range(1, conv_len):
+                        conv[k] += conv[k - 1]
+
+                    # Find best windowed test value
+                    best = 0.0
+                    early_thresh = local_min + corr
+                    done = False
+                    for ell in range(d, 1, -1):
+                        if done:
+                            break
+                        n_cv = ell - 1
+                        inv_norm = 1.0 / (4.0 * n_half * ell)
+                        for s_lo in range(conv_len - n_cv + 1):
+                            s_hi = s_lo + n_cv - 1
+                            ws = conv[s_hi]
+                            if s_lo > 0:
+                                ws -= conv[s_lo - 1]
+                            tv = ws * inv_norm
+                            if tv > best:
+                                best = tv
+                                if best > early_thresh:
+                                    done = True
+                                    break
+
+                    eff = best - corr
+                    if asym_val > eff:
+                        eff = asym_val
+                    if eff < local_min:
+                        local_min = eff
+                        for i in range(d):
+                            local_cfg[i] = c[i]
+
+                    c[pos] += 1
+
+                # Backtrack from innermost
+                pos -= 1
+                if pos >= 1:
+                    c[pos] += 1
+
+            elif c[pos] > rem[pos]:
+                # Exceeded available mass, backtrack
+                pos -= 1
+                if pos >= 1:
+                    c[pos] += 1
+
+            else:
+                # Intermediate position: pruning checks, then advance
+                early_thresh = local_min + corr
+                prune = False
+
+                # Canonical: remaining mass must allow c[d-1] >= c[0]
+                next_rem = rem[pos] - c[pos]
+                if next_rem < c0:
+                    # All larger c[pos] values also fail; force backtrack
+                    c[pos] = rem[pos] + 1
+                    continue
+
+                # Left partial sum ell=d window bound
+                if not prune:
+                    left_partial = 0
+                    for i in range(pos + 1):
+                        left_partial += c[i]
+                    lp = float(left_partial)
+                    if lp * lp * norm_d_inv > early_thresh:
+                        prune = True
+
+                # Right remaining ell=d window bound
+                if not prune:
+                    rr = float(next_rem)
+                    if rr * rr * norm_d_inv > early_thresh:
+                        prune = True
+
+                # Max element so far ell=2 bound
+                if not prune:
+                    max_c = 0
+                    for i in range(pos + 1):
+                        if c[i] > max_c:
+                            max_c = c[i]
+                    max_a = max_c * inv_m
+                    if max_a * max_a * inv_ell2 > early_thresh:
+                        prune = True
+
+                # Asymmetry at halfway point
+                if not prune and pos == half_d - 1:
+                    left_frac = float(left_partial) / total_mass
+                    if left_frac > 0.5:
+                        dom = left_frac
+                    else:
+                        dom = 1.0 - left_frac
+                    asym_base = dom - margin
+                    if asym_base < 0.0:
+                        asym_base = 0.0
+                    asym_val = 2.0 * asym_base * asym_base
+                    if asym_val >= local_min:
+                        prune = True
+
+                if prune:
+                    c[pos] += 1
+                else:
+                    rem[pos + 1] = next_rem
+                    pos += 1
+                    c[pos] = 0
+
+        thread_mins[c0_idx] = local_min
+        for i in range(d):
+            thread_cfg[c0_idx, i] = local_cfg[i]
+
+    return thread_mins, thread_cfg
+
+
+# =====================================================================
+# Generic fused Numba kernel for any d (run_single_level)
+# =====================================================================
+
+@numba.njit(parallel=True, cache=True)
+def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, fp_margin):
+    """Generic fused kernel for any d: prove all compositions exceed target.
+
+    Same state-machine and pruning as _find_min_eff_generic, but checks
+    against a fixed threshold instead of tracking a running minimum.
+    """
+    conv_len = 2 * d - 1
+    total_mass = float(S)
+    n_c0 = len(c0_order)
+    half_d = d // 2
+    thresh = prune_target + fp_margin
+    norm_d_inv = inv_m * inv_m / (4.0 * n_half * d)
+    inv_ell2 = 1.0 / (4.0 * n_half * 2)
+    # Asymmetry bound applies directly to c (not through discretization),
+    # so compare against c_target, not prune_target.
+    c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
+
+    thread_survivors = np.zeros(n_c0, dtype=np.int64)
+    thread_asym = np.zeros(n_c0, dtype=np.int64)
+    thread_test = np.zeros(n_c0, dtype=np.int64)
+    thread_min_tv = np.full(n_c0, 1e30, dtype=np.float64)
+    thread_min_cfg = np.zeros((n_c0, d), dtype=np.int32)
+
+    for c0_idx in numba.prange(n_c0):
+        c0 = c0_order[c0_idx]
+        local_surv = np.int64(0)
+        local_asym = np.int64(0)
+        local_test = np.int64(0)
+        local_min_tv = 1e30
+        local_min_cfg = np.zeros(d, dtype=np.int32)
+        c = np.zeros(d, dtype=np.int32)
+        rem = np.zeros(d, dtype=np.int32)
+        conv = np.zeros(conv_len, dtype=np.float64)
+
+        c[0] = c0
+
+        # --- d=2 special case ---
+        if d == 2:
+            c[1] = S - c0
+            if c0 <= c[1]:
+                a0 = c0 * inv_m
+                a1 = c[1] * inv_m
+                conv[0] = a0 * a0
+                conv[1] = conv[0] + 2.0 * a0 * a1
+                conv[2] = conv[1] + a1 * a1
+                inv_norm = 1.0 / (4.0 * n_half * 2)
+                best = 0.0
+                for s_lo in range(3):
+                    ws = conv[s_lo]
+                    if s_lo > 0:
+                        ws -= conv[s_lo - 1]
+                    tv = ws * inv_norm
+                    if tv > best:
+                        best = tv
+                if best > thresh:
+                    local_test += 1
+                else:
+                    local_surv += 1
+                    if best < local_min_tv:
+                        local_min_tv = best
+                        local_min_cfg[0] = c0
+                        local_min_cfg[1] = c[1]
+            thread_survivors[c0_idx] = local_surv
+            thread_asym[c0_idx] = local_asym
+            thread_test[c0_idx] = local_test
+            thread_min_tv[c0_idx] = local_min_tv
+            for i in range(d):
+                thread_min_cfg[c0_idx, i] = local_min_cfg[i]
+            continue
+
+        # --- General d >= 3 ---
+        rem[1] = S - c0
+        pos = 1
+        c[1] = 0
+
+        while pos >= 1:
+            if pos == d - 2:
+                avail = rem[pos]
+                c_max = avail - c0
+
+                while c[pos] <= c_max:
+                    c[d - 1] = avail - c[pos]
+
+                    is_canon = True
+                    for i in range(half_d):
+                        j = d - 1 - i
+                        if i >= j:
+                            break
+                        if c[i] < c[j]:
+                            break
+                        if c[i] > c[j]:
+                            is_canon = False
+                            break
+                    if not is_canon:
+                        c[pos] += 1
+                        continue
+
+                    max_c = c[0]
+                    for i in range(1, d):
+                        if c[i] > max_c:
+                            max_c = c[i]
+                    max_a = max_c * inv_m
+                    if max_a * max_a * inv_ell2 > thresh:
+                        local_test += 1
+                        c[pos] += 1
+                        continue
+
+                    left_sum = 0.0
+                    for i in range(half_d):
+                        left_sum += c[i]
+                    left_frac = left_sum / total_mass
+                    if left_frac > 0.5:
+                        dom = left_frac
+                    else:
+                        dom = 1.0 - left_frac
+                    asym_base = dom - margin
+                    if asym_base < 0.0:
+                        asym_base = 0.0
+                    asym_val = 2.0 * asym_base * asym_base
+                    if asym_val >= c_target:
+                        local_asym += 1
+                        c[pos] += 1
+                        continue
+
+                    for k in range(conv_len):
+                        conv[k] = 0.0
+                    for ii in range(d):
+                        ai = c[ii] * inv_m
+                        conv[2 * ii] += ai * ai
+                        for jj in range(ii + 1, d):
+                            conv[ii + jj] += 2.0 * ai * (c[jj] * inv_m)
+                    for k in range(1, conv_len):
+                        conv[k] += conv[k - 1]
+
+                    best = 0.0
+                    done = False
+                    for ell in range(d, 1, -1):
+                        if done:
+                            break
+                        n_cv = ell - 1
+                        inv_norm = 1.0 / (4.0 * n_half * ell)
+                        for s_lo in range(conv_len - n_cv + 1):
+                            s_hi = s_lo + n_cv - 1
+                            ws = conv[s_hi]
+                            if s_lo > 0:
+                                ws -= conv[s_lo - 1]
+                            tv = ws * inv_norm
+                            if tv > best:
+                                best = tv
+                                if best > thresh:
+                                    done = True
+                                    break
+
+                    if best > thresh:
+                        local_test += 1
+                    else:
+                        local_surv += 1
+                        if best < local_min_tv:
+                            local_min_tv = best
+                            for i in range(d):
+                                local_min_cfg[i] = c[i]
+
+                    c[pos] += 1
+
+                pos -= 1
+                if pos >= 1:
+                    c[pos] += 1
+
+            elif c[pos] > rem[pos]:
+                pos -= 1
+                if pos >= 1:
+                    c[pos] += 1
+
+            else:
+                prune = False
+                next_rem = rem[pos] - c[pos]
+
+                if next_rem < c0:
+                    c[pos] = rem[pos] + 1
+                    continue
+
+                if not prune:
+                    left_partial = 0
+                    for i in range(pos + 1):
+                        left_partial += c[i]
+                    lp = float(left_partial)
+                    if lp * lp * norm_d_inv > thresh:
+                        prune = True
+
+                if not prune:
+                    rr = float(next_rem)
+                    if rr * rr * norm_d_inv > thresh:
+                        prune = True
+
+                if not prune:
+                    max_c = 0
+                    for i in range(pos + 1):
+                        if c[i] > max_c:
+                            max_c = c[i]
+                    max_a = max_c * inv_m
+                    if max_a * max_a * inv_ell2 > thresh:
+                        prune = True
+
+                if not prune and pos == half_d - 1:
+                    left_frac = float(left_partial) / total_mass
+                    if left_frac > 0.5:
+                        dom = left_frac
+                    else:
+                        dom = 1.0 - left_frac
+                    asym_base = dom - margin
+                    if asym_base < 0.0:
+                        asym_base = 0.0
+                    asym_val = 2.0 * asym_base * asym_base
+                    if asym_val >= c_target:
+                        prune = True
+
+                if prune:
+                    c[pos] += 1
+                else:
+                    rem[pos + 1] = next_rem
+                    pos += 1
+                    c[pos] = 0
+
+        thread_survivors[c0_idx] = local_surv
+        thread_asym[c0_idx] = local_asym
+        thread_test[c0_idx] = local_test
+        thread_min_tv[c0_idx] = local_min_tv
+        for i in range(d):
+            thread_min_cfg[c0_idx, i] = local_min_cfg[i]
+
+    return thread_survivors, thread_asym, thread_test, thread_min_tv, thread_min_cfg
+
+
+# =====================================================================
 # Fused Numba kernels for run_single_level (prove a specific target)
 # =====================================================================
 
@@ -339,6 +833,9 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
     n_c0 = len(c0_order)
     thresh = prune_target + fp_margin
     m_sq = 1.0 / (inv_m * inv_m)
+    # Asymmetry bound applies directly to c (not through discretization),
+    # so compare against c_target, not prune_target.
+    c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
 
     thread_survivors = np.zeros(n_c0, dtype=np.int64)
     thread_asym = np.zeros(n_c0, dtype=np.int64)
@@ -383,7 +880,7 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
             if asym_base < 0.0:
                 asym_base = 0.0
             asym_val = 2.0 * asym_base * asym_base
-            if asym_val >= prune_target:
+            if asym_val >= c_target:
                 local_asym += c2_max + 1
                 continue
 
@@ -486,6 +983,9 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
     n_c0 = len(c0_order)
     thresh = prune_target + fp_margin
     m_sq = 1.0 / (inv_m * inv_m)
+    # Asymmetry bound applies directly to c (not through discretization),
+    # so compare against c_target, not prune_target.
+    c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
 
     thread_survivors = np.zeros(n_c0, dtype=np.int64)
     thread_asym = np.zeros(n_c0, dtype=np.int64)
@@ -530,7 +1030,7 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                 if asym_base2 < 0.0:
                     asym_base2 = 0.0
                 asym_val = 2.0 * asym_base2 * asym_base2
-                if asym_val >= prune_target:
+                if asym_val >= c_target:
                     local_asym += 1
                     continue
 
@@ -659,68 +1159,32 @@ def run_single_level(n_half, m, c_target, batch_size=100000, verbose=True):
 
     t0 = time.time()
 
-    if d == 4 or d == 6:
-        # Fused Numba path: all pruning + test values in one parallel call
-        c0_order = _build_interleaved_order(S // 2 + 1)
-        if d == 4:
-            t_surv, t_asym, t_test, t_min_tv, t_min_cfg = _prove_target_d4(
-                c0_order, S, n_half, inv_m, margin, prune_target, fp_margin)
-        else:
-            t_surv, t_asym, t_test, t_min_tv, t_min_cfg = _prove_target_d6(
-                c0_order, S, n_half, inv_m, margin, prune_target, fp_margin)
-
-        n_survived = int(t_surv.sum())
-        n_pruned_asym = int(t_asym.sum())
-        n_pruned_test = int(t_test.sum())
-        n_processed = n_pruned_asym + n_pruned_test + n_survived
-
-        if n_survived > 0:
-            idx = int(np.argmin(t_min_tv))
-            min_test_val = float(t_min_tv[idx])
-            min_test_config = t_min_cfg[idx].copy()
-        else:
-            min_test_val = float('inf')
-            min_test_config = None
-
-        survivor_configs = []  # Not tracked in fused path
+    # Fused Numba path: all pruning + test values in one parallel call
+    c0_order = _build_interleaved_order(S // 2 + 1)
+    if d == 4:
+        t_surv, t_asym, t_test, t_min_tv, t_min_cfg = _prove_target_d4(
+            c0_order, S, n_half, inv_m, margin, prune_target, fp_margin)
+    elif d == 6:
+        t_surv, t_asym, t_test, t_min_tv, t_min_cfg = _prove_target_d6(
+            c0_order, S, n_half, inv_m, margin, prune_target, fp_margin)
     else:
-        # Generic batched path for other d values
-        n_processed = 0
-        n_pruned_asym = 0
-        n_pruned_test = 0
-        n_survived = 0
+        t_surv, t_asym, t_test, t_min_tv, t_min_cfg = _prove_target_generic(
+            c0_order, S, d, n_half, inv_m, margin, prune_target, fp_margin)
+
+    n_survived = int(t_surv.sum())
+    n_pruned_asym = int(t_asym.sum())
+    n_pruned_test = int(t_test.sum())
+    n_processed = n_pruned_asym + n_pruned_test + n_survived
+
+    if n_survived > 0:
+        idx = int(np.argmin(t_min_tv))
+        min_test_val = float(t_min_tv[idx])
+        min_test_config = t_min_cfg[idx].copy()
+    else:
         min_test_val = float('inf')
         min_test_config = None
-        survivor_configs = []
 
-        for batch_int in generate_canonical_compositions_batched(d, S, batch_size):
-            B = len(batch_int)
-
-            needs_check = asymmetry_prune_mask(batch_int, n_half, m, c_target)
-            n_asym_pruned_here = B - int(needs_check.sum())
-            n_pruned_asym += n_asym_pruned_here
-
-            if needs_check.sum() > 0:
-                check_batch = batch_int[needs_check]
-                tvs = compute_test_values_batch(check_batch, n_half, m,
-                                                  prune_target=prune_target + fp_margin)
-                pruned = tvs > prune_target + fp_margin
-                n_pruned_test += int(pruned.sum())
-
-                survived = ~pruned
-                n_survived_here = int(survived.sum())
-                if n_survived_here > 0:
-                    n_survived += n_survived_here
-                    batch_survivors = check_batch[survived]
-                    batch_tvs = tvs[survived]
-                    survivor_configs.append(batch_survivors)
-
-                    idx = np.argmin(batch_tvs)
-                    if batch_tvs[idx] < min_test_val:
-                        min_test_val = float(batch_tvs[idx])
-                        min_test_config = batch_survivors[idx].copy()
-
-            n_processed += B
+    survivor_configs = []  # Not tracked in fused path
 
     elapsed = time.time() - t0
     proven = n_survived == 0
@@ -838,45 +1302,20 @@ def find_best_bound_direct(n_half, m, batch_size=50000, verbose=True):
 
     t0 = time.time()
 
-    if d == 4 or d == 6:
-        c0_order = _build_interleaved_order(S // 2 + 1)
-        if d == 4:
-            thread_mins, thread_cfg = _find_min_eff_d4(
-                c0_order, S, n_half, inv_m, margin, corr, min_eff)
-        else:
-            thread_mins, thread_cfg = _find_min_eff_d6(
-                c0_order, S, n_half, inv_m, margin, corr, min_eff)
-        idx = int(np.argmin(thread_mins))
-        if thread_mins[idx] < min_eff:
-            min_eff = float(thread_mins[idx])
-            min_config = thread_cfg[idx].copy()
+    c0_order = _build_interleaved_order(S // 2 + 1)
+    if d == 4:
+        thread_mins, thread_cfg = _find_min_eff_d4(
+            c0_order, S, n_half, inv_m, margin, corr, min_eff)
+    elif d == 6:
+        thread_mins, thread_cfg = _find_min_eff_d6(
+            c0_order, S, n_half, inv_m, margin, corr, min_eff)
     else:
-        # Generic batched path for other d values
-        n_processed = 0
-
-        for batch_int in generate_canonical_compositions_batched(
-                d, S, batch_size):
-            B = len(batch_int)
-            n_processed += B
-
-            left = batch_int[:, :n_half].sum(axis=1).astype(np.float64)
-            left_frac = left / total_mass
-            dom = np.maximum(left_frac, 1.0 - left_frac)
-            asym = 2.0 * np.square(np.maximum(0.0, dom - margin))
-
-            need = asym < min_eff
-            if not need.any():
-                continue
-
-            check = batch_int[need]
-            check_asym = asym[need]
-
-            tvs = _test_values_jit(check, d, n_half, inv_m, min_eff + corr)
-            eff = np.maximum(tvs - corr, check_asym)
-            idx_b = int(np.argmin(eff))
-            if eff[idx_b] < min_eff:
-                min_eff = float(eff[idx_b])
-                min_config = check[idx_b].copy()
+        thread_mins, thread_cfg = _find_min_eff_generic(
+            c0_order, S, d, n_half, inv_m, margin, corr, min_eff)
+    idx = int(np.argmin(thread_mins))
+    if thread_mins[idx] < min_eff:
+        min_eff = float(thread_mins[idx])
+        min_config = thread_cfg[idx].copy()
 
     elapsed = time.time() - t0
 
