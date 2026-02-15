@@ -66,6 +66,17 @@ __device__ int binary_search_le(const long long* arr, int n, long long val) {
     return lo;
 }
 
+/* Warp shuffle for double (split into two 32-bit halves) */
+__device__ __forceinline__ double shfl_down_double(
+    unsigned int mask, double val, int offset)
+{
+    int lo = __double2loint(val);
+    int hi = __double2hiint(val);
+    lo = __shfl_down_sync(mask, lo, offset);
+    hi = __shfl_down_sync(mask, hi, offset);
+    return __hiloint2double(hi, lo);
+}
+
 
 /* ================================================================
  * Phase 1 kernel: D=4
@@ -74,7 +85,7 @@ __device__ int binary_search_le(const long long* arr, int n, long long val) {
  * Pruning: pair-sum, asymmetry, ell=3 right-window, canonical, ell=2 max.
  * Survivors written via per-survivor atomicAdd.
  * ================================================================ */
-__global__ void phase1_d4(
+__global__ void __launch_bounds__(256) phase1_d4(
     int S,
     int n_half,
     float inv_m_f,
@@ -151,12 +162,22 @@ __global__ void phase1_d4(
             float max_a = max_c * inv_m_f;
             if (max_a * max_a * inv_ell2 > thresh_f) continue;
 
-            /* Survivor: write to compacted buffer */
-            unsigned int idx = atomicAdd(survivor_count, 1u);
-            if (idx < (unsigned int)max_survivors) {
-                survivor_buf[idx * 3 + 0] = c0;
-                survivor_buf[idx * 3 + 1] = c1;
-                survivor_buf[idx * 3 + 2] = c2;
+            /* Warp-aggregated survivor write (SoA layout) */
+            {
+                unsigned int active = __activemask();
+                int lane_id = threadIdx.x & 31;
+                int leader = __ffs(active) - 1;
+                unsigned int warp_count = __popc(active);
+                unsigned int warp_base;
+                if (lane_id == leader)
+                    warp_base = atomicAdd(survivor_count, warp_count);
+                warp_base = __shfl_sync(active, warp_base, leader);
+                unsigned int idx = warp_base + __popc(active & ((1u << lane_id) - 1));
+                if (idx < (unsigned int)max_survivors) {
+                    survivor_buf[idx]                                          = c0;
+                    survivor_buf[idx + (unsigned long long)max_survivors]       = c1;
+                    survivor_buf[idx + 2ULL * (unsigned long long)max_survivors] = c2;
+                }
             }
         }
     }
@@ -168,7 +189,7 @@ __global__ void phase1_d4(
  *
  * One thread per (c0, c1, c2) triple. Inner (c3, c4) loop.
  * ================================================================ */
-__global__ void phase1_d6(
+__global__ void __launch_bounds__(256) phase1_d6(
     int S,
     int n_half,
     float inv_m_f,
@@ -265,14 +286,24 @@ __global__ void phase1_d6(
                 float max_a = max_c * inv_m_f;
                 if (max_a * max_a * inv_ell2 > thresh_f) continue;
 
-                /* Survivor */
-                unsigned int idx = atomicAdd(survivor_count, 1u);
-                if (idx < (unsigned int)max_survivors) {
-                    survivor_buf[idx * 5 + 0] = c0;
-                    survivor_buf[idx * 5 + 1] = c1;
-                    survivor_buf[idx * 5 + 2] = c2;
-                    survivor_buf[idx * 5 + 3] = c3;
-                    survivor_buf[idx * 5 + 4] = c4;
+                /* Warp-aggregated survivor write (SoA layout) */
+                {
+                    unsigned int active = __activemask();
+                    int lane_id = threadIdx.x & 31;
+                    int leader = __ffs(active) - 1;
+                    unsigned int warp_count = __popc(active);
+                    unsigned int warp_base;
+                    if (lane_id == leader)
+                        warp_base = atomicAdd(survivor_count, warp_count);
+                    warp_base = __shfl_sync(active, warp_base, leader);
+                    unsigned int idx = warp_base + __popc(active & ((1u << lane_id) - 1));
+                    if (idx < (unsigned int)max_survivors) {
+                        survivor_buf[idx]                                          = c0;
+                        survivor_buf[idx + (unsigned long long)max_survivors]       = c1;
+                        survivor_buf[idx + 2ULL * (unsigned long long)max_survivors] = c2;
+                        survivor_buf[idx + 3ULL * (unsigned long long)max_survivors] = c3;
+                        survivor_buf[idx + 4ULL * (unsigned long long)max_survivors] = c4;
+                    }
                 }
             }
         }
@@ -291,14 +322,15 @@ __global__ void phase1_d6(
 #define PHASE2_BLOCK_SIZE 256
 
 template <int D>
-__global__ void phase2_find_min(
+__global__ void __launch_bounds__(256) phase2_find_min(
     int S,
     int n_half,
     int m,
     double corr,
     double margin,      /* 1/(4*m) */
-    const int* __restrict__ survivor_buf,   /* (D-1) int32 per survivor */
+    const int* __restrict__ survivor_buf,   /* SoA: STORED planes of max_survivors */
     unsigned int num_survivors,
+    int soa_stride,                          /* = max_survivors from host */
     double* __restrict__ block_min_vals,     /* [num_blocks] */
     int* __restrict__ block_min_configs      /* [num_blocks * D] */
 ) {
@@ -314,12 +346,12 @@ __global__ void phase2_find_min(
     for (int i = 0; i < D; i++) my_cfg[i] = 0;
 
     if (tid < num_survivors) {
-        /* Load survivor tuple */
+        /* Load survivor tuple (SoA layout) */
         int c[D];
         int csum = 0;
         #pragma unroll
         for (int i = 0; i < STORED; i++) {
-            c[i] = survivor_buf[(unsigned long long)tid * STORED + i];
+            c[i] = survivor_buf[(unsigned long long)tid + (unsigned long long)i * soa_stride];
             csum += c[i];
         }
         c[D - 1] = S - csum;
@@ -393,7 +425,8 @@ __global__ void phase2_find_min(
     for (int i = 0; i < D; i++) s_cfgs[lane * D + i] = my_cfg[i];
     __syncthreads();
 
-    for (int s = PHASE2_BLOCK_SIZE / 2; s > 0; s >>= 1) {
+    /* Cross-warp levels: shared memory */
+    for (int s = PHASE2_BLOCK_SIZE / 2; s > 16; s >>= 1) {
         if (lane < s && s_vals[lane + s] < s_vals[lane]) {
             s_vals[lane] = s_vals[lane + s];
             #pragma unroll
@@ -401,6 +434,34 @@ __global__ void phase2_find_min(
                 s_cfgs[lane * D + i] = s_cfgs[(lane + s) * D + i];
         }
         __syncthreads();
+    }
+
+    /* Intra-warp levels: shuffles (no sync needed) */
+    if (lane < 32) {
+        double val = s_vals[lane];
+        int cfg[D];
+        #pragma unroll
+        for (int i = 0; i < D; i++) cfg[i] = s_cfgs[lane * D + i];
+
+        #pragma unroll
+        for (int s = 16; s > 0; s >>= 1) {
+            double other_val = shfl_down_double(0xFFFFFFFF, val, s);
+            int other_cfg[D];
+            #pragma unroll
+            for (int i = 0; i < D; i++)
+                other_cfg[i] = __shfl_down_sync(0xFFFFFFFF, cfg[i], s);
+            if (other_val < val) {
+                val = other_val;
+                #pragma unroll
+                for (int i = 0; i < D; i++) cfg[i] = other_cfg[i];
+            }
+        }
+
+        if (lane == 0) {
+            s_vals[0] = val;
+            #pragma unroll
+            for (int i = 0; i < D; i++) s_cfgs[i] = cfg[i];
+        }
     }
 
     /* Write per-block result */
@@ -421,7 +482,7 @@ __global__ void phase2_find_min(
  *                   and min test value among survivors.
  * ================================================================ */
 template <int D>
-__global__ void phase2_prove_target(
+__global__ void __launch_bounds__(256) phase2_prove_target(
     int S,
     int n_half,
     int m,
@@ -431,6 +492,7 @@ __global__ void phase2_prove_target(
     double thresh,         /* prune_target + fp_margin (FP64 exact) */
     const int* __restrict__ survivor_buf,
     unsigned int num_survivors,
+    int soa_stride,                          /* = max_survivors from host */
     /* Per-block outputs */
     long long* __restrict__ block_counts,    /* [num_blocks * 3]: asym, test, surv */
     double* __restrict__ block_min_tv,       /* [num_blocks] */
@@ -453,7 +515,7 @@ __global__ void phase2_prove_target(
         int csum = 0;
         #pragma unroll
         for (int i = 0; i < STORED; i++) {
-            c[i] = survivor_buf[(unsigned long long)tid * STORED + i];
+            c[i] = survivor_buf[(unsigned long long)tid + (unsigned long long)i * soa_stride];
             csum += c[i];
         }
         c[D - 1] = S - csum;
@@ -540,8 +602,8 @@ __global__ void phase2_prove_target(
     for (int i = 0; i < D; i++) s_min_cfg[lane * D + i] = my_cfg[i];
     __syncthreads();
 
-    /* Tree reduction for min test value */
-    for (int s = PHASE2_BLOCK_SIZE / 2; s > 0; s >>= 1) {
+    /* Cross-warp levels: shared memory */
+    for (int s = PHASE2_BLOCK_SIZE / 2; s > 16; s >>= 1) {
         if (lane < s && s_min_tv[lane + s] < s_min_tv[lane]) {
             s_min_tv[lane] = s_min_tv[lane + s];
             #pragma unroll
@@ -549,6 +611,34 @@ __global__ void phase2_prove_target(
                 s_min_cfg[lane * D + i] = s_min_cfg[(lane + s) * D + i];
         }
         __syncthreads();
+    }
+
+    /* Intra-warp levels: shuffles (no sync needed) */
+    if (lane < 32) {
+        double val = s_min_tv[lane];
+        int cfg[D];
+        #pragma unroll
+        for (int i = 0; i < D; i++) cfg[i] = s_min_cfg[lane * D + i];
+
+        #pragma unroll
+        for (int s = 16; s > 0; s >>= 1) {
+            double other_val = shfl_down_double(0xFFFFFFFF, val, s);
+            int other_cfg[D];
+            #pragma unroll
+            for (int i = 0; i < D; i++)
+                other_cfg[i] = __shfl_down_sync(0xFFFFFFFF, cfg[i], s);
+            if (other_val < val) {
+                val = other_val;
+                #pragma unroll
+                for (int i = 0; i < D; i++) cfg[i] = other_cfg[i];
+            }
+        }
+
+        if (lane == 0) {
+            s_min_tv[0] = val;
+            #pragma unroll
+            for (int i = 0; i < D; i++) s_min_cfg[i] = cfg[i];
+        }
     }
 
     if (lane == 0) {
@@ -622,6 +712,17 @@ static int find_best_bound_direct_d4(
     unsigned int* d_survivor_count = NULL;
     int actual_buf_size = 0;
 
+    /* Persistent GPU buffers for prefix sums and c0 order (max size across all chunks) */
+    long long* d_prefix = NULL;
+    int* d_c0_order = NULL;
+    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
+    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
+
+    /* Grow-only Phase 2 per-block output buffers */
+    double* d_block_min_vals = NULL;
+    int* d_block_min_configs = NULL;
+    int p2_buf_cap = 0;
+
     /* Process c0 values in chunks that fit in the buffer */
     double best_eff = init_min_eff;
     int best_config[D];
@@ -666,11 +767,7 @@ static int find_best_bound_direct_d4(
         }
         CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(unsigned int)));
 
-        /* Upload chunk tables */
-        long long* d_prefix = NULL;
-        int* d_c0_order = NULL;
-        CUDA_CHECK(cudaMalloc(&d_prefix, (chunk_n_c0 + 1) * sizeof(long long)));
-        CUDA_CHECK(cudaMalloc(&d_c0_order, chunk_n_c0 * sizeof(int)));
+        /* Upload chunk tables (reuse pre-allocated GPU buffers) */
         CUDA_CHECK(cudaMemcpy(d_prefix, h_chunk_prefix,
             (chunk_n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_c0_order, h_chunk_c0,
@@ -699,14 +796,18 @@ static int find_best_bound_direct_d4(
             int p2_block = PHASE2_BLOCK_SIZE;
             int p2_grid = (h_survivor_count + p2_block - 1) / p2_block;
 
-            double* d_block_min_vals = NULL;
-            int* d_block_min_configs = NULL;
-            CUDA_CHECK(cudaMalloc(&d_block_min_vals, p2_grid * sizeof(double)));
-            CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+            /* Grow-only Phase 2 buffers */
+            if (p2_grid > p2_buf_cap) {
+                if (d_block_min_vals) cudaFree(d_block_min_vals);
+                if (d_block_min_configs) cudaFree(d_block_min_configs);
+                CUDA_CHECK(cudaMalloc(&d_block_min_vals, p2_grid * sizeof(double)));
+                CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+                p2_buf_cap = p2_grid;
+            }
 
             phase2_find_min<D><<<p2_grid, p2_block>>>(
                 S, n_half, m, corr, margin,
-                d_survivor_buf, h_survivor_count,
+                d_survivor_buf, h_survivor_count, max_survivors,
                 d_block_min_vals, d_block_min_configs);
             CUDA_CHECK(cudaGetLastError());
 
@@ -728,12 +829,8 @@ static int find_best_bound_direct_d4(
 
             free(h_block_vals);
             free(h_block_cfgs);
-            cudaFree(d_block_min_vals);
-            cudaFree(d_block_min_configs);
         }
 
-        cudaFree(d_prefix);
-        cudaFree(d_c0_order);
         free(h_chunk_prefix);
         free(h_chunk_c0);
         chunk_start = chunk_end;
@@ -746,6 +843,10 @@ static int find_best_bound_direct_d4(
 
     if (d_survivor_buf) cudaFree(d_survivor_buf);
     if (d_survivor_count) cudaFree(d_survivor_count);
+    if (d_prefix) cudaFree(d_prefix);
+    if (d_c0_order) cudaFree(d_c0_order);
+    if (d_block_min_vals) cudaFree(d_block_min_vals);
+    if (d_block_min_configs) cudaFree(d_block_min_configs);
     free(h_c0_order);
     free(h_per_c0_pairs);
     free(h_per_c0_configs);
@@ -823,6 +924,17 @@ static int find_best_bound_direct_d6(
     unsigned int* d_survivor_count = NULL;
     int actual_buf_size = 0;
 
+    /* Persistent GPU buffers for prefix sums and c0 order */
+    long long* d_prefix = NULL;
+    int* d_c0_order = NULL;
+    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
+    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
+
+    /* Grow-only Phase 2 per-block output buffers */
+    double* d_block_min_vals = NULL;
+    int* d_block_min_configs = NULL;
+    int p2_buf_cap = 0;
+
     double best_eff = init_min_eff;
     int best_config[D];
     for (int i = 0; i < D; i++) best_config[i] = 0;
@@ -863,10 +975,7 @@ static int find_best_bound_direct_d6(
         }
         CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(unsigned int)));
 
-        long long* d_prefix = NULL;
-        int* d_c0_order = NULL;
-        CUDA_CHECK(cudaMalloc(&d_prefix, (chunk_n_c0 + 1) * sizeof(long long)));
-        CUDA_CHECK(cudaMalloc(&d_c0_order, chunk_n_c0 * sizeof(int)));
+        /* Upload chunk tables (reuse pre-allocated GPU buffers) */
         CUDA_CHECK(cudaMemcpy(d_prefix, h_chunk_prefix,
             (chunk_n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_c0_order, h_chunk_c0,
@@ -892,14 +1001,18 @@ static int find_best_bound_direct_d6(
             int p2_block = PHASE2_BLOCK_SIZE;
             int p2_grid = (h_survivor_count + p2_block - 1) / p2_block;
 
-            double* d_block_min_vals = NULL;
-            int* d_block_min_configs = NULL;
-            CUDA_CHECK(cudaMalloc(&d_block_min_vals, p2_grid * sizeof(double)));
-            CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+            /* Grow-only Phase 2 buffers */
+            if (p2_grid > p2_buf_cap) {
+                if (d_block_min_vals) cudaFree(d_block_min_vals);
+                if (d_block_min_configs) cudaFree(d_block_min_configs);
+                CUDA_CHECK(cudaMalloc(&d_block_min_vals, p2_grid * sizeof(double)));
+                CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+                p2_buf_cap = p2_grid;
+            }
 
             phase2_find_min<D><<<p2_grid, p2_block>>>(
                 S, n_half, m, corr, margin,
-                d_survivor_buf, h_survivor_count,
+                d_survivor_buf, h_survivor_count, max_survivors,
                 d_block_min_vals, d_block_min_configs);
             CUDA_CHECK(cudaGetLastError());
 
@@ -921,12 +1034,8 @@ static int find_best_bound_direct_d6(
 
             free(h_block_vals);
             free(h_block_cfgs);
-            cudaFree(d_block_min_vals);
-            cudaFree(d_block_min_configs);
         }
 
-        cudaFree(d_prefix);
-        cudaFree(d_c0_order);
         free(h_chunk_prefix);
         free(h_chunk_c0);
         chunk_start = chunk_end;
@@ -939,6 +1048,10 @@ static int find_best_bound_direct_d6(
 
     if (d_survivor_buf) cudaFree(d_survivor_buf);
     if (d_survivor_count) cudaFree(d_survivor_count);
+    if (d_prefix) cudaFree(d_prefix);
+    if (d_c0_order) cudaFree(d_c0_order);
+    if (d_block_min_vals) cudaFree(d_block_min_vals);
+    if (d_block_min_configs) cudaFree(d_block_min_configs);
     free(h_c0_order);
     free(h_per_c0_triples);
     free(h_per_c0_configs);
@@ -1005,6 +1118,18 @@ static int run_single_level_d4(
     unsigned int* d_survivor_count = NULL;
     int actual_buf_size = 0;
 
+    /* Persistent GPU buffers for prefix sums and c0 order */
+    long long* d_prefix = NULL;
+    int* d_c0_order = NULL;
+    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
+    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
+
+    /* Grow-only Phase 2 per-block output buffers */
+    long long* d_block_counts = NULL;
+    double* d_block_min_tv = NULL;
+    int* d_block_min_configs = NULL;
+    int p2_buf_cap = 0;
+
     long long total_asym = 0, total_test = 0, total_surv = 0;
     double min_tv = 1e30;
     int min_cfg[D];
@@ -1045,10 +1170,7 @@ static int run_single_level_d4(
         }
         CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(unsigned int)));
 
-        long long* d_prefix = NULL;
-        int* d_c0_order = NULL;
-        CUDA_CHECK(cudaMalloc(&d_prefix, (chunk_n_c0 + 1) * sizeof(long long)));
-        CUDA_CHECK(cudaMalloc(&d_c0_order, chunk_n_c0 * sizeof(int)));
+        /* Upload chunk tables (reuse pre-allocated GPU buffers) */
         CUDA_CHECK(cudaMemcpy(d_prefix, h_chunk_prefix,
             (chunk_n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_c0_order, h_chunk_c0,
@@ -1074,16 +1196,20 @@ static int run_single_level_d4(
             int p2_block = PHASE2_BLOCK_SIZE;
             int p2_grid = (h_survivor_count + p2_block - 1) / p2_block;
 
-            long long* d_block_counts = NULL;
-            double* d_block_min_tv = NULL;
-            int* d_block_min_configs = NULL;
-            CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)p2_grid * 3 * sizeof(long long)));
-            CUDA_CHECK(cudaMalloc(&d_block_min_tv, p2_grid * sizeof(double)));
-            CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+            /* Grow-only Phase 2 buffers */
+            if (p2_grid > p2_buf_cap) {
+                if (d_block_counts) cudaFree(d_block_counts);
+                if (d_block_min_tv) cudaFree(d_block_min_tv);
+                if (d_block_min_configs) cudaFree(d_block_min_configs);
+                CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)p2_grid * 3 * sizeof(long long)));
+                CUDA_CHECK(cudaMalloc(&d_block_min_tv, p2_grid * sizeof(double)));
+                CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+                p2_buf_cap = p2_grid;
+            }
 
             phase2_prove_target<D><<<p2_grid, p2_block>>>(
                 S, n_half, m, corr, margin, c_target, thresh,
-                d_survivor_buf, h_survivor_count,
+                d_survivor_buf, h_survivor_count, max_survivors,
                 d_block_counts, d_block_min_tv, d_block_min_configs);
             CUDA_CHECK(cudaGetLastError());
 
@@ -1111,13 +1237,8 @@ static int run_single_level_d4(
             free(h_counts);
             free(h_min_tvs);
             free(h_min_cfgs);
-            cudaFree(d_block_counts);
-            cudaFree(d_block_min_tv);
-            cudaFree(d_block_min_configs);
         }
 
-        cudaFree(d_prefix);
-        cudaFree(d_c0_order);
         free(h_chunk_prefix);
         free(h_chunk_c0);
         chunk_start = chunk_end;
@@ -1131,6 +1252,11 @@ static int run_single_level_d4(
 
     if (d_survivor_buf) cudaFree(d_survivor_buf);
     if (d_survivor_count) cudaFree(d_survivor_count);
+    if (d_prefix) cudaFree(d_prefix);
+    if (d_c0_order) cudaFree(d_c0_order);
+    if (d_block_counts) cudaFree(d_block_counts);
+    if (d_block_min_tv) cudaFree(d_block_min_tv);
+    if (d_block_min_configs) cudaFree(d_block_min_configs);
     free(h_c0_order);
     free(h_per_c0_pairs);
     free(h_per_c0_configs);
@@ -1199,6 +1325,18 @@ static int run_single_level_d6(
     unsigned int* d_survivor_count = NULL;
     int actual_buf_size = 0;
 
+    /* Persistent GPU buffers for prefix sums and c0 order */
+    long long* d_prefix = NULL;
+    int* d_c0_order = NULL;
+    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
+    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
+
+    /* Grow-only Phase 2 per-block output buffers */
+    long long* d_block_counts = NULL;
+    double* d_block_min_tv = NULL;
+    int* d_block_min_configs = NULL;
+    int p2_buf_cap = 0;
+
     long long total_asym = 0, total_test = 0, total_surv = 0;
     double min_tv = 1e30;
     int min_cfg[D];
@@ -1239,10 +1377,7 @@ static int run_single_level_d6(
         }
         CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(unsigned int)));
 
-        long long* d_prefix = NULL;
-        int* d_c0_order = NULL;
-        CUDA_CHECK(cudaMalloc(&d_prefix, (chunk_n_c0 + 1) * sizeof(long long)));
-        CUDA_CHECK(cudaMalloc(&d_c0_order, chunk_n_c0 * sizeof(int)));
+        /* Upload chunk tables (reuse pre-allocated GPU buffers) */
         CUDA_CHECK(cudaMemcpy(d_prefix, h_chunk_prefix,
             (chunk_n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_c0_order, h_chunk_c0,
@@ -1268,16 +1403,20 @@ static int run_single_level_d6(
             int p2_block = PHASE2_BLOCK_SIZE;
             int p2_grid = (h_survivor_count + p2_block - 1) / p2_block;
 
-            long long* d_block_counts = NULL;
-            double* d_block_min_tv = NULL;
-            int* d_block_min_configs = NULL;
-            CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)p2_grid * 3 * sizeof(long long)));
-            CUDA_CHECK(cudaMalloc(&d_block_min_tv, p2_grid * sizeof(double)));
-            CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+            /* Grow-only Phase 2 buffers */
+            if (p2_grid > p2_buf_cap) {
+                if (d_block_counts) cudaFree(d_block_counts);
+                if (d_block_min_tv) cudaFree(d_block_min_tv);
+                if (d_block_min_configs) cudaFree(d_block_min_configs);
+                CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)p2_grid * 3 * sizeof(long long)));
+                CUDA_CHECK(cudaMalloc(&d_block_min_tv, p2_grid * sizeof(double)));
+                CUDA_CHECK(cudaMalloc(&d_block_min_configs, p2_grid * D * sizeof(int)));
+                p2_buf_cap = p2_grid;
+            }
 
             phase2_prove_target<D><<<p2_grid, p2_block>>>(
                 S, n_half, m, corr, margin, c_target, thresh,
-                d_survivor_buf, h_survivor_count,
+                d_survivor_buf, h_survivor_count, max_survivors,
                 d_block_counts, d_block_min_tv, d_block_min_configs);
             CUDA_CHECK(cudaGetLastError());
 
@@ -1305,13 +1444,8 @@ static int run_single_level_d6(
             free(h_counts);
             free(h_min_tvs);
             free(h_min_cfgs);
-            cudaFree(d_block_counts);
-            cudaFree(d_block_min_tv);
-            cudaFree(d_block_min_configs);
         }
 
-        cudaFree(d_prefix);
-        cudaFree(d_c0_order);
         free(h_chunk_prefix);
         free(h_chunk_c0);
         chunk_start = chunk_end;
@@ -1325,6 +1459,11 @@ static int run_single_level_d6(
 
     if (d_survivor_buf) cudaFree(d_survivor_buf);
     if (d_survivor_count) cudaFree(d_survivor_count);
+    if (d_prefix) cudaFree(d_prefix);
+    if (d_c0_order) cudaFree(d_c0_order);
+    if (d_block_counts) cudaFree(d_block_counts);
+    if (d_block_min_tv) cudaFree(d_block_min_tv);
+    if (d_block_min_configs) cudaFree(d_block_min_configs);
     free(h_c0_order);
     free(h_per_c0_triples);
     free(h_per_c0_configs);
