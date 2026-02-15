@@ -12,33 +12,32 @@
 
   Implementation: find_best_bound_direct() in core.py. Combines:
     1. Seeded running min from uniform composition (enables early pruning)
-    2. Asymmetry filter first (cheap: partial sum + compare)
-    3. Symmetry filter second (halves remaining: canonical mask b <= rev(b))
+    2. Symmetry filter first (halves batch: canonical mask b <= rev(b))
+    3. Asymmetry filter second on smaller batch (partial sum + compare)
     4. Precomputed window matrix W for vectorized test-value via matmul
     5. batch_size=50000 (optimal for running-min update frequency)
 
-  Methods tested (12 variants benchmarked):
-    v1_pure:          min(test_vals) - correction, no asymmetry            6.5-7.8x
-    v2_asym_running:  asymmetry skip, running min starts at inf            6.5-8.3x
-    v3_asym_seeded:   asymmetry skip, seeded from uniform                  6.6-8.7x
-    v4_fft_seeded:    FFT-based convolution + seeded asymmetry             3.6-8.6x  (FFT overhead bad for small d)
-    v5_matmul_seeded: conv + matmul window max + seeded asymmetry          7.5-11.1x
-    v6_precompW:      precomputed W matrix outside loop + seeded           7.0-12.4x
-    v7_quadform:      outer product + quadratic form matrix                6.5-10.8x
-    v8_einsum:        numpy einsum quadratic form                          3.8-7.3x  (einsum overhead)
-    v9_sym+matmul:    symmetry first + v5                                  7.1-12.8x
-    v10_sym+preW:     symmetry first + v6                                  7.6-13.4x
-    v11_asym1st+preW: asymmetry first, then symmetry + precomputed W      7.0-12.8x  [WINNER]
-    v12_asym1st+matm: asymmetry first, then symmetry + v5 matmul          7.5-12.4x
+  Methods tested (12 variants benchmarked at production scale):
+  Benchmark cases: n=2,m=100 (86M configs, d=4) and n=3,m=7 (41.5M configs, d=6).
 
-  Winner: v11 (asymmetry first, symmetry, precomputed W, batch_size=50k)
+                                                                     n=2,m=100  n=3,m=7   total
+    v1_pure:          min(test_vals) - correction, no asymmetry        17.42s    36.35s    53.77s
+    v2_asym_running:  asymmetry skip, running min starts at inf        15.18s    27.13s    42.31s
+    v3_asym_seeded:   asymmetry skip, seeded from uniform              14.62s    26.99s    41.62s
+    v4_fft_seeded:    FFT-based convolution + seeded asymmetry         26.64s    31.15s    57.79s  (FFT overhead bad for small d)
+    v5_matmul_seeded: conv + matmul window max + seeded asymmetry      14.34s    24.44s    38.78s
+    v6_precompW:      precomputed W matrix outside loop + seeded       14.37s    24.61s    38.99s
+    v7_quadform:      outer product + quadratic form matrix            21.72s    37.65s    59.36s
+    v8_einsum:        numpy einsum quadratic form                      32.36s    60.03s    92.39s  (einsum overhead)
+    v9_sym+matmul:    symmetry first + v5                              12.00s    21.20s    33.20s  [WINNER]
+    v10_sym+preW:     symmetry first + v6                              12.09s    21.21s    33.31s
+    v11_asym1st+preW: asymmetry first, then symmetry + precomputed W   14.70s    21.25s    35.96s  [old winner]
+    v12_asym1st+matm: asymmetry first, then symmetry + v5 matmul      12.61s    40.01s    52.62s
 
-  Final benchmarks vs binary search:
-    n=2, m=10  (91K comps):    0.03s vs 0.26s =  8.6x
-    n=2, m=20  (709K comps):   0.16s vs 1.47s =  9.3x
-    n=2, m=50  (10.8M comps):  2.29s vs 19.7s =  8.6x
-    n=3, m=3   (749K comps):   0.97s vs 10.2s = 10.5x
-    n=3, m=5   (8.3M comps):   8.64s vs 79.1s =  9.2x
+  Winner: v9 (symmetry first, asymmetry, matmul, seeded, batch_size=50k)
+  Key insight at production scale: symmetry-first halves the batch before
+  the more expensive conv+matmul step. At d=4 with 86M configs, this is
+  18% faster than asymmetry-first (v11). At d=6, tied.
 
   Bonus: direct method always returns a bound (binary search returns None
   when the optimal bound falls outside its [lo, hi] search range).
@@ -100,10 +99,7 @@
   ---
   STEP 4: Mathematical Structure Opportunities
 
-  M1. Direct bound computation (no binary search)
 
-  Already covered as B1. The mathematical insight: for each grid point b, the achievable lower bound on ||f*f||_inf for all f rounding to b is max(test_val(b), asym_bound(b)). The global proven bound is min_b
-  max(test_val(b), asym_bound(b)) - correction(m). One pass, no iteration.
 
   M2. Convolution structure — reorganize by output index
 
