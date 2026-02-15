@@ -1,0 +1,200 @@
+{
+  "method": "lasserre_level2_sweep",
+  "timestamp_utc": "2026-02-09T17:22:29Z",
+  "params": {
+    "p_values": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "primary_solver": "CLARABEL",
+    "crosscheck_solver": "SCS",
+    "crosscheck_max_p": 8,
+    "eta_tol": 0.001,
+    "moment_box": false,
+    "primal_restarts": 20,
+    "seed": 42
+  },
+  "rows": [
+    {
+      "P": 6,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.5827148437499998,
+        "eta_lo": 1.5821874999999999,
+        "eta_hi": 1.5827148437499998,
+        "n_bisection": 11,
+        "elapsed_sec": 1.067659854888916,
+        "n_moments": 210,
+        "moment_rank": 15,
+        "d": 28,
+        "loc_d": 7
+      },
+      "crosscheck": {
+        "solver": "SCS",
+        "status": "optimal_inaccurate",
+        "bound": 1.28423828125,
+        "eta_lo": 1.2837109375,
+        "eta_hi": 1.28423828125,
+        "n_bisection": 11,
+        "elapsed_sec": 31.02619218826294,
+        "n_moments": 210,
+        "moment_rank": 12,
+        "d": 28,
+        "loc_d": 7
+      },
+      "primal_ub": 1.6025004799483624,
+      "primary_to_primal_gap": 0.0197856361983626,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    },
+    {
+      "P": 7,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.5759923934936524,
+        "eta_lo": 1.575345211029053,
+        "eta_hi": 1.5759923934936524,
+        "n_bisection": 10,
+        "elapsed_sec": 2.3942532539367676,
+        "n_moments": 330,
+        "moment_rank": 19,
+        "d": 36,
+        "loc_d": 8
+      },
+      "crosscheck": {
+        "solver": "SCS",
+        "status": "optimal_inaccurate",
+        "bound": 1.2449152128770948,
+        "eta_lo": 1.2442550640553238,
+        "eta_hi": 1.2449152128770948,
+        "n_bisection": 10,
+        "elapsed_sec": 42.138285875320435,
+        "n_moments": 330,
+        "moment_rank": 16,
+        "d": 36,
+        "loc_d": 8
+      },
+      "primal_ub": 1.6060219906779467,
+      "primary_to_primal_gap": 0.03002959718429432,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    },
+    {
+      "P": 8,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.5400406130030753,
+        "eta_lo": 1.5393999954313042,
+        "eta_hi": 1.5400406130030753,
+        "n_bisection": 10,
+        "elapsed_sec": 5.520220041275024,
+        "n_moments": 495,
+        "moment_rank": 25,
+        "d": 45,
+        "loc_d": 9
+      },
+      "crosscheck": {
+        "solver": "SCS",
+        "status": "optimal_inaccurate",
+        "bound": 1.21268503382802,
+        "eta_lo": 1.2120444162562487,
+        "eta_hi": 1.21268503382802,
+        "n_bisection": 10,
+        "elapsed_sec": 61.51785326004028,
+        "n_moments": 495,
+        "moment_rank": 22,
+        "d": 45,
+        "loc_d": 9
+      },
+      "primal_ub": 1.5964273219686596,
+      "primary_to_primal_gap": 0.05638670896558429,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    },
+    {
+      "P": 9,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.532847401799518,
+        "eta_lo": 1.5322418933883821,
+        "eta_hi": 1.532847401799518,
+        "n_bisection": 10,
+        "elapsed_sec": 12.985782146453857,
+        "n_moments": 715,
+        "moment_rank": 30,
+        "d": 55,
+        "loc_d": 10
+      },
+      "crosscheck": null,
+      "primal_ub": 1.5875657396662326,
+      "primary_to_primal_gap": 0.05471833786671465,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    },
+    {
+      "P": 10,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.5129006087326045,
+        "eta_lo": 1.5123021249417845,
+        "eta_hi": 1.5129006087326045,
+        "n_bisection": 10,
+        "elapsed_sec": 27.186619997024536,
+        "n_moments": 1001,
+        "moment_rank": 39,
+        "d": 66,
+        "loc_d": 11
+      },
+      "crosscheck": null,
+      "primal_ub": 1.5969699628760883,
+      "primary_to_primal_gap": 0.08406935414348382,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    },
+    {
+      "P": 11,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.503733915622428,
+        "eta_lo": 1.5031549111217126,
+        "eta_hi": 1.503733915622428,
+        "n_bisection": 10,
+        "elapsed_sec": 54.72654318809509,
+        "n_moments": 1365,
+        "moment_rank": 47,
+        "d": 78,
+        "loc_d": 12
+      },
+      "crosscheck": null,
+      "primal_ub": 1.599501199251441,
+      "primary_to_primal_gap": 0.09576728362901288,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    },
+    {
+      "P": 12,
+      "primary": {
+        "solver": "CLARABEL",
+        "status": "optimal_inaccurate",
+        "bound": 1.4925254913064236,
+        "eta_lo": 1.4919554386544487,
+        "eta_hi": 1.4925254913064236,
+        "n_bisection": 10,
+        "elapsed_sec": 110.1094741821289,
+        "n_moments": 1820,
+        "moment_rank": 56,
+        "d": 91,
+        "loc_d": 13
+      },
+      "crosscheck": null,
+      "primal_ub": 1.588272174751465,
+      "primary_to_primal_gap": 0.09574668344504134,
+      "note": "discretized lower bound for P-bin relaxation; not automatically a rigorous continuous C_{1a} lower bound"
+    }
+  ]
+}

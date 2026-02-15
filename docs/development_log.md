@@ -47,7 +47,7 @@ This established our **project best of 1.5092** at P=200.
 ### Negative results
 - **Adaptive grid refinement**: Failed badly -- peak went from 1.51 to 1.54. Root cause: point-value interpolation (np.interp) destroyed solution quality when transferring between grids. Width ratios reached 114:1.
 - **SDP relaxation**: Shor+RLT gives $2P/(2P-1) \to 1$, useless as a lower bound.
-- **Lasserre level-2**: Tight at P=2-4 but loose at P>=5.
+- **Lasserre level-2 (initial SCS runs)**: Tight at P=2-4 but appeared loose at P>=5.
 
 ---
 
@@ -91,3 +91,20 @@ Five independent optimization paradigms converge to $C_{1a} \approx 1.50$. The r
 3. **Warm-starting matters more than initialization strategy** at high P. The landscape has exponentially many local minima, and cold starts get trapped.
 4. **Grid interpolation is dangerous** for step functions. Mass-conserving transfer (overlap integrals) is the correct approach; point-value interpolation destroys solutions.
 5. **Non-convexity is the fundamental barrier.** All methods find only Clarke stationary points. ~98% of the gap between upper and lower bounds is on the lower bound side.
+
+---
+
+## Postscript (February 2026): Lower-Bound Clarification
+
+A CLARABEL-first re-run of level-2 Lasserre (see `prev_attempts/lasserre2_sweep.py`) produced much stronger **discretized** bounds for the $P$-bin problem than earlier SCS-heavy runs.
+
+However, these values are bounds on $\eta_P$ (the discretized minimax value), not directly on continuous $C_{1a}$.
+
+Formally:
+- $C_{1a} = \inf_{f \in \mathcal{F}} M(f)$ (continuous feasible class),
+- $\eta_P = \inf_{f \in \mathcal{S}_P} M(f)$ with $\mathcal{S}_P \subset \mathcal{F}$,
+- level-2 Lasserre computes $LB_P \le \eta_P$.
+
+So high $LB_P$ does **not** by itself imply $C_{1a} \ge LB_P$.
+To convert this pipeline into continuous lower bounds, we need a transfer estimate
+$\eta_P - C_{1a} \le \varepsilon_P$, giving $C_{1a} \ge LB_P - \varepsilon_P$.

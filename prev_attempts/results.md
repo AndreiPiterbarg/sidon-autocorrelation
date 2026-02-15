@@ -68,9 +68,53 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 | Known (literature) | 1.2802 | — | Fourier kernel method |
 | Shor+RLT SDP | ~1.01 | `sdp_certification.ipynb` | $2P/(2P-1) \to 1$, useless |
 | Fourier SDP (cosine) | 2.0 | `sdp_certification.ipynb` | Trivial (even functions) |
-| Lasserre level-2 | ~1.28 at P=6 | `lasserre_level2.ipynb` | Tight at P=2-4, loose at P≥5 |
+| Lasserre level-2 (CLARABEL sweep) | **1.4925 at P=12 for $\eta_P$** | `lasserre_level2.ipynb`, `lasserre2_sweep.py` | Strong discretized relaxation bound; not a direct continuous $C_{1a}$ bound |
 | PSD lower bound | ~1.0 | `lower_bound_sdp.ipynb` | Trivial |
 | Copositivity-1 | ~1.0 | `lower_bound_sdp.ipynb` | Also trivial |
+
+### 2026-02 Lasserre-2 Reproducible Sweep (new)
+
+Command used:
+`python prev_attempts/lasserre2_sweep.py --p-values 6,7,8,9,10,11,12 --primary-solver CLARABEL --crosscheck-solver SCS --crosscheck-max-p 8 --eta-tol 1e-3 --primal-restarts 20 --out prev_attempts/lasserre2_sweep_results.json`
+
+Primary solver (`CLARABEL`) results:
+
+| P | Lasserre-2 LB (primary) | Primal UB (comparison) | Gap |
+|---|--------------------------|------------------------|-----|
+| 6  | 1.5827 | 1.6025 | 0.0198 |
+| 7  | 1.5760 | 1.6060 | 0.0300 |
+| 8  | 1.5400 | 1.5964 | 0.0564 |
+| 9  | 1.5328 | 1.5876 | 0.0547 |
+| 10 | 1.5129 | 1.5970 | 0.0841 |
+| 11 | 1.5037 | 1.5995 | 0.0958 |
+| 12 | **1.4925** | 1.5883 | 0.0957 |
+
+Cross-check (`SCS`) at low P was much weaker: 1.2842 (P=6), 1.2449 (P=7), 1.2127 (P=8), indicating strong solver/numerical sensitivity.
+
+### What Is / Isn't Proved (exact relationships)
+
+Define:
+
+- $C_{1a} := \inf_{f \in \mathcal{F}} M(f)$, where $M(f)=\|f*f\|_\infty$ and $\mathcal{F}$ is the full continuous feasible set.
+- $\eta_P := \inf_{f \in \mathcal{S}_P} M(f)$, where $\mathcal{S}_P \subset \mathcal{F}$ is the $P$-bin step-function subclass.
+- $LB_P$ := level-2 Lasserre lower bound computed for the discretized $P$-bin problem.
+
+What we proved numerically:
+
+- $LB_P \le \eta_P$ (lower bound on the discretized minimax value).
+- $C_{1a} \le \eta_P$ (because $\mathcal{S}_P \subset \mathcal{F}$).
+
+What we did **not** prove:
+
+- We did **not** prove $LB_P \le C_{1a}$.
+- Therefore values like $LB_{12}=1.4925$ do **not** imply $C_{1a}\ge 1.4925$.
+
+What is needed to certify continuous lower bounds from this pipeline:
+
+- A discretization-transfer estimate $\eta_P - C_{1a} \le \varepsilon_P$.
+- Then one gets a certified continuous bound: $C_{1a} \ge LB_P - \varepsilon_P$.
+
+Current status: $\varepsilon_P$ is not yet controlled in this repo.
 
 ---
 
@@ -83,7 +127,7 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 **Open.** Adaptive grid experiment (this project) was inconclusive — the approach failed for reasons unrelated to the singularity question. True non-uniform ansätze (free-knot splines, geometric grids) never tested.
 
 ### K3: Is the SDP relaxation tight?
-**Resolved — NO.** Shor+RLT gives $2P/(2P-1) \to 1$. Full-rank $X^*$ at every P. Structural, not numerical. Lasserre-2 helps at P≤4 but not at practical sizes.
+**Partially resolved.** Shor+RLT is not tight (structural failure). Level-2 Lasserre with CLARABEL is much stronger for discretized $\eta_P$, but continuous-certification status remains open because discretization transfer is unproven.
 
 ### K4: Moment/SOS convexification?
 **Partially answered — Fourier-domain Shor lift FAILS.** Tested full sine+cosine basis with K=3-20, grid-sampled autoconvolution, and symmetry-breaking constraints. All converge to eta=2.0 (even-function bound) with zero sine coefficients. Fourier truncation + Shor lift is too weak to represent the extremizer. Higher Lasserre levels (degree ≥3) remain untested but computationally expensive.
@@ -103,17 +147,17 @@ Cross-pollination (r9) did not improve: P=750 gave 1.5076, P=1000 gave 1.5066, P
 - Upper bound slack: ~0.003–0.05 (dominated by non-uniform discretization unknowns)
 - Lower bound slack: ~0.17–0.22 (dominant — ~98% of the gap)
 
-**Actionable conclusion**: The most promising attack for the upper bound is **structural** (SOS/moment convexification or singular ansätze), not better optimization on uniform grids.
+**Actionable conclusion (for lower-bound certification)**: strong discretized SOS numbers are not enough; the bottleneck is turning $LB_P$ into certified bounds on continuous $C_{1a}$ via a rigorous transfer error $\varepsilon_P$.
 
 ---
 
 ## Recommended Attack Priorities
 
-1. **Non-uniform grid experiments** — test for boundary singularity (K2, highest upside)
-2. **Warm-start polishing** from [AE25]/[TTT26] solutions — beat 1.5029
-3. **Lasserre level-3+** in spatial domain — expensive but might certify
-4. **Euler-Lagrange analysis** — necessary conditions for extremizer
-5. ~~**Fourier-domain SDP**~~ — **TESTED: Failed** (converges to eta=2.0)
+1. **Discretization-to-continuous transfer bound** — derive/compute $\varepsilon_P$ such that $\eta_P - C_{1a} \le \varepsilon_P$.
+2. **Certified residual checking for SDP outputs** — convert `optimal_inaccurate` solutions into validated bounds using primal/dual residual and PSD-eigenvalue certificates.
+3. **Combine steps 1+2 into continuous certificates** — report $C_{1a} \ge LB_P - \varepsilon_P$ with explicit error bars.
+4. **Continuous dual-certificate search** — optimize Fourier/kernel certificates with rigorous quadrature/interval-error control (not grid-only heuristics).
+5. **Only then scale hierarchy level** — level-3+ is useful only if paired with an explicit transfer/certification pipeline.
 
 ---
 
