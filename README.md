@@ -3,6 +3,8 @@
 > **Current bounds:** $1.2802 \leq C_{1a} \leq 1.5029$
 >
 > **Goal:** Push the lower bound above 1.2802 by improving the Cloninger-Steinerberger algorithm.
+>
+> **Current focus:** GPU kernel optimization targeting NVIDIA A100 cloud GPUs — the algorithm is complete; all effort is on making it run as fast as possible.
 
 ## Problem Statement
 
@@ -26,21 +28,27 @@ We build on the Cloninger-Steinerberger branch-and-prune algorithm:
    - **Test-value computation**: check all windows; if the best lower bound exceeds the target, the point is pruned.
 5. If ALL grid points are pruned, the lower bound is **rigorously proven**.
 
-The original paper reached $n = 24$ (48 bins), $m = 50$, using ~20,000 CPU hours on Yale HPC with GPU acceleration.
+The original paper reached $n = 24$ (48 bins), $m = 50$, using ~20,000 CPU hours on Yale HPC with GPU acceleration. Our current work focuses on optimized CUDA kernels for NVIDIA A100 cloud GPUs to push to larger parameter regimes.
 
 ## Repository Structure
 
 ```
 sidon-autocorrelation/
 ├── cloninger-steinerberger/    # Active: branch-and-prune implementation
-│   ├── core.py                 # Core algorithm (pruning, test values, enumeration)
-│   └── run.py                  # Driver script with demo phases
+│   ├── core.py                 # Re-exports all public API
+│   ├── compositions.py         # Batched composition generators (Numba JIT)
+│   ├── test_values.py          # Autoconvolution + windowed test-value computation
+│   ├── pruning.py              # Correction terms, asymmetry threshold, canonical mask
+│   ├── solvers.py              # Solvers + fused GPU/Numba kernels
+│   └── run.py                  # CLI entry point for running proofs
 ├── tests/                      # Test suite
-│   ├── test_cloninger_steinerberger.py
-│   ├── test_continuous_sdp.py
-│   └── test_basic.py
-├── exploration/                # Archived upper-bound notebooks
-├── cloud/                      # Archived cloud compute infrastructure
+│   ├── test_basics.py
+│   ├── test_compositions.py
+│   ├── test_autoconvolution.py
+│   ├── test_integration.py
+│   └── test_heavy.py           # Production-scale benchmarks
+├── exploration/                # Archived upper-bound notebooks (read-only)
+├── cloud/                      # Archived cloud infra (read-only)
 ├── data/                       # Checkpoints and results
 ├── docs/                       # Documentation
 └── requirements.txt
