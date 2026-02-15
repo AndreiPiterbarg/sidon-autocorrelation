@@ -130,7 +130,7 @@ Current status: $\varepsilon_P$ is not yet controlled in this repo.
 **Partially resolved.** Shor+RLT is not tight (structural failure). Level-2 Lasserre with CLARABEL is much stronger for discretized $\eta_P$, but continuous-certification status remains open because discretization transfer is unproven.
 
 ### K4: Moment/SOS convexification?
-**Partially answered — Fourier-domain Shor lift FAILS.** Tested full sine+cosine basis with K=3-20, grid-sampled autoconvolution, and symmetry-breaking constraints. All converge to eta=2.0 (even-function bound) with zero sine coefficients. Fourier truncation + Shor lift is too weak to represent the extremizer. Higher Lasserre levels (degree ≥3) remain untested but computationally expensive.
+**Open.** Most promising unexploited direction. Fourier-domain SDP with full basis (sine+cosine) + Fejér-Riesz never attempted.
 
 ### K5: Fourier kernel lower bound ceiling?
 **Open.** Estimated ~1.276 by [MV10], essentially saturated by current 1.2802.

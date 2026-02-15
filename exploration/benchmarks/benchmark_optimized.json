@@ -1,0 +1,64 @@
+{
+  "P": 200,
+  "time_budget": 30,
+  "components": {
+    "single_k": {
+      "full_autoconv_us": 5.823699999600649,
+      "single_k_us": 0.4270459996769205,
+      "speedup": 13.63717258563841
+    },
+    "polyak": {
+      "original_s": 0.5262181999860331,
+      "fast_s": 0.33785129999159835,
+      "speedup": 1.5575438069917715,
+      "original_val": 1.532378419106063,
+      "fast_val": 1.5360830527480485,
+      "val_diff": 0.0037046336419854775
+    },
+    "hybrid": {
+      "original_s": 1.1069618000183254,
+      "fast_s": 0.8647807000088505,
+      "speedup": 1.2800491500411564,
+      "original_val": 1.5192533225947447,
+      "fast_val": 1.5188881973204564,
+      "val_diff": -0.00036512527428822494
+    }
+  },
+  "methods": {
+    "iterated_warm": {
+      "name": "Iterated Warm Restart (Fast)",
+      "value": 1.5103571333046388,
+      "restarts": 15,
+      "elapsed": 31.316728591918945,
+      "restarts_per_s": 0.4789772327582978
+    },
+    "mirrored_sampling": {
+      "name": "Mirrored Sampling (Fast)",
+      "value": 1.5103571333046388,
+      "restarts": 16,
+      "elapsed": 31.754284381866455,
+      "restarts_per_s": 0.5038690152040375
+    },
+    "adaptive_perturbation": {
+      "name": "Adaptive Perturbation (Fast)",
+      "value": 1.5103571333046388,
+      "restarts": 15,
+      "elapsed": 30.816065788269043,
+      "restarts_per_s": 0.4867590854414047
+    },
+    "heavy_elite_v2": {
+      "name": "Heavy-Tail Elite v2 (Fast)",
+      "value": 1.5109788951967538,
+      "restarts": 10,
+      "elapsed": 31.78341293334961,
+      "restarts_per_s": 0.3146295214101198
+    },
+    "extreme_sparse": {
+      "name": "Extreme Sparse Init (Fast)",
+      "value": 1.5127938715496754,
+      "restarts": 9,
+      "elapsed": 32.31102800369263,
+      "restarts_per_s": 0.2785426696721456
+    }
+  }
+}
