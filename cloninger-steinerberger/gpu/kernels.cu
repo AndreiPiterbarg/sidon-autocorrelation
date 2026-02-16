@@ -3,7 +3,7 @@
  *
  * Fused single-pass architecture:
  *   Each thread generates compositions from a flat index, applies FP32 pruning,
- *   computes INT32 autoconvolution, and reduces — all in registers.
+ *   computes INT32/INT64 autoconvolution, and reduces — all in registers.
  *   Zero intermediate DRAM traffic between generation and evaluation.
  *
  * Templated on D (number of bins). Instantiated for D=4, 6.
@@ -22,4 +22,6 @@
 #include "phase2_kernels.cuh"
 #include "host_find_min.cuh"
 #include "host_prove.cuh"
+#include "refinement_kernel.cuh"
+#include "host_refine.cuh"
 #include "dispatch.cuh"

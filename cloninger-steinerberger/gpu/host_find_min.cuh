@@ -25,12 +25,6 @@ static int find_best_bound_direct_d4(
 ) {
     const int D = 4;
 
-    /* INT32 overflow guard */
-    if ((long long)S * S > 2000000000LL) {
-        fprintf(stderr, "GPU: S=%d too large for INT32 (S^2 > 2B)\n", S);
-        return -3;
-    }
-
     double corr = 2.0 / m + 1.0 / ((double)m * m);
     double margin = 1.0 / (4.0 * m);
     float inv_m_f = 1.0f / (float)m;
@@ -75,7 +69,7 @@ static int find_best_bound_direct_d4(
     /* Kernel launch config */
     int block_size = FUSED_BLOCK_SIZE;
     int grid_size = (int)fmin(
-        (double)(total_work + block_size - 1) / block_size, 65535.0);
+        (double)(total_work + block_size - 1) / block_size, 108.0 * 32);
     if (grid_size < 1) grid_size = 1;
 
     /* Per-block output buffers */
@@ -84,11 +78,21 @@ static int find_best_bound_direct_d4(
     CUDA_CHECK(cudaMalloc(&d_block_min_vals, grid_size * sizeof(double)));
     CUDA_CHECK(cudaMalloc(&d_block_min_configs, grid_size * D * sizeof(int)));
 
-    fused_find_min<D><<<grid_size, block_size>>>(
-        S, n_half, m, corr, margin,
-        inv_m_f, thresh_f, margin_f, asym_limit_f,
-        d_prefix, d_c0_order, n_c0, total_work,
-        d_block_min_vals, d_block_min_configs);
+    /* Dispatch INT32 or INT64 based on S*S overflow check */
+    bool use_int64 = ((long long)S * S > 2000000000LL);
+    if (use_int64) {
+        fused_find_min<D, true><<<grid_size, block_size>>>(
+            S, n_half, m, corr, margin, init_min_eff,
+            inv_m_f, thresh_f, margin_f, asym_limit_f,
+            d_prefix, d_c0_order, n_c0, 0LL, total_work,
+            d_block_min_vals, d_block_min_configs);
+    } else {
+        fused_find_min<D, false><<<grid_size, block_size>>>(
+            S, n_half, m, corr, margin, init_min_eff,
+            inv_m_f, thresh_f, margin_f, asym_limit_f,
+            d_prefix, d_c0_order, n_c0, 0LL, total_work,
+            d_block_min_vals, d_block_min_configs);
+    }
     CUDA_CHECK(cudaGetLastError());
     CUDA_CHECK(cudaDeviceSynchronize());
 
@@ -143,12 +147,6 @@ static int find_best_bound_direct_d6(
 ) {
     const int D = 6;
 
-    /* INT32 overflow guard */
-    if ((long long)S * S > 2000000000LL) {
-        fprintf(stderr, "GPU: S=%d too large for INT32 (S^2 > 2B)\n", S);
-        return -3;
-    }
-
     double corr = 2.0 / m + 1.0 / ((double)m * m);
     double margin = 1.0 / (4.0 * m);
     float inv_m_f = 1.0f / (float)m;
@@ -192,7 +190,7 @@ static int find_best_bound_direct_d6(
 
     int block_size = FUSED_BLOCK_SIZE;
     int grid_size = (int)fmin(
-        (double)(total_work + block_size - 1) / block_size, 65535.0);
+        (double)(total_work + block_size - 1) / block_size, 108.0 * 32);
     if (grid_size < 1) grid_size = 1;
 
     double* d_block_min_vals = NULL;
@@ -200,11 +198,21 @@ static int find_best_bound_direct_d6(
     CUDA_CHECK(cudaMalloc(&d_block_min_vals, grid_size * sizeof(double)));
     CUDA_CHECK(cudaMalloc(&d_block_min_configs, grid_size * D * sizeof(int)));
 
-    fused_find_min<D><<<grid_size, block_size>>>(
-        S, n_half, m, corr, margin,
-        inv_m_f, thresh_f, margin_f, asym_limit_f,
-        d_prefix, d_c0_order, n_c0, total_work,
-        d_block_min_vals, d_block_min_configs);
+    /* Dispatch INT32 or INT64 based on S*S overflow check */
+    bool use_int64 = ((long long)S * S > 2000000000LL);
+    if (use_int64) {
+        fused_find_min<D, true><<<grid_size, block_size>>>(
+            S, n_half, m, corr, margin, init_min_eff,
+            inv_m_f, thresh_f, margin_f, asym_limit_f,
+            d_prefix, d_c0_order, n_c0, 0LL, total_work,
+            d_block_min_vals, d_block_min_configs);
+    } else {
+        fused_find_min<D, false><<<grid_size, block_size>>>(
+            S, n_half, m, corr, margin, init_min_eff,
+            inv_m_f, thresh_f, margin_f, asym_limit_f,
+            d_prefix, d_c0_order, n_c0, 0LL, total_work,
+            d_block_min_vals, d_block_min_configs);
+    }
     CUDA_CHECK(cudaGetLastError());
     CUDA_CHECK(cudaDeviceSynchronize());
 
