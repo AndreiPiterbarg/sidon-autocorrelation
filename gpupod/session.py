@@ -2,7 +2,7 @@
 import json
 import sys
 
-from .config import SESSION_FILE
+from .config import SESSION_FILE, PROJECT_ROOT
 from .budget import BudgetTracker
 
 
@@ -120,7 +120,7 @@ class Session:
         sync_code(self.ssh_host, self.ssh_port)
 
     def build(self):
-        """Recompile CUDA kernels on pod."""
+        """Recompile CUDA kernels on pod (deps already installed by 'start')."""
         from .remote import build_cuda
 
         self._require_active()
@@ -147,7 +147,8 @@ class Session:
             print(f"Only {timeout}s of budget remaining. Tear down the pod.")
             sys.exit(1)
 
-        kwargs = {"timeout": timeout}
+        log_dir = str(PROJECT_ROOT / "data")
+        kwargs = {"timeout": timeout, "log_dir": log_dir}
         if script:
             kwargs["script"] = script
         if args:
@@ -160,7 +161,7 @@ class Session:
         return rc
 
     def status(self):
-        """Show pod state and budget."""
+        """Show pod state, job state, and budget."""
         if not self.pod_id:
             print("No active session.")
             return
@@ -174,13 +175,79 @@ class Session:
             if pod_status:
                 desired = pod_status.get("desiredStatus", "UNKNOWN")
                 uptime = pod_status.get("uptimeSeconds", 0)
-                print(f"Status: {desired} (uptime: {uptime}s)")
+                print(f"Pod: {desired} (uptime: {uptime}s)")
             else:
-                print("Status: UNKNOWN (pod may have been terminated)")
+                print("Pod: UNKNOWN (may have been terminated)")
         except ImportError:
-            print("Status: (runpod SDK not installed, cannot query pod)")
+            print("Pod: (runpod SDK not installed, cannot query)")
+
+        # Check if a detached job is running
+        try:
+            from .remote import check_job_status
+            job = check_job_status(self.ssh_host, self.ssh_port)
+            print(f"Job: {job}")
+        except Exception:
+            print("Job: (could not check — SSH may be down)")
 
         print(self.budget.status_line())
+
+    def launch(self, script=None, args=""):
+        """Launch a GPU job in a detached tmux session (survives SSH disconnect).
+
+        Use 'logs' to check output, 'fetch' to pull results.
+        """
+        from .remote import launch_script, check_job_status
+
+        self._require_active()
+        ok, msg = self.budget.check()
+        print(msg)
+        if not ok:
+            print("Budget exceeded. Tear down the pod.")
+            sys.exit(1)
+
+        script = script or "run_proof.py"
+
+        # Check if a job is already running
+        status = check_job_status(self.ssh_host, self.ssh_port)
+        if status == "RUNNING":
+            print("A job is already running on the pod!")
+            print("Use 'logs' to check it, or 'logs -f' to follow live.")
+            print("Kill it first with: gpupod ssh then 'tmux kill-session -t job'")
+            sys.exit(1)
+
+        print(f"Launching detached: {script} {args}")
+        rc = launch_script(self.ssh_host, self.ssh_port, script=script, args=args)
+        if rc != 0:
+            print(f"Failed to launch (exit code {rc})")
+            sys.exit(1)
+
+        print(f"\nJob launched in background on pod.")
+        print(f"You can now close your laptop. The job keeps running.")
+        print(f"")
+        print(f"  gpupod logs        # see last 80 lines")
+        print(f"  gpupod logs -f     # follow live (Ctrl-C to detach)")
+        print(f"  gpupod status      # check pod + job state")
+        print(f"  gpupod fetch       # pull results to local data/")
+        print(f"  gpupod teardown    # stop pod + collect results")
+
+    def logs(self, follow=False, lines=80):
+        """Show output from a launched job."""
+        from .remote import tail_remote_log, check_job_status
+
+        self._require_active()
+
+        status = check_job_status(self.ssh_host, self.ssh_port)
+        print(f"Job status: {status}")
+        print(f"{'=' * 60}")
+        tail_remote_log(self.ssh_host, self.ssh_port,
+                        follow=follow, lines=lines)
+
+    def fetch(self):
+        """Pull results from the pod to local data/ directory."""
+        from .sync import collect_results
+
+        self._require_active()
+        collect_results(self.ssh_host, self.ssh_port)
 
     def ssh_command(self):
         """Print the SSH command for manual use."""
@@ -198,6 +265,22 @@ class Session:
         from .sync import collect_results
 
         print("=== TEARDOWN ===")
+
+        # Check if a job is still running
+        if self.ssh_host and self.ssh_port:
+            try:
+                from .remote import check_job_status
+                job = check_job_status(self.ssh_host, self.ssh_port)
+                if job == "RUNNING":
+                    print("WARNING: A job is still running!")
+                    print("Results may be incomplete. Use 'fetch' first,")
+                    print("or wait for job to finish.")
+                    resp = input("Proceed with teardown anyway? [y/N] ")
+                    if resp.lower() != "y":
+                        print("Teardown cancelled.")
+                        return
+            except Exception:
+                pass
 
         # Collect results before destroying
         if self.ssh_host and self.ssh_port:
@@ -233,3 +316,5 @@ class Session:
         terminate_all_pods()
         self._clear()
         print("All pods terminated. Session cleared.")
+
+

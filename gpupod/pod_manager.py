@@ -19,6 +19,9 @@ def _init_sdk():
 def create_pod(name="sidon-gpu"):
     """Create a new GPU pod and wait for it to be ready.
 
+    If RUNPOD_VOLUME_ID is set, attaches the network volume at /workspace
+    so all data persists across pod restarts.
+
     Returns dict with pod_id, ssh_host, ssh_port.
     """
     _init_sdk()
@@ -32,18 +35,24 @@ def create_pod(name="sidon-gpu"):
         )
     pub_key = pub_key_path.read_text().strip()
 
-    print(f"Creating pod '{name}' with {GPU_TYPE}...")
-    pod = runpod_sdk.create_pod(
+    # Build create_pod kwargs
+    # Uses the built-in volume disk (persistent at /workspace across stop/restart).
+    # Results are synced back locally before teardown, so no network volume needed.
+    kwargs = dict(
         name=name,
         image_name=DOCKER_IMAGE,
         gpu_type_id=GPU_TYPE,
         cloud_type=CLOUD_TYPE,
         gpu_count=1,
-        volume_in_gb=0,
-        container_disk_in_gb=20,
+        volume_in_gb=75,
+        container_disk_in_gb=50,
         env={"PUBLIC_KEY": pub_key},
         ports="22/tcp",
     )
+
+    print(f"Creating pod '{name}' with {GPU_TYPE}...")
+
+    pod = runpod_sdk.create_pod(**kwargs)
 
     if not pod or "id" not in pod:
         raise RuntimeError(f"Pod creation failed. API response: {pod}")

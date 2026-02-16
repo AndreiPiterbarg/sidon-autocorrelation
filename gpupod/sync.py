@@ -58,7 +58,7 @@ def sync_code(ssh_host, ssh_port):
     pipeline = (
         f"tar cf - {excludes} . | "
         f"ssh -p {ssh_port} {ssh_opts} root@{ssh_host} "
-        f"'mkdir -p {REMOTE_WORKDIR} && tar xf - --no-same-owner -C {REMOTE_WORKDIR}'"
+        f"'rm -rf {REMOTE_WORKDIR} && mkdir -p {REMOTE_WORKDIR} && tar xf - --no-same-owner -C {REMOTE_WORKDIR}'"
     )
 
     result = _run_bash(pipeline, cwd=str(PROJECT_ROOT))
