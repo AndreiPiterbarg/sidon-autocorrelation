@@ -10,7 +10,7 @@ build/
 .venv/
 venv/
 env/
-
+.env
 # Jupyter
 .ipynb_checkpoints/
 
@@ -42,3 +42,7 @@ next_steps_cloud.md
 exploration/
 cloud_results/
 prompts_IGNORE/
+
+# RunPod secrets and session state
+.env
+gpupod/.session.json
