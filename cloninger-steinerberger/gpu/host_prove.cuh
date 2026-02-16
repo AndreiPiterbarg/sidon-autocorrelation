@@ -11,13 +11,16 @@
  *
  * Depends on: device_helpers.cuh (CUDA_CHECK, FUSED_BLOCK_SIZE)
  *             phase1_kernels.cuh (fused_prove_target)
+ *             host_find_min.cuh  (count_per_c0<D>)
  */
 
 
 /* ================================================================
- * Host implementation: run_single_level for D=4
+ * Unified template: run_single_level for D=4 or D=6,
+ * with optional survivor extraction (when survivor params are non-NULL).
  * ================================================================ */
-static int run_single_level_d4(
+template <int D>
+static int run_single_level_impl(
     int S, int n_half, int m,
     double c_target,
     long long* out_n_fp32_skipped,
@@ -25,10 +28,11 @@ static int run_single_level_d4(
     long long* out_n_pruned_test,
     long long* out_n_survivors,
     double* out_min_test_val,
-    int* out_min_test_config
+    int* out_min_test_config,
+    int* out_survivor_configs,
+    int* out_n_extracted,
+    int max_survivors
 ) {
-    const int D = 4;
-
     double corr = 2.0 / m + 1.0 / ((double)m * m);
     double prune_target = c_target + corr;
     double margin = 1.0 / (4.0 * m);
@@ -40,13 +44,18 @@ static int run_single_level_d4(
     float margin_f = (float)margin;
     float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
 
-    /* Precompute per-ell integer thresholds: int_thresh[ell-2] = floor(thresh * m^2 * 4 * n_half * ell)
+    /* Precompute per-ell integer thresholds: int_thresh[ell-2] = floor(thresh * m^2 * ell / (4 * n_half))
+     *
+     * With S=m convention, integer coords c_j = m*w_j sum to m, and
+     * a_j = (4n/m)*c_j. Test value = (4n)/(m^2*ell) * sum(c_i*c_j),
+     * so threshold in integer space is thresh * m^2 * ell / (4n).
+     *
      * Apply relative epsilon to guard against FP64 rounding producing a value
      * slightly above the true mathematical product (safe: lowers threshold,
      * meaning fewer configs pruned, never more). */
     long long h_int_thresh[D - 1];
     for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * 4.0 * (double)n_half * (double)ell;
+        double x = thresh * (double)m * (double)m * (double)ell / (4.0 * (double)n_half);
         h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
     }
 
@@ -64,13 +73,13 @@ static int run_single_level_d4(
         }
     }
 
-    /* Compute prefix sums of triangle counts per c0 */
+    /* Compute prefix sums of per-c0 counts */
     long long* h_prefix = (long long*)malloc((n_c0 + 1) * sizeof(long long));
     h_prefix[0] = 0;
     for (int i = 0; i < n_c0; i++) {
         int c0 = h_c0_order[i];
         long long R = (long long)(S - 2 * c0);
-        h_prefix[i + 1] = h_prefix[i] + (R + 1) * (R + 2) / 2;
+        h_prefix[i + 1] = h_prefix[i] + count_per_c0<D>(R);
     }
     long long total_work = h_prefix[n_c0];
 
@@ -101,6 +110,16 @@ static int run_single_level_d4(
     CUDA_CHECK(cudaMalloc(&d_block_min_tv, grid_size * sizeof(double)));
     CUDA_CHECK(cudaMalloc(&d_block_min_configs, grid_size * D * sizeof(int)));
 
+    /* Survivor extraction buffers (only when extracting) */
+    bool extracting = (out_survivor_configs != NULL);
+    int* d_survivor_buf = NULL;
+    int* d_survivor_count = NULL;
+    if (extracting) {
+        CUDA_CHECK(cudaMalloc(&d_survivor_buf, (long long)max_survivors * D * sizeof(int)));
+        CUDA_CHECK(cudaMalloc(&d_survivor_count, sizeof(int)));
+        CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(int)));
+    }
+
     /* Dispatch INT32 or INT64 based on S*S overflow check */
     bool use_int64 = ((long long)S * S > 2000000000LL);
     if (use_int64) {
@@ -110,7 +129,8 @@ static int run_single_level_d4(
             d_prefix, d_c0_order, n_c0, 0LL, total_work,
             d_int_thresh,
             d_block_counts, d_block_min_tv, d_block_min_configs,
-            NULL, NULL, 0);
+            d_survivor_buf, d_survivor_count,
+            extracting ? max_survivors : 0);
     } else {
         fused_prove_target<D, false><<<grid_size, block_size>>>(
             S, n_half, m, margin, c_target, thresh,
@@ -118,10 +138,24 @@ static int run_single_level_d4(
             d_prefix, d_c0_order, n_c0, 0LL, total_work,
             d_int_thresh,
             d_block_counts, d_block_min_tv, d_block_min_configs,
-            NULL, NULL, 0);
+            d_survivor_buf, d_survivor_count,
+            extracting ? max_survivors : 0);
     }
     CUDA_CHECK(cudaGetLastError());
     CUDA_CHECK(cudaDeviceSynchronize());
+
+    /* Read survivor data if extracting */
+    if (extracting) {
+        int h_survivor_count = 0;
+        CUDA_CHECK(cudaMemcpy(&h_survivor_count, d_survivor_count, sizeof(int), cudaMemcpyDeviceToHost));
+        int n_ext = h_survivor_count;
+        if (n_ext > max_survivors) n_ext = max_survivors;
+        if (n_ext > 0) {
+            CUDA_CHECK(cudaMemcpy(out_survivor_configs, d_survivor_buf,
+                (long long)n_ext * D * sizeof(int), cudaMemcpyDeviceToHost));
+        }
+        *out_n_extracted = n_ext;
+    }
 
     /* Read and reduce per-block results */
     long long* h_counts = (long long*)malloc(grid_size * 4 * sizeof(long long));
@@ -164,6 +198,10 @@ static int run_single_level_d4(
     cudaFree(d_block_counts);
     cudaFree(d_block_min_tv);
     cudaFree(d_block_min_configs);
+    if (extracting) {
+        cudaFree(d_survivor_buf);
+        cudaFree(d_survivor_count);
+    }
     free(h_c0_order);
     free(h_prefix);
     free(h_counts);
@@ -174,509 +212,54 @@ static int run_single_level_d4(
 }
 
 
-/* ================================================================
- * Host implementation: run_single_level for D=4 with survivor extraction
- * ================================================================ */
+/* Thin wrappers preserving exact signatures called by dispatch.cuh */
+
+static int run_single_level_d4(
+    int S, int n_half, int m, double c_target,
+    long long* out_n_fp32_skipped, long long* out_n_pruned_asym,
+    long long* out_n_pruned_test, long long* out_n_survivors,
+    double* out_min_test_val, int* out_min_test_config
+) {
+    return run_single_level_impl<4>(S, n_half, m, c_target,
+        out_n_fp32_skipped, out_n_pruned_asym, out_n_pruned_test, out_n_survivors,
+        out_min_test_val, out_min_test_config, NULL, NULL, 0);
+}
+
 static int run_single_level_d4_extract(
-    int S, int n_half, int m,
-    double c_target,
-    long long* out_n_fp32_skipped,
-    long long* out_n_pruned_asym,
-    long long* out_n_pruned_test,
-    long long* out_n_survivors,
-    double* out_min_test_val,
-    int* out_min_test_config,
-    int* out_survivor_configs,
-    int* out_n_extracted,
-    int max_survivors
+    int S, int n_half, int m, double c_target,
+    long long* out_n_fp32_skipped, long long* out_n_pruned_asym,
+    long long* out_n_pruned_test, long long* out_n_survivors,
+    double* out_min_test_val, int* out_min_test_config,
+    int* out_survivor_configs, int* out_n_extracted, int max_survivors
 ) {
-    const int D = 4;
-
-    double corr = 2.0 / m + 1.0 / ((double)m * m);
-    double prune_target = c_target + corr;
-    double margin = 1.0 / (4.0 * m);
-    double fp_margin = 1e-9;
-    double thresh = prune_target + fp_margin;
-    float inv_m_f = 1.0f / (float)m;
-
-    float thresh_f = (float)thresh * (1.0f + 1e-5f);
-    float margin_f = (float)margin;
-    float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
-
-    long long h_int_thresh[D - 1];
-    for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * 4.0 * (double)n_half * (double)ell;
-        h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
-    }
-
-    int half_S = S / 2;
-    int n_c0 = half_S + 1;
-
-    int* h_c0_order = (int*)malloc(n_c0 * sizeof(int));
-    {
-        int lo = 0, hi = half_S, idx = 0;
-        while (lo <= hi) {
-            h_c0_order[idx++] = lo;
-            if (lo < hi) h_c0_order[idx++] = hi;
-            lo++; hi--;
-        }
-    }
-
-    long long* h_prefix = (long long*)malloc((n_c0 + 1) * sizeof(long long));
-    h_prefix[0] = 0;
-    for (int i = 0; i < n_c0; i++) {
-        int c0 = h_c0_order[i];
-        long long R = (long long)(S - 2 * c0);
-        h_prefix[i + 1] = h_prefix[i] + (R + 1) * (R + 2) / 2;
-    }
-    long long total_work = h_prefix[n_c0];
-
-    long long* d_prefix = NULL;
-    int* d_c0_order = NULL;
-    long long* d_int_thresh = NULL;
-    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_int_thresh, (D - 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMemcpy(d_prefix, h_prefix,
-        (n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_c0_order, h_c0_order,
-        n_c0 * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_int_thresh, h_int_thresh,
-        (D - 1) * sizeof(long long), cudaMemcpyHostToDevice));
-
-    int block_size = FUSED_BLOCK_SIZE;
-    int grid_size = (int)fmin(
-        (double)(total_work + block_size - 1) / block_size, 108.0 * 32);
-    if (grid_size < 1) grid_size = 1;
-
-    long long* d_block_counts = NULL;
-    double* d_block_min_tv = NULL;
-    int* d_block_min_configs = NULL;
-    CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)grid_size * 4 * sizeof(long long)));
-    CUDA_CHECK(cudaMalloc(&d_block_min_tv, grid_size * sizeof(double)));
-    CUDA_CHECK(cudaMalloc(&d_block_min_configs, grid_size * D * sizeof(int)));
-
-    /* Survivor extraction buffers */
-    int* d_survivor_buf = NULL;
-    int* d_survivor_count = NULL;
-    CUDA_CHECK(cudaMalloc(&d_survivor_buf, (long long)max_survivors * D * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_survivor_count, sizeof(int)));
-    CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(int)));
-
-    bool use_int64 = ((long long)S * S > 2000000000LL);
-    if (use_int64) {
-        fused_prove_target<D, true><<<grid_size, block_size>>>(
-            S, n_half, m, margin, c_target, thresh,
-            inv_m_f, thresh_f, margin_f, asym_limit_f,
-            d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
-            d_block_counts, d_block_min_tv, d_block_min_configs,
-            d_survivor_buf, d_survivor_count, max_survivors);
-    } else {
-        fused_prove_target<D, false><<<grid_size, block_size>>>(
-            S, n_half, m, margin, c_target, thresh,
-            inv_m_f, thresh_f, margin_f, asym_limit_f,
-            d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
-            d_block_counts, d_block_min_tv, d_block_min_configs,
-            d_survivor_buf, d_survivor_count, max_survivors);
-    }
-    CUDA_CHECK(cudaGetLastError());
-    CUDA_CHECK(cudaDeviceSynchronize());
-
-    /* Read survivor count */
-    int h_survivor_count = 0;
-    CUDA_CHECK(cudaMemcpy(&h_survivor_count, d_survivor_count, sizeof(int), cudaMemcpyDeviceToHost));
-    int n_ext = h_survivor_count;
-    if (n_ext > max_survivors) n_ext = max_survivors;
-
-    /* Copy survivors to host */
-    if (n_ext > 0) {
-        CUDA_CHECK(cudaMemcpy(out_survivor_configs, d_survivor_buf,
-            (long long)n_ext * D * sizeof(int), cudaMemcpyDeviceToHost));
-    }
-    *out_n_extracted = n_ext;
-
-    /* Read and reduce per-block results */
-    long long* h_counts = (long long*)malloc(grid_size * 4 * sizeof(long long));
-    double* h_min_tvs = (double*)malloc(grid_size * sizeof(double));
-    int* h_min_cfgs = (int*)malloc(grid_size * D * sizeof(int));
-    CUDA_CHECK(cudaMemcpy(h_counts, d_block_counts,
-        grid_size * 4 * sizeof(long long), cudaMemcpyDeviceToHost));
-    CUDA_CHECK(cudaMemcpy(h_min_tvs, d_block_min_tv,
-        grid_size * sizeof(double), cudaMemcpyDeviceToHost));
-    CUDA_CHECK(cudaMemcpy(h_min_cfgs, d_block_min_configs,
-        grid_size * D * sizeof(int), cudaMemcpyDeviceToHost));
-
-    long long total_fp32 = 0, total_asym = 0, total_test = 0, total_surv = 0;
-    double min_tv = 1e30;
-    int min_cfg[D];
-    for (int i = 0; i < D; i++) min_cfg[i] = 0;
-
-    for (int b = 0; b < grid_size; b++) {
-        total_fp32 += h_counts[b * 4 + 0];
-        total_asym += h_counts[b * 4 + 1];
-        total_test += h_counts[b * 4 + 2];
-        total_surv += h_counts[b * 4 + 3];
-        if (h_min_tvs[b] < min_tv) {
-            min_tv = h_min_tvs[b];
-            for (int i = 0; i < D; i++)
-                min_cfg[i] = h_min_cfgs[b * D + i];
-        }
-    }
-
-    *out_n_fp32_skipped = total_fp32;
-    *out_n_pruned_asym = total_asym;
-    *out_n_pruned_test = total_test;
-    *out_n_survivors = total_surv;
-    *out_min_test_val = min_tv;
-    for (int i = 0; i < D; i++) out_min_test_config[i] = min_cfg[i];
-
-    cudaFree(d_prefix);
-    cudaFree(d_c0_order);
-    cudaFree(d_int_thresh);
-    cudaFree(d_block_counts);
-    cudaFree(d_block_min_tv);
-    cudaFree(d_block_min_configs);
-    cudaFree(d_survivor_buf);
-    cudaFree(d_survivor_count);
-    free(h_c0_order);
-    free(h_prefix);
-    free(h_counts);
-    free(h_min_tvs);
-    free(h_min_cfgs);
-
-    return 0;
+    return run_single_level_impl<4>(S, n_half, m, c_target,
+        out_n_fp32_skipped, out_n_pruned_asym, out_n_pruned_test, out_n_survivors,
+        out_min_test_val, out_min_test_config,
+        out_survivor_configs, out_n_extracted, max_survivors);
 }
 
-
-/* ================================================================
- * Host implementation: run_single_level for D=6
- * ================================================================ */
 static int run_single_level_d6(
-    int S, int n_half, int m,
-    double c_target,
-    long long* out_n_fp32_skipped,
-    long long* out_n_pruned_asym,
-    long long* out_n_pruned_test,
-    long long* out_n_survivors,
-    double* out_min_test_val,
-    int* out_min_test_config
+    int S, int n_half, int m, double c_target,
+    long long* out_n_fp32_skipped, long long* out_n_pruned_asym,
+    long long* out_n_pruned_test, long long* out_n_survivors,
+    double* out_min_test_val, int* out_min_test_config
 ) {
-    const int D = 6;
-
-    double corr = 2.0 / m + 1.0 / ((double)m * m);
-    double prune_target = c_target + corr;
-    double margin = 1.0 / (4.0 * m);
-    double fp_margin = 1e-9;
-    double thresh = prune_target + fp_margin;
-    float inv_m_f = 1.0f / (float)m;
-
-    float thresh_f = (float)thresh * (1.0f + 1e-5f);
-    float margin_f = (float)margin;
-    float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
-
-    /* Precompute per-ell integer thresholds (with relative epsilon guard) */
-    long long h_int_thresh[D - 1];
-    for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * 4.0 * (double)n_half * (double)ell;
-        h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
-    }
-
-    int half_S = S / 2;
-    int n_c0 = half_S + 1;
-
-    /* Build zigzag c0 ordering */
-    int* h_c0_order = (int*)malloc(n_c0 * sizeof(int));
-    {
-        int lo = 0, hi = half_S, idx = 0;
-        while (lo <= hi) {
-            h_c0_order[idx++] = lo;
-            if (lo < hi) h_c0_order[idx++] = hi;
-            lo++; hi--;
-        }
-    }
-
-    /* Compute prefix sums of tetrahedral counts per c0 */
-    long long* h_prefix = (long long*)malloc((n_c0 + 1) * sizeof(long long));
-    h_prefix[0] = 0;
-    for (int i = 0; i < n_c0; i++) {
-        int c0 = h_c0_order[i];
-        long long R = (long long)(S - 2 * c0);
-        h_prefix[i + 1] = h_prefix[i] + (R + 1) * (R + 2) * (R + 3) / 6;
-    }
-    long long total_work = h_prefix[n_c0];
-
-    /* Upload to GPU */
-    long long* d_prefix = NULL;
-    int* d_c0_order = NULL;
-    long long* d_int_thresh = NULL;
-    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_int_thresh, (D - 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMemcpy(d_prefix, h_prefix,
-        (n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_c0_order, h_c0_order,
-        n_c0 * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_int_thresh, h_int_thresh,
-        (D - 1) * sizeof(long long), cudaMemcpyHostToDevice));
-
-    int block_size = FUSED_BLOCK_SIZE;
-    int grid_size = (int)fmin(
-        (double)(total_work + block_size - 1) / block_size, 108.0 * 32);
-    if (grid_size < 1) grid_size = 1;
-
-    long long* d_block_counts = NULL;
-    double* d_block_min_tv = NULL;
-    int* d_block_min_configs = NULL;
-    CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)grid_size * 4 * sizeof(long long)));
-    CUDA_CHECK(cudaMalloc(&d_block_min_tv, grid_size * sizeof(double)));
-    CUDA_CHECK(cudaMalloc(&d_block_min_configs, grid_size * D * sizeof(int)));
-
-    /* Dispatch INT32 or INT64 based on S*S overflow check */
-    bool use_int64_d6 = ((long long)S * S > 2000000000LL);
-    if (use_int64_d6) {
-        fused_prove_target<D, true><<<grid_size, block_size>>>(
-            S, n_half, m, margin, c_target, thresh,
-            inv_m_f, thresh_f, margin_f, asym_limit_f,
-            d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
-            d_block_counts, d_block_min_tv, d_block_min_configs,
-            NULL, NULL, 0);
-    } else {
-        fused_prove_target<D, false><<<grid_size, block_size>>>(
-            S, n_half, m, margin, c_target, thresh,
-            inv_m_f, thresh_f, margin_f, asym_limit_f,
-            d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
-            d_block_counts, d_block_min_tv, d_block_min_configs,
-            NULL, NULL, 0);
-    }
-    CUDA_CHECK(cudaGetLastError());
-    CUDA_CHECK(cudaDeviceSynchronize());
-
-    long long* h_counts = (long long*)malloc(grid_size * 4 * sizeof(long long));
-    double* h_min_tvs = (double*)malloc(grid_size * sizeof(double));
-    int* h_min_cfgs = (int*)malloc(grid_size * D * sizeof(int));
-    CUDA_CHECK(cudaMemcpy(h_counts, d_block_counts,
-        grid_size * 4 * sizeof(long long), cudaMemcpyDeviceToHost));
-    CUDA_CHECK(cudaMemcpy(h_min_tvs, d_block_min_tv,
-        grid_size * sizeof(double), cudaMemcpyDeviceToHost));
-    CUDA_CHECK(cudaMemcpy(h_min_cfgs, d_block_min_configs,
-        grid_size * D * sizeof(int), cudaMemcpyDeviceToHost));
-
-    long long total_fp32 = 0, total_asym = 0, total_test = 0, total_surv = 0;
-    double min_tv = 1e30;
-    int min_cfg[D];
-    for (int i = 0; i < D; i++) min_cfg[i] = 0;
-
-    for (int b = 0; b < grid_size; b++) {
-        total_fp32 += h_counts[b * 4 + 0];
-        total_asym += h_counts[b * 4 + 1];
-        total_test += h_counts[b * 4 + 2];
-        total_surv += h_counts[b * 4 + 3];
-        if (h_min_tvs[b] < min_tv) {
-            min_tv = h_min_tvs[b];
-            for (int i = 0; i < D; i++)
-                min_cfg[i] = h_min_cfgs[b * D + i];
-        }
-    }
-
-    *out_n_fp32_skipped = total_fp32;
-    *out_n_pruned_asym = total_asym;
-    *out_n_pruned_test = total_test;
-    *out_n_survivors = total_surv;
-    *out_min_test_val = min_tv;
-    for (int i = 0; i < D; i++) out_min_test_config[i] = min_cfg[i];
-
-    cudaFree(d_prefix);
-    cudaFree(d_c0_order);
-    cudaFree(d_int_thresh);
-    cudaFree(d_block_counts);
-    cudaFree(d_block_min_tv);
-    cudaFree(d_block_min_configs);
-    free(h_c0_order);
-    free(h_prefix);
-    free(h_counts);
-    free(h_min_tvs);
-    free(h_min_cfgs);
-
-    return 0;
+    return run_single_level_impl<6>(S, n_half, m, c_target,
+        out_n_fp32_skipped, out_n_pruned_asym, out_n_pruned_test, out_n_survivors,
+        out_min_test_val, out_min_test_config, NULL, NULL, 0);
 }
 
-
-/* ================================================================
- * Host implementation: run_single_level for D=6 with survivor extraction
- * ================================================================ */
 static int run_single_level_d6_extract(
-    int S, int n_half, int m,
-    double c_target,
-    long long* out_n_fp32_skipped,
-    long long* out_n_pruned_asym,
-    long long* out_n_pruned_test,
-    long long* out_n_survivors,
-    double* out_min_test_val,
-    int* out_min_test_config,
-    int* out_survivor_configs,
-    int* out_n_extracted,
-    int max_survivors
+    int S, int n_half, int m, double c_target,
+    long long* out_n_fp32_skipped, long long* out_n_pruned_asym,
+    long long* out_n_pruned_test, long long* out_n_survivors,
+    double* out_min_test_val, int* out_min_test_config,
+    int* out_survivor_configs, int* out_n_extracted, int max_survivors
 ) {
-    const int D = 6;
-
-    double corr = 2.0 / m + 1.0 / ((double)m * m);
-    double prune_target = c_target + corr;
-    double margin = 1.0 / (4.0 * m);
-    double fp_margin = 1e-9;
-    double thresh = prune_target + fp_margin;
-    float inv_m_f = 1.0f / (float)m;
-
-    float thresh_f = (float)thresh * (1.0f + 1e-5f);
-    float margin_f = (float)margin;
-    float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
-
-    long long h_int_thresh[D - 1];
-    for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * 4.0 * (double)n_half * (double)ell;
-        h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
-    }
-
-    int half_S = S / 2;
-    int n_c0 = half_S + 1;
-
-    int* h_c0_order = (int*)malloc(n_c0 * sizeof(int));
-    {
-        int lo = 0, hi = half_S, idx = 0;
-        while (lo <= hi) {
-            h_c0_order[idx++] = lo;
-            if (lo < hi) h_c0_order[idx++] = hi;
-            lo++; hi--;
-        }
-    }
-
-    long long* h_prefix = (long long*)malloc((n_c0 + 1) * sizeof(long long));
-    h_prefix[0] = 0;
-    for (int i = 0; i < n_c0; i++) {
-        int c0 = h_c0_order[i];
-        long long R = (long long)(S - 2 * c0);
-        h_prefix[i + 1] = h_prefix[i] + (R + 1) * (R + 2) * (R + 3) / 6;
-    }
-    long long total_work = h_prefix[n_c0];
-
-    long long* d_prefix = NULL;
-    int* d_c0_order = NULL;
-    long long* d_int_thresh = NULL;
-    CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_int_thresh, (D - 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMemcpy(d_prefix, h_prefix,
-        (n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_c0_order, h_c0_order,
-        n_c0 * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_int_thresh, h_int_thresh,
-        (D - 1) * sizeof(long long), cudaMemcpyHostToDevice));
-
-    int block_size = FUSED_BLOCK_SIZE;
-    int grid_size = (int)fmin(
-        (double)(total_work + block_size - 1) / block_size, 108.0 * 32);
-    if (grid_size < 1) grid_size = 1;
-
-    long long* d_block_counts = NULL;
-    double* d_block_min_tv = NULL;
-    int* d_block_min_configs = NULL;
-    CUDA_CHECK(cudaMalloc(&d_block_counts, (long long)grid_size * 4 * sizeof(long long)));
-    CUDA_CHECK(cudaMalloc(&d_block_min_tv, grid_size * sizeof(double)));
-    CUDA_CHECK(cudaMalloc(&d_block_min_configs, grid_size * D * sizeof(int)));
-
-    /* Survivor extraction buffers */
-    int* d_survivor_buf = NULL;
-    int* d_survivor_count = NULL;
-    CUDA_CHECK(cudaMalloc(&d_survivor_buf, (long long)max_survivors * D * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_survivor_count, sizeof(int)));
-    CUDA_CHECK(cudaMemset(d_survivor_count, 0, sizeof(int)));
-
-    bool use_int64_d6 = ((long long)S * S > 2000000000LL);
-    if (use_int64_d6) {
-        fused_prove_target<D, true><<<grid_size, block_size>>>(
-            S, n_half, m, margin, c_target, thresh,
-            inv_m_f, thresh_f, margin_f, asym_limit_f,
-            d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
-            d_block_counts, d_block_min_tv, d_block_min_configs,
-            d_survivor_buf, d_survivor_count, max_survivors);
-    } else {
-        fused_prove_target<D, false><<<grid_size, block_size>>>(
-            S, n_half, m, margin, c_target, thresh,
-            inv_m_f, thresh_f, margin_f, asym_limit_f,
-            d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
-            d_block_counts, d_block_min_tv, d_block_min_configs,
-            d_survivor_buf, d_survivor_count, max_survivors);
-    }
-    CUDA_CHECK(cudaGetLastError());
-    CUDA_CHECK(cudaDeviceSynchronize());
-
-    /* Read survivor count */
-    int h_survivor_count = 0;
-    CUDA_CHECK(cudaMemcpy(&h_survivor_count, d_survivor_count, sizeof(int), cudaMemcpyDeviceToHost));
-    int n_ext = h_survivor_count;
-    if (n_ext > max_survivors) n_ext = max_survivors;
-
-    /* Copy survivors to host */
-    if (n_ext > 0) {
-        CUDA_CHECK(cudaMemcpy(out_survivor_configs, d_survivor_buf,
-            (long long)n_ext * D * sizeof(int), cudaMemcpyDeviceToHost));
-    }
-    *out_n_extracted = n_ext;
-
-    long long* h_counts = (long long*)malloc(grid_size * 4 * sizeof(long long));
-    double* h_min_tvs = (double*)malloc(grid_size * sizeof(double));
-    int* h_min_cfgs = (int*)malloc(grid_size * D * sizeof(int));
-    CUDA_CHECK(cudaMemcpy(h_counts, d_block_counts,
-        grid_size * 4 * sizeof(long long), cudaMemcpyDeviceToHost));
-    CUDA_CHECK(cudaMemcpy(h_min_tvs, d_block_min_tv,
-        grid_size * sizeof(double), cudaMemcpyDeviceToHost));
-    CUDA_CHECK(cudaMemcpy(h_min_cfgs, d_block_min_configs,
-        grid_size * D * sizeof(int), cudaMemcpyDeviceToHost));
-
-    long long total_fp32 = 0, total_asym = 0, total_test = 0, total_surv = 0;
-    double min_tv = 1e30;
-    int min_cfg[D];
-    for (int i = 0; i < D; i++) min_cfg[i] = 0;
-
-    for (int b = 0; b < grid_size; b++) {
-        total_fp32 += h_counts[b * 4 + 0];
-        total_asym += h_counts[b * 4 + 1];
-        total_test += h_counts[b * 4 + 2];
-        total_surv += h_counts[b * 4 + 3];
-        if (h_min_tvs[b] < min_tv) {
-            min_tv = h_min_tvs[b];
-            for (int i = 0; i < D; i++)
-                min_cfg[i] = h_min_cfgs[b * D + i];
-        }
-    }
-
-    *out_n_fp32_skipped = total_fp32;
-    *out_n_pruned_asym = total_asym;
-    *out_n_pruned_test = total_test;
-    *out_n_survivors = total_surv;
-    *out_min_test_val = min_tv;
-    for (int i = 0; i < D; i++) out_min_test_config[i] = min_cfg[i];
-
-    cudaFree(d_prefix);
-    cudaFree(d_c0_order);
-    cudaFree(d_int_thresh);
-    cudaFree(d_block_counts);
-    cudaFree(d_block_min_tv);
-    cudaFree(d_block_min_configs);
-    cudaFree(d_survivor_buf);
-    cudaFree(d_survivor_count);
-    free(h_c0_order);
-    free(h_prefix);
-    free(h_counts);
-    free(h_min_tvs);
-    free(h_min_cfgs);
-
-    return 0;
+    return run_single_level_impl<6>(S, n_half, m, c_target,
+        out_n_fp32_skipped, out_n_pruned_asym, out_n_pruned_test, out_n_survivors,
+        out_min_test_val, out_min_test_config,
+        out_survivor_configs, out_n_extracted, max_survivors);
 }
 
 
@@ -718,7 +301,7 @@ static int run_single_level_extract_streamed_impl(
 
     long long h_int_thresh[D - 1];
     for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * 4.0 * (double)n_half * (double)ell;
+        double x = thresh * (double)m * (double)m * (double)ell / (4.0 * (double)n_half);
         h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
     }
 
@@ -740,10 +323,7 @@ static int run_single_level_extract_streamed_impl(
     for (int i = 0; i < n_c0; i++) {
         int c0 = h_c0_order[i];
         long long R = (long long)(S - 2 * c0);
-        if (D == 4)
-            h_prefix[i + 1] = h_prefix[i] + (R + 1) * (R + 2) / 2;
-        else
-            h_prefix[i + 1] = h_prefix[i] + (R + 1) * (R + 2) * (R + 3) / 6;
+        h_prefix[i + 1] = h_prefix[i] + count_per_c0<D>(R);
     }
     long long total_work = h_prefix[n_c0];
 

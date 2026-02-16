@@ -54,7 +54,7 @@ def main():
 
     for n_half, m in [(2, 10), (2, 20), (2, 50), (3, 3), (3, 5)]:
         d = 2 * n_half
-        S = 4 * n_half * m
+        S = m  # S=m convention
         n_configs = count_compositions(d, S)
         corr = correction(m)
         print(f"\n  n={n_half}, m={m}: {n_configs:,} configs, "
@@ -74,7 +74,7 @@ def main():
 
     for n_half, m in [(2, 100), (2, 200)]:
         d = 2 * n_half
-        S = 4 * n_half * m
+        S = m  # S=m convention
         n_configs = count_compositions(d, S)
         print(f"  n={n_half}, m={m}: {n_configs:,} configs")
         if n_configs > 500_000_000:
@@ -87,7 +87,7 @@ def main():
     # n=3 with m=10
     n_half, m = 3, 10
     d = 2 * n_half
-    S = 4 * n_half * m
+    S = m  # S=m convention
     n_configs = count_compositions(d, S)
     print(f"\n  n={n_half}, m={m}: {n_configs:,} configs")
     if n_configs <= 500_000_000:

@@ -64,7 +64,7 @@ def _find_min_eff_d4(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
     conv_len = 2 * d - 1
     total_mass = float(S)
     n_c0 = len(c0_order)
-    m_sq = 1.0 / (inv_m * inv_m)
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
 
     thread_mins = np.full(n_c0, 1e30, dtype=np.float64)
     thread_cfg = np.zeros((n_c0, d), dtype=np.int32)
@@ -85,9 +85,9 @@ def _find_min_eff_d4(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
             norm_ell_d = 4.0 * n_half * d
             pair_left = float(c0 + c1)
             pair_right = float(r1)
-            if pair_left * pair_left * inv_m * inv_m / norm_ell_d > early_thresh:
+            if pair_left * pair_left * scale * scale / norm_ell_d > early_thresh:
                 continue
-            if pair_right * pair_right * inv_m * inv_m / norm_ell_d > early_thresh:
+            if pair_right * pair_right * scale * scale / norm_ell_d > early_thresh:
                 continue
 
             c2_max = r1 - c0
@@ -106,7 +106,7 @@ def _find_min_eff_d4(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
 
             norm_ell3 = 4.0 * n_half * 3
             r1_sq = float(r1) * float(r1)
-            ell3_cutoff_sq = r1_sq - early_thresh * m_sq * norm_ell3
+            ell3_cutoff_sq = r1_sq - early_thresh * norm_ell3 / (scale * scale)
             if ell3_cutoff_sq > 0.0:
                 c2_lo_ell3 = int(math.sqrt(ell3_cutoff_sq)) + 1
             else:
@@ -125,14 +125,14 @@ def _find_min_eff_d4(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
                     max_c = c1
                 if c2 > max_c:
                     max_c = c2
-                max_a = max_c * inv_m
+                max_a = max_c * scale
                 if max_a * max_a * inv_ell2 > early_thresh:
                     continue
 
-                a0 = c0 * inv_m
-                a1 = c1 * inv_m
-                a2 = c2 * inv_m
-                a3 = c3 * inv_m
+                a0 = c0 * scale
+                a1 = c1 * scale
+                a2 = c2 * scale
+                a3 = c3 * scale
                 conv[0] = a0 * a0
                 conv[1] = 2.0 * a0 * a1
                 conv[2] = a1 * a1 + 2.0 * a0 * a2
@@ -146,7 +146,7 @@ def _find_min_eff_d4(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
 
                 best = 0.0
                 done = False
-                for ell in range(d, 1, -1):
+                for ell in range(2, d + 1):
                     if done:
                         break
                     n_cv = ell - 1
@@ -191,7 +191,7 @@ def _find_min_eff_d6(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
     conv_len = 2 * d - 1
     total_mass = float(S)
     n_c0 = len(c0_order)
-    m_sq = 1.0 / (inv_m * inv_m)
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
 
     thread_mins = np.full(n_c0, 1e30, dtype=np.float64)
     thread_cfg = np.zeros((n_c0, d), dtype=np.int32)
@@ -213,9 +213,9 @@ def _find_min_eff_d6(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
                 norm_ell_d = 4.0 * n_half * d
                 left3 = float(c0 + c1 + c2)
                 right3 = float(r2)
-                if left3 * left3 * inv_m * inv_m / norm_ell_d > early_thresh:
+                if left3 * left3 * scale * scale / norm_ell_d > early_thresh:
                     continue
-                if right3 * right3 * inv_m * inv_m / norm_ell_d > early_thresh:
+                if right3 * right3 * scale * scale / norm_ell_d > early_thresh:
                     continue
 
                 # Asymmetry
@@ -255,16 +255,16 @@ def _find_min_eff_d6(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
                             max_c = c3
                         if c4 > max_c:
                             max_c = c4
-                        max_a_val = max_c * inv_m
+                        max_a_val = max_c * scale
                         if max_a_val * max_a_val * inv_ell2 > early_thresh:
                             continue
 
-                        a0 = c0 * inv_m
-                        a1 = c1 * inv_m
-                        a2 = c2 * inv_m
-                        a3 = c3 * inv_m
-                        a4 = c4 * inv_m
-                        a5 = c5 * inv_m
+                        a0 = c0 * scale
+                        a1 = c1 * scale
+                        a2 = c2 * scale
+                        a3 = c3 * scale
+                        a4 = c4 * scale
+                        a5 = c5 * scale
                         conv[0] = a0 * a0
                         conv[1] = 2.0 * a0 * a1
                         conv[2] = 2.0 * a0 * a2 + a1 * a1
@@ -283,7 +283,7 @@ def _find_min_eff_d6(c0_order, S, n_half, inv_m, margin, corr, init_min_eff):
                         best = 0.0
                         early_thresh = local_min + corr
                         done = False
-                        for ell in range(d, 1, -1):
+                        for ell in range(2, d + 1):
                             if done:
                                 break
                             n_cv = ell - 1
@@ -340,7 +340,8 @@ def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_
     total_mass = float(S)
     n_c0 = len(c0_order)
     half_d = d // 2
-    norm_d_inv = inv_m * inv_m / (4.0 * n_half * d)
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
+    norm_d_inv = scale * scale / (4.0 * n_half * d)
     inv_ell2 = 1.0 / (4.0 * n_half * 2)
 
     thread_mins = np.full(n_c0, 1e30, dtype=np.float64)
@@ -360,8 +361,8 @@ def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_
         if d == 2:
             c[1] = S - c0
             if c0 <= c[1]:
-                a0 = c0 * inv_m
-                a1 = c[1] * inv_m
+                a0 = c0 * scale
+                a1 = c[1] * scale
                 # conv: [a0^2, 2*a0*a1, a1^2], then prefix sum
                 conv[0] = a0 * a0
                 conv[1] = conv[0] + 2.0 * a0 * a1
@@ -434,7 +435,7 @@ def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_
                     for i in range(1, d):
                         if c[i] > max_c:
                             max_c = c[i]
-                    max_a = max_c * inv_m
+                    max_a = max_c * scale
                     if max_a * max_a * inv_ell2 > early_thresh:
                         c[pos] += 1
                         continue
@@ -460,10 +461,10 @@ def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_
                     for k in range(conv_len):
                         conv[k] = 0.0
                     for ii in range(d):
-                        ai = c[ii] * inv_m
+                        ai = c[ii] * scale
                         conv[2 * ii] += ai * ai
                         for jj in range(ii + 1, d):
-                            conv[ii + jj] += 2.0 * ai * (c[jj] * inv_m)
+                            conv[ii + jj] += 2.0 * ai * (c[jj] * scale)
                     # Prefix sum
                     for k in range(1, conv_len):
                         conv[k] += conv[k - 1]
@@ -472,7 +473,7 @@ def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_
                     best = 0.0
                     early_thresh = local_min + corr
                     done = False
-                    for ell in range(d, 1, -1):
+                    for ell in range(2, d + 1):
                         if done:
                             break
                         n_cv = ell - 1
@@ -543,7 +544,7 @@ def _find_min_eff_generic(c0_order, S, d, n_half, inv_m, margin, corr, init_min_
                     for i in range(pos + 1):
                         if c[i] > max_c:
                             max_c = c[i]
-                    max_a = max_c * inv_m
+                    max_a = max_c * scale
                     if max_a * max_a * inv_ell2 > early_thresh:
                         prune = True
 
@@ -591,7 +592,8 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
     n_c0 = len(c0_order)
     half_d = d // 2
     thresh = prune_target + fp_margin
-    norm_d_inv = inv_m * inv_m / (4.0 * n_half * d)
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
+    norm_d_inv = scale * scale / (4.0 * n_half * d)
     inv_ell2 = 1.0 / (4.0 * n_half * 2)
     # Asymmetry bound applies directly to c (not through discretization),
     # so compare against c_target, not prune_target.
@@ -620,8 +622,8 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
         if d == 2:
             c[1] = S - c0
             if c0 <= c[1]:
-                a0 = c0 * inv_m
-                a1 = c[1] * inv_m
+                a0 = c0 * scale
+                a1 = c[1] * scale
                 conv[0] = a0 * a0
                 conv[1] = conv[0] + 2.0 * a0 * a1
                 conv[2] = conv[1] + a1 * a1
@@ -681,7 +683,7 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     for i in range(1, d):
                         if c[i] > max_c:
                             max_c = c[i]
-                    max_a = max_c * inv_m
+                    max_a = max_c * scale
                     if max_a * max_a * inv_ell2 > thresh:
                         local_test += 1
                         c[pos] += 1
@@ -707,16 +709,16 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     for k in range(conv_len):
                         conv[k] = 0.0
                     for ii in range(d):
-                        ai = c[ii] * inv_m
+                        ai = c[ii] * scale
                         conv[2 * ii] += ai * ai
                         for jj in range(ii + 1, d):
-                            conv[ii + jj] += 2.0 * ai * (c[jj] * inv_m)
+                            conv[ii + jj] += 2.0 * ai * (c[jj] * scale)
                     for k in range(1, conv_len):
                         conv[k] += conv[k - 1]
 
                     best = 0.0
                     done = False
-                    for ell in range(d, 1, -1):
+                    for ell in range(2, d + 1):
                         if done:
                             break
                         n_cv = ell - 1
@@ -779,7 +781,7 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     for i in range(pos + 1):
                         if c[i] > max_c:
                             max_c = c[i]
-                    max_a = max_c * inv_m
+                    max_a = max_c * scale
                     if max_a * max_a * inv_ell2 > thresh:
                         prune = True
 
@@ -832,7 +834,7 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
     total_mass = float(S)
     n_c0 = len(c0_order)
     thresh = prune_target + fp_margin
-    m_sq = 1.0 / (inv_m * inv_m)
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
     # Asymmetry bound applies directly to c (not through discretization),
     # so compare against c_target, not prune_target.
     c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
@@ -863,10 +865,10 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
             norm_ell_d = 4.0 * n_half * d
             pair_left = float(c0 + c1)
             pair_right = float(r1)
-            if pair_left * pair_left * inv_m * inv_m / norm_ell_d > thresh:
+            if pair_left * pair_left * scale * scale / norm_ell_d > thresh:
                 local_test += c2_max + 1
                 continue
-            if pair_right * pair_right * inv_m * inv_m / norm_ell_d > thresh:
+            if pair_right * pair_right * scale * scale / norm_ell_d > thresh:
                 local_test += c2_max + 1
                 continue
 
@@ -887,7 +889,7 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
             # M4: ell=3 right-window c2 lower bound
             norm_ell3 = 4.0 * n_half * 3
             r1_sq = float(r1) * float(r1)
-            ell3_cutoff_sq = r1_sq - thresh * m_sq * norm_ell3
+            ell3_cutoff_sq = r1_sq - thresh * norm_ell3 / (scale * scale)
             if ell3_cutoff_sq > 0.0:
                 c2_lo_ell3 = int(math.sqrt(ell3_cutoff_sq)) + 1
             else:
@@ -911,15 +913,15 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                     max_c = c1
                 if c2 > max_c:
                     max_c = c2
-                max_a = max_c * inv_m
+                max_a = max_c * scale
                 if max_a * max_a * inv_ell2 > thresh:
                     local_test += 1
                     continue
 
-                a0 = c0 * inv_m
-                a1 = c1 * inv_m
-                a2 = c2 * inv_m
-                a3 = c3 * inv_m
+                a0 = c0 * scale
+                a1 = c1 * scale
+                a2 = c2 * scale
+                a3 = c3 * scale
                 conv[0] = a0 * a0
                 conv[1] = 2.0 * a0 * a1
                 conv[2] = a1 * a1 + 2.0 * a0 * a2
@@ -932,7 +934,7 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
 
                 best = 0.0
                 done = False
-                for ell in range(d, 1, -1):
+                for ell in range(2, d + 1):
                     if done:
                         break
                     n_cv = ell - 1
@@ -982,7 +984,7 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
     total_mass = float(S)
     n_c0 = len(c0_order)
     thresh = prune_target + fp_margin
-    m_sq = 1.0 / (inv_m * inv_m)
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
     # Asymmetry bound applies directly to c (not through discretization),
     # so compare against c_target, not prune_target.
     c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
@@ -1013,10 +1015,10 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                 norm_ell_d = 4.0 * n_half * d
                 left3 = float(c0 + c1 + c2)
                 right3 = float(r2)
-                if left3 * left3 * inv_m * inv_m / norm_ell_d > thresh:
+                if left3 * left3 * scale * scale / norm_ell_d > thresh:
                     local_test += 1
                     continue
-                if right3 * right3 * inv_m * inv_m / norm_ell_d > thresh:
+                if right3 * right3 * scale * scale / norm_ell_d > thresh:
                     local_test += 1
                     continue
 
@@ -1057,17 +1059,17 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                             max_c = c3
                         if c4 > max_c:
                             max_c = c4
-                        max_a_val = max_c * inv_m
+                        max_a_val = max_c * scale
                         if max_a_val * max_a_val * inv_ell2 > thresh:
                             local_test += 1
                             continue
 
-                        a0 = c0 * inv_m
-                        a1 = c1 * inv_m
-                        a2 = c2 * inv_m
-                        a3 = c3 * inv_m
-                        a4 = c4 * inv_m
-                        a5 = c5 * inv_m
+                        a0 = c0 * scale
+                        a1 = c1 * scale
+                        a2 = c2 * scale
+                        a3 = c3 * scale
+                        a4 = c4 * scale
+                        a5 = c5 * scale
                         conv[0] = a0 * a0
                         conv[1] = 2.0 * a0 * a1
                         conv[2] = 2.0 * a0 * a2 + a1 * a1
@@ -1084,7 +1086,7 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
 
                         best = 0.0
                         done = False
-                        for ell in range(d, 1, -1):
+                        for ell in range(2, d + 1):
                             if done:
                                 break
                             n_cv = ell - 1
@@ -1140,7 +1142,7 @@ def run_single_level(n_half, m, c_target, batch_size=100000, verbose=True):
                     min_test_config, stats
     """
     d = 2 * n_half
-    S = 4 * n_half * m
+    S = m  # S=m convention: integer coords sum to m (not 4nm)
     n_total = count_compositions(d, S)
     corr = correction(m)
     prune_target = c_target + corr
@@ -1204,7 +1206,7 @@ def run_single_level(n_half, m, c_target, batch_size=100000, verbose=True):
         else:
             print(f"  NOT proven at target {c_target:.4f}")
             if min_test_config is not None:
-                a_cfg = min_test_config.astype(np.float64) / m
+                a_cfg = min_test_config.astype(np.float64) * (4 * n_half) / m
                 print(f"  Min test value: {min_test_val:.6f}")
                 print(f"  Min config (a-coords): {a_cfg}")
                 print(f"  Min config (mass frac): {a_cfg / (4*n_half)}")
@@ -1281,7 +1283,7 @@ def find_best_bound_direct(n_half, m, batch_size=50000, verbose=True):
     float : best provable lower bound on C_{1a}.
     """
     d = 2 * n_half
-    S = 4 * n_half * m
+    S = m  # S=m convention: integer coords sum to m (not 4nm)
     n_total = count_compositions(d, S)
     corr = correction(m)
     margin = 1.0 / (4.0 * m)
@@ -1323,7 +1325,7 @@ def find_best_bound_direct(n_half, m, batch_size=50000, verbose=True):
         print(f"  Completed in {elapsed:.1f}s")
         print(f"  >>> PROVEN: C_{{1a}} >= {min_eff:.6f} <<<")
         if min_config is not None:
-            a_cfg = min_config.astype(np.float64) / m
+            a_cfg = min_config.astype(np.float64) * (4 * n_half) / m
             print(f"  Minimizer (a-coords): {a_cfg}")
 
     return min_eff

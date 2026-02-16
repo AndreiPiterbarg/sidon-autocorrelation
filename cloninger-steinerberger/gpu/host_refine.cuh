@@ -30,10 +30,23 @@
 /* ================================================================
  * Helper: compute total refinement count for a parent
  * ================================================================ */
-static long long compute_refinement_count(const int* parent_B, int d_parent) {
+/* With S=m convention: c[2i]+c[2i+1]=B[i], split count = B[i]+1.
+ * x_cap limits each sub-bin to <= x_cap (ell=2 energy cap).
+ * If x_cap < 0, no cap is applied. */
+static long long compute_refinement_count(const int* parent_B, int d_parent, int x_cap) {
     long long N = 1;
     for (int i = 0; i < d_parent; i++) {
-        N *= (2 * (long long)parent_B[i] + 1);
+        int eff_count;
+        if (x_cap >= 0 && parent_B[i] > 0) {
+            /* c_even in [max(0, B[i]-x_cap), min(B[i], x_cap)] */
+            int lo = (parent_B[i] > x_cap) ? (parent_B[i] - x_cap) : 0;
+            int hi = (parent_B[i] < x_cap) ? parent_B[i] : x_cap;
+            eff_count = hi - lo + 1;
+            if (eff_count <= 0) return 0;  /* parent fully prunable */
+        } else {
+            eff_count = parent_B[i] + 1;
+        }
+        N *= (long long)eff_count;
         if (N < 0) return -1;  /* overflow */
     }
     return N;
@@ -93,10 +106,12 @@ static int refine_parents_impl(
         return -1;
     }
 
-    /* Compute child-level parameters */
+    /* Compute child-level parameters.
+     * With S=m convention, total integer mass is always m for all levels.
+     * S_child = S_parent = m (mass stays constant; n_half doubles). */
     int S_parent = 0;
     for (int i = 0; i < d_parent; i++) S_parent += parent_configs[i]; /* use first parent to get S */
-    int S_child = 2 * S_parent;
+    int S_child = S_parent;  /* S=m stays constant across refinement levels */
     int n_half_parent = d_parent / 2;
     int n_half_child = 2 * n_half_parent;
 
@@ -110,10 +125,19 @@ static int refine_parents_impl(
     float margin_f = (float)margin;
     float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
 
-    /* Precompute per-ell integer thresholds for child level */
+    /* Single-bin energy cap: any sub-bin c_i > x_cap is guaranteed to be
+     * pruned by the ell=2 max-element check. Skip generating such children.
+     * x_cap = floor(m * sqrt(thresh / D_CHILD)), derived from:
+     *   (c_i * 4n/m)^2 / (4*n*2) > thresh  =>  c_i > m*sqrt(thresh/d_child) */
+    int x_cap = (int)floor((double)m * sqrt(thresh / (double)D_CHILD));
+    if (x_cap > m) x_cap = m;
+    if (x_cap < 0) x_cap = 0;
+
+    /* Precompute per-ell integer thresholds for child level.
+     * With S=m: int_thresh = thresh * m^2 * ell / (4 * n_half_child). */
     long long h_int_thresh[D_CHILD - 1];
     for (int ell = 2; ell <= D_CHILD; ell++) {
-        double x = thresh * (double)m * (double)m * 4.0 * (double)n_half_child * (double)ell;
+        double x = thresh * (double)m * (double)m * (double)ell / (4.0 * (double)n_half_child);
         h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
     }
 
@@ -121,7 +145,7 @@ static int refine_parents_impl(
     long long* ref_counts = (long long*)malloc(num_parents * sizeof(long long));
     int* parent_order = (int*)malloc(num_parents * sizeof(int));
     for (int p = 0; p < num_parents; p++) {
-        ref_counts[p] = compute_refinement_count(parent_configs + p * d_parent, d_parent);
+        ref_counts[p] = compute_refinement_count(parent_configs + p * d_parent, d_parent, x_cap);
         parent_order[p] = p;
     }
     std::sort(parent_order, parent_order + num_parents,
@@ -236,9 +260,13 @@ static int refine_parents_impl(
                 continue;
             }
 
+            /* With S=m + energy cap: effective split count per component */
             int h_splits[MAX_D_CHILD / 2];
-            for (int i = 0; i < d_parent; i++)
-                h_splits[i] = 2 * pB[i] + 1;
+            for (int i = 0; i < d_parent; i++) {
+                int lo = (pB[i] > x_cap) ? (pB[i] - x_cap) : 0;
+                int hi = (pB[i] < x_cap) ? pB[i] : x_cap;
+                h_splits[i] = hi - lo + 1;
+            }
 
             CUDA_CHECK(cudaMemcpy(d_parent_B, pB,
                 d_parent * sizeof(int), cudaMemcpyHostToDevice));
@@ -264,7 +292,8 @@ static int refine_parents_impl(
                     d_block_counts, d_block_min_tv, d_block_min_configs,
                     do_extract ? d_survivor_buf : NULL,
                     do_extract ? d_survivor_count : NULL,
-                    do_extract ? max_survivors : 0);
+                    do_extract ? max_survivors : 0,
+                    x_cap);
 
                 CUDA_CHECK(cudaGetLastError());
                 CUDA_CHECK(cudaDeviceSynchronize());
@@ -350,7 +379,8 @@ static int refine_parents_impl(
                 d_block_counts, d_block_min_tv, d_block_min_configs,
                 do_extract ? d_survivor_buf : NULL,
                 do_extract ? d_survivor_count : NULL,
-                do_extract ? max_survivors : 0);
+                do_extract ? max_survivors : 0,
+                x_cap);
 
             CUDA_CHECK(cudaGetLastError());
             CUDA_CHECK(cudaDeviceSynchronize());

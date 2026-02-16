@@ -1,0 +1,98 @@
+================================================================================
+LEVEL 1 REFINEMENT: QUICK REFERENCE NUMBERS
+================================================================================
+
+QUESTION 1: Min Config Refinement Factor
+────────────────────────────────────────────────────────────────────────────
+Config (raw integers):           [151, 42, 0, 115, 84, 208]
+Refinement factors (2*b_i + 1):  [303, 85, 1, 231, 169, 417]
+Product:                         419,272,418,565 (≈ 4.19 × 10¹¹)
+
+QUESTION 2: Typical Refinement Factor (S=600, d=6 bins)
+────────────────────────────────────────────────────────────────────────────
+Minimum:                         5.61 × 10⁹
+25th percentile:                 1.40 × 10¹²
+Median:                          5.04 × 10¹²
+Geometric Mean (TYPICAL):        3.77 × 10¹² ← USE THIS FOR SCALING
+75th percentile:                 1.26 × 10¹³
+Maximum:                         5.69 × 10¹³
+
+QUESTION 3: Total Level 1 Child Configs
+────────────────────────────────────────────────────────────────────────────
+Number of Level 0 parents:       1,553,783,953 (1.55 × 10⁹)
+Typical refinement per parent:   3.77 × 10¹² (geometric mean)
+
+Total Level 1 children:
+  Typical case:                  5.85 × 10²¹ (5.85 sextillion)
+  Best case (min configs):       6.51 × 10²⁰
+  Worst case (uniform):          1.03 × 10²³
+
+QUESTION 4: Runtime at 91B Configs/Sec
+────────────────────────────────────────────────────────────────────────────
+Kernel throughput:               91 billion configs/sec
+
+To process 5.85 × 10²¹ children:
+  Total seconds:                 6.43 × 10¹⁰
+  Total hours:                   17,860,761 hours
+  Total days:                    744,198 days
+  Total years:                   2,038 YEARS
+
+Cost at $1.49/hour (A100):       $26,612,533
+
+QUESTION 5: Disk Storage Needed
+────────────────────────────────────────────────────────────────────────────
+Per-config size:                 48 bytes (d=12)
+
+Worst case (all 5.85×10²¹ children survive):
+  Bytes:                         2.81 × 10²³ bytes
+  GB:                            261 trillion GB
+  TB:                            255 million TB
+  Petabytes:                     255,000 PB
+  Exabytes:                      255 EB
+
+Realistic case (10% survival):
+  Surviving children:            5.85 × 10²⁰
+  Bytes:                         2.81 × 10²² bytes
+  Petabytes:                     25,500 PB
+  Exabytes:                      25.5 EB
+
+For context:
+  Level 0 output:                35.6 GB
+  Typical cloud pod storage:     500 GB
+
+================================================================================
+KEY INSIGHT
+================================================================================
+
+Level 1 refinement generates 5.85 sextillion child configs from 1.55 billion
+parents. Even with a 91 billion config/sec kernel, processing would take
+over 2,000 years and cost $26.6 million—completely infeasible for a research
+project.
+
+The fundamental issue: each parent b_i ∈ {0,...,100} generates (2b_i+1)
+distinct children, creating a multiplicative explosion across 6 (→12) bins.
+
+================================================================================
+MITIGATION RANKED BY FEASIBILITY
+================================================================================
+
+1. MORE AGGRESSIVE PRUNING AT LEVEL 0
+   → If 99% of parents ruled out at d=6:
+     Runtime: 27 days, Cost: ~$40K
+   → Requires: Better pruning heuristics or higher c_target
+
+2. REDUCE PARAMETERS
+   → Use m=25 or n=2 for Level 1 refinement
+   → Runtime: ~100x faster but weaker proof
+
+3. INCREASE KERNEL THROUGHPUT
+   → Requires: 10,000+ B configs/sec (110x improvement)
+   → Cost: Significant kernel optimization investment
+   → Even 110x speedup only brings runtime to 18.5 years
+
+4. INCREASE c_target
+   → Current: c_target = 1.20
+   → Trade: higher target → weaker lower bound but more pruning
+   → Paired with (1): Most practical approach
+
+================================================================================

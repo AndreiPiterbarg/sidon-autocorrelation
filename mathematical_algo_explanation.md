@@ -104,10 +104,10 @@
   splitting: each bin $I_j$ is split into two sub-bins, doubling $n$ to $2n$. This produces child vectors 
   in $B_{2n, m}$.
 
-  Refinement details: Each parent component $b_i$ (which is a multiple of $1/m$) is split into two        
-  sub-components $c_{2i}$ and $c_{2i+1}$ that sum to $b_i$, with both being multiples of $1/m$. The number   of ways to split $b_i$ is $(1 + m \cdot b_i)$.
+  Refinement details: Each parent component $b_i$ (which is a multiple of $1/m$) is split into two
+  sub-components $c_{2i}$ and $c_{2i+1}$ that sum to $2b_i$, with both being multiples of $1/m$. The factor   of 2 arises because the bin-average normalization $4n$ doubles to $8n$ when $n \to 2n$, so the child bin   averages satisfy $c_{2i} + c_{2i+1} = 2b_i$. The number of ways to split is $(1 + 2m \cdot b_i)$.
 
-  Total refinements per parent: $N = \prod_{i=1}^{2n}(1 + m \cdot b_i)$
+  Total refinements per parent: $N = \prod_{i=1}^{2n}(1 + 2m \cdot b_i)$
 
   Step 4 — Test refinements
 
@@ -216,7 +216,7 @@
   ├──────────────────────────┼─────────────────────────────────────────┼───────────────────────┤
   │ Parent grid $B_{n,m}$    │ $\binom{4nm + 2n - 1}{2n - 1}$ elements │ Exponential in $n$    │
   ├──────────────────────────┼─────────────────────────────────────────┼───────────────────────┤
-  │ Refinements per parent   │ $N = \prod_{i=1}^{2n}(1 + m \cdot b_i)$ │ Can be huge           │
+  │ Refinements per parent   │ $N = \prod_{i=1}^{2n}(1 + 2m \cdot b_i)$ │ Can be huge           │
   ├──────────────────────────┼─────────────────────────────────────────┼───────────────────────┤
   │ Constraint matrix $C_k$  │ $(2n)^2 \times (4n - k + 1)$            │ One per window length │
   ├──────────────────────────┼─────────────────────────────────────────┼───────────────────────┤
@@ -266,7 +266,7 @@
           next_survivors = []
           for b in survivors:
               # Generate all N refinements of b
-              refinements = generate_refinements(b, m)  # N = prod(1 + m*b_i)
+              refinements = generate_refinements(b, m)  # N = prod(1 + 2m*b_i)
 
               all_ruled_out = true
               for c_gamma in refinements:

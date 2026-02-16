@@ -8,8 +8,8 @@
  *   - gpu_find_best_bound_direct()  -> dispatches to D=4 or D=6
  *   - gpu_run_single_level()        -> dispatches to D=4 or D=6
  *
- * Depends on: host_find_min.cuh (find_best_bound_direct_d4/d6)
- *             host_prove.cuh (run_single_level_d4/d6)
+ * Depends on: host_find_min.cuh (find_best_bound_direct_d4/d6 wrappers)
+ *             host_prove.cuh (run_single_level_d4/d6 wrappers)
  */
 
 #ifdef _WIN32

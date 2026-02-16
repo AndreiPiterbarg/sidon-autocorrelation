@@ -35,7 +35,7 @@ def asymmetry_prune_mask(batch_int, n_half, m, c_target):
     Returns True for configs that NEED test-value checking.
     """
     d = 2 * n_half
-    total = float(4 * n_half * m)
+    total = float(m)  # S=m convention: integer coords sum to m
     threshold = asymmetry_threshold(c_target)
 
     # Discretization margin: continuous left_frac can differ from discrete

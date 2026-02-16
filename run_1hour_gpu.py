@@ -43,7 +43,7 @@ def run_config(n_half, m, results, deadline):
     Returns the bound, or None if skipped due to time.
     """
     d = 2 * n_half
-    S = 4 * n_half * m
+    S = m  # S=m convention
     n_configs = count_compositions(d, S)
     corr = correction(m)
     time_left = deadline - time.time()

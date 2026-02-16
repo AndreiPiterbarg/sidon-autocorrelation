@@ -11,7 +11,6 @@
  * Module layout:
  *   device_helpers.cuh   - Error checking, atomic ops, warp shuffles
  *   phase1_kernels.cuh   - Fused kernels: find_min + prove_target (templated on D)
- *   phase2_kernels.cuh   - (empty — kernels fused into phase1_kernels.cuh)
  *   host_find_min.cuh    - Host pipeline for find_best_bound_direct
  *   host_prove.cuh       - Host pipeline for run_single_level
  *   dispatch.cuh         - extern "C" dispatch functions for Python ctypes
@@ -19,7 +18,6 @@
 
 #include "device_helpers.cuh"
 #include "phase1_kernels.cuh"
-#include "phase2_kernels.cuh"
 #include "host_find_min.cuh"
 #include "host_prove.cuh"
 #include "refinement_kernel.cuh"

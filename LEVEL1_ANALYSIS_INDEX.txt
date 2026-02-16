@@ -1,0 +1,167 @@
+================================================================================
+LEVEL 1 REFINEMENT ANALYSIS — COMPLETE DOCUMENTATION INDEX
+Generated: 2026-02-16
+================================================================================
+
+This folder contains a complete computational cost analysis for Level 1
+refinement of the Sidon autocorrelation proof.
+
+START HERE:
+────────────────────────────────────────────────────────────────────────────
+
+  1. EXECUTIVE_BRIEF.txt (6.5K) ⭐ START HERE
+     One-page summary for decision makers. All key numbers and three
+     mitigation options ranked by feasibility.
+
+DETAILED ANALYSIS:
+────────────────────────────────────────────────────────────────────────────
+
+  2. LEVEL1_REFINEMENT_ANALYSIS.md (11K) — COMPREHENSIVE
+     Full technical writeup with:
+     • Detailed answers to all 5 questions
+     • Probability distributions and sampling methodology
+     • Why Level 1 explodes (discretization feedback loop)
+     • All 4 mitigation strategies ranked and quantified
+     • Recommendation for "aggressive pruning + kernel optimization"
+
+  3. cost_analysis.md (6.1K) — ALTERNATIVE PERSPECTIVE
+     Focused explanation of why Level 1 is infeasible:
+     • Breakdown of the combinatorial explosion
+     • Comparison of three scenarios (best/typical/worst)
+     • Mitigation strategies with detailed calculations
+     • Practical next steps
+
+QUICK REFERENCE:
+────────────────────────────────────────────────────────────────────────────
+
+  4. LEVEL1_COST_SUMMARY.txt (4.8K) — PRINT THIS
+     Summary table format of all key numbers.
+     Best for printing and sharing in meetings.
+
+  5. LEVEL1_NUMBERS.csv (2.3K)
+     All numbers in CSV format for spreadsheet import/analysis.
+     Includes: Q1-Q5 answers, units, scientific notation, notes.
+
+REPRODUCIBLE CODE:
+────────────────────────────────────────────────────────────────────────────
+
+  6. cost_estimate.py (7.6K) — RUNNABLE
+     Python script that reproduces all calculations:
+     • Monte Carlo sampling of 1,000 refinement distributions
+     • Statistical summaries (min, max, percentiles, geometric mean)
+     • Total child count calculations
+     • Runtime and cost estimates
+     • Storage calculations
+     Run: python cost_estimate.py
+
+================================================================================
+
+KEY NUMBERS AT A GLANCE:
+
+Question 1: Min config [151,42,0,115,84,208] refinement factor
+  → 419,272,418,565 (≈ 4.19 × 10¹¹)
+
+Question 2: Typical survivor refinement factor
+  → Geometric mean: 3,765,764,946,378 (≈ 3.77 × 10¹²)
+  → Median:        5,040,262,624,995 (≈ 5.04 × 10¹²)
+
+Question 3: Total Level 1 children from 1.55B parents
+  → Typical: 5.85 × 10²¹ (5.85 sextillion)
+  → Best:    6.51 × 10²⁰
+  → Worst:   1.03 × 10²³
+
+Question 4: Runtime at 91B configs/sec
+  → 744,198 days ≈ 2,038 YEARS
+  → Cost: $26,612,533 at $1.49/hr A100
+
+Question 5: Disk storage
+  → Worst case (100%): 255 exabytes
+  → Realistic (10%):   25.5 exabytes
+
+VERDICT: INFEASIBLE ✗
+
+================================================================================
+
+RECOMMENDED PATH FORWARD:
+
+1. IMMEDIATE (This week):
+   • Test Level 0 with c_target = 1.24 (measure pruning)
+   • Goal: Eliminate 99% of parents (15.5M survivors)
+   • If achieved: Level 1 becomes feasible (27 days, $40K)
+
+2. SHORT TERM (This month):
+   • Profile kernel for 1,000 B/sec optimization potential
+   • Prototype n=2 Level 1 refinement
+   • Decide: pruning vs. parameters vs. accept weaker proof
+
+3. DECISION POINT:
+   • 99% pruning achieved → Proceed with Level 1
+   • Kernel optimization possible → Combined approach
+   • Neither → Switch to n=2 or increase c_target further
+
+================================================================================
+
+WHY THIS HAPPENED:
+
+The Cloninger-Steinerberger algorithm doubles spatial bins at each refinement
+level. With d=6→12 and m=50, each parent b_i generates (2b_i+1) children.
+Product across 6 bins: ~201⁶ ≈ 10¹⁵ theoretical maximum, but applied to
+1.55B parents yields 5.85×10²¹ actual configurations.
+
+This is not a bug. It's fundamental to the discretization strategy.
+The algorithm is mathematically correct; the problem is computational scale.
+
+================================================================================
+
+FILES FOR DIFFERENT AUDIENCES:
+
+For decision makers:
+  → EXECUTIVE_BRIEF.txt
+
+For mathematicians/researchers:
+  → LEVEL1_REFINEMENT_ANALYSIS.md
+  → cost_analysis.md
+
+For engineers/implementers:
+  → cost_estimate.py
+  → LEVEL1_NUMBERS.csv
+
+For presentations:
+  → LEVEL1_COST_SUMMARY.txt (print this)
+
+================================================================================
+
+REPRODUCIBILITY:
+
+All calculations are documented and reproducible:
+  • Python script included (cost_estimate.py)
+  • Random seed fixed (42) for deterministic sampling
+  • 1,000 samples from Dirichlet distribution
+  • Geometric mean used for typical case (standard for multiplicative data)
+  • A100 throughput: 91B configs/sec (empirically observed)
+  • A100 cost: $1.49/hour (RunPod current pricing)
+
+Run `python cost_estimate.py` to regenerate all numbers.
+
+================================================================================
+
+QUESTIONS ANSWERED:
+
+Q1: For the min config, what is prod(2*b_i + 1)?
+A1: 419,272,418,565 (≈ 4.19 × 10¹¹)
+
+Q2: For a typical survivor, what's a reasonable average prod(2*b_i + 1)?
+A2: 3.77 × 10¹² (geometric mean from 1,000 simulations)
+
+Q3: If there are 1.55B parents with this average, what's the total?
+A3: 5.85 × 10²¹ configurations
+
+Q4: At 91B configs/sec, how long would this take?
+A4: 744,198 days ≈ 2,038 years ($26.6 million cost)
+
+Q5: How much disk for Level 1 survivors (at d=12, 48 bytes each)?
+A5: 25.5 exabytes (10% survival) to 255 exabytes (100% survival)
+
+All numbers documented in these six files with full reproducible code.
+
+================================================================================

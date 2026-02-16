@@ -21,6 +21,7 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
     conv_len = 2 * d - 1
     result = np.empty(B, dtype=np.float64)
     do_early = early_stop > 0.0
+    scale = 4.0 * n_half * inv_m   # c -> a conversion factor (4n/m)
     inv_ell2 = 1.0 / (4.0 * n_half * 2)
     for b in numba.prange(B):
         # Quick check: if max element squared alone exceeds threshold
@@ -28,7 +29,7 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
         if do_early:
             max_a = 0.0
             for i in range(d):
-                ai = batch_int[b, i] * inv_m
+                ai = batch_int[b, i] * scale
                 if ai > max_a:
                     max_a = ai
             if max_a * max_a * inv_ell2 > early_stop:
@@ -38,10 +39,10 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
         # Autoconvolution with symmetry: conv[k] = sum_{i+j=k} a_i*a_j
         conv = np.empty(conv_len, dtype=np.float64)
         if d == 4:
-            a0 = batch_int[b, 0] * inv_m
-            a1 = batch_int[b, 1] * inv_m
-            a2 = batch_int[b, 2] * inv_m
-            a3 = batch_int[b, 3] * inv_m
+            a0 = batch_int[b, 0] * scale
+            a1 = batch_int[b, 1] * scale
+            a2 = batch_int[b, 2] * scale
+            a3 = batch_int[b, 3] * scale
             conv[0] = a0 * a0
             conv[1] = 2.0 * a0 * a1
             conv[2] = a1 * a1 + 2.0 * a0 * a2
@@ -50,12 +51,12 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
             conv[5] = 2.0 * a2 * a3
             conv[6] = a3 * a3
         elif d == 6:
-            a0 = batch_int[b, 0] * inv_m
-            a1 = batch_int[b, 1] * inv_m
-            a2 = batch_int[b, 2] * inv_m
-            a3 = batch_int[b, 3] * inv_m
-            a4 = batch_int[b, 4] * inv_m
-            a5 = batch_int[b, 5] * inv_m
+            a0 = batch_int[b, 0] * scale
+            a1 = batch_int[b, 1] * scale
+            a2 = batch_int[b, 2] * scale
+            a3 = batch_int[b, 3] * scale
+            a4 = batch_int[b, 4] * scale
+            a5 = batch_int[b, 5] * scale
             conv[0] = a0 * a0
             conv[1] = 2.0 * a0 * a1
             conv[2] = 2.0 * a0 * a2 + a1 * a1
@@ -71,9 +72,9 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
             for k in range(conv_len):
                 conv[k] = 0.0
             for i in range(d):
-                ai = batch_int[b, i] * inv_m
+                ai = batch_int[b, i] * scale
                 for j in range(d):
-                    conv[i + j] += ai * batch_int[b, j] * inv_m
+                    conv[i + j] += ai * batch_int[b, j] * scale
         # In-place prefix sums
         for k in range(1, conv_len):
             conv[k] += conv[k - 1]
@@ -81,7 +82,7 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
         # pre-filtered configs tend to be spread out, favoring large window)
         best = 0.0
         done = False
-        for ell in range(d, 1, -1):
+        for ell in range(2, d + 1):
             if done:
                 break
             n_cv = ell - 1
@@ -107,7 +108,7 @@ def compute_test_values_batch(batch_int, n_half, m, prune_target=0.0):
     Parameters
     ----------
     batch_int : (B, d) int32 array
-        Integer mass coordinates (c_i = m * a_i, sum = 4*n_half*m).
+        Integer mass coordinates (c_i = m * w_i, sum = m, S=m convention).
     n_half : int
         Paper's n.
     m : int
