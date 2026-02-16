@@ -44,8 +44,8 @@ def create_pod(name="sidon-gpu"):
         gpu_type_id=GPU_TYPE,
         cloud_type=CLOUD_TYPE,
         gpu_count=1,
-        volume_in_gb=75,
-        container_disk_in_gb=50,
+        volume_in_gb=200,
+        container_disk_in_gb=100,
         env={"PUBLIC_KEY": pub_key},
         ports="22/tcp",
     )

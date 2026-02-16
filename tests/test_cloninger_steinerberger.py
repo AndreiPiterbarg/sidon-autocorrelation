@@ -179,10 +179,8 @@ class TestAsymmetryPruning(unittest.TestCase):
         """Config with left_frac > 0.8 should be pruned (not need checking)."""
         n_half = 2
         m = 10
-        # a = (5, 5, 0.5, 0.5) -> left_frac = (5+5)/8 = 1.25 > 0.8
-        # In int coords: (50, 50, 5, 5), sum = 110... wait, sum should be 80
-        # n=2, m=10: S = 80. Left = bins 0,1.
-        configs = np.array([[50, 30, 0, 0]], dtype=np.int32)  # left = 80/80 = 1.0
+        # S=m=10: left=9/10=0.9 > safe_threshold=0.825
+        configs = np.array([[5, 4, 1, 0]], dtype=np.int32)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertFalse(mask[0])  # Does NOT need checking (covered by asymmetry)
 
@@ -190,7 +188,8 @@ class TestAsymmetryPruning(unittest.TestCase):
         """Uniform config should need checking."""
         n_half = 2
         m = 10
-        configs = np.array([[20, 20, 20, 20]], dtype=np.int32)
+        # S=m=10: left=5/10=0.5
+        configs = np.array([[3, 2, 3, 2]], dtype=np.int32)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertTrue(mask[0])  # Needs checking
 
@@ -198,7 +197,8 @@ class TestAsymmetryPruning(unittest.TestCase):
         """Config with right_frac > 0.8 should be pruned."""
         n_half = 2
         m = 10
-        configs = np.array([[0, 0, 30, 50]], dtype=np.int32)
+        # S=m=10: left=1/10=0.1, right_frac=0.9
+        configs = np.array([[0, 1, 4, 5]], dtype=np.int32)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertFalse(mask[0])
 
@@ -212,9 +212,9 @@ class TestAsymmetryPruning(unittest.TestCase):
         """
         n_half = 2
         m = 10
-        # S = 80. left = 0.8 * 80 = 64. Config: (32, 32, 8, 8)
-        configs = np.array([[32, 32, 8, 8]], dtype=np.int32)
-        left_frac = configs[0, :n_half].sum() / (4 * n_half * m)
+        # S=m=10: left=8/10=0.8. Config: (4, 4, 1, 1)
+        configs = np.array([[4, 4, 1, 1]], dtype=np.int32)
+        left_frac = configs[0, :n_half].sum() / m
         self.assertAlmostEqual(left_frac, 0.8)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertTrue(mask[0])  # Needs checking (margin zone)
@@ -223,9 +223,9 @@ class TestAsymmetryPruning(unittest.TestCase):
         """Config well beyond safe_threshold should be pruned."""
         n_half = 2
         m = 10
-        # S = 80. safe_threshold = 0.825. left_frac = 70/80 = 0.875 > 0.825.
-        configs = np.array([[35, 35, 5, 5]], dtype=np.int32)
-        left_frac = configs[0, :n_half].sum() / (4 * n_half * m)
+        # S=m=10: safe_threshold = 0.825. left_frac = 9/10 = 0.9 > 0.825.
+        configs = np.array([[5, 4, 1, 0]], dtype=np.int32)
+        left_frac = configs[0, :n_half].sum() / m
         self.assertGreater(left_frac, 0.825)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertFalse(mask[0])  # Safely pruned

@@ -1,8 +1,8 @@
 """Heavy benchmarks at production scales where optimization matters.
 
-Two distinct bottleneck profiles at realistic parameter ranges:
-  d=4 large-m:  n=2, m=400  --  5.5B configs.  Bottleneck: enumeration breadth.
-  d=6 higher-d: n=3, m=16   --  2.3B configs.  Bottleneck: d^2 conv inner loop.
+S=m convention: integer coords sum to m (not 4nm).
+  d=4 large-m:  n=2, m=400  --  10.8M configs.
+  d=6 higher-d: n=3, m=16   --  20K configs.
 """
 import sys, os
 import unittest
@@ -22,13 +22,13 @@ from core import (
 
 class TestHeavy(unittest.TestCase):
 
-    # -- d=4 production scale (n=2, m=400, 5.5B configs) --
+    # -- d=4 production scale (n=2, m=400) --
 
     def test_run_single_level_n2_m400(self):
-        """n=2, m=400: 5.5B configs, target=0.9 should be proven."""
+        """n=2, m=400: S=m=400 -> C(403,3) = 10,827,401 configs."""
         n_half, m, target = 2, 400, 0.9
-        n_total = count_compositions(2 * n_half, 4 * n_half * m)
-        self.assertEqual(n_total, 5_471_579_201)
+        n_total = count_compositions(2 * n_half, m)
+        self.assertEqual(n_total, 10_827_401)
         result = run_single_level(n_half, m, target,
                                   batch_size=100000, verbose=False)
         self.assertTrue(result['proven'])
@@ -40,13 +40,13 @@ class TestHeavy(unittest.TestCase):
         self.assertGreater(bound, 1.0)
         self.assertLess(bound, 1.15)
 
-    # -- d=6 production scale (n=3, m=16, 2.3B configs) --
+    # -- d=6 production scale (n=3, m=16) --
 
     def test_run_single_level_n3_m16(self):
-        """n=3, m=16: 2.3B configs at d=6, target=0.9 should be proven."""
+        """n=3, m=16: S=m=16 -> C(21,5) = 20,349 configs."""
         n_half, m, target = 3, 16, 0.9
-        n_total = count_compositions(2 * n_half, 4 * n_half * m)
-        self.assertEqual(n_total, 2_349_279_569)
+        n_total = count_compositions(2 * n_half, m)
+        self.assertEqual(n_total, 20_349)
         result = run_single_level(n_half, m, target,
                                   batch_size=100000, verbose=False)
         self.assertTrue(result['proven'])
@@ -64,7 +64,7 @@ class TestHeavy(unittest.TestCase):
         """Batch and single test values agree at n=2, m=400."""
         n_half, m = 2, 400
         d = 2 * n_half
-        S = 4 * n_half * m
+        S = m  # S=m convention
         rng = np.random.RandomState(42)
         configs = [
             np.array([S // d] * d, dtype=np.int32),
@@ -78,7 +78,8 @@ class TestHeavy(unittest.TestCase):
 
         batch_tvs = compute_test_values_batch(batch, n_half, m)
         for i in range(len(batch)):
-            a = batch[i].astype(np.float64) / m
+            # S=m: a = c * 4n/m
+            a = batch[i].astype(np.float64) * (4 * n_half) / m
             single_tv = compute_test_value_single(a, n_half)
             self.assertAlmostEqual(
                 batch_tvs[i], single_tv, places=8,

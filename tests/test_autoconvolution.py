@@ -63,16 +63,18 @@ class TestAutoconvolution(unittest.TestCase):
     def test_batch_matches_single(self):
         n_half = 2
         m = 10
+        # S=m convention: integer coords sum to m=10
         configs = np.array([
-            [10, 10, 10, 10],
-            [20, 5, 5, 10],
-            [0, 20, 20, 0],
+            [3, 2, 3, 2],
+            [5, 1, 1, 3],
+            [0, 5, 5, 0],
         ], dtype=np.int32)
 
         batch_tvs = compute_test_values_batch(configs, n_half, m)
 
         for i in range(len(configs)):
-            a = configs[i].astype(np.float64) / m
+            # S=m: a = c * 4n/m
+            a = configs[i].astype(np.float64) * (4 * n_half) / m
             single_tv = compute_test_value_single(a, n_half)
             self.assertAlmostEqual(batch_tvs[i], single_tv, places=8)
 
@@ -81,29 +83,33 @@ class TestAsymmetryPruning(unittest.TestCase):
     def test_left_heavy_pruned(self):
         n_half = 2
         m = 10
-        configs = np.array([[50, 30, 0, 0]], dtype=np.int32)
+        # S=m=10: left=9/10=0.9 > safe_threshold=0.825
+        configs = np.array([[5, 4, 1, 0]], dtype=np.int32)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertFalse(mask[0])
 
     def test_uniform_needs_check(self):
         n_half = 2
         m = 10
-        configs = np.array([[20, 20, 20, 20]], dtype=np.int32)
+        # S=m=10: left=5/10=0.5, symmetric → needs checking
+        configs = np.array([[3, 2, 3, 2]], dtype=np.int32)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertTrue(mask[0])
 
     def test_right_heavy_pruned(self):
         n_half = 2
         m = 10
-        configs = np.array([[0, 0, 30, 50]], dtype=np.int32)
+        # S=m=10: left=1/10=0.1, right_frac=0.9 > 0.825
+        configs = np.array([[0, 1, 4, 5]], dtype=np.int32)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertFalse(mask[0])
 
     def test_margin_near_threshold(self):
         n_half = 2
         m = 10
-        configs = np.array([[32, 32, 8, 8]], dtype=np.int32)
-        left_frac = configs[0, :n_half].sum() / (4 * n_half * m)
+        # S=m=10: left=8/10=0.8, right at threshold → margin zone
+        configs = np.array([[4, 4, 1, 1]], dtype=np.int32)
+        left_frac = configs[0, :n_half].sum() / m
         self.assertAlmostEqual(left_frac, 0.8)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertTrue(mask[0])
@@ -111,8 +117,9 @@ class TestAsymmetryPruning(unittest.TestCase):
     def test_margin_well_beyond_threshold(self):
         n_half = 2
         m = 10
-        configs = np.array([[35, 35, 5, 5]], dtype=np.int32)
-        left_frac = configs[0, :n_half].sum() / (4 * n_half * m)
+        # S=m=10: left=9/10=0.9 > safe_threshold=0.825
+        configs = np.array([[5, 4, 1, 0]], dtype=np.int32)
+        left_frac = configs[0, :n_half].sum() / m
         self.assertGreater(left_frac, 0.825)
         mask = asymmetry_prune_mask(configs, n_half, m, c_target=1.28)
         self.assertFalse(mask[0])
