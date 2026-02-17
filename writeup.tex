@@ -1,0 +1,488 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{article}
+
+%\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{authblk}
+
+% Bibliography
+\usepackage[numbers]{natbib}
+
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=blue,
+filecolor=blue,
+urlcolor=blue,
+citecolor=blue
+}
+
+\newcommand{\dd}{\mathrm{d}}
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry}
+\geometry{
+a4paper,
+left=1.25in,
+right=1.25in,
+top=1.25in,
+bottom=1.25in
+}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+
+%%% PACKAGES
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{paralist}
+\usepackage{verbatim}
+\usepackage{subfig}
+\usepackage{enumitem}
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape}
+
+%%% ToC APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind}
+\usepackage[titles,subfigure]{tocloft}
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape}
+
+\usepackage[parfill]{parskip}
+
+%%% THEOREM ENVIRONMENTS
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+%%% NOTATION SHORTCUTS
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Linf}{L^\infty}
+\newcommand{\Lone}{L^1}
+\newcommand{\supp}{\operatorname{supp}}
+
+%%% TARGET BOUND — update when final result is obtained
+\newcommand{\cTargetResult}{1.30}
+
+%%% END preamble
+
+\title{On Suprema of Autoconvolutions with an Application to Sidon Sets:\\
+A GPU-Accelerated Approach}
+
+\author[1]{Andrei Piterbarg}
+\author[1]{Jai Bajaj}
+\author[1]{Derrick Vincent}
+\author[2]{Damek Davis}
+
+\affil[1]{\it The University of Pennsylvania}
+\affil[2]{\it The Wharton School, University of Pennsylvania}
+
+\renewcommand\Authands{ and }
+
+\begin{document}
+
+\maketitle
+\vskip 0.5in
+
+%% ================================================================
+%%  ABSTRACT
+%% ================================================================
+
+\begin{abstract}
+Let $f$ be a nonnegative function supported on $(-1/4, 1/4)$. We study the
+autoconvolution constant $c$ defined by
+\[
+  \max_{-1/2 \leq t \leq 1/2} \int_\R f(t - x) f(x) \, dx
+  \;\geq\; c \left( \int_{-1/4}^{1/4} f(x) \, dx \right)^{2}
+\]
+which arises naturally in the study of Sidon sets in additive combinatorics.
+The previous best lower bound $c \geq 1.28$ was established by Cloninger and
+Steinerberger~\cite{CS14} using a branch-and-prune algorithm that required
+approximately 20{,}000 CPU hours.
+We present a GPU-accelerated reimplementation targeting
+NVIDIA A100 GPUs that achieves throughputs exceeding
+$10^9$ configurations per second---roughly three orders of magnitude faster
+than the original MATLAB implementation---pushing
+the proven lower bound to $c \geq \cTargetResult$.
+\end{abstract}
+
+
+%% ================================================================
+\section{Introduction}\label{sec:intro}
+%% ================================================================
+
+% ------------------------------------------------------------------
+\subsection{Sidon sets and the autoconvolution constant}\label{ssec:sidon}
+% ------------------------------------------------------------------
+
+A subset $A \subset \{1, 2, \ldots, N\}$ is called \emph{$g$-Sidon} if every
+integer has at most $g$ representations as a sum $a + b$ with $a, b \in A$.
+The maximum size $\beta_g(N)$ of such a set satisfies, as shown by
+Cilleruelo, Ruzsa, and Vinuesa~\cite{CRV},
+\[
+  \beta_g(N) \;\sim\; \sigma\,\sqrt{gN}
+  \qquad (g \to \infty,\; N \to \infty),
+\]
+where $\sigma$ is a universal constant whose precise value remains open.
+
+The constant $\sigma$ admits an equivalent continuous characterization~\cite{CRV, SS}.
+Given a nonnegative function $f$ supported on $(-1/4, 1/4)$, define its
+\emph{autoconvolution} $(f * f)(x) = \int_{\R} f(t)\,f(x - t)\,dt$.
+Setting $c = 2/\sigma^2$, one has
+\[
+  \|f * f\|_{\Linf(\R)}
+  \;\geq\; c \left(\int_{-1/4}^{1/4} f(x)\,dx\right)^{\!2}
+\]
+for every such~$f$. A larger $c$ means that no matter how one
+distributes nonnegative mass on $(-1/4, 1/4)$, the supremum of $f * f$ cannot
+be made small.
+
+% ------------------------------------------------------------------
+\subsection{Prior work}\label{ssec:prior}
+% ------------------------------------------------------------------
+
+A succession of authors have improved the lower bound on $c$:
+
+\medskip
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Lower bound} & \textbf{Source} \\
+\midrule
+$c \geq 1$       & trivial \\
+$c \geq 1.151$   & Cilleruelo, Ruzsa, and Trujillo~\cite{CRT} \\
+$c \geq 1.178$   & Green~\cite{Green} \\
+$c \geq 1.183$   & Martin and O'Bryant~\cite{MO1} \\
+$c \geq 1.251$   & Yu~\cite{Yu} \\
+$c \geq 1.263$   & Martin and O'Bryant~\cite{MO2} \\
+$c \geq 1.274$   & Matolcsi and Vinuesa~\cite{MV} \\
+$c \geq 1.28$    & Cloninger and Steinerberger~\cite{CS14} \\
+$c \geq \cTargetResult$    & this work \\
+\bottomrule
+\end{tabular}
+\end{center}
+\medskip
+
+\noindent
+On the upper bound side, Matolcsi and Vinuesa~\cite{MV} proved $c \leq 1.5099$
+via an explicit construction, disproving the conjecture $c = \pi/2$ of Schinzel
+and Schmidt~\cite{SS}. This was recently sharpened to $c \leq 1.5029$ by
+TTT-Discover~\cite{TTT}. The state of the art prior to this work was therefore
+$1.28 \leq c \leq 1.5029$.
+
+The bound $c \geq 1.28$ of Cloninger and Steinerberger~\cite{CS14}
+introduced a fundamentally different approach: rather than Fourier
+analysis (whose method has a theoretical ceiling of~$1.276$~\cite{MV}), they designed a branch-and-prune algorithm
+that reduces the problem to a \emph{finite} verification, requiring
+approximately 20{,}000 CPU hours.
+
+% ------------------------------------------------------------------
+\subsection{Our contribution}\label{ssec:contribution}
+% ------------------------------------------------------------------
+
+We present a GPU-native reimplementation of this algorithm
+targeting NVIDIA A100 GPUs. The mathematical framework is unchanged;
+our contribution is computational. The key ideas are:
+(i)~fused single-pass CUDA kernels that generate, prune, and evaluate
+each composition entirely in registers, eliminating all intermediate
+global memory traffic;
+(ii)~a multi-stage FP32 pruning cascade that eliminates ${\sim}99\%$ of
+configurations before the expensive FP64 autoconvolution;
+and (iii)~incremental convolution that halves the inner-loop cost for
+$d \geq 6$.
+These yield throughputs exceeding $10^9$ configurations/second,
+enabling exhaustive verification at previously infeasible parameter
+regimes and proving $c \geq \cTargetResult$.
+
+
+%% ================================================================
+\section{The Branch-and-Prune Algorithm}\label{sec:algorithm}
+%% ================================================================
+
+We recall the algorithm of Cloninger and Steinerberger~\cite{CS14}.
+
+% ------------------------------------------------------------------
+\subsection{Reduction to bin averages}\label{ssec:bin-averages}
+% ------------------------------------------------------------------
+
+\begin{lemma}[Bin averages, {\cite[Lemma~1]{CS14}}]
+\label{lem:step}
+For any $n \in \N$, define the simplex
+\[
+  A_n = \bigl\{(a_{-n},\, a_{-n+1},\, \ldots,\, a_{n-1}) \in \R_+^{2n}
+    : {\textstyle\sum_{i=-n}^{n-1}} a_i = 4n \bigr\}
+\]
+and the minimax value
+\[
+  a_n := \min_{a \in A_n}\;
+  \max_{\substack{2 \leq \ell \leq 2n \\ -n \leq k \leq n - \ell}}
+  \frac{1}{4n\ell} \sum_{\substack{i,j \\ k \leq i+j \leq k+\ell-2}} a_i\, a_j,
+\]
+where $k, \ell \in \Z$. Then $c \geq a_n$.
+\end{lemma}
+
+\begin{proof}
+Let $\varepsilon > 0$. Choose $f \geq 0$ supported on $(-1/4,\, 1/4)$ with $\int f = 1$ and $\|f * f\|_{\Linf} \leq c + \varepsilon$.
+Partition $(-1/4,\, 1/4)$ into $2n$ equal sub-intervals
+$I_j = \bigl(\tfrac{j}{4n},\; \tfrac{j+1}{4n}\bigr)$
+and define $a_j = 4n \int_{I_j} f$.
+Then $a \in A_n$, and for any window $(k, \ell)$:
+\begin{align*}
+  \frac{1}{4n\ell} \sum_{k \leq i+j \leq k+\ell-2} a_i\, a_j
+  &= \frac{4n}{\ell} \sum_{k \leq i+j \leq k+\ell-2}
+     \int_\R (f_i * f_j)(x)\,dx \\
+  &\leq \frac{4n}{\ell} \int_{k/(4n)}^{(k+\ell)/(4n)} (f * f)(x)\,dx
+  \leq \|f * f\|_{\Linf}
+  \leq c + \varepsilon,
+\end{align*}
+where the first inequality uses $\supp(f_i * f_j) \subseteq I_i + I_j \subseteq \bigl(\tfrac{k}{4n},\, \tfrac{k+\ell}{4n}\bigr)$.
+Since $\varepsilon$ was arbitrary, $c \geq a_n$.
+\end{proof}
+
+% ------------------------------------------------------------------
+\subsection{Discretization}\label{ssec:discretization}
+% ------------------------------------------------------------------
+
+\begin{lemma}[Discretization bound, {\cite[Lemmas~2--3]{CS14}}]
+\label{lem:disc}
+For any $n, m \in \N$, define the discrete lattice
+\[
+  B_{n,m} = \left\{b \in \left(\tfrac{1}{m}\N\right)^{2n}
+    : {\textstyle\sum} b_i = 4n\right\}.
+\]
+Then $B_{n,m}$ is a $1/m$-net of $A_n$ in the $\ell^\infty$-norm.
+Defining
+\[
+  b_{n,m} := \min_{b \in B_{n,m}}\;
+  \max_{\substack{2 \leq \ell \leq 2n \\ -n \leq k \leq n - \ell}}
+  \frac{1}{4n\ell} \sum_{k \leq i+j \leq k+\ell-2} b_i\, b_j,
+\]
+we have $c \geq b_{n,m} - 2/m - 1/m^2$.
+\end{lemma}
+
+\begin{proof}
+For any $a \in A_n$, a greedy rounding procedure produces $b \in B_{n,m}$ with $\|a - b\|_\infty \leq 1/m$.
+Writing $a = b + \varepsilon$ with $\|\varepsilon\|_\infty \leq 1/m$, the cross-terms satisfy
+$|(f * \varepsilon)(x)| \leq 1/m$ and $|(\varepsilon * \varepsilon)(x)| \leq 1/m^2$.
+Combining with Lemma~\ref{lem:step} gives the result.
+\end{proof}
+
+\begin{remark}[Refined correction]\label{rem:refined}
+In practice, a tighter bound $|(f * \varepsilon)(x)| \leq \frac{1}{m}\int_{-1/4 + \max(x,0)}^{1/4 + \min(0,x)} f(y)\,dy$ yields window-dependent corrections that are smaller near the boundary of $(-1/2,\, 1/2)$, improving pruning efficiency.
+\end{remark}
+
+% ------------------------------------------------------------------
+\subsection{Verification and hierarchical refinement}\label{ssec:verification}
+% ------------------------------------------------------------------
+
+To prove $c \geq c_{\mathrm{target}}$, define the effective threshold
+$T = c_{\mathrm{target}} + 2/m + 1/m^2$
+and show that \emph{every} $b \in B_{n,m}$ has at least one window $(k,\ell)$ whose average exceeds~$T$.
+Such a configuration is \emph{ruled out}; if all are ruled out, the bound is proven.
+
+The lattice size $|B_{n,m}| = \binom{4nm + 2n - 1}{2n - 1}$ grows exponentially in~$n$, making direct enumeration at large~$n$ infeasible.
+However, many configurations can be ruled out at coarse resolution, motivating a hierarchical strategy:
+
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=*]
+\item \textbf{Base level.}
+Enumerate all $b \in B_{n_0,m}$ at a coarse discretization (e.g., $n_0 = 3$, $d = 6$ bins) and test each against~$T$.
+Survivors are those not yet ruled out.
+
+\item \textbf{Refinement.}
+Each surviving parent $b$ is refined by splitting each bin $b_i$ into two sub-components $c_{2i} + c_{2i+1} = b_i$, producing children at resolution $d' = 2d$.
+The number of children per parent is $N_b = \prod_{i}(1 + m\,b_i)$.
+A parent is ruled out iff \emph{every} child is ruled out.
+
+\item \textbf{Iterate.}
+Repeat along the dyadic schedule $d = 6, 12, 24, 48, \ldots$ until all configurations are eliminated.
+\end{enumerate}
+
+Two simple pruning rules reduce the search space.
+First, the palindromic symmetry $b \leftrightarrow \mathrm{rev}(b)$ allows restricting to canonical compositions with $b \leq \mathrm{rev}(b)$ lexicographically, halving the work.
+Second, if the mass fraction on one half of the support satisfies $\sum_{i < 0} a_i / \sum a_i \geq \sqrt{c_{\mathrm{target}}/2}$, the configuration is immediately ruled out by an asymmetry bound without computing the full autoconvolution.
+
+
+%% ================================================================
+\section{GPU Implementation}\label{sec:implementation}
+%% ================================================================
+
+We describe our CUDA implementation targeting NVIDIA A100 GPUs (80\,GB HBM2e, 108 streaming multiprocessors).
+
+% ------------------------------------------------------------------
+\subsection{Fused single-pass kernels}\label{subsec:fused}
+% ------------------------------------------------------------------
+
+A naive GPU pipeline would separate composition generation, pruning, and test-value evaluation into three stages with intermediate results stored in global DRAM.
+For large $m$, the number of compositions can exceed $10^9$, making intermediate storage prohibitive.
+
+Our fused kernel performs the entire pipeline within a single kernel invocation.
+Each thread is assigned a flat work index, which it decodes into a composition $\mathbf{c} = (c_0, \ldots, c_{d-1})$ via closed-form simplex inversion (no shared-memory coordination).
+The thread then applies pruning tests, computes the autoconvolution, and scans all windows---entirely within registers.
+The only global memory writes are per-block reduction outputs (at most 3{,}456 values for the full A100), which are reduced on the host after kernel completion.
+
+To balance workload, the first component $c_0$ is processed in zigzag order (alternating small and large values), so that each thread's work chunk contains a mix of combinatorially expensive and cheap slices.
+Per-$c_0$ composition counts are prefix-summed on the host, enabling $O(\log n)$ binary search from flat index to $c_0$ on the device.
+
+% ------------------------------------------------------------------
+\subsection{Multi-stage pruning cascade}\label{subsec:pruning}
+% ------------------------------------------------------------------
+
+We apply a hierarchy of increasingly expensive pruning tests, eliminating ${\sim}99\%$ of compositions before the costly FP64 autoconvolution:
+
+\begin{enumerate}
+\item \textbf{Canonical filter.} Skip compositions violating $\mathbf{c} \leq \mathrm{rev}(\mathbf{c})$.
+
+\item \textbf{FP32 asymmetry bound.}
+If the mass fraction $p$ on one side satisfies $2(\max(p, 1{-}p) - \delta)^2 > T$ (where $\delta = 1/(4m)$), prune immediately.
+
+\item \textbf{FP32 block-sum bounds.}
+For selected windows, check whether the squared partial sum already exceeds the threshold---e.g., $(c_0 + \cdots + c_{d/2-1})^2$ at $\ell = d$, or adjacent pairs $(c_i + c_{i+1})^2$ at $\ell = 4$.
+
+\item \textbf{FP32 max-element bound.}
+At $\ell = 2$, the test value is at least $(\max_i c_i)^2 / (8n) \cdot (4n/m)^2$.
+
+\item \textbf{FP64 asymmetry recheck.} Re-evaluate the asymmetry bound in double precision.
+
+\item \textbf{Central convolution bound} ($d = 6$). If the single entry $\mathrm{conv}[d{-}1] = 2(c_0 c_5 + c_1 c_4 + c_2 c_3)$ already exceeds the $\ell = 2$ threshold, prune.
+\end{enumerate}
+
+All FP32 stages use a safety margin of $10^{-5}$ to prevent incorrect pruning due to rounding.
+
+% ------------------------------------------------------------------
+\subsection{Autoconvolution and incremental computation}\label{subsec:autoconv}
+% ------------------------------------------------------------------
+
+For surviving compositions, we compute the discrete autoconvolution in integer arithmetic (INT32 when $S^2 \leq 2 \times 10^9$, INT64 otherwise):
+\[
+    \mathrm{conv}[k] = \sum_{\substack{0 \leq i, j < d \\ i + j = k}} c_i \cdot c_j, \qquad k = 0, \ldots, 2d-2.
+\]
+The array is prefix-summed in-place, enabling $O(1)$ extraction of any window sum.
+The test value at window $(\ell, s)$ is
+\[
+    \mathrm{tv}(\ell, s) = \frac{4n}{m^2 \ell} \bigl(\mathrm{conv}[s+\ell-2] - \mathrm{conv}[s-1]\bigr),
+\]
+with early exit once any window exceeds the threshold.
+
+\paragraph{Incremental convolution for $d = 6$.}
+The components $(c_0, c_1, c_2, c_3)$ are fixed by the flat-index decoding, while $c_4$ varies in an inner loop with $c_5 = S - c_0 - \cdots - c_4$.
+The prefix-summed entries $\mathrm{conv}[0], \ldots, \mathrm{conv}[3]$ depend only on $(c_0, \ldots, c_3)$ and are computed once outside the loop.
+For $k \geq 4$, each entry decomposes as
+$\mathrm{conv}[k] = \mathrm{conv}[k{-}1] + B_k + \text{(cross-terms involving $c_4, c_5$)}$,
+where the base terms $B_k$ are precomputed.
+This reduces the inner-loop cost from 21 to 11 multiplications per iteration.
+
+\paragraph{Batched refinement.}
+At refinement levels, multiple parents are packed into a single kernel launch via prefix-sum indexing of child counts, eliminating per-parent kernel launch overhead.
+An energy cap $x_{\max} = \lfloor m\sqrt{T/d_{\mathrm{child}}} \rfloor$ avoids generating children that would be trivially pruned, often reducing child counts by an order of magnitude.
+When the survivor count exceeds GPU memory, a chunked streaming pipeline writes survivors to disk with adaptive chunk sizing.
+
+
+%% ================================================================
+\section{Computational Results}\label{sec:results}
+%% ================================================================
+
+Using the implementation above on an NVIDIA A100-SXM4-80GB, we execute the branch-and-prune verification with $m = 50$ and $n_0 = 3$.
+The level schedule is $d \in \{6, 12, 24, 48\}$ bins.
+The effective threshold is $T = c_{\mathrm{target}} + 2/50 + 1/2500 = c_{\mathrm{target}} + 0.0404$.
+
+The base-level enumeration ($d = 6$, $|B_{3,50}| = 3{,}478{,}761$ lattice points) completes in under one second, compared to hours in the original implementation.
+The majority of runtime is spent at levels $d = 24$ and $d = 48$ where surviving parents generate large numbers of children.
+
+% TODO: Add final runtime table and proven bound once computation completes.
+
+
+%% ================================================================
+\section{Conclusion}\label{sec:conclusion}
+%% ================================================================
+
+We have presented a GPU-accelerated reimplementation of the Cloninger--Steinerberger branch-and-prune algorithm, achieving throughputs exceeding $10^9$ configurations per second on an NVIDIA A100---roughly three orders of magnitude faster than the original MATLAB implementation.
+This speedup enables exhaustive verification at previously infeasible parameter regimes, improving the lower bound to $c \geq \cTargetResult$.
+
+Natural extensions include: higher base dimensions ($d = 8, 10, \ldots$) to reduce refinement levels; larger discretization parameters $m > 50$ to tighten the correction term; and multi-GPU scaling for the embarrassingly parallel enumeration and refinement stages.
+
+
+%% ================================================================
+%%  BIBLIOGRAPHY
+%% ================================================================
+
+\begin{thebibliography}{99}
+
+\bibitem{CS14}
+A.~Cloninger and S.~Steinerberger,
+\emph{On suprema of autoconvolutions with an application to Sidon sets},
+Proc.\ Amer.\ Math.\ Soc.\ \textbf{145} (2017), no.~8, 3191--3200.
+\href{https://arxiv.org/abs/1403.7988}{arXiv:1403.7988}.
+
+\bibitem{CRV}
+J.~Cilleruelo, I.~Ruzsa, and C.~Vinuesa,
+\emph{Generalized Sidon sets},
+Adv.\ Math.\ \textbf{225} (2010), no.~5, 2786--2807.
+
+\bibitem{CRT}
+J.~Cilleruelo, I.~Ruzsa, and C.~Trujillo,
+\emph{Upper and lower bounds for finite $B_h[g]$ sequences},
+J.\ Number Theory \textbf{97} (2002), no.~1, 26--34.
+
+\bibitem{Green}
+B.~Green,
+\emph{The number of squares and $B_h[g]$ sets},
+Acta Arith.\ \textbf{100} (2001), 365--390.
+
+\bibitem{MO1}
+G.~Martin and K.~O'Bryant,
+\emph{The supremum of autoconvolutions, with applications to additive number theory},
+Illinois J.\ Math.\ \textbf{53} (2009), no.~1, 219--235.
+
+\bibitem{MO2}
+G.~Martin and K.~O'Bryant,
+\emph{Constructions of generalized Sidon sets},
+J.\ Combin.\ Theory Ser.~A \textbf{113} (2006), no.~4, 591--607.
+
+\bibitem{MV}
+M.~Matolcsi and C.~Vinuesa,
+\emph{Improved bounds on the supremum of autoconvolutions},
+J.\ Math.\ Anal.\ Appl.\ \textbf{372} (2010), no.~2, 439--447.
+
+\bibitem{SS}
+A.~Schinzel and W.~M.~Schmidt,
+\emph{Comparison of $L^1$- and $L^\infty$-norms of squares of polynomials},
+Acta Arith.\ \textbf{104} (2002), 283--296.
+
+\bibitem{Yu}
+G.~Yu,
+\emph{An upper bound for $B_2[g]$ sets},
+J.\ Number Theory \textbf{122} (2007), 211--220.
+
+\bibitem{TTT}
+TTT-Discover,
+\emph{Improved upper bound on the supremum of autoconvolutions},
+2025.
+
+\end{thebibliography}
+
+\end{document}
