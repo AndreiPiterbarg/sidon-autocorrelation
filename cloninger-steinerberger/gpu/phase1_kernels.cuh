@@ -504,8 +504,7 @@ fused_prove_target(
     int n_c0,
     long long work_start,
     long long work_end,
-    const long long* __restrict__ int_thresh, /* [D-1] per-ell integer thresholds */
-    long long* __restrict__ block_counts, /* [num_blocks * 3] */
+    long long* __restrict__ block_counts, /* [num_blocks * 4] */
     double* __restrict__ block_min_tv,
     int* __restrict__ block_min_configs,
     /* Survivor extraction (pass NULL + NULL + 0 to disable) */
@@ -541,11 +540,23 @@ fused_prove_target(
     for (int ell = 2; ell <= D; ell++)
         inv_norm_arr[ell - 2] = (4.0 * n_half) / ((double)m * (double)m * (double)ell);
 
-    /* Load int_thresh into register-local array */
+    /* Compute fixed integer thresholds per-thread (conservative, for pre-checks).
+     * The main window scan uses tighter per-window-size dynamic thresholds,
+     * but the cheap integer pre-checks still use the conservative fixed threshold. */
     conv_t local_thresh[D - 1];
     #pragma unroll
-    for (int i = 0; i < D - 1; i++)
-        local_thresh[i] = (conv_t)int_thresh[i];
+    for (int i = 0; i < D - 1; i++) {
+        double x = thresh * (double)m * (double)m * (double)(i + 2) / (4.0 * (double)n_half);
+        local_thresh[i] = (conv_t)((long long)(x * (1.0 - 4.0 * DBL_EPSILON)));
+    }
+    /* Dynamic correction constants (Lemma 2, per-window-size).
+     * MATLAB: boundToBeat = c_target + delta^2 + 2*delta*W_j
+     * In integer space: dyn_it(ell) = (dyn_base + 2*W_int) * ell / (4*n_half)
+     * where W_int = sum of c[ell/2 .. ell-1] (contributing bins per Lemma 2).
+     * dyn_base includes c_target*m^2 + 1 + fp_margin*m^2. */
+    double dyn_base = c_target * (double)m * (double)m + 1.0
+                    + 1e-9 * (double)m * (double)m;
+    double inv_4n = 1.0 / (4.0 * (double)n_half);
 
     for (long long work_idx = work_start + flat_idx; work_idx < work_end; work_idx += stride) {
         int c0_idx = binary_search_le(prefix_sums, n_c0, work_idx);
@@ -617,17 +628,30 @@ fused_prove_target(
             #pragma unroll
             for (int k = 1; k < CONV_LEN; k++) conv[k] += conv[k-1];
 
+            /* Prefix sums of c[] for dynamic correction W_int */
+            int prefix_c[5];
+            prefix_c[0] = 0;
+            prefix_c[1] = c0;
+            prefix_c[2] = c0 + c1;
+            prefix_c[3] = c0 + c1 + c2;
+            prefix_c[4] = S;
+
             int pruned = 0;
             #pragma unroll
             for (int ell = 2; ell <= 4; ell++) {
                 int n_cv = ell - 1;
-                conv_t it = local_thresh[ell - 2];
+                /* Dynamic per-window-size threshold (Lemma 2) */
+                int W_int = prefix_c[ell] - prefix_c[ell / 2];
+                double dyn_x = (dyn_base + 2.0 * (double)W_int)
+                             * (double)ell * inv_4n;
+                conv_t dyn_it = (conv_t)((long long)(dyn_x
+                             * (1.0 - 4.0 * DBL_EPSILON)));
                 int n_windows = CONV_LEN - n_cv + 1;
                 for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                     int s_hi = s_lo + n_cv - 1;
                     conv_t ws = conv[s_hi];
                     if (s_lo > 0) ws -= conv[s_lo - 1];
-                    if (ws > it) { pruned = 1; break; }
+                    if (ws > dyn_it) { pruned = 1; break; }
                 }
                 if (pruned) break;
             }
@@ -735,6 +759,14 @@ fused_prove_target(
             conv_t two_c2 = (conv_t)2 * c2;
             conv_t two_c3 = (conv_t)2 * c3;
 
+            /* Prefix sums of c[0..3] for dynamic correction (constant across c4) */
+            int prefix_c[7];
+            prefix_c[0] = 0;
+            prefix_c[1] = c0;
+            prefix_c[2] = c0 + c1;
+            prefix_c[3] = c0 + c1 + c2;
+            prefix_c[4] = c0 + c1 + c2 + c3;
+
             for (int c4 = 0; c4 <= c4_max; c4++) {
                 int c5 = r3 - c4;
 
@@ -789,17 +821,26 @@ fused_prove_target(
                 conv[9] = conv[8] + (conv_t)2 * (conv_t)c4 * (conv_t)c5;
                 conv[10] = conv[9] + (conv_t)c5 * (conv_t)c5;
 
+                /* Complete prefix sums for this (c4, c5) */
+                prefix_c[5] = prefix_c[4] + c4;
+                prefix_c[6] = S;
+
                 int pruned = 0;
                 #pragma unroll
                 for (int ell = 2; ell <= 6; ell++) {
                     int n_cv = ell - 1;
-                    conv_t it = local_thresh[ell - 2];
+                    /* Dynamic per-window-size threshold (Lemma 2) */
+                    int W_int = prefix_c[ell] - prefix_c[ell / 2];
+                    double dyn_x = (dyn_base + 2.0 * (double)W_int)
+                                 * (double)ell * inv_4n;
+                    conv_t dyn_it = (conv_t)((long long)(dyn_x
+                                 * (1.0 - 4.0 * DBL_EPSILON)));
                     int n_win = 11 - n_cv + 1;
                     for (int s_lo = 0; s_lo < n_win; s_lo++) {
                         int s_hi = s_lo + n_cv - 1;
                         conv_t ws = conv[s_hi];
                         if (s_lo > 0) ws -= conv[s_lo - 1];
-                        if (ws > it) { pruned = 1; break; }
+                        if (ws > dyn_it) { pruned = 1; break; }
                     }
                     if (pruned) break;
                 }

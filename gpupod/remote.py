@@ -186,12 +186,18 @@ REMOTE_LOG = f"{REMOTE_WORKDIR}/data/gpu_job.log"
 TMUX_SESSION = "job"
 
 
-def launch_script(ssh_host, ssh_port, script="run_proof.py", args=""):
+def launch_script(ssh_host, ssh_port, script="run_proof.py", args="",
+                   auto_teardown=False, api_key=None, pod_id=None):
     """Launch a script in a detached tmux session on the pod.
 
     The script keeps running even if SSH disconnects or the local
     machine is turned off. Output goes to REMOTE_LOG on the pod.
+
+    If auto_teardown=True, the pod self-terminates via the RunPod API
+    after the job finishes (requires api_key and pod_id).
     """
+    # Safety: never pass --auto-teardown to the remote script
+    args = args.replace("--auto-teardown", "").strip()
     # Kill any existing job session
     ssh_run(ssh_host, ssh_port,
             f"tmux kill-session -t {TMUX_SESSION} 2>/dev/null; true",
@@ -201,11 +207,26 @@ def launch_script(ssh_host, ssh_port, script="run_proof.py", args=""):
     # Single quotes protect $? from the remote SSH shell — it gets
     # expanded inside the tmux bash session instead.
     # set -o pipefail ensures $? captures python's exit code, not tee's.
+    teardown_cmd = ""
+    if auto_teardown and api_key and pod_id:
+        # After job finishes, call RunPod API to terminate the pod.
+        # Use curl to avoid needing the runpod SDK on the pod.
+        teardown_cmd = (
+            f"echo '=== AUTO-TEARDOWN: terminating pod ===' >> {REMOTE_LOG}; "
+            f"curl -s -X POST https://api.runpod.io/graphql "
+            f"-H 'Content-Type: application/json' "
+            f"-H 'api-key: {api_key}' "
+            f"-d '{{\"query\":\"mutation {{ podTerminate(input: {{podId: \\\"{pod_id}\\\"}}) }}\"}}' "
+            f">> {REMOTE_LOG} 2>&1; "
+        )
+
     tmux_inner = (
         f"set -o pipefail; "
         f"cd {REMOTE_WORKDIR} && python -u {script} {args} "
         f"2>&1 | tee {REMOTE_LOG}; "
-        f"echo ===JOB_EXIT_CODE=$?=== >> {REMOTE_LOG}"
+        f"echo ===JOB_EXIT_CODE=$?=== >> {REMOTE_LOG}; "
+        f"{teardown_cmd}"
+        f"true"
     )
     cmd = (
         f"mkdir -p {REMOTE_WORKDIR}/data && "

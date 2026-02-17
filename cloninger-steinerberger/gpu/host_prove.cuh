@@ -2,12 +2,11 @@
 /*
  * Host orchestration for run_single_level (D=4 and D=6).
  *
- * Fused single-pass pipeline with integer thresholds:
+ * Fused single-pass pipeline with dynamic per-window-size thresholds:
  *   1. Build zigzag c0 ordering
  *   2. Compute per-c0 triangle/tetrahedron counts
- *   3. Precompute per-ell integer thresholds (zero FP64 in inner loop)
- *   4. Launch fused_prove_target kernel (zero intermediate DRAM)
- *   5. Host-side aggregation of per-block counts + min test value
+ *   3. Launch fused_prove_target kernel (dynamic thresholds computed per-thread)
+ *   4. Host-side aggregation of per-block counts + min test value
  *
  * Depends on: device_helpers.cuh (CUDA_CHECK, FUSED_BLOCK_SIZE)
  *             phase1_kernels.cuh (fused_prove_target)
@@ -44,21 +43,6 @@ static int run_single_level_impl(
     float margin_f = (float)margin;
     float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
 
-    /* Precompute per-ell integer thresholds: int_thresh[ell-2] = floor(thresh * m^2 * ell / (4 * n_half))
-     *
-     * With S=m convention, integer coords c_j = m*w_j sum to m, and
-     * a_j = (4n/m)*c_j. Test value = (4n)/(m^2*ell) * sum(c_i*c_j),
-     * so threshold in integer space is thresh * m^2 * ell / (4n).
-     *
-     * Apply relative epsilon to guard against FP64 rounding producing a value
-     * slightly above the true mathematical product (safe: lowers threshold,
-     * meaning fewer configs pruned, never more). */
-    long long h_int_thresh[D - 1];
-    for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * (double)ell / (4.0 * (double)n_half);
-        h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
-    }
-
     int half_S = S / 2;
     int n_c0 = half_S + 1;
 
@@ -86,16 +70,12 @@ static int run_single_level_impl(
     /* Upload to GPU */
     long long* d_prefix = NULL;
     int* d_c0_order = NULL;
-    long long* d_int_thresh = NULL;
     CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
     CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_int_thresh, (D - 1) * sizeof(long long)));
     CUDA_CHECK(cudaMemcpy(d_prefix, h_prefix,
         (n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
     CUDA_CHECK(cudaMemcpy(d_c0_order, h_c0_order,
         n_c0 * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_int_thresh, h_int_thresh,
-        (D - 1) * sizeof(long long), cudaMemcpyHostToDevice));
 
     int block_size = FUSED_BLOCK_SIZE;
     int grid_size = (int)fmin(
@@ -127,7 +107,6 @@ static int run_single_level_impl(
             S, n_half, m, margin, c_target, thresh,
             inv_m_f, thresh_f, margin_f, asym_limit_f,
             d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
             d_block_counts, d_block_min_tv, d_block_min_configs,
             d_survivor_buf, d_survivor_count,
             extracting ? max_survivors : 0);
@@ -136,7 +115,6 @@ static int run_single_level_impl(
             S, n_half, m, margin, c_target, thresh,
             inv_m_f, thresh_f, margin_f, asym_limit_f,
             d_prefix, d_c0_order, n_c0, 0LL, total_work,
-            d_int_thresh,
             d_block_counts, d_block_min_tv, d_block_min_configs,
             d_survivor_buf, d_survivor_count,
             extracting ? max_survivors : 0);
@@ -194,7 +172,6 @@ static int run_single_level_impl(
 
     cudaFree(d_prefix);
     cudaFree(d_c0_order);
-    cudaFree(d_int_thresh);
     cudaFree(d_block_counts);
     cudaFree(d_block_min_tv);
     cudaFree(d_block_min_configs);
@@ -299,12 +276,6 @@ static int run_single_level_extract_streamed_impl(
     float margin_f = (float)margin;
     float asym_limit_f = (float)c_target * (1.0f + 1e-5f);
 
-    long long h_int_thresh[D - 1];
-    for (int ell = 2; ell <= D; ell++) {
-        double x = thresh * (double)m * (double)m * (double)ell / (4.0 * (double)n_half);
-        h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
-    }
-
     int half_S = S / 2;
     int n_c0 = half_S + 1;
 
@@ -330,16 +301,12 @@ static int run_single_level_extract_streamed_impl(
     /* Upload constant data to GPU */
     long long* d_prefix = NULL;
     int* d_c0_order = NULL;
-    long long* d_int_thresh = NULL;
     CUDA_CHECK(cudaMalloc(&d_prefix, (n_c0 + 1) * sizeof(long long)));
     CUDA_CHECK(cudaMalloc(&d_c0_order, n_c0 * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_int_thresh, (D - 1) * sizeof(long long)));
     CUDA_CHECK(cudaMemcpy(d_prefix, h_prefix,
         (n_c0 + 1) * sizeof(long long), cudaMemcpyHostToDevice));
     CUDA_CHECK(cudaMemcpy(d_c0_order, h_c0_order,
         n_c0 * sizeof(int), cudaMemcpyHostToDevice));
-    CUDA_CHECK(cudaMemcpy(d_int_thresh, h_int_thresh,
-        (D - 1) * sizeof(long long), cudaMemcpyHostToDevice));
 
     int block_size = FUSED_BLOCK_SIZE;
     int grid_size = (int)fmin(
@@ -386,7 +353,7 @@ static int run_single_level_extract_streamed_impl(
         if (!h_staging) {
             fprintf(stderr, "STREAMED: even 10M staging buffer failed, aborting\n");
             fflush(stderr);
-            cudaFree(d_prefix); cudaFree(d_c0_order); cudaFree(d_int_thresh);
+            cudaFree(d_prefix); cudaFree(d_c0_order);
             cudaFree(d_block_counts); cudaFree(d_block_min_tv);
             cudaFree(d_block_min_configs);
             cudaFree(d_survivor_buf); cudaFree(d_survivor_count);
@@ -407,7 +374,7 @@ static int run_single_level_extract_streamed_impl(
         fprintf(stderr, "STREAMED: failed to open output file: %s\n",
                 survivor_file_path);
         fflush(stderr);
-        cudaFree(d_prefix); cudaFree(d_c0_order); cudaFree(d_int_thresh);
+        cudaFree(d_prefix); cudaFree(d_c0_order);
         cudaFree(d_block_counts); cudaFree(d_block_min_tv);
         cudaFree(d_block_min_configs);
         cudaFree(d_survivor_buf); cudaFree(d_survivor_count);
@@ -463,7 +430,6 @@ static int run_single_level_extract_streamed_impl(
                 S, n_half, m, margin, c_target, thresh,
                 inv_m_f, thresh_f, margin_f, asym_limit_f,
                 d_prefix, d_c0_order, n_c0, chunk_start, chunk_end,
-                d_int_thresh,
                 d_block_counts, d_block_min_tv, d_block_min_configs,
                 d_survivor_buf, d_survivor_count,
                 (int)max_buf_survivors);
@@ -472,7 +438,6 @@ static int run_single_level_extract_streamed_impl(
                 S, n_half, m, margin, c_target, thresh,
                 inv_m_f, thresh_f, margin_f, asym_limit_f,
                 d_prefix, d_c0_order, n_c0, chunk_start, chunk_end,
-                d_int_thresh,
                 d_block_counts, d_block_min_tv, d_block_min_configs,
                 d_survivor_buf, d_survivor_count,
                 (int)max_buf_survivors);
@@ -506,7 +471,6 @@ static int run_single_level_extract_streamed_impl(
                 fflush(stderr);
                 fclose(outfile);
                 cudaFree(d_prefix); cudaFree(d_c0_order);
-                cudaFree(d_int_thresh);
                 cudaFree(d_block_counts); cudaFree(d_block_min_tv);
                 cudaFree(d_block_min_configs);
                 cudaFree(d_survivor_buf); cudaFree(d_survivor_count);
@@ -580,7 +544,6 @@ static int run_single_level_extract_streamed_impl(
             *out_n_extracted = total_extracted;
             fclose(outfile);
             cudaFree(d_prefix); cudaFree(d_c0_order);
-            cudaFree(d_int_thresh);
             cudaFree(d_block_counts); cudaFree(d_block_min_tv);
             cudaFree(d_block_min_configs);
             cudaFree(d_survivor_buf); cudaFree(d_survivor_count);
@@ -640,7 +603,6 @@ static int run_single_level_extract_streamed_impl(
 
     cudaFree(d_prefix);
     cudaFree(d_c0_order);
-    cudaFree(d_int_thresh);
     cudaFree(d_block_counts);
     cudaFree(d_block_min_tv);
     cudaFree(d_block_min_configs);

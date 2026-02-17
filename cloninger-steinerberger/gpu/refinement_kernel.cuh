@@ -12,8 +12,14 @@
  * Template-specialized for D_CHILD = 12 (unrolled), with generic loops
  * for D_CHILD = 24 and 48.
  *
+ * Template parameter USE_INT64: when false, uses int32 for convolution
+ * accumulators (safe when S^2 fits in int32, i.e. m <= ~46340).
+ * This halves register usage for the conv[] array, boosting occupancy.
+ *
  * Depends on: device_helpers.cuh (CUDA_CHECK, shfl_down_double)
  */
+
+#include <type_traits>
 
 #define REFINE_BLOCK_SIZE_12  256
 #define REFINE_BLOCK_SIZE_24  128
@@ -28,7 +34,7 @@
  * Each thread processes one child configuration from the Cartesian
  * product defined by the parent's bin values.
  * ================================================================ */
-template <int D_CHILD>
+template <int D_CHILD, bool USE_INT64 = true>
 __global__ void __launch_bounds__(
     (D_CHILD <= 12) ? REFINE_BLOCK_SIZE_12 :
     (D_CHILD <= 24) ? REFINE_BLOCK_SIZE_24 : REFINE_BLOCK_SIZE_48)
@@ -45,7 +51,6 @@ refine_prove_target(
     float thresh_f,
     float margin_f,
     float asym_limit_f,
-    const long long* __restrict__ int_thresh,  /* [D_CHILD - 1] per-ell */
     long long work_offset,
     long long work_count,
     /* Outputs */
@@ -59,6 +64,7 @@ refine_prove_target(
 ) {
     constexpr int CONV_LEN = 2 * D_CHILD - 1;
     constexpr int D_PARENT = D_CHILD / 2;
+    using conv_t = typename std::conditional<USE_INT64, long long, int>::type;
 
     /* Load parent config into shared memory.
      * With S=m + energy cap: splits are effective counts. */
@@ -76,6 +82,7 @@ refine_prove_target(
     int my_asym = 0, my_test = 0, my_surv = 0;
     double my_tv = 1e30;
     int my_cfg[D_CHILD];
+    #pragma unroll
     for (int i = 0; i < D_CHILD; i++) my_cfg[i] = 0;
 
     /* FP32 scale factor: converts integer c to a-coordinates.
@@ -91,13 +98,14 @@ refine_prove_target(
     /* Precompute per-ell FP64 normalization factors.
      * With S=m: test_val = 4n_child/(m^2*ell) * sum(c_i*c_j). */
     double inv_norm_arr[D_CHILD - 1];
+    #pragma unroll
     for (int ell = 2; ell <= D_CHILD; ell++)
         inv_norm_arr[ell - 2] = (4.0 * n_half_child) / ((double)m * (double)m * (double)ell);
 
-    /* Load integer thresholds into registers */
-    long long local_thresh[D_CHILD - 1];
-    for (int i = 0; i < D_CHILD - 1; i++)
-        local_thresh[i] = int_thresh[i];
+    /* Dynamic correction constants: dyn_thresh = (dyn_base + 2*W_int) * ell / (4*n) */
+    double dyn_base = c_target * (double)m * (double)m + 1.0
+                    + 1e-9 * (double)m * (double)m;
+    double inv_4n = 1.0 / (4.0 * (double)n_half_child);
 
     for (long long work_idx = flat_idx; work_idx < work_count; work_idx += stride) {
         long long global_idx = work_offset + work_idx;
@@ -121,6 +129,7 @@ refine_prove_target(
         /* === 1. Canonical palindrome check === */
         {
             int skip = 0;
+            #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++) {
                 if (c[i] < c[D_CHILD - 1 - i]) break;
                 if (c[i] > c[D_CHILD - 1 - i]) { skip = 1; break; }
@@ -128,41 +137,57 @@ refine_prove_target(
             if (skip) continue;
         }
 
-        /* === 2. FP32 asymmetry pre-check === */
+        /* === 2+3. FP32 asymmetry + half-sum bound (merged, single left_sum) === */
         {
             float left_sum = 0.0f;
+            #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++) left_sum += (float)c[i];
+            /* Asymmetry pre-check */
             float left_frac = left_sum / total_mass_f;
             float dom = (left_frac > 0.5f) ? left_frac : (1.0f - left_frac);
             float asym_base = dom - margin_f;
             if (asym_base < 0.0f) asym_base = 0.0f;
             float asym_val = 2.0f * asym_base * asym_base;
             if (asym_val >= asym_limit_f) continue;
-        }
-
-        /* === 3. FP32 half-sum bound (ell=D_CHILD window) === */
-        {
-            float left_sum = 0.0f;
-            for (int i = 0; i < D_CHILD / 2; i++) left_sum += (float)c[i];
+            /* Half-sum bound (ell=D_CHILD window) */
             if (left_sum * left_sum * scale_f * scale_f / norm_ell_d > thresh_f) continue;
             float right_sum = total_mass_f - left_sum;
             if (right_sum * right_sum * scale_f * scale_f / norm_ell_d > thresh_f) continue;
         }
 
-        /* === 4. FP32 ell=2 max element bound === */
+        /* === 4. FP32 ell=2 max element + two-max enhanced bound === */
         {
-            int max_c = c[0];
+            int max_c = c[0], max2_c = 0;
+            #pragma unroll
             for (int i = 1; i < D_CHILD; i++) {
-                if (c[i] > max_c) max_c = c[i];
+                if (c[i] >= max_c) { max2_c = max_c; max_c = c[i]; }
+                else if (c[i] > max2_c) max2_c = c[i];
             }
             float max_a = max_c * scale_f;
             if (max_a * max_a * inv_ell2 > thresh_f) continue;
+            /* Two-max cross-term: 2*max*max2 at ell=2 */
+            if (2.0f * max_a * (max2_c * scale_f) * inv_ell2 > thresh_f) continue;
+        }
+
+        /* === 4b. Block-sum bounds at ell=4 (adjacent pairs) === */
+        {
+            int block_pruned = 0;
+            /* Use conservative ell=4 threshold (W_int=0 is minimum) */
+            conv_t dyn_it4 = (conv_t)((long long)(dyn_base * 4.0 * inv_4n
+                            * (1.0 - 4.0 * DBL_EPSILON)));
+            #pragma unroll
+            for (int i = 0; i < D_CHILD - 1; i++) {
+                conv_t bs = (conv_t)(c[i] + c[i+1]);
+                if (bs * bs > dyn_it4) { block_pruned = 1; break; }
+            }
+            if (block_pruned) { my_test++; continue; }
         }
 
         /* === 5. FP64 asymmetry === */
         double asym_val_d;
         {
             double left_sum_d = 0.0;
+            #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++) left_sum_d += (double)c[i];
             double left_frac_d = left_sum_d * inv_S;
             double dom_d = (left_frac_d > 0.5) ? left_frac_d : (1.0 - left_frac_d);
@@ -172,28 +197,65 @@ refine_prove_target(
             if (asym_val_d >= c_target) { my_asym++; continue; }
         }
 
-        /* === 6. Autoconvolution + integer threshold window scan === */
-        long long conv[CONV_LEN];
-        for (int k = 0; k < CONV_LEN; k++) conv[k] = 0;
-        for (int i = 0; i < D_CHILD; i++) {
-            conv[2*i] += (long long)c[i] * c[i];
-            for (int j = i+1; j < D_CHILD; j++)
-                conv[i+j] += 2LL * c[i] * c[j];
+        /* === 5b. Center convolution pre-check (ell=2) === */
+        {
+            conv_t center = 0;
+            #pragma unroll
+            for (int i = 0; i < D_CHILD / 2; i++)
+                center += (conv_t)2 * c[i] * c[D_CHILD - 1 - i];
+            /* Use conservative ell=2 threshold (W_int=0 is minimum) */
+            conv_t dyn_it2_min = (conv_t)((long long)(dyn_base * 2.0 * inv_4n
+                                * (1.0 - 4.0 * DBL_EPSILON)));
+            if (center > dyn_it2_min) { my_test++; continue; }
         }
+
+        /* === 6. Autoconvolution with inline ell=2 early exit === */
+        /* Compute prefix sums of c for dynamic W_int (needed before autoconv) */
+        int prefix_c[D_CHILD + 1];
+        prefix_c[0] = 0;
+        #pragma unroll
+        for (int i = 0; i < D_CHILD; i++)
+            prefix_c[i + 1] = prefix_c[i] + c[i];
+
+        /* Compute ell=2 dynamic threshold for early exit during autoconv */
+        conv_t dyn_it2 = (conv_t)((long long)(
+            (dyn_base + 2.0 * (double)c[1]) * 2.0 * inv_4n
+            * (1.0 - 4.0 * DBL_EPSILON)));
+
+        conv_t conv[CONV_LEN];
+        #pragma unroll
+        for (int k = 0; k < CONV_LEN; k++) conv[k] = 0;
+        int early_exit = 0;
+        /* Outer loop: do NOT unroll (early exit conflicts with unroll) */
+        for (int i = 0; i < D_CHILD; i++) {
+            conv[2*i] += (conv_t)c[i] * c[i];
+            #pragma unroll
+            for (int j = i+1; j < D_CHILD; j++)
+                conv[i+j] += (conv_t)2 * c[i] * c[j];
+            /* Check newly-completed conv values against ell=2 threshold */
+            if (conv[2*i] > dyn_it2) { early_exit = 1; break; }
+            if (i > 0 && conv[2*i - 1] > dyn_it2) { early_exit = 1; break; }
+        }
+        if (early_exit) { my_test++; continue; }
+
         /* Prefix sum */
+        #pragma unroll
         for (int k = 1; k < CONV_LEN; k++) conv[k] += conv[k-1];
 
-        /* Window scan with integer thresholds */
+        /* Window scan with dynamic per-ell integer thresholds */
         int pruned = 0;
         for (int ell = 2; ell <= D_CHILD; ell++) {
             int n_cv = ell - 1;
-            long long it = local_thresh[ell - 2];
+            /* Dynamic threshold: W_int = sum of c[k] for k in [ell/2, ell-1] */
+            int W_int = prefix_c[ell] - prefix_c[ell / 2];
+            double dyn_x = (dyn_base + 2.0 * (double)W_int) * (double)ell * inv_4n;
+            conv_t dyn_it = (conv_t)((long long)(dyn_x * (1.0 - 4.0 * DBL_EPSILON)));
             int n_windows = CONV_LEN - n_cv + 1;
             for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                 int s_hi = s_lo + n_cv - 1;
-                long long ws = conv[s_hi];
+                conv_t ws = conv[s_hi];
                 if (s_lo > 0) ws -= conv[s_lo - 1];
-                if (ws > it) { pruned = 1; break; }
+                if (ws > dyn_it) { pruned = 1; break; }
             }
             if (pruned) break;
         }
@@ -209,7 +271,7 @@ refine_prove_target(
                 int n_windows = CONV_LEN - n_cv + 1;
                 for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                     int s_hi = s_lo + n_cv - 1;
-                    long long ws = conv[s_hi];
+                    conv_t ws = conv[s_hi];
                     if (s_lo > 0) ws -= conv[s_lo - 1];
                     double tv = (double)ws * inv_norm;
                     if (tv > best) best = tv;
@@ -222,6 +284,7 @@ refine_prove_target(
                 if (*survivor_count < max_survivors) {
                     int slot = atomicAdd(survivor_count, 1);
                     if (slot < max_survivors) {
+                        #pragma unroll
                         for (int i = 0; i < D_CHILD; i++)
                             survivor_buf[slot * D_CHILD + i] = c[i];
                     }
@@ -229,6 +292,7 @@ refine_prove_target(
             }
             if (best < my_tv) {
                 my_tv = best;
+                #pragma unroll
                 for (int i = 0; i < D_CHILD; i++) my_cfg[i] = c[i];
             }
         }
@@ -250,6 +314,7 @@ refine_prove_target(
     s_test[lane] = my_test;
     s_surv[lane] = my_surv;
     s_min_tv[lane] = my_tv;
+    #pragma unroll
     for (int i = 0; i < D_CHILD; i++)
         s_cfgs[lane * D_CHILD + i] = my_cfg[i];
     __syncthreads();
@@ -262,6 +327,7 @@ refine_prove_target(
             s_surv[lane] += s_surv[lane + s];
             if (s_min_tv[lane + s] < s_min_tv[lane]) {
                 s_min_tv[lane] = s_min_tv[lane + s];
+                #pragma unroll
                 for (int i = 0; i < D_CHILD; i++)
                     s_cfgs[lane * D_CHILD + i] = s_cfgs[(lane + s) * D_CHILD + i];
             }
@@ -274,6 +340,7 @@ refine_prove_target(
         int a = s_asym[lane], t = s_test[lane], sv = s_surv[lane];
         double val = s_min_tv[lane];
 
+        #pragma unroll
         for (int s = 16; s > 0; s >>= 1) {
             a += __shfl_down_sync(0xFFFFFFFF, a, s);
             t += __shfl_down_sync(0xFFFFFFFF, t, s);
@@ -284,6 +351,7 @@ refine_prove_target(
                 val = other_val;
                 int src_lane = lane + s;
                 if (src_lane < 32) {
+                    #pragma unroll
                     for (int i = 0; i < D_CHILD; i++)
                         s_cfgs[lane * D_CHILD + i] = s_cfgs[src_lane * D_CHILD + i];
                 }
@@ -296,6 +364,7 @@ refine_prove_target(
             block_counts[blockIdx.x * 3 + 1] = (long long)t;
             block_counts[blockIdx.x * 3 + 2] = (long long)sv;
             block_min_tv[blockIdx.x] = val;
+            #pragma unroll
             for (int i = 0; i < D_CHILD; i++)
                 block_min_configs[blockIdx.x * D_CHILD + i] = s_cfgs[i];
         }
@@ -314,7 +383,7 @@ refine_prove_target(
  * This eliminates per-parent kernel launch + cudaMemcpy overhead,
  * converting millions of tiny launches into a handful of large ones.
  * ================================================================ */
-template <int D_CHILD>
+template <int D_CHILD, bool USE_INT64 = true>
 __global__ void __launch_bounds__(
     (D_CHILD <= 12) ? REFINE_BLOCK_SIZE_12 :
     (D_CHILD <= 24) ? REFINE_BLOCK_SIZE_24 : REFINE_BLOCK_SIZE_48)
@@ -331,7 +400,6 @@ refine_prove_target_batched(
     float thresh_f,
     float margin_f,
     float asym_limit_f,
-    const long long* __restrict__ int_thresh,  /* [D_CHILD - 1] per-ell */
     long long total_work,
     /* Outputs */
     long long* __restrict__ block_counts,       /* [num_blocks * 3]: asym, test, surv */
@@ -344,6 +412,7 @@ refine_prove_target_batched(
 ) {
     constexpr int CONV_LEN = 2 * D_CHILD - 1;
     constexpr int D_PARENT = D_CHILD / 2;
+    using conv_t = typename std::conditional<USE_INT64, long long, int>::type;
 
     long long flat_idx = (long long)blockIdx.x * blockDim.x + threadIdx.x;
     long long stride = (long long)gridDim.x * blockDim.x;
@@ -351,6 +420,7 @@ refine_prove_target_batched(
     int my_asym = 0, my_test = 0, my_surv = 0;
     double my_tv = 1e30;
     int my_cfg[D_CHILD];
+    #pragma unroll
     for (int i = 0; i < D_CHILD; i++) my_cfg[i] = 0;
 
     /* FP32 scale factor: converts integer c to a-coordinates.
@@ -366,13 +436,14 @@ refine_prove_target_batched(
     /* Precompute per-ell FP64 normalization factors.
      * With S=m: test_val = 4n_child/(m^2*ell) * sum(c_i*c_j). */
     double inv_norm_arr[D_CHILD - 1];
+    #pragma unroll
     for (int ell = 2; ell <= D_CHILD; ell++)
         inv_norm_arr[ell - 2] = (4.0 * n_half_child) / ((double)m * (double)m * (double)ell);
 
-    /* Load integer thresholds into registers */
-    long long local_thresh[D_CHILD - 1];
-    for (int i = 0; i < D_CHILD - 1; i++)
-        local_thresh[i] = int_thresh[i];
+    /* Dynamic correction constants: dyn_thresh = (dyn_base + 2*W_int) * ell / (4*n) */
+    double dyn_base = c_target * (double)m * (double)m + 1.0
+                    + 1e-9 * (double)m * (double)m;
+    double inv_4n = 1.0 / (4.0 * (double)n_half_child);
 
     for (long long work_idx = flat_idx; work_idx < total_work; work_idx += stride) {
         /* === Parent lookup via binary search on prefix sums === */
@@ -399,6 +470,7 @@ refine_prove_target_batched(
         /* === 1. Canonical palindrome check === */
         {
             int skip = 0;
+            #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++) {
                 if (c[i] < c[D_CHILD - 1 - i]) break;
                 if (c[i] > c[D_CHILD - 1 - i]) { skip = 1; break; }
@@ -406,41 +478,57 @@ refine_prove_target_batched(
             if (skip) continue;
         }
 
-        /* === 2. FP32 asymmetry pre-check === */
+        /* === 2+3. FP32 asymmetry + half-sum bound (merged, single left_sum) === */
         {
             float left_sum = 0.0f;
+            #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++) left_sum += (float)c[i];
+            /* Asymmetry pre-check */
             float left_frac = left_sum / total_mass_f;
             float dom = (left_frac > 0.5f) ? left_frac : (1.0f - left_frac);
             float asym_base = dom - margin_f;
             if (asym_base < 0.0f) asym_base = 0.0f;
             float asym_val = 2.0f * asym_base * asym_base;
             if (asym_val >= asym_limit_f) continue;
-        }
-
-        /* === 3. FP32 half-sum bound (ell=D_CHILD window) === */
-        {
-            float left_sum = 0.0f;
-            for (int i = 0; i < D_CHILD / 2; i++) left_sum += (float)c[i];
+            /* Half-sum bound (ell=D_CHILD window) */
             if (left_sum * left_sum * scale_f * scale_f / norm_ell_d > thresh_f) continue;
             float right_sum = total_mass_f - left_sum;
             if (right_sum * right_sum * scale_f * scale_f / norm_ell_d > thresh_f) continue;
         }
 
-        /* === 4. FP32 ell=2 max element bound === */
+        /* === 4. FP32 ell=2 max element + two-max enhanced bound === */
         {
-            int max_c = c[0];
+            int max_c = c[0], max2_c = 0;
+            #pragma unroll
             for (int i = 1; i < D_CHILD; i++) {
-                if (c[i] > max_c) max_c = c[i];
+                if (c[i] >= max_c) { max2_c = max_c; max_c = c[i]; }
+                else if (c[i] > max2_c) max2_c = c[i];
             }
             float max_a = max_c * scale_f;
             if (max_a * max_a * inv_ell2 > thresh_f) continue;
+            /* Two-max cross-term: 2*max*max2 at ell=2 */
+            if (2.0f * max_a * (max2_c * scale_f) * inv_ell2 > thresh_f) continue;
+        }
+
+        /* === 4b. Block-sum bounds at ell=4 (adjacent pairs) === */
+        {
+            int block_pruned = 0;
+            /* Use conservative ell=4 threshold (W_int=0 is minimum) */
+            conv_t dyn_it4 = (conv_t)((long long)(dyn_base * 4.0 * inv_4n
+                            * (1.0 - 4.0 * DBL_EPSILON)));
+            #pragma unroll
+            for (int i = 0; i < D_CHILD - 1; i++) {
+                conv_t bs = (conv_t)(c[i] + c[i+1]);
+                if (bs * bs > dyn_it4) { block_pruned = 1; break; }
+            }
+            if (block_pruned) { my_test++; continue; }
         }
 
         /* === 5. FP64 asymmetry === */
         double asym_val_d;
         {
             double left_sum_d = 0.0;
+            #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++) left_sum_d += (double)c[i];
             double left_frac_d = left_sum_d * inv_S;
             double dom_d = (left_frac_d > 0.5) ? left_frac_d : (1.0 - left_frac_d);
@@ -450,28 +538,65 @@ refine_prove_target_batched(
             if (asym_val_d >= c_target) { my_asym++; continue; }
         }
 
-        /* === 6. Autoconvolution + integer threshold window scan === */
-        long long conv[CONV_LEN];
-        for (int k = 0; k < CONV_LEN; k++) conv[k] = 0;
-        for (int i = 0; i < D_CHILD; i++) {
-            conv[2*i] += (long long)c[i] * c[i];
-            for (int j = i+1; j < D_CHILD; j++)
-                conv[i+j] += 2LL * c[i] * c[j];
+        /* === 5b. Center convolution pre-check (ell=2) === */
+        {
+            conv_t center = 0;
+            #pragma unroll
+            for (int i = 0; i < D_CHILD / 2; i++)
+                center += (conv_t)2 * c[i] * c[D_CHILD - 1 - i];
+            /* Use conservative ell=2 threshold (W_int=0 is minimum) */
+            conv_t dyn_it2_min = (conv_t)((long long)(dyn_base * 2.0 * inv_4n
+                                * (1.0 - 4.0 * DBL_EPSILON)));
+            if (center > dyn_it2_min) { my_test++; continue; }
         }
+
+        /* === 6. Autoconvolution with inline ell=2 early exit === */
+        /* Compute prefix sums of c for dynamic W_int (needed before autoconv) */
+        int prefix_c[D_CHILD + 1];
+        prefix_c[0] = 0;
+        #pragma unroll
+        for (int i = 0; i < D_CHILD; i++)
+            prefix_c[i + 1] = prefix_c[i] + c[i];
+
+        /* Compute ell=2 dynamic threshold for early exit during autoconv */
+        conv_t dyn_it2 = (conv_t)((long long)(
+            (dyn_base + 2.0 * (double)c[1]) * 2.0 * inv_4n
+            * (1.0 - 4.0 * DBL_EPSILON)));
+
+        conv_t conv[CONV_LEN];
+        #pragma unroll
+        for (int k = 0; k < CONV_LEN; k++) conv[k] = 0;
+        int early_exit = 0;
+        /* Outer loop: do NOT unroll (early exit conflicts with unroll) */
+        for (int i = 0; i < D_CHILD; i++) {
+            conv[2*i] += (conv_t)c[i] * c[i];
+            #pragma unroll
+            for (int j = i+1; j < D_CHILD; j++)
+                conv[i+j] += (conv_t)2 * c[i] * c[j];
+            /* Check newly-completed conv values against ell=2 threshold */
+            if (conv[2*i] > dyn_it2) { early_exit = 1; break; }
+            if (i > 0 && conv[2*i - 1] > dyn_it2) { early_exit = 1; break; }
+        }
+        if (early_exit) { my_test++; continue; }
+
         /* Prefix sum */
+        #pragma unroll
         for (int k = 1; k < CONV_LEN; k++) conv[k] += conv[k-1];
 
-        /* Window scan with integer thresholds */
+        /* Window scan with dynamic per-ell integer thresholds */
         int pruned = 0;
         for (int ell = 2; ell <= D_CHILD; ell++) {
             int n_cv = ell - 1;
-            long long it = local_thresh[ell - 2];
+            /* Dynamic threshold: W_int = sum of c[k] for k in [ell/2, ell-1] */
+            int W_int = prefix_c[ell] - prefix_c[ell / 2];
+            double dyn_x = (dyn_base + 2.0 * (double)W_int) * (double)ell * inv_4n;
+            conv_t dyn_it = (conv_t)((long long)(dyn_x * (1.0 - 4.0 * DBL_EPSILON)));
             int n_windows = CONV_LEN - n_cv + 1;
             for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                 int s_hi = s_lo + n_cv - 1;
-                long long ws = conv[s_hi];
+                conv_t ws = conv[s_hi];
                 if (s_lo > 0) ws -= conv[s_lo - 1];
-                if (ws > it) { pruned = 1; break; }
+                if (ws > dyn_it) { pruned = 1; break; }
             }
             if (pruned) break;
         }
@@ -487,7 +612,7 @@ refine_prove_target_batched(
                 int n_windows = CONV_LEN - n_cv + 1;
                 for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                     int s_hi = s_lo + n_cv - 1;
-                    long long ws = conv[s_hi];
+                    conv_t ws = conv[s_hi];
                     if (s_lo > 0) ws -= conv[s_lo - 1];
                     double tv = (double)ws * inv_norm;
                     if (tv > best) best = tv;
@@ -500,6 +625,7 @@ refine_prove_target_batched(
                 if (*survivor_count < max_survivors) {
                     int slot = atomicAdd(survivor_count, 1);
                     if (slot < max_survivors) {
+                        #pragma unroll
                         for (int i = 0; i < D_CHILD; i++)
                             survivor_buf[slot * D_CHILD + i] = c[i];
                     }
@@ -507,6 +633,7 @@ refine_prove_target_batched(
             }
             if (best < my_tv) {
                 my_tv = best;
+                #pragma unroll
                 for (int i = 0; i < D_CHILD; i++) my_cfg[i] = c[i];
             }
         }
@@ -528,6 +655,7 @@ refine_prove_target_batched(
     s_test[lane] = my_test;
     s_surv[lane] = my_surv;
     s_min_tv[lane] = my_tv;
+    #pragma unroll
     for (int i = 0; i < D_CHILD; i++)
         s_cfgs[lane * D_CHILD + i] = my_cfg[i];
     __syncthreads();
@@ -540,6 +668,7 @@ refine_prove_target_batched(
             s_surv[lane] += s_surv[lane + s];
             if (s_min_tv[lane + s] < s_min_tv[lane]) {
                 s_min_tv[lane] = s_min_tv[lane + s];
+                #pragma unroll
                 for (int i = 0; i < D_CHILD; i++)
                     s_cfgs[lane * D_CHILD + i] = s_cfgs[(lane + s) * D_CHILD + i];
             }
@@ -552,6 +681,7 @@ refine_prove_target_batched(
         int a = s_asym[lane], t = s_test[lane], sv = s_surv[lane];
         double val = s_min_tv[lane];
 
+        #pragma unroll
         for (int s = 16; s > 0; s >>= 1) {
             a += __shfl_down_sync(0xFFFFFFFF, a, s);
             t += __shfl_down_sync(0xFFFFFFFF, t, s);
@@ -562,6 +692,7 @@ refine_prove_target_batched(
                 val = other_val;
                 int src_lane = lane + s;
                 if (src_lane < 32) {
+                    #pragma unroll
                     for (int i = 0; i < D_CHILD; i++)
                         s_cfgs[lane * D_CHILD + i] = s_cfgs[src_lane * D_CHILD + i];
                 }
@@ -574,6 +705,7 @@ refine_prove_target_batched(
             block_counts[blockIdx.x * 3 + 1] = (long long)t;
             block_counts[blockIdx.x * 3 + 2] = (long long)sv;
             block_min_tv[blockIdx.x] = val;
+            #pragma unroll
             for (int i = 0; i < D_CHILD; i++)
                 block_min_configs[blockIdx.x * D_CHILD + i] = s_cfgs[i];
         }

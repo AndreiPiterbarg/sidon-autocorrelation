@@ -133,13 +133,9 @@ static int refine_parents_impl(
     if (x_cap > m) x_cap = m;
     if (x_cap < 0) x_cap = 0;
 
-    /* Precompute per-ell integer thresholds for child level.
-     * With S=m: int_thresh = thresh * m^2 * ell / (4 * n_half_child). */
-    long long h_int_thresh[D_CHILD - 1];
-    for (int ell = 2; ell <= D_CHILD; ell++) {
-        double x = thresh * (double)m * (double)m * (double)ell / (4.0 * (double)n_half_child);
-        h_int_thresh[ell - 2] = (long long)(x * (1.0 - 4.0 * DBL_EPSILON));
-    }
+    /* int32/int64 dispatch: use int32 when S^2 fits comfortably in int32.
+     * For m=50, S=50, S^2=2500 — easily fits. Saves 47 regs for D=24. */
+    bool use_int64 = ((long long)S_child * S_child > 2000000000LL);
 
     /* Sort parents by refinement count ascending — O(n log n) */
     long long* ref_counts = (long long*)malloc(num_parents * sizeof(long long));
@@ -159,12 +155,6 @@ static int refine_parents_impl(
                                                   REFINE_BLOCK_SIZE_48;
     int max_grid_size = 108 * 32;  /* A100: 108 SMs * 32 blocks/SM */
 
-    /* Integer thresholds (shared by all kernels) */
-    long long* d_int_thresh = NULL;
-    CUDA_CHECK(cudaMalloc(&d_int_thresh, (D_CHILD - 1) * sizeof(long long)));
-    CUDA_CHECK(cudaMemcpy(d_int_thresh, h_int_thresh,
-        (D_CHILD - 1) * sizeof(long long), cudaMemcpyHostToDevice));
-
     /* Per-block output buffers (reused across all launches) */
     long long* d_block_counts = NULL;
     double* d_block_min_tv = NULL;
@@ -173,20 +163,33 @@ static int refine_parents_impl(
     CUDA_CHECK(cudaMalloc(&d_block_min_tv, max_grid_size * sizeof(double)));
     CUDA_CHECK(cudaMalloc(&d_block_min_configs, (long long)max_grid_size * D_CHILD * sizeof(int)));
 
-    /* Batched kernel buffers: parent configs + prefix sums */
+    /* Batched kernel buffers: double-buffered for CUDA stream overlap.
+     * Buffer 0 and 1 alternate: while kernel runs on buf[cur], we can
+     * upload the next batch to buf[1-cur] on a different stream. */
     int max_batch_parents = MAX_BATCH_PARENTS;
-    int* d_batch_parents = NULL;
-    long long* d_batch_prefix = NULL;
-    CUDA_CHECK(cudaMalloc(&d_batch_parents,
-        (long long)max_batch_parents * d_parent * sizeof(int)));
-    CUDA_CHECK(cudaMalloc(&d_batch_prefix,
-        ((long long)max_batch_parents + 1) * sizeof(long long)));
+    int* d_batch_parents[2] = {NULL, NULL};
+    long long* d_batch_prefix[2] = {NULL, NULL};
+    for (int buf = 0; buf < 2; buf++) {
+        CUDA_CHECK(cudaMalloc(&d_batch_parents[buf],
+            (long long)max_batch_parents * d_parent * sizeof(int)));
+        CUDA_CHECK(cudaMalloc(&d_batch_prefix[buf],
+            ((long long)max_batch_parents + 1) * sizeof(long long)));
+    }
 
-    /* Host staging buffers for building batches */
-    int* h_batch_parents = (int*)malloc(
-        (long long)max_batch_parents * d_parent * sizeof(int));
-    long long* h_batch_prefix = (long long*)malloc(
-        ((long long)max_batch_parents + 1) * sizeof(long long));
+    /* Host staging buffers for building batches (double-buffered) */
+    int* h_batch_parents[2];
+    long long* h_batch_prefix[2];
+    for (int buf = 0; buf < 2; buf++) {
+        h_batch_parents[buf] = (int*)malloc(
+            (long long)max_batch_parents * d_parent * sizeof(int));
+        h_batch_prefix[buf] = (long long*)malloc(
+            ((long long)max_batch_parents + 1) * sizeof(long long));
+    }
+
+    /* CUDA streams for overlapped execution */
+    cudaStream_t streams[2];
+    CUDA_CHECK(cudaStreamCreate(&streams[0]));
+    CUDA_CHECK(cudaStreamCreate(&streams[1]));
 
     /* Single-parent buffers (for large-parent fallback) */
     int* d_parent_B = NULL;
@@ -282,18 +285,21 @@ static int refine_parents_impl(
                     (double)(chunk + block_size - 1) / block_size, (double)max_grid_size);
                 if (grid_size < 1) grid_size = 1;
 
-                refine_prove_target<D_CHILD><<<grid_size, block_size>>>(
-                    d_parent_B, d_splits, d_parent,
-                    S_child, n_half_child, m,
-                    c_target, thresh,
-                    inv_m_f, thresh_f, margin_f, asym_limit_f,
-                    d_int_thresh,
-                    processed, chunk,
-                    d_block_counts, d_block_min_tv, d_block_min_configs,
-                    do_extract ? d_survivor_buf : NULL,
-                    do_extract ? d_survivor_count : NULL,
-                    do_extract ? max_survivors : 0,
-                    x_cap);
+                #define LAUNCH_REFINE_SINGLE(USE64) \
+                    refine_prove_target<D_CHILD, USE64><<<grid_size, block_size>>>( \
+                        d_parent_B, d_splits, d_parent, \
+                        S_child, n_half_child, m, \
+                        c_target, thresh, \
+                        inv_m_f, thresh_f, margin_f, asym_limit_f, \
+                        processed, chunk, \
+                        d_block_counts, d_block_min_tv, d_block_min_configs, \
+                        do_extract ? d_survivor_buf : NULL, \
+                        do_extract ? d_survivor_count : NULL, \
+                        do_extract ? max_survivors : 0, \
+                        x_cap)
+                if (use_int64) { LAUNCH_REFINE_SINGLE(true); }
+                else           { LAUNCH_REFINE_SINGLE(false); }
+                #undef LAUNCH_REFINE_SINGLE
 
                 CUDA_CHECK(cudaGetLastError());
                 CUDA_CHECK(cudaDeviceSynchronize());
@@ -325,80 +331,140 @@ static int refine_parents_impl(
 
         } else {
             /* ====================================================
-             * SMALL PARENTS: batched approach
+             * SMALL PARENTS: batched approach with CUDA streams.
              * Group consecutive sorted parents into one kernel launch.
              * Binary search in kernel maps each thread to its parent.
+             *
+             * Pipeline: while kernel runs on stream[cur_buf],
+             * build next batch on CPU into buf[1-cur_buf].
              * ==================================================== */
-            int batch_count = 0;
-            long long batch_work = 0;
-            h_batch_prefix[0] = 0;
+            int cur_buf = 0;
+            int have_pending = 0;  /* is there a kernel in flight? */
+            int pending_grid = 0;
+            long long pending_work = 0;
+            int pending_count = 0;
+            int build_p_idx = p_idx;  /* separate index for batch building */
 
-            while (p_idx + batch_count < num_parents &&
-                   batch_count < max_batch_parents) {
-                int pp = parent_order[p_idx + batch_count];
-                long long nn = ref_counts[pp];
-                if (nn > REFINE_CHUNK_SIZE) break;  /* hit a large parent */
-                if (batch_work + nn > REFINE_CHUNK_SIZE) break;  /* batch full */
+            while (build_p_idx < num_parents && !timed_out) {
+                /* --- Build next batch into buf[cur_buf] --- */
+                int batch_count = 0;
+                long long batch_work = 0;
+                h_batch_prefix[cur_buf][0] = 0;
 
-                /* Copy parent config into batch staging buffer */
-                memcpy(h_batch_parents + (long long)batch_count * d_parent,
-                       parent_configs + pp * d_parent,
-                       d_parent * sizeof(int));
+                while (build_p_idx + batch_count < num_parents &&
+                       batch_count < max_batch_parents) {
+                    int pp = parent_order[build_p_idx + batch_count];
+                    long long nn = ref_counts[pp];
+                    if (nn > REFINE_CHUNK_SIZE) break;  /* hit a large parent */
+                    if (batch_work + nn > REFINE_CHUNK_SIZE) break;  /* batch full */
 
-                batch_work += nn;
-                batch_count++;
-                h_batch_prefix[batch_count] = batch_work;
+                    memcpy(h_batch_parents[cur_buf] + (long long)batch_count * d_parent,
+                           parent_configs + pp * d_parent,
+                           d_parent * sizeof(int));
+
+                    batch_work += nn;
+                    batch_count++;
+                    h_batch_prefix[cur_buf][batch_count] = batch_work;
+                }
+
+                if (batch_count == 0) {
+                    /* No more small parents to batch */
+                    break;
+                }
+                build_p_idx += batch_count;  /* advance build index past this batch */
+
+                /* --- Wait for previous kernel if one is in flight --- */
+                if (have_pending) {
+                    int prev_buf = 1 - cur_buf;
+                    CUDA_CHECK(cudaStreamSynchronize(streams[prev_buf]));
+
+                    /* Download + reduce results from previous batch */
+                    CUDA_CHECK(cudaMemcpy(h_counts, d_block_counts,
+                        pending_grid * 3 * sizeof(long long), cudaMemcpyDeviceToHost));
+                    CUDA_CHECK(cudaMemcpy(h_min_tvs, d_block_min_tv,
+                        pending_grid * sizeof(double), cudaMemcpyDeviceToHost));
+                    CUDA_CHECK(cudaMemcpy(h_min_cfgs, d_block_min_configs,
+                        pending_grid * D_CHILD * sizeof(int), cudaMemcpyDeviceToHost));
+
+                    reduce_block_results<D_CHILD>(h_counts, h_min_tvs, h_min_cfgs,
+                        pending_grid, total_asym, total_test, total_surv,
+                        global_min_tv, global_min_cfg);
+
+                    cumulative_refs += pending_work;
+                    p_idx += pending_count;
+                    have_pending = 0;
+                }
+
+                /* --- Upload current batch + launch kernel on streams[cur_buf] --- */
+                CUDA_CHECK(cudaMemcpyAsync(d_batch_parents[cur_buf],
+                    h_batch_parents[cur_buf],
+                    (long long)batch_count * d_parent * sizeof(int),
+                    cudaMemcpyHostToDevice, streams[cur_buf]));
+                CUDA_CHECK(cudaMemcpyAsync(d_batch_prefix[cur_buf],
+                    h_batch_prefix[cur_buf],
+                    (batch_count + 1) * sizeof(long long),
+                    cudaMemcpyHostToDevice, streams[cur_buf]));
+
+                int grid_size = (int)fmin(
+                    (double)(batch_work + block_size - 1) / block_size,
+                    (double)max_grid_size);
+                if (grid_size < 1) grid_size = 1;
+
+                #define LAUNCH_REFINE_BATCH(USE64) \
+                    refine_prove_target_batched<D_CHILD, USE64> \
+                        <<<grid_size, block_size, 0, streams[cur_buf]>>>( \
+                        d_batch_parents[cur_buf], d_batch_prefix[cur_buf], \
+                        batch_count, \
+                        S_child, n_half_child, m, \
+                        c_target, thresh, \
+                        inv_m_f, thresh_f, margin_f, asym_limit_f, \
+                        batch_work, \
+                        d_block_counts, d_block_min_tv, d_block_min_configs, \
+                        do_extract ? d_survivor_buf : NULL, \
+                        do_extract ? d_survivor_count : NULL, \
+                        do_extract ? max_survivors : 0, \
+                        x_cap)
+                if (use_int64) { LAUNCH_REFINE_BATCH(true); }
+                else           { LAUNCH_REFINE_BATCH(false); }
+                #undef LAUNCH_REFINE_BATCH
+
+                CUDA_CHECK(cudaGetLastError());
+
+                /* Record pending state and swap buffers */
+                have_pending = 1;
+                pending_grid = grid_size;
+                pending_work = batch_work;
+                pending_count = batch_count;
+                cur_buf = 1 - cur_buf;
+
+                /* Check time budget while we can still stop */
+                if (time_budget_sec > 0) {
+                    double elapsed_check = (double)(clock() - start_time) / CLOCKS_PER_SEC;
+                    if (elapsed_check > time_budget_sec) {
+                        timed_out = 1;
+                    }
+                }
             }
 
-            if (batch_count == 0) {
-                /* Edge case: single parent that somehow wasn't caught above */
-                p_idx++;
-                continue;
+            /* --- Drain the last pending kernel --- */
+            if (have_pending) {
+                int prev_buf = 1 - cur_buf;
+                CUDA_CHECK(cudaStreamSynchronize(streams[prev_buf]));
+
+                CUDA_CHECK(cudaMemcpy(h_counts, d_block_counts,
+                    pending_grid * 3 * sizeof(long long), cudaMemcpyDeviceToHost));
+                CUDA_CHECK(cudaMemcpy(h_min_tvs, d_block_min_tv,
+                    pending_grid * sizeof(double), cudaMemcpyDeviceToHost));
+                CUDA_CHECK(cudaMemcpy(h_min_cfgs, d_block_min_configs,
+                    pending_grid * D_CHILD * sizeof(int), cudaMemcpyDeviceToHost));
+
+                reduce_block_results<D_CHILD>(h_counts, h_min_tvs, h_min_cfgs,
+                    pending_grid, total_asym, total_test, total_surv,
+                    global_min_tv, global_min_cfg);
+
+                cumulative_refs += pending_work;
+                p_idx += pending_count;
             }
-
-            /* Upload batch data to GPU */
-            CUDA_CHECK(cudaMemcpy(d_batch_parents, h_batch_parents,
-                (long long)batch_count * d_parent * sizeof(int),
-                cudaMemcpyHostToDevice));
-            CUDA_CHECK(cudaMemcpy(d_batch_prefix, h_batch_prefix,
-                (batch_count + 1) * sizeof(long long),
-                cudaMemcpyHostToDevice));
-
-            /* Launch batched kernel */
-            int grid_size = (int)fmin(
-                (double)(batch_work + block_size - 1) / block_size,
-                (double)max_grid_size);
-            if (grid_size < 1) grid_size = 1;
-
-            refine_prove_target_batched<D_CHILD><<<grid_size, block_size>>>(
-                d_batch_parents, d_batch_prefix, batch_count,
-                S_child, n_half_child, m,
-                c_target, thresh,
-                inv_m_f, thresh_f, margin_f, asym_limit_f,
-                d_int_thresh, batch_work,
-                d_block_counts, d_block_min_tv, d_block_min_configs,
-                do_extract ? d_survivor_buf : NULL,
-                do_extract ? d_survivor_count : NULL,
-                do_extract ? max_survivors : 0,
-                x_cap);
-
-            CUDA_CHECK(cudaGetLastError());
-            CUDA_CHECK(cudaDeviceSynchronize());
-
-            /* Reduce per-block results */
-            CUDA_CHECK(cudaMemcpy(h_counts, d_block_counts,
-                grid_size * 3 * sizeof(long long), cudaMemcpyDeviceToHost));
-            CUDA_CHECK(cudaMemcpy(h_min_tvs, d_block_min_tv,
-                grid_size * sizeof(double), cudaMemcpyDeviceToHost));
-            CUDA_CHECK(cudaMemcpy(h_min_cfgs, d_block_min_configs,
-                grid_size * D_CHILD * sizeof(int), cudaMemcpyDeviceToHost));
-
-            reduce_block_results<D_CHILD>(h_counts, h_min_tvs, h_min_cfgs,
-                grid_size, total_asym, total_test, total_surv,
-                global_min_tv, global_min_cfg);
-
-            cumulative_refs += batch_work;
-            p_idx += batch_count;
         }
 
         if (timed_out) break;
@@ -451,18 +517,21 @@ static int refine_parents_impl(
     if (out_n_extracted) *out_n_extracted = n_ext;
 
     /* Cleanup */
-    cudaFree(d_int_thresh);
     cudaFree(d_block_counts);
     cudaFree(d_block_min_tv);
     cudaFree(d_block_min_configs);
-    cudaFree(d_batch_parents);
-    cudaFree(d_batch_prefix);
+    for (int buf = 0; buf < 2; buf++) {
+        cudaFree(d_batch_parents[buf]);
+        cudaFree(d_batch_prefix[buf]);
+        free(h_batch_parents[buf]);
+        free(h_batch_prefix[buf]);
+    }
+    cudaStreamDestroy(streams[0]);
+    cudaStreamDestroy(streams[1]);
     cudaFree(d_parent_B);
     cudaFree(d_splits);
     if (d_survivor_buf) cudaFree(d_survivor_buf);
     if (d_survivor_count) cudaFree(d_survivor_count);
-    free(h_batch_parents);
-    free(h_batch_prefix);
     free(h_counts);
     free(h_min_tvs);
     free(h_min_cfgs);

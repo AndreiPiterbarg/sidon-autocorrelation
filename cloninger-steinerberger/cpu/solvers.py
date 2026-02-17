@@ -598,6 +598,7 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
     # Asymmetry bound applies directly to c (not through discretization),
     # so compare against c_target, not prune_target.
     c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
+    inv_m_sq = inv_m * inv_m
 
     thread_survivors = np.zeros(n_c0, dtype=np.int64)
     thread_asym = np.zeros(n_c0, dtype=np.int64)
@@ -615,6 +616,7 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
         c = np.zeros(d, dtype=np.int32)
         rem = np.zeros(d, dtype=np.int32)
         conv = np.zeros(conv_len, dtype=np.float64)
+        prefix_c_arr = np.zeros(d + 1, dtype=np.int64)
 
         c[0] = c0
 
@@ -636,7 +638,9 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     tv = ws * inv_norm
                     if tv > best:
                         best = tv
-                if best > thresh:
+                # Dynamic threshold for ell=2: W_int = c[1]
+                dyn_thresh_d2 = c_target + (1.0 + 2.0 * c[1]) * inv_m_sq + fp_margin
+                if best > dyn_thresh_d2:
                     local_test += 1
                 else:
                     local_surv += 1
@@ -716,11 +720,18 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     for k in range(1, conv_len):
                         conv[k] += conv[k - 1]
 
+                    # Compute prefix sums of c for dynamic W_int
+                    prefix_c_arr[0] = 0
+                    for i in range(d):
+                        prefix_c_arr[i + 1] = prefix_c_arr[i] + c[i]
+
                     best = 0.0
-                    done = False
+                    pruned = False
                     for ell in range(2, d + 1):
-                        if done:
+                        if pruned:
                             break
+                        W_int = prefix_c_arr[ell] - prefix_c_arr[ell // 2]
+                        dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                         n_cv = ell - 1
                         inv_norm = 1.0 / (4.0 * n_half * ell)
                         for s_lo in range(conv_len - n_cv + 1):
@@ -731,11 +742,11 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                             tv = ws * inv_norm
                             if tv > best:
                                 best = tv
-                                if best > thresh:
-                                    done = True
-                                    break
+                            if tv > dyn_thresh:
+                                pruned = True
+                                break
 
-                    if best > thresh:
+                    if pruned:
                         local_test += 1
                     else:
                         local_surv += 1
@@ -838,6 +849,7 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
     # Asymmetry bound applies directly to c (not through discretization),
     # so compare against c_target, not prune_target.
     c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
+    inv_m_sq = inv_m * inv_m
 
     thread_survivors = np.zeros(n_c0, dtype=np.int64)
     thread_asym = np.zeros(n_c0, dtype=np.int64)
@@ -933,10 +945,18 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                     conv[k] += conv[k - 1]
 
                 best = 0.0
-                done = False
+                pruned = False
                 for ell in range(2, d + 1):
-                    if done:
+                    if pruned:
                         break
+                    # Dynamic W_int = sum c[k] for k in [ell//2, ell-1]
+                    if ell == 2:
+                        W_int = c1
+                    elif ell == 3:
+                        W_int = c1 + c2
+                    else:
+                        W_int = c2 + c3
+                    dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                     n_cv = ell - 1
                     inv_norm = 1.0 / (4.0 * n_half * ell)
                     for s_lo in range(conv_len - n_cv + 1):
@@ -947,11 +967,11 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                         tv = ws * inv_norm
                         if tv > best:
                             best = tv
-                            if best > thresh:
-                                done = True
-                                break
+                        if tv > dyn_thresh:
+                            pruned = True
+                            break
 
-                if best > thresh:
+                if pruned:
                     local_test += 1
                 else:
                     local_surv += 1
@@ -988,6 +1008,7 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
     # Asymmetry bound applies directly to c (not through discretization),
     # so compare against c_target, not prune_target.
     c_target = prune_target - 2.0 * inv_m - inv_m * inv_m
+    inv_m_sq = inv_m * inv_m
 
     thread_survivors = np.zeros(n_c0, dtype=np.int64)
     thread_asym = np.zeros(n_c0, dtype=np.int64)
@@ -1085,10 +1106,22 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                             conv[k] += conv[k - 1]
 
                         best = 0.0
-                        done = False
+                        pruned = False
                         for ell in range(2, d + 1):
-                            if done:
+                            if pruned:
                                 break
+                            # Dynamic W_int = sum c[k] for k in [ell//2, ell-1]
+                            if ell == 2:
+                                W_int = c1
+                            elif ell == 3:
+                                W_int = c1 + c2
+                            elif ell == 4:
+                                W_int = c2 + c3
+                            elif ell == 5:
+                                W_int = c2 + c3 + c4
+                            else:
+                                W_int = c3 + c4 + c5
+                            dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                             n_cv = ell - 1
                             inv_norm = 1.0 / (4.0 * n_half * ell)
                             for s_lo in range(conv_len - n_cv + 1):
@@ -1099,11 +1132,11 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                                 tv = ws * inv_norm
                                 if tv > best:
                                     best = tv
-                                    if best > thresh:
-                                        done = True
-                                        break
+                                if tv > dyn_thresh:
+                                    pruned = True
+                                    break
 
-                        if best > thresh:
+                        if pruned:
                             local_test += 1
                         else:
                             local_surv += 1

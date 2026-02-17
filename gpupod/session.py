@@ -130,7 +130,7 @@ class Session:
             sys.exit(1)
         build_cuda(self.ssh_host, self.ssh_port)
 
-    def run(self, script=None, args=""):
+    def run(self, script=None, args="", auto_teardown=False):
         """Run a GPU job on the pod."""
         from .remote import run_script
 
@@ -158,6 +158,11 @@ class Session:
 
         # Print updated budget
         print(self.budget.status_line())
+
+        if auto_teardown:
+            print("\n=== AUTO-TEARDOWN ===")
+            self.teardown()
+
         return rc
 
     def status(self):
@@ -191,10 +196,11 @@ class Session:
 
         print(self.budget.status_line())
 
-    def launch(self, script=None, args=""):
+    def launch(self, script=None, args="", auto_teardown=False):
         """Launch a GPU job in a detached tmux session (survives SSH disconnect).
 
         Use 'logs' to check output, 'fetch' to pull results.
+        If auto_teardown=True, the pod self-terminates after the job finishes.
         """
         from .remote import launch_script, check_job_status
 
@@ -215,20 +221,43 @@ class Session:
             print("Kill it first with: gpupod ssh then 'tmux kill-session -t job'")
             sys.exit(1)
 
-        print(f"Launching detached: {script} {args}")
-        rc = launch_script(self.ssh_host, self.ssh_port, script=script, args=args)
+        # Validate auto-teardown requirements
+        api_key = None
+        if auto_teardown:
+            from .config import RUNPOD_API_KEY
+            if not RUNPOD_API_KEY or not self.pod_id:
+                print("WARNING: --auto-teardown requires RUNPOD_API_KEY and active pod.")
+                print("Proceeding WITHOUT auto-teardown.")
+                auto_teardown = False
+            else:
+                api_key = RUNPOD_API_KEY
+
+        if auto_teardown:
+            print(f"Launching detached (AUTO-TEARDOWN): {script} {args}")
+        else:
+            print(f"Launching detached: {script} {args}")
+        rc = launch_script(self.ssh_host, self.ssh_port, script=script, args=args,
+                           auto_teardown=auto_teardown, api_key=api_key,
+                           pod_id=self.pod_id)
         if rc != 0:
             print(f"Failed to launch (exit code {rc})")
             sys.exit(1)
 
         print(f"\nJob launched in background on pod.")
         print(f"You can now close your laptop. The job keeps running.")
-        print(f"")
-        print(f"  gpupod logs        # see last 80 lines")
-        print(f"  gpupod logs -f     # follow live (Ctrl-C to detach)")
-        print(f"  gpupod status      # check pod + job state")
-        print(f"  gpupod fetch       # pull results to local data/")
-        print(f"  gpupod teardown    # stop pod + collect results")
+        if auto_teardown:
+            print(f"\n  *** Pod will SELF-TERMINATE when the job finishes ***")
+            print(f"  *** Fetch results BEFORE that, or they will be lost ***")
+            print(f"")
+            print(f"  gpupod logs -f     # follow live (Ctrl-C to detach)")
+            print(f"  gpupod fetch       # pull results to local data/")
+        else:
+            print(f"")
+            print(f"  gpupod logs        # see last 80 lines")
+            print(f"  gpupod logs -f     # follow live (Ctrl-C to detach)")
+            print(f"  gpupod status      # check pod + job state")
+            print(f"  gpupod fetch       # pull results to local data/")
+            print(f"  gpupod teardown    # stop pod + collect results")
 
     def logs(self, follow=False, lines=80):
         """Show output from a launched job."""

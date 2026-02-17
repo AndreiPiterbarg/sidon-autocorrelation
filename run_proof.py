@@ -792,7 +792,7 @@ def _print_summary(results, total_elapsed, dev):
     for lvl_info in results['levels']:
         lvl = lvl_info['level']
         typ = lvl_info['type']
-        surv = lvl_info['n_survivors']
+        surv = lvl_info.get('n_survivors', lvl_info.get('num_parents', '?'))
         t = lvl_info['elapsed']
         log(f"    Level {lvl} ({typ}): {fmt_count(surv)} survivors, {t:.1f}s")
 
