@@ -205,8 +205,13 @@ static int refine_parents_impl(
         size_t gpu_free = 0, gpu_total = 0;
         cudaMemGetInfo(&gpu_free, &gpu_total);
         long long bytes_per_surv = (long long)D_CHILD * sizeof(int);
-        /* Use 90% of remaining GPU memory for survivor buffer */
-        long long max_from_gpu = (long long)((double)gpu_free * 0.9) / bytes_per_surv;
+        /* Use at most 50% of remaining GPU memory for survivor buffer.
+         * The kernel needs headroom for execution (stack, local memory,
+         * CUDA runtime bookkeeping).  Previous 90% caused illegal memory
+         * access errors when the kernel ran out of memory. */
+        long long max_from_gpu = (long long)((double)gpu_free * 0.5) / bytes_per_surv;
+        /* Hard cap: 200M survivors (far more than any realistic run needs) */
+        if (max_from_gpu > 200000000LL) max_from_gpu = 200000000LL;
         if (max_from_gpu < (long long)max_survivors) {
             fprintf(stderr, "refine_parents: GPU memory limits survivors to %lld "
                     "(requested %d, %.1f GB free)\n",

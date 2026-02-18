@@ -195,15 +195,21 @@ def max_survivors_for_dim(d, reserve_gb=0.5):
 
     GPU reserve is small (~0.5 GB for working buffers); the C code
     further clamps via cudaMemGetInfo after allocating actual working
-    buffers.  Capped at 2B (int32 atomicAdd limit).
+    buffers.  Capped at 200M to avoid consuming nearly all GPU memory
+    (the kernel needs headroom for execution).
     """
     per_survivor = d * 4  # d ints, 4 bytes each
 
-    # GPU capacity
+    # Hard cap: 200M survivors is far more than any realistic run needs
+    # (typical: 1-10M survivors). Avoids allocating 70+ GB GPU buffers
+    # that leave insufficient memory for kernel execution.
+    HARD_CAP = 200_000_000
+
+    # GPU capacity (use at most 50% of free GPU memory)
     free_gpu = get_free_memory()
     if free_gpu > 0:
         usable_gpu = max(free_gpu - int(reserve_gb * 1024**3), 0)
-        gpu_cap = usable_gpu // per_survivor if usable_gpu > 0 else 10_000_000
+        gpu_cap = int(usable_gpu * 0.5) // per_survivor if usable_gpu > 0 else 10_000_000
     else:
         gpu_cap = 10_000_000  # fallback
 
@@ -226,8 +232,8 @@ def max_survivors_for_dim(d, reserve_gb=0.5):
     else:
         host_cap = gpu_cap  # can't measure host RAM; assume >= GPU
 
-    n = min(gpu_cap, host_cap)
-    return max(min(n, 2_000_000_000), 1)  # int32 atomic limit
+    n = min(gpu_cap, host_cap, HARD_CAP)
+    return max(n, 1)
 
 
 def find_best_bound_direct(d, S, n_half, m, init_min_eff):

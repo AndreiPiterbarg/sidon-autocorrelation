@@ -284,9 +284,10 @@ refine_prove_target(
                 if (*survivor_count < max_survivors) {
                     int slot = atomicAdd(survivor_count, 1);
                     if (slot < max_survivors) {
+                        long long base = (long long)slot * D_CHILD;
                         #pragma unroll
                         for (int i = 0; i < D_CHILD; i++)
-                            survivor_buf[slot * D_CHILD + i] = c[i];
+                            survivor_buf[base + i] = c[i];
                     }
                 }
             }
@@ -625,9 +626,10 @@ refine_prove_target_batched(
                 if (*survivor_count < max_survivors) {
                     int slot = atomicAdd(survivor_count, 1);
                     if (slot < max_survivors) {
+                        long long base = (long long)slot * D_CHILD;
                         #pragma unroll
                         for (int i = 0; i < D_CHILD; i++)
-                            survivor_buf[slot * D_CHILD + i] = c[i];
+                            survivor_buf[base + i] = c[i];
                     }
                 }
             }
