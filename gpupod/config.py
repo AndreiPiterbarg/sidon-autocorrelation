@@ -19,7 +19,7 @@ CLOUD_TYPE = "SECURE"  # SECURE = on-demand (not spot)
 
 # Cost tracking
 COST_PER_HOUR = 1.49  # USD/hr for A100 SXM 80GB on-demand
-BUDGET_LIMIT = 10.0   # USD per session
+BUDGET_LIMIT = 25.0   # USD per session
 BUDGET_WARN_PCT = 0.80  # Warn at 80% of budget
 
 # Paths

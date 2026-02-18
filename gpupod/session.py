@@ -160,8 +160,13 @@ class Session:
         print(self.budget.status_line())
 
         if auto_teardown:
-            print("\n=== AUTO-TEARDOWN ===")
-            self.teardown()
+            if rc == 255:
+                print("\nSSH connection dropped (exit 255) — job may still be running.")
+                print("Skipping auto-teardown to avoid killing an active GPU job.")
+                print("Use 'gpupod status' to check, or 'gpupod teardown' manually.")
+            else:
+                print("\n=== AUTO-TEARDOWN ===")
+                self.teardown()
 
         return rc
 

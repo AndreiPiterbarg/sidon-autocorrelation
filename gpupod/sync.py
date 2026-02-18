@@ -4,10 +4,11 @@ Uses bash -c to run the full tar|ssh pipeline, ensuring compatibility
 with Windows Git Bash (which provides GNU tar and ssh).
 """
 import os
+import platform
 import shutil
 import subprocess
 
-from .config import PROJECT_ROOT, REMOTE_WORKDIR, SSH_OPTIONS_BASH, SYNC_EXCLUDES
+from .config import PROJECT_ROOT, REMOTE_WORKDIR, SSH_OPTIONS_BASH, SYNC_EXCLUDES, _to_msys_path
 
 
 def _find_bash():
@@ -95,11 +96,14 @@ def collect_results(ssh_host, ssh_port, remote_path=None, local_path=None):
     # Ensure local data dir exists
     os.makedirs(local_path, exist_ok=True)
 
+    # Convert Windows path to MSYS path for Git Bash tar
+    tar_local_path = _to_msys_path(local_path) if platform.system() == "Windows" else local_path
+
     # Reverse tar-pipe: ssh tar | local tar
     pipeline = (
         f"ssh -p {ssh_port} {ssh_opts} root@{ssh_host} "
         f"'tar cf - -C {remote_path} .' | "
-        f"tar xf - -C '{local_path}'"
+        f"tar xf - -C '{tar_local_path}'"
     )
 
     result = _run_bash(pipeline)
