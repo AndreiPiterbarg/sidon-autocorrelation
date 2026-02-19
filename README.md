@@ -57,9 +57,12 @@ sidon-autocorrelation/
 ## Running
 
 ```bash
-python -m venv .venv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+
+uv venv .venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Run the branch-and-prune demo
 python cloninger-steinerberger/run.py
@@ -67,6 +70,17 @@ python cloninger-steinerberger/run.py
 # Run tests
 pytest tests/ -v
 ```
+
+## Prime Intellect Deployment (A100 + uv)
+
+For full pod provisioning + on-pod execution steps, see:
+
+- `docs/prime_intellect_runbook.md`
+
+Default GPU recommendation in that runbook:
+
+- `A100 (SXM4)` by default
+- `A100 (PCIE)` fallback when availability is better
 
 ## Context
 
