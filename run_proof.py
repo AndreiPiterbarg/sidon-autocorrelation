@@ -39,7 +39,7 @@ from pruning import correction, count_compositions, asymmetry_threshold
 
 
 # ---------- Configuration ----------
-TOTAL_BUDGET_S = 36000      # 10h for multi-level runs ($14.90 on A100)
+TOTAL_BUDGET_S = 54000      # 15h for multi-level runs
 WARMUP_RESERVE_S = 120      # time for warmup phase
 CHECKPOINT_DIR = 'data'
 
