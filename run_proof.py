@@ -115,6 +115,9 @@ def main():
     results = {
         "timestamp": timestamp,
         "algorithm": "Cloninger-Steinerberger hierarchical branch-and-prune",
+        "strict_fail_closed": True,
+        "status": "inconclusive",
+        "inconclusive_reason": "run_in_progress",
         "parameters": {
             "c_target": c_target,
             "m": m,
@@ -142,6 +145,7 @@ def main():
     log(f"  asymmetry  = sqrt(c_target/2) = {asym_thresh:.6f}")
     log(f"  levels     = n in {level_schedule} (d in {[2*n for n in level_schedule]})")
     log(f"  time budget = {time_budget:.0f}s")
+    log(f"  mode       = strict fail-closed")
     log("")
 
     # --- GPU check ---
@@ -155,6 +159,24 @@ def main():
 
     def remaining():
         return time_budget - (time.time() - t_start)
+
+    def _set_status(status, reason=None):
+        results["status"] = status
+        results["inconclusive_reason"] = reason
+
+    def _fail_closed(reason, n_remaining=None):
+        log(f"  FATAL INCONCLUSIVE [{reason}]")
+        _set_status("inconclusive", reason)
+        results["proven"] = False
+        results["proven_bound"] = None
+        if n_remaining is not None:
+            results["remaining_survivors"] = n_remaining
+        try:
+            save_results(results, out_path)
+        except OSError as e:
+            log(f"  WARNING: Results save failed during fail-closed: {e}")
+        _print_summary(results, time.time() - t_start, dev)
+        sys.exit(2)
 
     # ================================================================
     #  PHASE A — Warmup (quick validation run)
@@ -274,10 +296,15 @@ def main():
 
     # Resume from checkpoint if requested
     if args.resume:
-        start_level, survivors = _try_resume(checkpoint_dir, c_target, m, n_start)
-        if survivors is not None:
+        start_level, survivors, survivor_file = _try_resume(checkpoint_dir, c_target, m, n_start)
+        if survivor_file is not None:
+            log(f"Resumed from level {start_level - 1} checkpoint "
+                f"(survivors on disk: {survivor_file})")
+        elif survivors is not None:
             log(f"Resumed from level {start_level - 1} checkpoint "
                 f"({fmt_count(len(survivors))} survivors)")
+        else:
+            log("No compatible checkpoint found to resume.")
 
     for level in range(start_level, max_levels):
         n_half = n_start * (2 ** level)
@@ -285,8 +312,7 @@ def main():
 
         time_left = remaining()
         if time_left <= 30:
-            log(f"Time budget exhausted before level {level}. Stopping.")
-            break
+            _fail_closed(f"time_budget_exhausted_before_level_{level}")
 
         log("")
         log(f"--- Level {level}: n={n_half}, d={d} bins ---")
@@ -320,10 +346,12 @@ def main():
             n_ext = result['stats'].get('n_extracted', 0)
             survivor_file = result.get('survivor_file', None)
 
-            if not use_streamed and result['n_survivors'] > 0 and n_ext < result['n_survivors']:
-                log(f"  WARNING: Buffer overflow — only {fmt_count(n_ext)} of "
-                    f"{fmt_count(result['n_survivors'])} survivors extracted")
-                log(f"  Proof may be incomplete at this level.")
+            if result['n_survivors'] > 0 and n_ext < result['n_survivors']:
+                _fail_closed("base_extraction_truncated",
+                             n_remaining=result['n_survivors'])
+            if use_streamed and result['n_survivors'] > 0 and not survivor_file:
+                _fail_closed("base_streamed_missing_survivor_file",
+                             n_remaining=result['n_survivors'])
 
             level_elapsed = time.time() - t_level
             n_survived = result['n_survivors']
@@ -358,6 +386,7 @@ def main():
                 results["levels"].append(level_info)
                 results["proven"] = True
                 results["proven_bound"] = c_target
+                _set_status("proven", None)
                 try:
                     save_results(results, out_path)
                 except OSError as e:
@@ -402,19 +431,7 @@ def main():
                 num_parents = file_size // per_surv
             else:
                 if survivors is None or len(survivors) == 0:
-                    log(f"  No survivors to refine — proof complete!")
-                    results["levels"].append({
-                        "level": level, "n_half": n_half, "d": d,
-                        "type": "refinement", "n_survivors": 0, "elapsed": 0,
-                    })
-                    results["proven"] = True
-                    results["proven_bound"] = c_target
-                    try:
-                        save_results(results, out_path)
-                    except OSError as e:
-                        log(f"  WARNING: Results save failed: {e}")
-                    _print_summary(results, time.time() - t_start, dev)
-                    return
+                    _fail_closed("empty_survivor_set_without_completion")
                 d_parent = d // 2
                 num_parents = len(survivors)
 
@@ -534,8 +551,7 @@ def main():
                     save_results(results, out_path)
                 except OSError as e:
                     log(f"  WARNING: Results save failed: {e}")
-                _print_summary(results, time.time() - t_start, dev)
-                return
+                _fail_closed("refinement_aborted_infeasible", n_remaining=num_parents)
             elif est_refine_secs > remaining():
                 log(f"  WARNING: estimated {est_refine_secs/3600:.1f} hrs exceeds "
                     f"budget {remaining()/3600:.1f} hrs — proceeding with --force")
@@ -576,10 +592,16 @@ def main():
                         max_survivors=ref_buf_size,
                         time_budget_sec=batch_time_budget)
 
+                    batch_total_survivors = batch_result['total_survivors']
+                    batch_n_extracted = batch_result['n_extracted']
+                    batch_overflow = batch_total_survivors > batch_n_extracted
+                    batch_exact = batch_total_survivors == batch_n_extracted
+                    batch_inconsistent = batch_n_extracted > batch_total_survivors
+
                     total_asym += batch_result['total_asym']
                     total_test += batch_result['total_test']
-                    total_survived += batch_result['total_survivors']
-                    total_ref_extracted += batch_result['n_extracted']
+                    total_survived += batch_total_survivors
+                    total_ref_extracted += batch_n_extracted
 
                     if batch_result['min_test_val'] < min_tv:
                         min_tv = batch_result['min_test_val']
@@ -595,14 +617,27 @@ def main():
 
                     if batch_result['timed_out']:
                         timed_out = True
-                        log(f"  WARNING: Batch {batch_idx} timed out")
-                        break
+                        _fail_closed(
+                            f"refinement_batch_timed_out_level_{level}_batch_{batch_idx}",
+                            n_remaining=total_survived)
+                    if batch_overflow:
+                        _fail_closed(
+                            f"refinement_batch_extraction_truncated_level_{level}_batch_{batch_idx}",
+                            n_remaining=total_survived)
+                    if batch_inconsistent:
+                        _fail_closed(
+                            f"refinement_batch_extraction_count_inconsistent_level_{level}_batch_{batch_idx}",
+                            n_remaining=total_survived)
+                    # batch_exact means no overflow and is safe to continue.
+                    if batch_exact:
+                        pass
 
                     time_left = remaining()
                     if time_left <= 30:
                         timed_out = True
-                        log(f"  Time budget exhausted during refinement")
-                        break
+                        _fail_closed(
+                            f"time_budget_exhausted_during_refinement_level_{level}",
+                            n_remaining=total_survived)
 
                     batch_idx += 1
 
@@ -642,8 +677,27 @@ def main():
 
                 level_elapsed = time.time() - t_level
                 n_survived = ref_result['total_survivors']
+                n_extracted = ref_result['n_extracted']
                 timed_out = ref_result['timed_out']
+                extraction_overflow = n_survived > n_extracted
+                extraction_exact = n_survived == n_extracted
+                extraction_inconsistent = n_extracted > n_survived
                 child_survivors = ref_result['survivor_configs']
+                if timed_out:
+                    _fail_closed(
+                        f"refinement_timed_out_level_{level}",
+                        n_remaining=n_survived)
+                if extraction_overflow:
+                    _fail_closed(
+                        f"refinement_extraction_truncated_level_{level}",
+                        n_remaining=n_survived)
+                if extraction_inconsistent:
+                    _fail_closed(
+                        f"refinement_extraction_count_inconsistent_level_{level}",
+                        n_remaining=n_survived)
+                # extraction_exact means no overflow and is safe to continue.
+                if extraction_exact:
+                    pass
 
                 level_info = {
                     "level": level,
@@ -655,8 +709,9 @@ def main():
                     "n_pruned_asym": ref_result['total_asym'],
                     "n_pruned_test": ref_result['total_test'],
                     "n_survivors": n_survived,
-                    "n_extracted": ref_result['n_extracted'],
+                    "n_extracted": n_extracted,
                     "timed_out": timed_out,
+                    "extraction_truncated": extraction_overflow,
                     "elapsed": level_elapsed,
                 }
 
@@ -669,8 +724,8 @@ def main():
             log(f"    Elapsed: {level_elapsed:.1f}s")
 
             if timed_out:
-                log(f"  WARNING: Level {level} timed out — {fmt_count(n_survived)} "
-                    f"survivors remain unprocessed")
+                _fail_closed(f"refinement_timed_out_level_{level}",
+                             n_remaining=n_survived)
 
             if n_survived == 0:
                 log("")
@@ -678,6 +733,7 @@ def main():
                 results["levels"].append(level_info)
                 results["proven"] = True
                 results["proven_bound"] = c_target
+                _set_status("proven", None)
                 try:
                     save_results(results, out_path)
                 except OSError as e:
@@ -710,6 +766,7 @@ def main():
                         "c_target": c_target, "m": m, "n_start": n_start,
                         "level": level, "n_half": n_half, "d": d,
                         "n_survivors": len(survivors),
+                        "storage_mode": "memory",
                     })
                     log(f"  Checkpoint saved: {fmt_count(len(survivors))} survivors")
                 except OSError as e:
@@ -724,6 +781,7 @@ def main():
                     "c_target": c_target, "m": m, "n_start": n_start,
                     "level": level, "n_half": n_half, "d": d,
                     "n_survivors": n_survived,
+                    "storage_mode": "file",
                     "survivor_file_path": survivor_file,
                 })
             except OSError as e:
@@ -735,6 +793,7 @@ def main():
     total_elapsed = time.time() - t_start
     n_remaining = len(survivors) if survivors is not None else n_survived
     results["remaining_survivors"] = n_remaining
+    _set_status("not_proven", None)
     try:
         save_results(results, out_path)
     except OSError as e:
@@ -743,21 +802,44 @@ def main():
 
 
 def _try_resume(checkpoint_dir, c_target, m, n_start):
-    """Try to resume from a previous checkpoint. Returns (start_level, survivors)."""
+    """Try to resume from a previous checkpoint.
+
+    Returns (start_level, survivors, survivor_file_path). Exactly one of
+    survivors or survivor_file_path will be non-None on success.
+    """
     import numpy as np
 
     for lvl in range(10, -1, -1):
         meta_path = os.path.join(checkpoint_dir, f'level_{lvl}_meta.json')
-        surv_path = os.path.join(checkpoint_dir, f'level_{lvl}_survivors.npy')
-        if os.path.exists(meta_path) and os.path.exists(surv_path):
-            with open(meta_path, 'r') as f:
-                meta = json.load(f)
-            if (meta.get('c_target') == c_target and
-                    meta.get('m') == m and
-                    meta.get('n_start') == n_start):
-                survivors = np.load(surv_path)
-                return lvl + 1, survivors
-    return 0, None
+        if not os.path.exists(meta_path):
+            continue
+
+        with open(meta_path, 'r') as f:
+            meta = json.load(f)
+        if (meta.get('c_target') != c_target or
+                meta.get('m') != m or
+                meta.get('n_start') != n_start):
+            continue
+
+        storage_mode = meta.get('storage_mode', 'memory')
+        streamed_path = meta.get('survivor_file_path')
+        if storage_mode == "file" or (streamed_path is not None):
+            if streamed_path and os.path.exists(streamed_path):
+                return lvl + 1, None, streamed_path
+            # Stale streamed checkpoint; try older levels.
+            continue
+
+        surv_path = meta.get('checkpoint_survivor_npy')
+        if not surv_path:
+            surv_path = os.path.join(checkpoint_dir, f'level_{lvl}_survivors.npy')
+        if not os.path.exists(surv_path):
+            continue
+        survivors = np.load(surv_path)
+        if survivors.size == 0 and meta.get('n_survivors', 0) > 0:
+            # Inconsistent checkpoint; try older levels.
+            continue
+        return lvl + 1, survivors, None
+    return 0, None, None
 
 
 def _save_checkpoint(checkpoint_dir, level, survivors, metadata):
@@ -769,7 +851,9 @@ def _save_checkpoint(checkpoint_dir, level, survivors, metadata):
     surv_path = os.path.join(checkpoint_dir, f'level_{level}_survivors.npy')
 
     np.save(surv_path, survivors)
-    metadata['survivor_file'] = surv_path
+    metadata['survivor_file'] = surv_path  # backward compatibility
+    metadata['checkpoint_survivor_npy'] = surv_path
+    metadata.setdefault('storage_mode', 'memory')
     metadata['timestamp'] = time.strftime('%Y-%m-%d %H:%M:%S')
     with open(meta_path, 'w') as f:
         json.dump(metadata, f, indent=2, default=str)
@@ -777,11 +861,16 @@ def _save_checkpoint(checkpoint_dir, level, survivors, metadata):
 
 def _print_summary(results, total_elapsed, dev):
     """Print final summary."""
+    status = results.get("status", "proven" if results.get("proven") else "not_proven")
+    reason = results.get("inconclusive_reason")
     log("")
     log("=" * 64)
     log("FINAL SUMMARY")
     log("=" * 64)
     log(f"  Device: {dev}")
+    log(f"  STATUS: {status}")
+    if reason:
+        log(f"  Inconclusive reason: {reason}")
     log(f"  Total time: {total_elapsed:.0f}s ({total_elapsed / 60:.1f} min)")
     log(f"  c_target: {results['parameters']['c_target']}")
     log(f"  m: {results['parameters']['m']}")
@@ -796,17 +885,22 @@ def _print_summary(results, total_elapsed, dev):
         t = lvl_info['elapsed']
         log(f"    Level {lvl} ({typ}): {fmt_count(surv)} survivors, {t:.1f}s")
 
-    if results['proven']:
+    if status == "proven":
         log("")
         log(f"  FORMALLY PROVEN: c >= {results['proven_bound']}")
         log(f"  (Cloninger-Steinerberger exhaustive verification complete)")
-    else:
+    elif status == "not_proven":
         n_rem = results.get('remaining_survivors', '?')
         log("")
         log(f"  NOT PROVEN: {n_rem} survivors remain")
         log(f"  Options: increase m, add more levels, or reduce c_target")
+    else:
+        n_rem = results.get('remaining_survivors', '?')
+        log("")
+        log(f"  INCONCLUSIVE: processing was incomplete")
+        log(f"  Remaining survivors (if known): {n_rem}")
+        log(f"  No formal proof claim is made for this run.")
 
-    out_dir = results.get('parameters', {})
     log(f"  Results saved to: {CHECKPOINT_DIR}/")
     log("=" * 64)
 

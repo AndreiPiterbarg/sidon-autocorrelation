@@ -6,6 +6,24 @@ Use `A100 (SXM4)` as the default. At the current quoted pricing (`$1.23/hr` vs `
 Fallback: `A100 (PCIE)` if availability is better.  
 Use `H100` only if you prioritize shortest wall-clock time and are comfortable with about 2x hourly cost.
 
+## Proof Integrity Mode (Strict Fail-Closed)
+
+`run_proof.py` now runs in strict fail-closed mode for formal claims:
+
+- `status=proven`: exhaustive required work completed, no survivors remain.
+- `status=not_proven`: exhaustive required work completed, survivors remain.
+- `status=inconclusive`: processing was incomplete (timeout, extraction truncation, streamed artifact issue, etc.).
+
+Process exit codes:
+
+- `0`: completed run (`proven` or `not_proven`)
+- `2`: inconclusive run (no formal proof claim may be made)
+
+Correction-term note:
+
+- GPU prove/refine kernels currently use dynamic correction-based pruning.
+- Formal validation of the correction derivation remains an open research review item.
+
 ## GPU Selection
 
 | GPU | Price (USD/hr) | Recommendation |
@@ -91,6 +109,13 @@ scp -P <SSH_PORT> -r root@<SSH_HOST>:/workspace/sidon-autocorrelation/data ./dat
 ```bash
 prime pods terminate <POD_ID>
 ```
+
+## Resume Semantics
+
+- Checkpoints include an explicit `storage_mode`:
+  - `memory`: survivors are resumed from checkpoint `.npy`.
+  - `file`: survivors are resumed from `survivor_file_path` on disk.
+- If a streamed survivor file is missing/corrupt at resume time, the run is treated as incomplete (inconclusive) rather than silently continuing.
 
 ## Test Scenarios
 
