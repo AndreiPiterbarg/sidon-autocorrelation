@@ -104,12 +104,21 @@ def build(verbose=True):
         '--shared',
         '-o', output,
         src,
-        # Target architectures (Ampere + Ada Lovelace + Hopper)
-        '-gencode', 'arch=compute_80,code=sm_80',   # A100
-        '-gencode', 'arch=compute_86,code=sm_86',   # RTX 3080/3090
-        '-gencode', 'arch=compute_89,code=sm_89',   # RTX 4090
-        '-gencode', 'arch=compute_90,code=sm_90',   # H100
     ]
+
+    # Target architectures: on Linux (remote pod) only build for A100
+    # to keep compile times short. On Windows build for multiple archs.
+    if platform.system() == 'Windows':
+        cmd += [
+            '-gencode', 'arch=compute_80,code=sm_80',   # A100
+            '-gencode', 'arch=compute_86,code=sm_86',   # RTX 3080/3090
+            '-gencode', 'arch=compute_89,code=sm_89',   # RTX 4090
+            '-gencode', 'arch=compute_90,code=sm_90',   # H100
+        ]
+    else:
+        cmd += [
+            '-gencode', 'arch=compute_80,code=sm_80',   # A100
+        ]
 
     # Windows-specific: set MSVC host compiler
     if platform.system() == 'Windows':
@@ -130,7 +139,7 @@ def build(verbose=True):
         print(f"Compiling: {' '.join(cmd)}")
 
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
 
         if verbose:
             if result.stdout:
@@ -154,7 +163,7 @@ def build(verbose=True):
         return output
 
     except subprocess.TimeoutExpired:
-        print("Build timed out (120s)")
+        print("Build timed out (600s)")
         return None
     except Exception as e:
         print(f"Build error: {e}")
