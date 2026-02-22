@@ -628,7 +628,7 @@ fused_prove_target(
             #pragma unroll
             for (int k = 1; k < CONV_LEN; k++) conv[k] += conv[k-1];
 
-            /* Prefix sums of c[] for dynamic correction W_int */
+            /* Prefix sums of c[] for per-position dynamic threshold */
             int prefix_c[5];
             prefix_c[0] = 0;
             prefix_c[1] = c0;
@@ -640,17 +640,23 @@ fused_prove_target(
             #pragma unroll
             for (int ell = 2; ell <= 4; ell++) {
                 int n_cv = ell - 1;
-                /* Dynamic per-window-size threshold (Lemma 2) */
-                int W_int = prefix_c[ell] - prefix_c[ell / 2];
-                double dyn_x = (dyn_base + 2.0 * (double)W_int)
-                             * (double)ell * inv_4n;
-                conv_t dyn_it = (conv_t)((long long)(dyn_x
-                             * (1.0 - 4.0 * DBL_EPSILON)));
+                /* Precompute per-ell constants for dynamic threshold */
+                double dyn_base_ell = dyn_base * (double)ell * inv_4n;
+                double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
                 int n_windows = CONV_LEN - n_cv + 1;
                 for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                     int s_hi = s_lo + n_cv - 1;
                     conv_t ws = conv[s_hi];
                     if (s_lo > 0) ws -= conv[s_lo - 1];
+                    /* Per-window-POSITION dynamic threshold (Lemma 2):
+                     * W_int = mass of bins contributing to this window position.
+                     * Bin i contributes iff max(0,s_lo-3) <= i <= min(3,s_lo+ell-2). */
+                    int lo_bin = (s_lo > 3) ? s_lo - 3 : 0;
+                    int hi_bin = (s_lo + ell - 2 < 3) ? s_lo + ell - 2 : 3;
+                    int W_int = prefix_c[hi_bin + 1] - prefix_c[lo_bin];
+                    double dyn_x = dyn_base_ell + two_ell_inv_4n * (double)W_int;
+                    conv_t dyn_it = (conv_t)((long long)(dyn_x
+                                 * (1.0 - 4.0 * DBL_EPSILON)));
                     if (ws > dyn_it) { pruned = 1; break; }
                 }
                 if (pruned) break;
@@ -829,17 +835,23 @@ fused_prove_target(
                 #pragma unroll
                 for (int ell = 2; ell <= 6; ell++) {
                     int n_cv = ell - 1;
-                    /* Dynamic per-window-size threshold (Lemma 2) */
-                    int W_int = prefix_c[ell] - prefix_c[ell / 2];
-                    double dyn_x = (dyn_base + 2.0 * (double)W_int)
-                                 * (double)ell * inv_4n;
-                    conv_t dyn_it = (conv_t)((long long)(dyn_x
-                                 * (1.0 - 4.0 * DBL_EPSILON)));
+                    /* Precompute per-ell constants for dynamic threshold */
+                    double dyn_base_ell = dyn_base * (double)ell * inv_4n;
+                    double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
                     int n_win = 11 - n_cv + 1;
                     for (int s_lo = 0; s_lo < n_win; s_lo++) {
                         int s_hi = s_lo + n_cv - 1;
                         conv_t ws = conv[s_hi];
                         if (s_lo > 0) ws -= conv[s_lo - 1];
+                        /* Per-window-POSITION dynamic threshold (Lemma 2):
+                         * W_int = mass of bins contributing to this window position.
+                         * Bin i contributes iff max(0,s_lo-5) <= i <= min(5,s_lo+ell-2). */
+                        int lo_bin = (s_lo > 5) ? s_lo - 5 : 0;
+                        int hi_bin = (s_lo + ell - 2 < 5) ? s_lo + ell - 2 : 5;
+                        int W_int = prefix_c[hi_bin + 1] - prefix_c[lo_bin];
+                        double dyn_x = dyn_base_ell + two_ell_inv_4n * (double)W_int;
+                        conv_t dyn_it = (conv_t)((long long)(dyn_x
+                                     * (1.0 - 4.0 * DBL_EPSILON)));
                         if (ws > dyn_it) { pruned = 1; break; }
                     }
                     if (pruned) break;

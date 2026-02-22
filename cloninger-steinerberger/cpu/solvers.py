@@ -630,6 +630,12 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                 conv[1] = conv[0] + 2.0 * a0 * a1
                 conv[2] = conv[1] + a1 * a1
                 inv_norm = 1.0 / (4.0 * n_half * 2)
+                # Prefix sums for per-position dynamic threshold
+                prefix_c_arr[0] = 0
+                prefix_c_arr[1] = c0
+                prefix_c_arr[2] = S
+                d_minus_1 = 1  # D-1 for d=2
+                pruned_d2 = False
                 best = 0.0
                 for s_lo in range(3):
                     ws = conv[s_lo]
@@ -638,9 +644,16 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     tv = ws * inv_norm
                     if tv > best:
                         best = tv
-                # Dynamic threshold for ell=2: W_int = c[1]
-                dyn_thresh_d2 = c_target + (1.0 + 2.0 * c[1]) * inv_m_sq + fp_margin
-                if best > dyn_thresh_d2:
+                    # Per-position W: bins i in [max(0,s_lo-1), min(1,s_lo+ell-2)]
+                    lo_bin = s_lo - d_minus_1 if s_lo > d_minus_1 else 0
+                    hi_bin_val = s_lo  # s_lo + ell - 2 = s_lo + 0 = s_lo for ell=2
+                    hi_bin = hi_bin_val if hi_bin_val < d_minus_1 else d_minus_1
+                    W_pos = prefix_c_arr[hi_bin + 1] - prefix_c_arr[lo_bin]
+                    dyn_thresh_pos = c_target + (1.0 + 2.0 * W_pos) * inv_m_sq + fp_margin
+                    if tv > dyn_thresh_pos:
+                        pruned_d2 = True
+                        break
+                if pruned_d2:
                     local_test += 1
                 else:
                     local_surv += 1
@@ -720,18 +733,17 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                     for k in range(1, conv_len):
                         conv[k] += conv[k - 1]
 
-                    # Compute prefix sums of c for dynamic W_int
+                    # Compute prefix sums of c for per-position dynamic threshold
                     prefix_c_arr[0] = 0
                     for i in range(d):
                         prefix_c_arr[i + 1] = prefix_c_arr[i] + c[i]
+                    d_minus_1 = d - 1
 
                     best = 0.0
                     pruned = False
                     for ell in range(2, d + 1):
                         if pruned:
                             break
-                        W_int = prefix_c_arr[ell] - prefix_c_arr[ell // 2]
-                        dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                         n_cv = ell - 1
                         inv_norm = 1.0 / (4.0 * n_half * ell)
                         for s_lo in range(conv_len - n_cv + 1):
@@ -742,6 +754,13 @@ def _prove_target_generic(c0_order, S, d, n_half, inv_m, margin, prune_target, f
                             tv = ws * inv_norm
                             if tv > best:
                                 best = tv
+                            # Per-position W_int: bins i in
+                            # [max(0, s_lo-(d-1)), min(d-1, s_lo+ell-2)]
+                            lo_bin = s_lo - d_minus_1 if s_lo > d_minus_1 else 0
+                            hi_bin_val = s_lo + ell - 2
+                            hi_bin = hi_bin_val if hi_bin_val < d_minus_1 else d_minus_1
+                            W_int = prefix_c_arr[hi_bin + 1] - prefix_c_arr[lo_bin]
+                            dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                             if tv > dyn_thresh:
                                 pruned = True
                                 break
@@ -944,19 +963,19 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                 for k in range(1, conv_len):
                     conv[k] += conv[k - 1]
 
+                # Prefix sums of c[] for per-position dynamic threshold
+                pc = np.empty(5, dtype=np.int64)
+                pc[0] = 0
+                pc[1] = c0
+                pc[2] = c0 + c1
+                pc[3] = c0 + c1 + c2
+                pc[4] = S
+
                 best = 0.0
                 pruned = False
                 for ell in range(2, d + 1):
                     if pruned:
                         break
-                    # Dynamic W_int = sum c[k] for k in [ell//2, ell-1]
-                    if ell == 2:
-                        W_int = c1
-                    elif ell == 3:
-                        W_int = c1 + c2
-                    else:
-                        W_int = c2 + c3
-                    dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                     n_cv = ell - 1
                     inv_norm = 1.0 / (4.0 * n_half * ell)
                     for s_lo in range(conv_len - n_cv + 1):
@@ -967,6 +986,12 @@ def _prove_target_d4(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                         tv = ws * inv_norm
                         if tv > best:
                             best = tv
+                        # Per-position W_int: contributing bins i in
+                        # [max(0, s_lo-3), min(3, s_lo+ell-2)]
+                        lo_bin = s_lo - 3 if s_lo > 3 else 0
+                        hi_bin = s_lo + ell - 2 if s_lo + ell - 2 < 3 else 3
+                        W_int = pc[hi_bin + 1] - pc[lo_bin]
+                        dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                         if tv > dyn_thresh:
                             pruned = True
                             break
@@ -1105,23 +1130,21 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                         for k in range(1, conv_len):
                             conv[k] += conv[k - 1]
 
+                        # Prefix sums for per-position dynamic threshold
+                        pc6 = np.empty(7, dtype=np.int64)
+                        pc6[0] = 0
+                        pc6[1] = c0
+                        pc6[2] = c0 + c1
+                        pc6[3] = c0 + c1 + c2
+                        pc6[4] = c0 + c1 + c2 + c3
+                        pc6[5] = c0 + c1 + c2 + c3 + c4
+                        pc6[6] = S
+
                         best = 0.0
                         pruned = False
                         for ell in range(2, d + 1):
                             if pruned:
                                 break
-                            # Dynamic W_int = sum c[k] for k in [ell//2, ell-1]
-                            if ell == 2:
-                                W_int = c1
-                            elif ell == 3:
-                                W_int = c1 + c2
-                            elif ell == 4:
-                                W_int = c2 + c3
-                            elif ell == 5:
-                                W_int = c2 + c3 + c4
-                            else:
-                                W_int = c3 + c4 + c5
-                            dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                             n_cv = ell - 1
                             inv_norm = 1.0 / (4.0 * n_half * ell)
                             for s_lo in range(conv_len - n_cv + 1):
@@ -1132,6 +1155,12 @@ def _prove_target_d6(c0_order, S, n_half, inv_m, margin, prune_target, fp_margin
                                 tv = ws * inv_norm
                                 if tv > best:
                                     best = tv
+                                # Per-position W_int: contributing bins i in
+                                # [max(0, s_lo-5), min(5, s_lo+ell-2)]
+                                lo_bin = s_lo - 5 if s_lo > 5 else 0
+                                hi_bin = s_lo + ell - 2 if s_lo + ell - 2 < 5 else 5
+                                W_int = pc6[hi_bin + 1] - pc6[lo_bin]
+                                dyn_thresh = c_target + (1.0 + 2.0 * W_int) * inv_m_sq + fp_margin
                                 if tv > dyn_thresh:
                                     pruned = True
                                     break

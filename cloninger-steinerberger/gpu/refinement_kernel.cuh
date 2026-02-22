@@ -172,9 +172,10 @@ refine_prove_target(
         /* === 4b. Block-sum bounds at ell=4 (adjacent pairs) === */
         {
             int block_pruned = 0;
-            /* Use conservative ell=4 threshold (W_int=0 is minimum) */
-            conv_t dyn_it4 = (conv_t)((long long)(dyn_base * 4.0 * inv_4n
-                            * (1.0 - 4.0 * DBL_EPSILON)));
+            /* Conservative ell=4 threshold using W_int=S (safe upper bound) */
+            conv_t dyn_it4 = (conv_t)((long long)(
+                (dyn_base + 2.0 * (double)S_child) * 4.0 * inv_4n
+                * (1.0 - 4.0 * DBL_EPSILON)));
             #pragma unroll
             for (int i = 0; i < D_CHILD - 1; i++) {
                 conv_t bs = (conv_t)(c[i] + c[i+1]);
@@ -203,23 +204,24 @@ refine_prove_target(
             #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++)
                 center += (conv_t)2 * c[i] * c[D_CHILD - 1 - i];
-            /* Use conservative ell=2 threshold (W_int=0 is minimum) */
-            conv_t dyn_it2_min = (conv_t)((long long)(dyn_base * 2.0 * inv_4n
-                                * (1.0 - 4.0 * DBL_EPSILON)));
+            /* Conservative ell=2 threshold using W_int=S (safe upper bound) */
+            conv_t dyn_it2_min = (conv_t)((long long)(
+                (dyn_base + 2.0 * (double)S_child) * 2.0 * inv_4n
+                * (1.0 - 4.0 * DBL_EPSILON)));
             if (center > dyn_it2_min) { my_test++; continue; }
         }
 
         /* === 6. Autoconvolution with inline ell=2 early exit === */
-        /* Compute prefix sums of c for dynamic W_int (needed before autoconv) */
+        /* Compute prefix sums of c for per-position dynamic threshold */
         int prefix_c[D_CHILD + 1];
         prefix_c[0] = 0;
         #pragma unroll
         for (int i = 0; i < D_CHILD; i++)
             prefix_c[i + 1] = prefix_c[i] + c[i];
 
-        /* Compute ell=2 dynamic threshold for early exit during autoconv */
+        /* Conservative ell=2 threshold for early exit: W_int=S (safe upper bound) */
         conv_t dyn_it2 = (conv_t)((long long)(
-            (dyn_base + 2.0 * (double)c[1]) * 2.0 * inv_4n
+            (dyn_base + 2.0 * (double)S_child) * 2.0 * inv_4n
             * (1.0 - 4.0 * DBL_EPSILON)));
 
         conv_t conv[CONV_LEN];
@@ -242,19 +244,26 @@ refine_prove_target(
         #pragma unroll
         for (int k = 1; k < CONV_LEN; k++) conv[k] += conv[k-1];
 
-        /* Window scan with dynamic per-ell integer thresholds */
+        /* Window scan with per-position dynamic thresholds */
         int pruned = 0;
         for (int ell = 2; ell <= D_CHILD; ell++) {
             int n_cv = ell - 1;
-            /* Dynamic threshold: W_int = sum of c[k] for k in [ell/2, ell-1] */
-            int W_int = prefix_c[ell] - prefix_c[ell / 2];
-            double dyn_x = (dyn_base + 2.0 * (double)W_int) * (double)ell * inv_4n;
-            conv_t dyn_it = (conv_t)((long long)(dyn_x * (1.0 - 4.0 * DBL_EPSILON)));
+            /* Precompute per-ell constants for dynamic threshold */
+            double dyn_base_ell = dyn_base * (double)ell * inv_4n;
+            double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
             int n_windows = CONV_LEN - n_cv + 1;
             for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                 int s_hi = s_lo + n_cv - 1;
                 conv_t ws = conv[s_hi];
                 if (s_lo > 0) ws -= conv[s_lo - 1];
+                /* Per-window-POSITION dynamic threshold (Lemma 2):
+                 * W_int = mass of bins contributing to this window position.
+                 * Bin i contributes iff max(0,s_lo-(D-1)) <= i <= min(D-1,s_lo+ell-2). */
+                int lo_bin = (s_lo > D_CHILD - 1) ? s_lo - (D_CHILD - 1) : 0;
+                int hi_bin = (s_lo + ell - 2 < D_CHILD - 1) ? s_lo + ell - 2 : D_CHILD - 1;
+                int W_int = prefix_c[hi_bin + 1] - prefix_c[lo_bin];
+                double dyn_x = dyn_base_ell + two_ell_inv_4n * (double)W_int;
+                conv_t dyn_it = (conv_t)((long long)(dyn_x * (1.0 - 4.0 * DBL_EPSILON)));
                 if (ws > dyn_it) { pruned = 1; break; }
             }
             if (pruned) break;
@@ -514,9 +523,10 @@ refine_prove_target_batched(
         /* === 4b. Block-sum bounds at ell=4 (adjacent pairs) === */
         {
             int block_pruned = 0;
-            /* Use conservative ell=4 threshold (W_int=0 is minimum) */
-            conv_t dyn_it4 = (conv_t)((long long)(dyn_base * 4.0 * inv_4n
-                            * (1.0 - 4.0 * DBL_EPSILON)));
+            /* Conservative ell=4 threshold using W_int=S (safe upper bound) */
+            conv_t dyn_it4 = (conv_t)((long long)(
+                (dyn_base + 2.0 * (double)S_child) * 4.0 * inv_4n
+                * (1.0 - 4.0 * DBL_EPSILON)));
             #pragma unroll
             for (int i = 0; i < D_CHILD - 1; i++) {
                 conv_t bs = (conv_t)(c[i] + c[i+1]);
@@ -545,23 +555,24 @@ refine_prove_target_batched(
             #pragma unroll
             for (int i = 0; i < D_CHILD / 2; i++)
                 center += (conv_t)2 * c[i] * c[D_CHILD - 1 - i];
-            /* Use conservative ell=2 threshold (W_int=0 is minimum) */
-            conv_t dyn_it2_min = (conv_t)((long long)(dyn_base * 2.0 * inv_4n
-                                * (1.0 - 4.0 * DBL_EPSILON)));
+            /* Conservative ell=2 threshold using W_int=S (safe upper bound) */
+            conv_t dyn_it2_min = (conv_t)((long long)(
+                (dyn_base + 2.0 * (double)S_child) * 2.0 * inv_4n
+                * (1.0 - 4.0 * DBL_EPSILON)));
             if (center > dyn_it2_min) { my_test++; continue; }
         }
 
         /* === 6. Autoconvolution with inline ell=2 early exit === */
-        /* Compute prefix sums of c for dynamic W_int (needed before autoconv) */
+        /* Compute prefix sums of c for per-position dynamic threshold */
         int prefix_c[D_CHILD + 1];
         prefix_c[0] = 0;
         #pragma unroll
         for (int i = 0; i < D_CHILD; i++)
             prefix_c[i + 1] = prefix_c[i] + c[i];
 
-        /* Compute ell=2 dynamic threshold for early exit during autoconv */
+        /* Conservative ell=2 threshold for early exit: W_int=S (safe upper bound) */
         conv_t dyn_it2 = (conv_t)((long long)(
-            (dyn_base + 2.0 * (double)c[1]) * 2.0 * inv_4n
+            (dyn_base + 2.0 * (double)S_child) * 2.0 * inv_4n
             * (1.0 - 4.0 * DBL_EPSILON)));
 
         conv_t conv[CONV_LEN];
@@ -584,19 +595,26 @@ refine_prove_target_batched(
         #pragma unroll
         for (int k = 1; k < CONV_LEN; k++) conv[k] += conv[k-1];
 
-        /* Window scan with dynamic per-ell integer thresholds */
+        /* Window scan with per-position dynamic thresholds */
         int pruned = 0;
         for (int ell = 2; ell <= D_CHILD; ell++) {
             int n_cv = ell - 1;
-            /* Dynamic threshold: W_int = sum of c[k] for k in [ell/2, ell-1] */
-            int W_int = prefix_c[ell] - prefix_c[ell / 2];
-            double dyn_x = (dyn_base + 2.0 * (double)W_int) * (double)ell * inv_4n;
-            conv_t dyn_it = (conv_t)((long long)(dyn_x * (1.0 - 4.0 * DBL_EPSILON)));
+            /* Precompute per-ell constants for dynamic threshold */
+            double dyn_base_ell = dyn_base * (double)ell * inv_4n;
+            double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
             int n_windows = CONV_LEN - n_cv + 1;
             for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                 int s_hi = s_lo + n_cv - 1;
                 conv_t ws = conv[s_hi];
                 if (s_lo > 0) ws -= conv[s_lo - 1];
+                /* Per-window-POSITION dynamic threshold (Lemma 2):
+                 * W_int = mass of bins contributing to this window position.
+                 * Bin i contributes iff max(0,s_lo-(D-1)) <= i <= min(D-1,s_lo+ell-2). */
+                int lo_bin = (s_lo > D_CHILD - 1) ? s_lo - (D_CHILD - 1) : 0;
+                int hi_bin = (s_lo + ell - 2 < D_CHILD - 1) ? s_lo + ell - 2 : D_CHILD - 1;
+                int W_int = prefix_c[hi_bin + 1] - prefix_c[lo_bin];
+                double dyn_x = dyn_base_ell + two_ell_inv_4n * (double)W_int;
+                conv_t dyn_it = (conv_t)((long long)(dyn_x * (1.0 - 4.0 * DBL_EPSILON)));
                 if (ws > dyn_it) { pruned = 1; break; }
             }
             if (pruned) break;
