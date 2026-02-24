@@ -162,6 +162,7 @@ def _setup_signatures(lib):
         ctypes.POINTER(ctypes.c_int),       # n_extracted
         ctypes.c_int,                       # max_survivors
         ctypes.c_double,                    # time_budget_sec
+        ctypes.c_int,                       # no_freeze
     ]
 
 
@@ -399,7 +400,8 @@ def run_single_level_extract(d, S, n_half, m, c_target, max_survivors=2000000000
 
 
 def refine_parents(d_parent, parent_configs_array, m, c_target,
-                   max_survivors=10000000, time_budget_sec=0.0):
+                   max_survivors=10000000, time_budget_sec=0.0,
+                   no_freeze=False):
     """GPU refinement: process parent survivors through child-level pruning.
 
     Parameters
@@ -455,7 +457,8 @@ def refine_parents(d_parent, parent_configs_array, m, c_target,
         survivor_ptr,
         ctypes.byref(n_extracted),
         max_survivors,
-        time_budget_sec)
+        time_budget_sec,
+        1 if no_freeze else 0)
 
     if ret < 0:
         raise RuntimeError(f"GPU refine_parents failed (error {ret})")

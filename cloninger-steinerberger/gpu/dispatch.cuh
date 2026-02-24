@@ -156,21 +156,22 @@ EXPORT int gpu_refine_parents(
     int* survivor_configs,
     int* n_extracted,
     int max_survivors,
-    double time_budget_sec
+    double time_budget_sec,
+    int no_freeze
 ) {
     switch (d_parent) {
         case 6:
             return refine_parents_d12(parent_configs, num_parents, d_parent, m, c_target,
                 total_asym, total_test, total_survivors, min_test_val, min_test_config,
-                survivor_configs, n_extracted, max_survivors, time_budget_sec);
+                survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         case 12:
             return refine_parents_d24(parent_configs, num_parents, d_parent, m, c_target,
                 total_asym, total_test, total_survivors, min_test_val, min_test_config,
-                survivor_configs, n_extracted, max_survivors, time_budget_sec);
+                survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         case 24:
             return refine_parents_d48(parent_configs, num_parents, d_parent, m, c_target,
                 total_asym, total_test, total_survivors, min_test_val, min_test_config,
-                survivor_configs, n_extracted, max_survivors, time_budget_sec);
+                survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         default:
             fprintf(stderr, "GPU: d_parent=%d not supported for refinement "
                     "(only 6->12, 12->24, 24->48)\n", d_parent);

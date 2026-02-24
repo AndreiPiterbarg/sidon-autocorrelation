@@ -400,6 +400,7 @@ __global__ void __launch_bounds__(
 refine_prove_target_batched(
     const int* __restrict__ all_parents,       /* [n_batch * D_PARENT] parent configs */
     const long long* __restrict__ batch_prefix, /* [n_batch + 1] prefix sums, [0]=0 */
+    const int* __restrict__ all_lo,            /* [n_batch * D_PARENT] per-parent lo values, or NULL */
     int n_batch,
     int S_child,
     int n_half_child,
@@ -462,13 +463,22 @@ refine_prove_target_batched(
         const int* pB = all_parents + pidx * D_PARENT;
 
         /* === Index mapping: divmod decomposition into child config ===
-         * With S=m + energy cap: c_even in [lo, lo+eff_count-1]. */
+         * With S=m + energy cap: c_even in [lo, lo+eff_count-1].
+         * When all_lo is provided, use per-parent lo values (supports
+         * frozen bins where lo=hi=flat_val). Otherwise compute from x_cap. */
         int c[D_CHILD];
         {
             long long temp = child_idx;
             for (int i = 0; i < D_PARENT; i++) {
-                int lo = (pB[i] > x_cap) ? (pB[i] - x_cap) : 0;
-                int hi = (pB[i] < x_cap) ? pB[i] : x_cap;
+                int lo, hi;
+                if (all_lo != NULL) {
+                    lo = all_lo[pidx * D_PARENT + i];
+                    hi = (pB[i] < x_cap) ? pB[i] : x_cap;
+                    if (hi < lo) hi = lo;  /* frozen bin: lo = hi = flat_val */
+                } else {
+                    lo = (pB[i] > x_cap) ? (pB[i] - x_cap) : 0;
+                    hi = (pB[i] < x_cap) ? pB[i] : x_cap;
+                }
                 int s = hi - lo + 1;  /* effective split count with energy cap */
                 int c_even = lo + (int)(temp % (long long)s);
                 temp /= (long long)s;

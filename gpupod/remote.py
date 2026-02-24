@@ -199,9 +199,12 @@ def launch_script(ssh_host, ssh_port, script="run_proof.py", args="",
     # Safety: never pass --auto-teardown to the remote script
     args = args.replace("--auto-teardown", "").strip()
     # Kill any existing job session
-    ssh_run(ssh_host, ssh_port,
-            f"tmux kill-session -t {TMUX_SESSION} 2>/dev/null; true",
-            timeout=10)
+    try:
+        ssh_run(ssh_host, ssh_port,
+                f"tmux kill-session -t {TMUX_SESSION} 2>/dev/null; true",
+                timeout=30)
+    except subprocess.TimeoutExpired:
+        pass  # No existing session, or SSH slow — safe to continue
 
     # Ensure data dir exists, then launch in tmux.
     # Single quotes protect $? from the remote SSH shell — it gets

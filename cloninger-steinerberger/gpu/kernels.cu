@@ -21,5 +21,7 @@
 #include "host_find_min.cuh"
 #include "host_prove.cuh"
 #include "refinement_kernel.cuh"
+#include "freeze_kernel.cuh"
+#include "two_stage_refine.cuh"
 #include "host_refine.cuh"
 #include "dispatch.cuh"
