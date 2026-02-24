@@ -30,7 +30,7 @@ from datetime import datetime
 
 # Import setup — script runs from project root
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'cloninger-steinerberger'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'cloninger-steinerberger', 'cpu'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'cloninger-steinerberger', 'archive', 'cpu'))
 from gpu.solvers import gpu_find_best_bound_direct, gpu_run_single_level
 from gpu.wrapper import (is_available, get_device_name, refine_parents,
                          max_survivors_for_dim, get_free_memory,
@@ -90,6 +90,8 @@ def main():
                         help=f'Checkpoint directory (default: {CHECKPOINT_DIR})')
     parser.add_argument('--force', action='store_true',
                         help='Run even if estimated time exceeds budget')
+    parser.add_argument('--no-freeze', action='store_true',
+                        help='Disable freeze kernel (use original batched refinement)')
     args = parser.parse_args()
 
     c_target = args.target
@@ -146,6 +148,8 @@ def main():
     log(f"  levels     = n in {level_schedule} (d in {[2*n for n in level_schedule]})")
     log(f"  time budget = {time_budget:.0f}s")
     log(f"  mode       = strict fail-closed")
+    if args.no_freeze:
+        log(f"  freeze     = DISABLED (--no-freeze)")
     log("")
 
     # --- GPU check ---
@@ -503,17 +507,22 @@ def main():
                 m=m,
                 c_target=c_target,
                 max_survivors=10000,
-                time_budget_sec=30)
+                time_budget_sec=30,
+                no_freeze=args.no_freeze)
             cal_elapsed = time.time() - t_cal
             cal_total_refs = (cal_result['total_asym'] +
                               cal_result['total_test'] +
                               cal_result['total_survivors'])
 
-            if cal_elapsed > 0.01 and cal_total_refs > 0:
-                ref_rate = cal_total_refs / cal_elapsed
-                est_refine_secs = total_refs_est / ref_rate
-                log(f"    Calibration: {cal_total_refs:.2e} refs in {cal_elapsed:.2f}s "
-                    f"= {ref_rate:.2e} refs/s")
+            if cal_elapsed > 0.01 and CAL_REFINE_PARENTS > 0:
+                # Per-parent extrapolation: use calibration wall-clock time
+                # directly. This avoids the two-sample discrepancy between
+                # avg_refs (from first 10k parents) and ref_rate (from 500
+                # evenly-spaced parents) that caused up to 2x estimation error.
+                est_refine_secs = cal_elapsed * (num_parents / CAL_REFINE_PARENTS)
+                ref_rate = cal_total_refs / cal_elapsed if cal_total_refs > 0 else 0
+                log(f"    Calibration: {CAL_REFINE_PARENTS} parents in {cal_elapsed:.2f}s "
+                    f"({cal_total_refs:.2e} refs, {ref_rate:.2e} refs/s)")
             else:
                 # Fallback: use base rate with a conservative multiplier
                 ref_rate = cal_rate * 100
@@ -590,7 +599,8 @@ def main():
                         m=m,
                         c_target=c_target,
                         max_survivors=ref_buf_size,
-                        time_budget_sec=batch_time_budget)
+                        time_budget_sec=batch_time_budget,
+                        no_freeze=args.no_freeze)
 
                     batch_total_survivors = batch_result['total_survivors']
                     batch_n_extracted = batch_result['n_extracted']
@@ -673,7 +683,8 @@ def main():
                     m=m,
                     c_target=c_target,
                     max_survivors=ref_buf_size,
-                    time_budget_sec=max(time_left - 30, 60))
+                    time_budget_sec=max(time_left - 30, 60),
+                    no_freeze=args.no_freeze)
 
                 level_elapsed = time.time() - t_level
                 n_survived = ref_result['total_survivors']
