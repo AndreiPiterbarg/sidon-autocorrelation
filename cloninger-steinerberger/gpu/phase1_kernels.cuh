@@ -163,9 +163,9 @@ fused_find_min(
      * With S=m: test_val = 4n/(m^2*ell) * sum(c_i*c_j), so
      * inv_norm = 4n / (m^2 * ell). */
     double inv_S = 1.0 / (double)S;
-    double inv_norm_arr[D - 1];
+    double inv_norm_arr[2 * D - 1];
     #pragma unroll
-    for (int ell = 2; ell <= D; ell++)
+    for (int ell = 2; ell <= 2 * D; ell++)
         inv_norm_arr[ell - 2] = (4.0 * n_half) / ((double)m * (double)m * (double)ell);
 
     /* Early-exit cutoff: once best >= cutoff, eff >= my_eff so skip */
@@ -236,7 +236,7 @@ fused_find_min(
             /* Window max (FP64) with early exit */
             double best = 0.0;
             #pragma unroll
-            for (int ell = 2; ell <= 4; ell++) {
+            for (int ell = 2; ell <= 2 * D; ell++) {
                 int n_cv = ell - 1;
                 double inv_norm = inv_norm_arr[ell - 2];
                 int n_windows = CONV_LEN - n_cv + 1;
@@ -347,13 +347,14 @@ fused_find_min(
                     if (c1 == c4 && c2 > c3) continue;
                 }
 
-                /* ell=2 max element + two-max enhanced */
-                int max_c = c5, max2_c = 0;
+                /* ell=2 max element + two-max enhanced
+                 * Note: canonical constraint guarantees c5 >= c0. */
+                int max_c = c0, max2_c = 0;
                 if (c1 >= max_c) { max2_c = max_c; max_c = c1; } else if (c1 > max2_c) max2_c = c1;
                 if (c2 >= max_c) { max2_c = max_c; max_c = c2; } else if (c2 > max2_c) max2_c = c2;
                 if (c3 >= max_c) { max2_c = max_c; max_c = c3; } else if (c3 > max2_c) max2_c = c3;
                 if (c4 >= max_c) { max2_c = max_c; max_c = c4; } else if (c4 > max2_c) max2_c = c4;
-                if (c0 > max2_c) max2_c = c0;
+                if (c5 >= max_c) { max2_c = max_c; max_c = c5; } else if (c5 > max2_c) max2_c = c5;
                 float max_a = max_c * scale_f;
                 if (max_a * max_a * inv_ell2 > thresh_f) continue;
                 /* Two-max cross-term at ell=2 */
@@ -393,10 +394,10 @@ fused_find_min(
                 double best = 0.0;
                 int d6_skip = 0;
                 #pragma unroll
-                for (int ell = 2; ell <= 6; ell++) {
+                for (int ell = 2; ell <= 2 * D; ell++) {
                     int n_cv = ell - 1;
                     double inv_norm = inv_norm_arr[ell - 2];
-                    int n_win = 11 - n_cv + 1;
+                    int n_win = CONV_LEN - n_cv + 1;
                     for (int s_lo = 0; s_lo < n_win; s_lo++) {
                         int s_hi = s_lo + n_cv - 1;
                         conv_t ws = conv[s_hi];
@@ -535,9 +536,9 @@ fused_prove_target(
     /* Hoisted FP64 invariants.
      * With S=m: test_val = 4n/(m^2*ell) * sum(c_i*c_j). */
     double inv_S = 1.0 / (double)S;
-    double inv_norm_arr[D - 1];
+    double inv_norm_arr[2 * D - 1];
     #pragma unroll
-    for (int ell = 2; ell <= D; ell++)
+    for (int ell = 2; ell <= 2 * D; ell++)
         inv_norm_arr[ell - 2] = (4.0 * n_half) / ((double)m * (double)m * (double)ell);
 
     /* Compute fixed integer thresholds per-thread (conservative, for pre-checks).
@@ -638,7 +639,7 @@ fused_prove_target(
 
             int pruned = 0;
             #pragma unroll
-            for (int ell = 2; ell <= 4; ell++) {
+            for (int ell = 2; ell <= 2 * D; ell++) {
                 int n_cv = ell - 1;
                 /* Precompute per-ell constants for dynamic threshold */
                 double dyn_base_ell = dyn_base * (double)ell * inv_4n;
@@ -650,9 +651,9 @@ fused_prove_target(
                     if (s_lo > 0) ws -= conv[s_lo - 1];
                     /* Per-window-POSITION dynamic threshold (Lemma 2):
                      * W_int = mass of bins contributing to this window position.
-                     * Bin i contributes iff max(0,s_lo-3) <= i <= min(3,s_lo+ell-2). */
-                    int lo_bin = (s_lo > 3) ? s_lo - 3 : 0;
-                    int hi_bin = (s_lo + ell - 2 < 3) ? s_lo + ell - 2 : 3;
+                     * Bin i contributes iff max(0,s_lo-(D-1)) <= i <= min(D-1,s_lo+ell-2). */
+                    int lo_bin = (s_lo > D - 1) ? s_lo - (D - 1) : 0;
+                    int hi_bin = (s_lo + ell - 2 < D - 1) ? s_lo + ell - 2 : D - 1;
                     int W_int = prefix_c[hi_bin + 1] - prefix_c[lo_bin];
                     double dyn_x = dyn_base_ell + two_ell_inv_4n * (double)W_int;
                     conv_t dyn_it = (conv_t)((long long)(dyn_x
@@ -668,7 +669,7 @@ fused_prove_target(
                 /* Survivor: compute FP64 test value for reporting */
                 double best = 0.0;
                 #pragma unroll
-                for (int ell = 2; ell <= 4; ell++) {
+                for (int ell = 2; ell <= 2 * D; ell++) {
                     int n_cv = ell - 1;
                     double inv_norm = inv_norm_arr[ell - 2];
                     int n_windows = CONV_LEN - n_cv + 1;
@@ -782,13 +783,14 @@ fused_prove_target(
                     if (c1 == c4 && c2 > c3) continue;
                 }
 
-                /* ell=2 max element + two-max enhanced */
-                int max_c = c5, max2_c = 0;
+                /* ell=2 max element + two-max enhanced
+                 * Note: canonical constraint guarantees c5 >= c0. */
+                int max_c = c0, max2_c = 0;
                 if (c1 >= max_c) { max2_c = max_c; max_c = c1; } else if (c1 > max2_c) max2_c = c1;
                 if (c2 >= max_c) { max2_c = max_c; max_c = c2; } else if (c2 > max2_c) max2_c = c2;
                 if (c3 >= max_c) { max2_c = max_c; max_c = c3; } else if (c3 > max2_c) max2_c = c3;
                 if (c4 >= max_c) { max2_c = max_c; max_c = c4; } else if (c4 > max2_c) max2_c = c4;
-                if (c0 > max2_c) max2_c = c0;
+                if (c5 >= max_c) { max2_c = max_c; max_c = c5; } else if (c5 > max2_c) max2_c = c5;
                 float max_a = max_c * scale_f;
                 if (max_a * max_a * inv_ell2 > thresh_f) { my_fp32++; continue; }
                 /* Two-max cross-term at ell=2 (integer) */
@@ -833,21 +835,21 @@ fused_prove_target(
 
                 int pruned = 0;
                 #pragma unroll
-                for (int ell = 2; ell <= 6; ell++) {
+                for (int ell = 2; ell <= 2 * D; ell++) {
                     int n_cv = ell - 1;
                     /* Precompute per-ell constants for dynamic threshold */
                     double dyn_base_ell = dyn_base * (double)ell * inv_4n;
                     double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
-                    int n_win = 11 - n_cv + 1;
+                    int n_win = CONV_LEN - n_cv + 1;
                     for (int s_lo = 0; s_lo < n_win; s_lo++) {
                         int s_hi = s_lo + n_cv - 1;
                         conv_t ws = conv[s_hi];
                         if (s_lo > 0) ws -= conv[s_lo - 1];
                         /* Per-window-POSITION dynamic threshold (Lemma 2):
                          * W_int = mass of bins contributing to this window position.
-                         * Bin i contributes iff max(0,s_lo-5) <= i <= min(5,s_lo+ell-2). */
-                        int lo_bin = (s_lo > 5) ? s_lo - 5 : 0;
-                        int hi_bin = (s_lo + ell - 2 < 5) ? s_lo + ell - 2 : 5;
+                         * Bin i contributes iff max(0,s_lo-(D-1)) <= i <= min(D-1,s_lo+ell-2). */
+                        int lo_bin = (s_lo > D - 1) ? s_lo - (D - 1) : 0;
+                        int hi_bin = (s_lo + ell - 2 < D - 1) ? s_lo + ell - 2 : D - 1;
                         int W_int = prefix_c[hi_bin + 1] - prefix_c[lo_bin];
                         double dyn_x = dyn_base_ell + two_ell_inv_4n * (double)W_int;
                         conv_t dyn_it = (conv_t)((long long)(dyn_x
@@ -862,10 +864,10 @@ fused_prove_target(
                 } else {
                     double best = 0.0;
                     #pragma unroll
-                    for (int ell = 2; ell <= 6; ell++) {
+                    for (int ell = 2; ell <= 2 * D; ell++) {
                         int n_cv = ell - 1;
                         double inv_norm = inv_norm_arr[ell - 2];
-                        int n_win = 11 - n_cv + 1;
+                        int n_win = CONV_LEN - n_cv + 1;
                         for (int s_lo = 0; s_lo < n_win; s_lo++) {
                             int s_hi = s_lo + n_cv - 1;
                             conv_t ws = conv[s_hi];

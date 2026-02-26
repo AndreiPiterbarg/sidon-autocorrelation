@@ -10,7 +10,7 @@
  * For very large parents (single parent N > REFINE_CHUNK_SIZE),
  * falls back to the existing chunked single-parent approach.
  *
- * Template-instantiated for D_CHILD = 12, 24, 48.
+ * Template-instantiated for D_CHILD = 8, 12, 16, 24, 32, 48.
  *
  * Depends on: device_helpers.cuh (CUDA_CHECK)
  *             refinement_kernel.cuh (refine_prove_target, refine_prove_target_batched)
@@ -194,7 +194,7 @@ static int analyze_parent_cpu(
     double best_tv = 0.0;
     int frozen = 0;
 
-    for (int ell = 2; ell <= D_CHILD; ell++) {
+    for (int ell = 2; ell <= 2 * D_CHILD; ell++) {
         int n_cv = ell - 1;
         double dyn_base_ell = dyn_base * (double)ell * inv_4n;
         double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
@@ -1265,6 +1265,18 @@ static int refine_parents_impl(
 /* ================================================================
  * Concrete instantiations
  * ================================================================ */
+static int refine_parents_d8(
+    const int* parent_configs, int num_parents, int d_parent, int m, double c_target,
+    long long* out_asym, long long* out_test, long long* out_surv,
+    double* out_min_tv, int* out_min_cfg,
+    int* out_surv_configs, int* out_n_ext, int max_surv, double time_budget,
+    int no_freeze)
+{
+    return refine_parents_impl<8>(parent_configs, num_parents, d_parent, m, c_target,
+        out_asym, out_test, out_surv, out_min_tv, out_min_cfg,
+        out_surv_configs, out_n_ext, max_surv, time_budget, no_freeze);
+}
+
 static int refine_parents_d12(
     const int* parent_configs, int num_parents, int d_parent, int m, double c_target,
     long long* out_asym, long long* out_test, long long* out_surv,
@@ -1277,6 +1289,18 @@ static int refine_parents_d12(
         out_surv_configs, out_n_ext, max_surv, time_budget, no_freeze);
 }
 
+static int refine_parents_d16(
+    const int* parent_configs, int num_parents, int d_parent, int m, double c_target,
+    long long* out_asym, long long* out_test, long long* out_surv,
+    double* out_min_tv, int* out_min_cfg,
+    int* out_surv_configs, int* out_n_ext, int max_surv, double time_budget,
+    int no_freeze)
+{
+    return refine_parents_impl<16>(parent_configs, num_parents, d_parent, m, c_target,
+        out_asym, out_test, out_surv, out_min_tv, out_min_cfg,
+        out_surv_configs, out_n_ext, max_surv, time_budget, no_freeze);
+}
+
 static int refine_parents_d24(
     const int* parent_configs, int num_parents, int d_parent, int m, double c_target,
     long long* out_asym, long long* out_test, long long* out_surv,
@@ -1285,6 +1309,18 @@ static int refine_parents_d24(
     int no_freeze)
 {
     return refine_parents_impl<24>(parent_configs, num_parents, d_parent, m, c_target,
+        out_asym, out_test, out_surv, out_min_tv, out_min_cfg,
+        out_surv_configs, out_n_ext, max_surv, time_budget, no_freeze);
+}
+
+static int refine_parents_d32(
+    const int* parent_configs, int num_parents, int d_parent, int m, double c_target,
+    long long* out_asym, long long* out_test, long long* out_surv,
+    double* out_min_tv, int* out_min_cfg,
+    int* out_surv_configs, int* out_n_ext, int max_surv, double time_budget,
+    int no_freeze)
+{
+    return refine_parents_impl<32>(parent_configs, num_parents, d_parent, m, c_target,
         out_asym, out_test, out_surv, out_min_tv, out_min_cfg,
         out_surv_configs, out_n_ext, max_surv, time_budget, no_freeze);
 }

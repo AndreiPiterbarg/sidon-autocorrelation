@@ -263,7 +263,8 @@ static int run_single_level_extract_streamed_impl(
     double* out_min_test_val,
     int* out_min_test_config,
     const char* survivor_file_path,
-    long long* out_n_extracted
+    long long* out_n_extracted,
+    long long target_survivors
 ) {
     double corr = 2.0 / m + 1.0 / ((double)m * m);
     double prune_target = c_target + corr;
@@ -407,8 +408,8 @@ static int run_single_level_extract_streamed_impl(
     long long total_fp32 = 0, total_asym = 0, total_test = 0, total_surv = 0;
     long long total_extracted = 0;
     double min_tv = 1e30;
-    int min_cfg[8];
-    for (int i = 0; i < 8; i++) min_cfg[i] = 0;
+    int min_cfg[D];
+    for (int i = 0; i < D; i++) min_cfg[i] = 0;
     long long total_disk_bytes = 0;
     double max_observed_rate = 0.0;
     int chunk_idx = 0;
@@ -561,6 +562,16 @@ static int run_single_level_extract_streamed_impl(
                 h_surv_count, total_extracted, buf_util,
                 total_disk_bytes / (1024.0 * 1024.0));
         fflush(stderr);
+
+        /* Early termination if we've reached the target survivor count */
+        if (target_survivors > 0 && total_extracted >= target_survivors) {
+            fprintf(stderr, "STREAMED: target_survivors=%lld reached (extracted=%lld), "
+                    "stopping early\n", target_survivors, total_extracted);
+            fflush(stderr);
+            chunk_start = total_work;  /* exit the while loop */
+            chunk_idx++;
+            break;
+        }
 
         /* Continuous adaptive sizing: track rolling max rate, re-adapt every chunk */
         if (to_write > 0) {

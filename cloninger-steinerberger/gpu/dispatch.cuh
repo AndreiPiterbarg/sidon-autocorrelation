@@ -10,6 +10,7 @@
  *
  * Depends on: host_find_min.cuh (find_best_bound_direct_d4/d6 wrappers)
  *             host_prove.cuh (run_single_level_d4/d6 wrappers)
+ *             host_refine.cuh (refine_parents_d8/d12/d16/d24/d32/d48)
  */
 
 #ifdef _WIN32
@@ -122,19 +123,20 @@ EXPORT int gpu_run_single_level_extract_streamed(
     double* min_test_val,
     int* min_test_config,
     const char* survivor_file_path,
-    long long* n_extracted
+    long long* n_extracted,
+    long long target_survivors
 ) {
     switch (d) {
         case 4: return run_single_level_extract_streamed_impl<4>(
                     S, n_half, m, c_target,
                     n_fp32_skipped, n_pruned_asym, n_pruned_test, n_survivors,
                     min_test_val, min_test_config,
-                    survivor_file_path, n_extracted);
+                    survivor_file_path, n_extracted, target_survivors);
         case 6: return run_single_level_extract_streamed_impl<6>(
                     S, n_half, m, c_target,
                     n_fp32_skipped, n_pruned_asym, n_pruned_test, n_survivors,
                     min_test_val, min_test_config,
-                    survivor_file_path, n_extracted);
+                    survivor_file_path, n_extracted, target_survivors);
         default:
             fprintf(stderr, "GPU: d=%d not supported for streamed extract "
                     "(only d=4,6)\n", d);
@@ -160,12 +162,24 @@ EXPORT int gpu_refine_parents(
     int no_freeze
 ) {
     switch (d_parent) {
+        case 4:
+            return refine_parents_d8(parent_configs, num_parents, d_parent, m, c_target,
+                total_asym, total_test, total_survivors, min_test_val, min_test_config,
+                survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         case 6:
             return refine_parents_d12(parent_configs, num_parents, d_parent, m, c_target,
                 total_asym, total_test, total_survivors, min_test_val, min_test_config,
                 survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
+        case 8:
+            return refine_parents_d16(parent_configs, num_parents, d_parent, m, c_target,
+                total_asym, total_test, total_survivors, min_test_val, min_test_config,
+                survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         case 12:
             return refine_parents_d24(parent_configs, num_parents, d_parent, m, c_target,
+                total_asym, total_test, total_survivors, min_test_val, min_test_config,
+                survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
+        case 16:
+            return refine_parents_d32(parent_configs, num_parents, d_parent, m, c_target,
                 total_asym, total_test, total_survivors, min_test_val, min_test_config,
                 survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         case 24:
@@ -174,7 +188,7 @@ EXPORT int gpu_refine_parents(
                 survivor_configs, n_extracted, max_survivors, time_budget_sec, no_freeze);
         default:
             fprintf(stderr, "GPU: d_parent=%d not supported for refinement "
-                    "(only 6->12, 12->24, 24->48)\n", d_parent);
+                    "(supported: 4->8, 6->12, 8->16, 12->24, 16->32, 24->48)\n", d_parent);
             return -2;
     }
 }

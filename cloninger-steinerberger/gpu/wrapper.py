@@ -123,7 +123,7 @@ def _setup_signatures(lib):
     # gpu_run_single_level_extract_streamed(d, S, n_half, m, c_target,
     #     n_fp32_skipped*, n_pruned_asym*, n_pruned_test*, n_survivors*,
     #     min_test_val*, min_test_config*,
-    #     survivor_file_path, n_extracted*) -> int
+    #     survivor_file_path, n_extracted*, target_survivors) -> int
     lib.gpu_run_single_level_extract_streamed.restype = ctypes.c_int
     lib.gpu_run_single_level_extract_streamed.argtypes = [
         ctypes.c_int,       # d
@@ -139,6 +139,7 @@ def _setup_signatures(lib):
         ctypes.POINTER(ctypes.c_int),       # min_test_config
         ctypes.c_char_p,                    # survivor_file_path
         ctypes.POINTER(ctypes.c_longlong),  # n_extracted
+        ctypes.c_longlong,                  # target_survivors
     ]
 
     # gpu_refine_parents(d_parent, parent_configs*, num_parents, m, c_target,
@@ -468,6 +469,14 @@ def refine_parents(d_parent, parent_configs_array, m, c_target,
 
     if n_ext > 0:
         survivor_configs = survivor_buf[:n_ext * d_child].reshape(n_ext, d_child).copy()
+        # Canonicalize: replace each with min(c, rev(c)) lexicographically
+        for i in range(len(survivor_configs)):
+            rev = survivor_configs[i, ::-1].copy()
+            if tuple(rev) < tuple(survivor_configs[i]):
+                survivor_configs[i] = rev
+        # Deduplicate
+        survivor_configs = np.unique(survivor_configs, axis=0)
+        n_ext = len(survivor_configs)
     else:
         survivor_configs = np.empty((0, d_child), dtype=np.int32)
 
@@ -483,7 +492,8 @@ def refine_parents(d_parent, parent_configs_array, m, c_target,
     }
 
 
-def run_single_level_extract_streamed(d, S, n_half, m, c_target, output_path):
+def run_single_level_extract_streamed(d, S, n_half, m, c_target, output_path,
+                                      target_survivors=0):
     """GPU survivor extraction with chunked streaming to disk.
 
     Survivors are written to a binary file instead of being held in memory.
@@ -503,6 +513,8 @@ def run_single_level_extract_streamed(d, S, n_half, m, c_target, output_path):
         Target lower bound to prove.
     output_path : str
         Path for the binary survivor file.
+    target_survivors : int
+        Stop early after collecting this many survivors (0 = run all).
 
     Returns
     -------
@@ -535,7 +547,8 @@ def run_single_level_extract_streamed(d, S, n_half, m, c_target, output_path):
         ctypes.byref(min_test_val),
         min_test_config,
         path_bytes,
-        ctypes.byref(n_extracted))
+        ctypes.byref(n_extracted),
+        ctypes.c_longlong(target_survivors))
 
     if ret == -4:
         # Disk full — partial extraction. Counting data is still valid.

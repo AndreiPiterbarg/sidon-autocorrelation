@@ -82,7 +82,7 @@ def _test_values_jit(batch_int, d, n_half, inv_m, early_stop=0.0):
         # pre-filtered configs tend to be spread out, favoring large window)
         best = 0.0
         done = False
-        for ell in range(2, d + 1):
+        for ell in range(2, 2 * d + 1):
             if done:
                 break
             n_cv = ell - 1
@@ -136,7 +136,7 @@ def compute_test_value_single(a, n_half):
 
     cumconv = np.cumsum(conv)
     best = 0.0
-    for ell in range(2, d + 1):
+    for ell in range(2, 2 * d + 1):
         n_conv_vals = ell - 1
         for s_lo in range(conv_len - n_conv_vals + 1):
             s_hi = s_lo + n_conv_vals - 1

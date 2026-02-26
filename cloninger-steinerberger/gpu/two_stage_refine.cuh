@@ -63,7 +63,7 @@ __device__ __forceinline__ long long shfl_down_ll(
 template <int D_CHILD, int K_OUTER, bool USE_INT64 = true>
 __global__ void __launch_bounds__(
     (D_CHILD <= 12) ? REFINE_BLOCK_SIZE_12 :
-    (D_CHILD <= 24) ? REFINE_BLOCK_SIZE_24 : REFINE_BLOCK_SIZE_48)
+    (D_CHILD <= 24) ? REFINE_BLOCK_SIZE_24 : REFINE_BLOCK_SIZE_48, 2)
 freeze_check_kernel(
     const int* __restrict__ all_parents,       /* [n_batch * D_PARENT] */
     const long long* __restrict__ batch_prefix, /* [n_batch + 1] prefix sums of outer work */
@@ -201,12 +201,14 @@ freeze_check_kernel(
             }
 
             int frozen = 0;
-            for (int ell = 2; ell <= D_CHILD && !frozen; ell++) {
+            for (int ell = 2; ell <= 2 * D_CHILD && !frozen; ell++) {
                 int n_cv = ell - 1;
                 double dyn_base_ell = dyn_base * (double)ell * inv_4n;
                 double two_ell_inv_4n = 2.0 * (double)ell * inv_4n;
                 int n_windows = CONV_LEN - n_cv + 1;
-                for (int s_lo = 0; s_lo < n_windows && !frozen; s_lo++) {
+                for (int w = 0; w < n_windows && !frozen; w++) {
+                    /* Zigzag: check boundary positions first */
+                    int s_lo = (w & 1) ? (n_windows - 1 - w / 2) : (w / 2);
                     int s_hi = s_lo + n_cv - 1;
                     conv_t ws = conv_ps[s_hi];
                     if (s_lo > 0) ws -= conv_ps[s_lo - 1];
@@ -343,7 +345,7 @@ freeze_check_kernel(
 template <int D_CHILD, int K_OUTER, bool USE_INT64 = true>
 __global__ void __launch_bounds__(
     (D_CHILD <= 12) ? REFINE_BLOCK_SIZE_12 :
-    (D_CHILD <= 24) ? REFINE_BLOCK_SIZE_24 : REFINE_BLOCK_SIZE_48)
+    (D_CHILD <= 24) ? REFINE_BLOCK_SIZE_24 : REFINE_BLOCK_SIZE_48, 2)
 inner_enumerate_kernel(
     const int* __restrict__ all_parents,       /* [n_batch * D_PARENT] */
     const int* __restrict__ all_lo,            /* [n_batch * D_PARENT] */
@@ -396,10 +398,14 @@ inner_enumerate_kernel(
     double inv_S = 1.0 / (double)S_child;
     double margin = 1.0 / (4.0 * m);
 
-    double inv_norm_arr[D_CHILD - 1];
-    #pragma unroll
-    for (int ell = 2; ell <= D_CHILD; ell++)
-        inv_norm_arr[ell - 2] = (4.0 * n_half_child) / ((double)m * (double)m * (double)ell);
+    /* inv_norm_arr in shared memory: saves 46 regs/thread for D=24,
+     * only accessed in the rare survivor path (<5% of threads). */
+    __shared__ double s_inv_norm[2 * D_CHILD - 1];
+    if (threadIdx.x == 0) {
+        for (int ell = 2; ell <= 2 * D_CHILD; ell++)
+            s_inv_norm[ell - 2] = (4.0 * n_half_child) / ((double)m * (double)m * (double)ell);
+    }
+    __syncthreads();
 
     double dyn_base = c_target * (double)m * (double)m + 1.0
                     + 1e-9 * (double)m * (double)m;
@@ -456,16 +462,7 @@ inner_enumerate_kernel(
          * Full pruning cascade (same as freeze_kernel.cuh lines 266-432)
          * ============================================================ */
 
-        /* 1. Canonical palindrome check */
-        {
-            int skip = 0;
-            #pragma unroll
-            for (int i = 0; i < D_CHILD / 2; i++) {
-                if (c[i] < c[D_CHILD - 1 - i]) break;
-                if (c[i] > c[D_CHILD - 1 - i]) { skip = 1; break; }
-            }
-            if (skip) continue;
-        }
+        /* 1. (Canonical filter removed — applied host-side after extraction) */
 
         /* 2+3. FP32 asymmetry + half-sum bound */
         {
@@ -536,15 +533,22 @@ inner_enumerate_kernel(
             if (center > dyn_it2_min) { my_test++; continue; }
         }
 
-        /* 6. Autoconvolution with inline ell=2 early exit */
+        /* 6. Autoconvolution with inline multi-ell early exit */
         int prefix_c[D_CHILD + 1];
         prefix_c[0] = 0;
         #pragma unroll
         for (int i = 0; i < D_CHILD; i++)
             prefix_c[i + 1] = prefix_c[i] + c[i];
 
+        /* Conservative thresholds for multi-ell early abort (W_int=S) */
         conv_t dyn_it2 = (conv_t)((long long)(
             (dyn_base + 2.0 * (double)S_child) * 2.0 * inv_4n
+            * (1.0 - 4.0 * DBL_EPSILON)));
+        conv_t dyn_it3 = (conv_t)((long long)(
+            (dyn_base + 2.0 * (double)S_child) * 3.0 * inv_4n
+            * (1.0 - 4.0 * DBL_EPSILON)));
+        conv_t dyn_it4_cons = (conv_t)((long long)(
+            (dyn_base + 2.0 * (double)S_child) * 4.0 * inv_4n
             * (1.0 - 4.0 * DBL_EPSILON)));
 
         conv_t conv[CONV_LEN];
@@ -556,8 +560,23 @@ inner_enumerate_kernel(
             #pragma unroll
             for (int j = i+1; j < D_CHILD; j++)
                 conv[i+j] += (conv_t)2 * c[i] * c[j];
+            /* ell=2 checks on completed conv values */
             if (conv[2*i] > dyn_it2) { early_exit = 1; break; }
             if (i > 0 && conv[2*i - 1] > dyn_it2) { early_exit = 1; break; }
+            /* ell=3 checks: window = sum of 2 consecutive raw conv values */
+            if (i > 0) {
+                conv_t w3 = conv[2*i] + conv[2*i - 1];
+                if (w3 > dyn_it3) { early_exit = 1; break; }
+            }
+            if (i >= 2) {
+                conv_t w3b = conv[2*i - 1] + conv[2*i - 2];
+                if (w3b > dyn_it3) { early_exit = 1; break; }
+            }
+            /* ell=4 check: window = sum of 3 consecutive raw conv values */
+            if (i >= 2) {
+                conv_t w4 = conv[2*i] + conv[2*i - 1] + conv[2*i - 2];
+                if (w4 > dyn_it4_cons) { early_exit = 1; break; }
+            }
         }
         if (early_exit) { my_test++; continue; }
 
@@ -565,14 +584,16 @@ inner_enumerate_kernel(
         #pragma unroll
         for (int kk = 1; kk < CONV_LEN; kk++) conv[kk] += conv[kk-1];
 
-        /* Window scan with per-position dynamic thresholds */
+        /* Window scan with per-position dynamic thresholds (zigzag order) */
         int pruned = 0;
-        for (int ell = 2; ell <= D_CHILD; ell++) {
+        for (int ell = 2; ell <= 2 * D_CHILD; ell++) {
             int n_cv = ell - 1;
             double dyn_base_ell2 = dyn_base * (double)ell * inv_4n;
             double two_ell_inv_4n2 = 2.0 * (double)ell * inv_4n;
             int n_windows = CONV_LEN - n_cv + 1;
-            for (int s_lo = 0; s_lo < n_windows; s_lo++) {
+            for (int w = 0; w < n_windows; w++) {
+                /* Zigzag: even iterations from left, odd from right */
+                int s_lo = (w & 1) ? (n_windows - 1 - w / 2) : (w / 2);
                 int s_hi = s_lo + n_cv - 1;
                 conv_t ws = conv[s_hi];
                 if (s_lo > 0) ws -= conv[s_lo - 1];
@@ -591,9 +612,9 @@ inner_enumerate_kernel(
         } else {
             /* Survivor: compute FP64 test value */
             double best = 0.0;
-            for (int ell = 2; ell <= D_CHILD; ell++) {
+            for (int ell = 2; ell <= 2 * D_CHILD; ell++) {
                 int n_cv = ell - 1;
-                double inv_norm = inv_norm_arr[ell - 2];
+                double inv_norm = s_inv_norm[ell - 2];
                 int n_windows = CONV_LEN - n_cv + 1;
                 for (int s_lo = 0; s_lo < n_windows; s_lo++) {
                     int s_hi = s_lo + n_cv - 1;

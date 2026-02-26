@@ -66,7 +66,7 @@ def gpu_find_best_bound_direct(n_half, m, verbose=True):
 
 def gpu_run_single_level(n_half, m, c_target, verbose=True, extract_survivors=False,
                          max_survivors=2000000000, stream_to_disk=None,
-                         survivor_file=None):
+                         survivor_file=None, target_survivors=0):
     """GPU version: run the branch-and-prune at a single discretization level.
 
     Parameters
@@ -134,7 +134,8 @@ def gpu_run_single_level(n_half, m, c_target, verbose=True, extract_survivors=Fa
             print(f"  Survivor file: {survivor_file}")
 
         result = wrapper.run_single_level_extract_streamed(
-            d, S, n_half, m, c_target, survivor_file)
+            d, S, n_half, m, c_target, survivor_file,
+            target_survivors=target_survivors)
 
     elif extract_survivors:
         result = wrapper.run_single_level_extract(d, S, n_half, m, c_target,

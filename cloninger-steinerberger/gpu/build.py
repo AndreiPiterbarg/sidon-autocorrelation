@@ -130,7 +130,8 @@ def build(verbose=True):
         # Use dynamic CRT
         cmd.extend(['-Xcompiler', '/MD'])
     else:
-        cmd.extend(['-Xcompiler', '-fPIC'])
+        cmd.extend(['-Xcompiler', '-fPIC,-fopenmp'])
+        cmd.extend(['-lgomp'])
 
     # Print register info for profiling
     cmd.extend(['--ptxas-options=-v'])
