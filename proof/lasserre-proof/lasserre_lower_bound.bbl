@@ -13,6 +13,25 @@ Jai Bajaj, \emph{A computer-assisted proof that $c_{1a}\geq 7/5$}, Companion
   manuscript; accompanying source available in the repository
   \texttt{proof/cs-proof}, 2026.
 
+\bibitem[BL26]{BL25}
+Christopher Boyer and Zane~Kun Li, \emph{An improved example for an
+  autoconvolution inequality}, Experimental Mathematics (2026), Published
+  online 15 February 2026.
+
+\bibitem[BTN01]{BenTalNemirovski2001}
+Aharon Ben-Tal and Arkadi Nemirovski, \emph{Lectures on modern convex
+  optimization: Analysis, algorithms, and engineering applications}, MPS-SIAM
+  Series on Optimization, SIAM, 2001.
+
+\bibitem[BV04]{BoydVandenberghe2004}
+Stephen Boyd and Lieven Vandenberghe, \emph{Convex optimization}, Cambridge
+  University Press, 2004.
+
+\bibitem[CP17]{CifuentesParrilo2017}
+Diego Cifuentes and Pablo~A. Parrilo, \emph{Sampling algebraic varieties for
+  sum of squares programs}, SIAM Journal on Optimization \textbf{27} (2017),
+  no.~4, 2381--2404.
+
 \bibitem[CRV10]{CRV10}
 Javier Cilleruelo, Imre~Z. Ruzsa, and Carlos Vinuesa, \emph{Generalized sidon
   sets}, Advances in Mathematics \textbf{225} (2010), no.~5, 2786--2807.
@@ -21,6 +40,11 @@ Javier Cilleruelo, Imre~Z. Ruzsa, and Carlos Vinuesa, \emph{Generalized sidon
 Alexander Cloninger and Stefan Steinerberger, \emph{On suprema of
   autoconvolutions with an application to sidon sets}, Proceedings of the
   American Mathematical Society \textbf{145} (2017), no.~8, 3191--3200.
+
+\bibitem[dMU21]{Lean4}
+Leonardo de~Moura and Sebastian Ullrich, \emph{The lean 4 theorem prover and
+  programming language}, Automated Deduction -- CADE 28, Lecture Notes in
+  Computer Science, vol. 12699, Springer, 2021, pp.~625--635.
 
 \bibitem[ET41]{ET41}
 P.~Erd{\H{o}}s and P.~Tur{\'a}n, \emph{On a problem of sidon in additive number
@@ -32,10 +56,27 @@ Michael Garstka, Mark Cannon, and Paul Goulart, \emph{{COSMO}: A conic operator
   splitting method for convex conic problems}, Journal of Optimization Theory
   and Applications \textbf{190} (2021), no.~3, 779--810.
 
+\bibitem[HAB{\etalchar{+}}17]{Hales2017}
+Thomas Hales, Mark Adams, Gertrud Bauer, Tat~Dat Dang, John Harrison, Le~Truong
+  Hoang, Cezary Kaliszyk, Victor Magron, Sean McLaughlin, Tat~Thang Nguyen,
+  Quang~Truong Nguyen, Tobias Nipkow, Steven Obua, Joseph Pleso, Jason Rute,
+  Alexey Solovyev, Thi Hoai~An Ta, Nam~Trung Tran, Thi~Diep Trieu, Josef Urban,
+  Ky~Vu, and Roland Zumkeller, \emph{A formal proof of the {K}epler
+  conjecture}, Forum of Mathematics, Pi \textbf{5} (2017), e2.
+
 \bibitem[Han88]{Handelman1988}
 David Handelman, \emph{Representing polynomials by positive linear functions on
   compact convex polyhedra}, Pacific Journal of Mathematics \textbf{132}
   (1988), no.~1, 35--62.
+
+\bibitem[HJ13]{HornJohnson2013Matrix}
+Roger~A. Horn and Charles~R. Johnson, \emph{Matrix analysis}, 2 ed., Cambridge
+  University Press, 2013.
+
+\bibitem[HL05]{HenrionLasserre2005}
+Didier Henrion and Jean~B. Lasserre, \emph{Detecting global optimality and
+  extracting solutions in {GloptiPoly}}, Lecture Notes in Control and
+  Information Sciences \textbf{312} (2005), 293--310.
 
 \bibitem[JCK08]{JanssonChaykinKeil2008}
 Christian Jansson, Denis Chaykin, and Christian Keil, \emph{Rigorous error
@@ -51,6 +92,10 @@ Jr. Kelley, J.~E., \emph{The cutting-plane method for solving convex programs},
 Jean~B. Lasserre, \emph{Global optimization with polynomials and the problem of
   moments}, SIAM Journal on Optimization \textbf{11} (2001), no.~3, 796--817.
 
+\bibitem[Las06]{Lasserre2006sparse}
+\bysame, \emph{Convergent {SDP}-relaxations in polynomial optimization with
+  sparsity}, SIAM Journal on Optimization \textbf{17} (2006), no.~3, 822--843.
+
 \bibitem[Las15]{Lasserre2015}
 \bysame, \emph{An introduction to polynomial and semi-algebraic optimization},
   Cambridge Texts in Applied Mathematics, Cambridge University Press, 2015.
@@ -59,6 +104,10 @@ Jean~B. Lasserre, \emph{Global optimization with polynomials and the problem of
 Greg Martin and Kevin O'Bryant, \emph{Constructions of generalized sidon sets},
   Journal of Combinatorial Theory, Series A \textbf{113} (2006), no.~4,
   591--607.
+
+\bibitem[MO07]{MO2004}
+\bysame, \emph{The symmetric subset problem in continuous ramsey theory},
+  Experimental Mathematics \textbf{16} (2007), no.~2, 145--165.
 
 \bibitem[MO09]{MO2009}
 \bysame, \emph{The supremum of autoconvolutions, with applications to additive
@@ -74,6 +123,11 @@ Mate Matolcsi and Carlos Vinuesa, \emph{Improved bounds on the supremum of
   autoconvolutions}, Journal of Mathematical Analysis and Applications
   \textbf{372} (2010), no.~2, 439--447.
 
+\bibitem[MW23]{MagronWang2023}
+Victor Magron and Jie Wang, \emph{Sparse polynomial optimization: Theory and
+  practice}, Series on Optimization and Its Applications, vol.~5, World
+  Scientific, 2023.
+
 \bibitem[OCPB16]{SCS}
 Brendan O'Donoghue, Eric Chu, Neal Parikh, and Stephen Boyd, \emph{Conic
   optimization via operator splitting and homogeneous self-dual embedding},
@@ -84,9 +138,38 @@ Brendan O'Donoghue, Eric Chu, Neal Parikh, and Stephen Boyd, \emph{Conic
 Pablo~A. Parrilo, \emph{Semidefinite programming relaxations for semialgebraic
   problems}, Mathematical Programming \textbf{96} (2003), no.~2, 293--320.
 
+\bibitem[PP08]{PeyrlParrilo2008}
+Helfried Peyrl and Pablo~A. Parrilo, \emph{Computing sum of squares
+  decompositions with rational coefficients}, Theoretical Computer Science
+  \textbf{409} (2008), no.~2, 269--281.
+
+\bibitem[PT21]{PlattTrudgian2021}
+David~J. Platt and Timothy~S. Trudgian, \emph{The {R}iemann hypothesis is true
+  up to $3 \cdot 10^{12}$}, Bulletin of the London Mathematical Society
+  \textbf{53} (2021), no.~3, 792--797.
+
+\bibitem[Put93]{Putinar1993}
+Mihai Putinar, \emph{Positive polynomials on compact semi-algebraic sets},
+  Indiana University Mathematics Journal \textbf{42} (1993), no.~3, 969--984.
+
 \bibitem[Sch91]{Schmudgen1991}
 Konrad Schm{\"u}dgen, \emph{The $k$-moment problem for compact semi-algebraic
   sets}, Mathematische Annalen \textbf{289} (1991), no.~1, 203--206.
+
+\bibitem[SS02]{SS2002}
+Andrzej Schinzel and Wolfgang~M. Schmidt, \emph{Comparison of {L}$^1$- and
+  {L}$^\infty$-norms of squares of polynomials}, Acta Arithmetica \textbf{104}
+  (2002), no.~3, 283--296.
+
+\bibitem[Tao]{Tao}
+Terence Tao, \emph{An autocorrelation constant related to sidon sets},
+  \url{https://teorth.github.io/optimizationproblems/constants/1a.html},
+  Accessed 2026-04-27.
+
+\bibitem[{The}20]{Mathlib}
+{The mathlib Community}, \emph{The lean mathematical library}, Proceedings of
+  the 9th ACM {SIGPLAN} International Conference on Certified Programs and
+  Proofs, 2020, pp.~367--381.
 
 \bibitem[VB96]{VandenbergheBoyd1996}
 Lieven Vandenberghe and Stephen Boyd, \emph{Semidefinite programming}, SIAM
