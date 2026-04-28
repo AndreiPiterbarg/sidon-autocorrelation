@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inside the Proof: Visualizing the Cascade Algorithm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<section id="hero" class="hero">
+  <div class="hero-inner">
+    <h1>Inside the Proof</h1>
+    <p class="hero-sub">
+      How a computer-assisted algorithm proved a new bound on the
+      <em>Sidon autocorrelation constant</em> by exhaustively eliminating
+      billions of candidates.
+    </p>
+    <div class="algo-overview">
+      <div class="algo-step"><span class="algo-num">1</span> <strong>Discretize</strong> &mdash; partition [&minus;&#x00BC;, &#x00BC;] into d bins</div>
+      <div class="algo-step"><span class="algo-num">2</span> <strong>Windowed test values</strong> &mdash; lower-bound &Vert;f&#9733;f&Vert;<sub>&infin;</sub></div>
+      <div class="algo-step"><span class="algo-num">3</span> <strong>Prune</strong> &mdash; rule out configs exceeding threshold</div>
+      <div class="algo-step"><span class="algo-num">4</span> <strong>Exhaust</strong> &mdash; if all pruned, the bound is proved</div>
+    </div>
+    <div class="hero-stat">
+      <span class="stat-num">6,859,053,079</span>
+      <span class="stat-label">candidates tested at level 3 alone</span>
+    </div>
+    <div class="scroll-hint">Scroll to explore <span class="arrow-down">&#x25BC;</span></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: CASCADE FUNNEL -->
+<!-- ============================================================ -->
+<section id="funnel" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">1</span>
+    <h2>The Cascade Funnel</h2>
+    <p class="section-desc">
+      <strong>Step 4: Exhaust.</strong> The algorithm starts at coarse resolution
+      (d=4 bins, m=20 mass units) and refines level by level &mdash;
+      d=4 &rarr; d=8 &rarr; d=16 &rarr; d=32 &rarr; d=64. At each level,
+      <strong>Steps 2&ndash;3</strong> (windowed test values + pruning)
+      eliminate most candidates. Watch billions of configurations get tested
+      until none remain, proving C<sub>1a</sub> &ge; 1.30.
+    </p>
+  </div>
+  <div class="funnel-controls">
+    <button id="funnel-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="funnel-reset" class="btn">Reset</button>
+    <button id="funnel-toggle" class="btn btn-sm">Show c &ge; 1.40</button>
+    <input type="range" id="funnel-scrubber" min="0" max="100" value="0" step="1">
+    <span id="funnel-stage-label" class="stage-label">Ready</span>
+  </div>
+  <div id="funnel-container" class="funnel-container"></div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: BEAT THE ALGORITHM -->
+<!-- ============================================================ -->
+<section id="challenge" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">2</span>
+    <h2>Can You Beat the Algorithm?</h2>
+    <p class="section-desc">
+      <strong>Steps 2&ndash;3 in action.</strong>
+      Build your own mass distribution across d bins and see if it can escape the
+      pruning tests. Drag the bars to redistribute mass, then hit <strong>Test</strong>.
+      The algorithm computes windowed test values &mdash; if any window exceeds the
+      threshold, the configuration is pruned. Can you find one that survives?
+      <em>Hint: symmetric, spread-out distributions are hardest to prune.</em>
+    </p>
+  </div>
+  <div class="challenge-layout">
+    <div class="challenge-left">
+      <div class="challenge-controls">
+        <div class="control-group">
+          <label for="ch-d-slider">
+            Resolution d
+            <span class="control-hint">bins — matches real cascade levels (4→8→16→…)</span>
+          </label>
+          <select id="ch-d-slider" class="d-select">
+            <option value="4">d = 4 bins (coarsest)</option>
+            <option value="8">d = 8 bins</option>
+            <option value="16">d = 16 bins</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="ch-c-slider">
+            Target <em>c</em>
+            <span class="control-hint">the bound we're proving</span>
+          </label>
+          <div class="slider-row">
+            <input type="range" id="ch-c-slider" min="1.10" max="1.60" value="1.30" step="0.01">
+            <span class="val-display" id="ch-c-val">1.30</span>
+          </div>
+        </div>
+        <div class="preset-row">
+          <button class="btn btn-sm" data-preset="uniform">Uniform</button>
+          <button class="btn btn-sm" data-preset="random">Random</button>
+          <button class="btn btn-sm" data-preset="concentrated">Concentrated</button>
+          <button class="btn btn-sm" data-preset="split">Split</button>
+          <button class="btn btn-sm" data-preset="lopsided">Lopsided</button>
+          <button id="ch-hint" class="btn btn-sm">&#128161; Hint</button>
+        </div>
+      </div>
+      <canvas id="ch-hist" width="440" height="260"></canvas>
+      <div class="drag-hint">Drag bars up/down to reshape the distribution</div>
+      <button id="ch-test" class="btn btn-primary btn-lg">Test My Distribution</button>
+    </div>
+    <div class="challenge-right">
+      <canvas id="ch-conv" width="440" height="260"></canvas>
+      <div id="ch-result" class="result-panel"></div>
+      <div class="section-link">
+        &darr; <a href="#heatmap">See how the window scanner works on your distribution</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: WINDOW SCANNER -->
+<!-- ============================================================ -->
+<section id="heatmap" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">3</span>
+    <h2>Window Scanner</h2>
+    <p class="section-desc">
+      <strong>Step 2: Windowed test values.</strong>
+      For each candidate, the algorithm checks every possible <em>window</em> &mdash;
+      a contiguous range of convolution positions with a specific width &ell;.
+      For each window, it computes a lower bound on &Vert;f&#9733;f&Vert;<sub>&infin;</sub>.
+      If <em>any</em> window exceeds the threshold c, the configuration is pruned (Step 3).
+      Each cell below is one (&ell;, k) window check.
+      Test a distribution in Section 2 first, then click <strong>Scan</strong>.
+    </p>
+  </div>
+  <div class="heatmap-controls">
+    <label for="hm-speed">Scan speed:</label>
+    <input type="range" id="hm-speed" min="0" max="100" value="50">
+    <span id="hm-speed-label">Medium</span>
+    <button id="hm-scan" class="btn btn-primary">Scan</button>
+    <button id="hm-reset" class="btn">Reset</button>
+  </div>
+  <div class="heatmap-layout">
+    <canvas id="hm-canvas" width="600" height="400"></canvas>
+    <div id="hm-info" class="hm-info">
+      <p style="font-size:12px;color:var(--text-light);margin-top:0;">
+        <strong>How it works:</strong> The algorithm computes f&#9733;f (autoconvolution),
+        then checks every window [k, k+&ell;) of the convolution.
+        If the windowed average exceeds the threshold c, the configuration is <em>pruned</em>.
+      </p>
+      <p style="font-size:12px;color:var(--text-light);">
+        <span style="display:inline-block;width:12px;height:12px;background:var(--blue-pale);vertical-align:middle;border-radius:2px;"></span> Below threshold &nbsp;
+        <span style="display:inline-block;width:12px;height:12px;background:#c07050;vertical-align:middle;border-radius:2px;"></span> Near threshold &nbsp;
+        <span style="display:inline-block;width:12px;height:12px;background:var(--red);vertical-align:middle;border-radius:2px;"></span> Exceeds &rarr; PRUNE
+      </p>
+      <div id="hm-verdict" class="hm-verdict"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: REFINEMENT TREE -->
+<!-- ============================================================ -->
+<section id="tree" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">4</span>
+    <h2>Refinement Tree</h2>
+    <p class="section-desc">
+      <strong>Step 1: Discretize, then refine.</strong>
+      Each surviving configuration at one level splits its d bins into 2d finer bins
+      at the next level. The parent [8,&thinsp;1,&thinsp;1,&thinsp;10] at d=4 spawns ~250 d=8 children &mdash; about half get pruned, giving a genuine red/green mix.
+      Click a surviving <span style="color:var(--green-light);">&#9679;</span> node to
+      expand it and see <em>its</em> children at the next resolution.
+      Hover any node for details.
+    </p>
+  </div>
+  <div id="tree-container" class="tree-container">
+    <svg id="tree-svg" width="900" height="500"></svg>
+  </div>
+  <div id="tree-tooltip" class="tree-tooltip hidden"></div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: BOUND TIMELINE -->
+<!-- ============================================================ -->
+<section id="timeline" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">5</span>
+    <h2>Closing the Gap</h2>
+    <p class="section-desc">
+      The Sidon autocorrelation constant C<sub>1a</sub> has been bounded from above and
+      below for decades. Our cascade algorithm pushed the lower bound from
+      <strong>1.28</strong> to <strong>1.40</strong>, narrowing the gap with the
+      best known upper bound of <strong>1.5029</strong>.
+    </p>
+  </div>
+  <div id="timeline-container" class="timeline-container">
+    <svg id="timeline-svg" width="900" height="360"></svg>
+  </div>
+  <div class="timeline-controls">
+    <button id="tl-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="tl-reset" class="btn">Reset</button>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+<footer class="footer">
+  <p>
+    <a href="../demo/index.html">Single-Configuration Explorer</a> &middot;
+    Interactive visualization of the Cloninger-Steinerberger branch-and-prune algorithm
+  </p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
