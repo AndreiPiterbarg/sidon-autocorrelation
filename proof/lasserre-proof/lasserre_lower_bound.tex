@@ -117,7 +117,7 @@ external dependency of the proof is a single finite SDP at
 $(d,k)=(16,3)$ whose dual solution we record as the certificate.
 \end{abstract}
 \noindent\textit{2020 Mathematics Subject Classification.}
-11B83, 42A85, 90C22, 90C23.
+11B83, 42A85, 90C22, 90C23, 13J30, 68V20.
 
 \smallskip
 
@@ -132,10 +132,11 @@ proof.
 \section{Introduction}\label{sec:intro}
 % ======================================================================
 
-\subsection{The Constant \texorpdfstring{$C_{1a}$}{C1a}}
+\subsection{The Constant \texorpdfstring{$C_{1a}$}{C1a}}\footnote{All
+  source code, the Lean~4 formalization, and the SDP certificate file
+  are available at the accompanying repository.}
 
-All source code and the SDP certificate are available at the
-accompanying repository.  Let
+Let
 \[
   \mathcal{F}
   \;=\;
@@ -155,10 +156,27 @@ $[-\tfrac12,\tfrac12]$.  The \emph{autoconvolution ratio} and
   \qquad
   C_{1a} \;=\; \inf_{f \in \mathcal{F}} R(f).
 \]
-The constant $C_{1a}$ is connected to the asymptotic density of Sidon
-and generalized Sidon sets in additive
-combinatorics~\cite{ET41,MO2006,CRV10,MO2009,CS17}, and its numerical
-value has resisted substantial improvement for nearly a decade.
+By homogeneity, $R(\lambda f) = R(f)$ for every $\lambda>0$, so one may
+normalize $\int f = 1$ throughout.
+
+\medskip
+
+\noindent\textbf{Why this constant matters.}  The infimum $C_{1a}$
+controls how efficiently nonnegative mass on a fixed interval can be
+arranged so that its self-convolution stays low at every point.  This
+extremal problem is the continuous shadow of additive
+combinatorics: a \emph{Sidon set} of integers has the property that all
+pairwise sums are distinct, equivalently that the representation
+function of the sumset is at most~$2$ outside the diagonal.  Asymptotic
+densities of Sidon and generalized Sidon sets are governed precisely by
+$C_{1a}$ and its relatives~\cite{ET41,MO2004,MO2006,MO2009,CRV10,CS17},
+and improvements on the numerical value of $C_{1a}$ feed back into
+density bounds for finite Sidon sets.  Aside from the classical
+Schinzel--Schmidt upper bound $\pi/2$~\cite{SS2002} and the
+Matolcsi--Vinuesa upper bound~\cite{MV10}, recently improved by Boyer
+and Li~\cite{BL25}, the numerical value of $C_{1a}$ has resisted
+substantial improvement for nearly a decade.  A periodically updated
+catalog of bounds is maintained by Tao~\cite{Tao}.
 
 \subsection{Known Bounds and the Present Result}
 
@@ -168,29 +186,39 @@ value has resisted substantial improvement for nearly a decade.
   \toprule
   \textbf{Bound} & \textbf{Value} & \textbf{Reference} \\
   \midrule
+  Earlier lower bounds  & $\ge 1.2628$, $\ge 1.2748$  & Martin \& O'Bryant~\cite{MO2004,MO2009} \\
   Published lower bound & $\ge 1.2802$  & Cloninger \& Steinerberger~\cite{CS17} \\
   SDP lower bound       & $\ge 1.3$     & This work \\
   Cascade lower bound   & $\ge 1.4$     & Bajaj~\cite{BajajCS2026} \\
   Published upper bound & $\le 1.50992$ & Matolcsi \& Vinuesa~\cite{MV10} \\
+  Improved upper bound  & $\le 1.50988$ & Boyer \& Li~\cite{BL25} \\
   \bottomrule
 \end{tabular}
 \caption[Published bounds on C1a in the normalization used here.]{Published bounds on $C_{1a}$ in the normalization used here,
-  together with the present result.}
+  together with the present result.  Numerical values track the
+  progression $1<1.182778<1.2628<1.2748<1.2802<1.3<1.4<1.50988<\pi/2$
+  in the present normalization.}
 \label{tab:published-bounds}
 \end{table}
 
-The branch-and-prune framework of Cloninger and
-Steinerberger~\cite{CS17} produces lower bounds by exhaustively testing
-every lattice point in a discretized mass simplex against windowed
-quadratic inequalities.  This framework is sharp in principle, but
-scales exponentially with the dimension~$d$ of the partition.  The
-\emph{cascade} extension of~\cite{BajajCS2026} pushed that exponential
-out to $d=128$ with $m=20$ grid points via symmetry reduction and
-dynamic window corrections.
+\noindent\textbf{Two strategies for lower bounds.}  Improving lower
+bounds on $C_{1a}$ is fundamentally harder than improving upper bounds,
+because one must rule out \emph{every} admissible function rather than
+exhibit a single example.  The branch-and-prune framework of Cloninger
+and Steinerberger~\cite{CS17} discretizes the mass simplex and tests
+every lattice point against windowed quadratic inequalities.  That
+framework is sharp in principle, but its complexity scales
+exponentially with the dimension~$d$ of the partition.  The companion
+\emph{cascade} extension~\cite{BajajCS2026} pushes the exponential out
+to $d=128$ with grid resolution $m=20$ via symmetry reduction, dyadic
+refinement, and dynamic window corrections, reaching the lower bound
+$C_{1a}\ge \tfrac75 = 1.4$ after roughly seventy hours of dedicated
+computation.
 
 The present paper takes a fundamentally different route.  Rather than
 exhausting the simplex, we observe that the bound of~\cite{CS17}
-reduces to a single polynomial optimization problem on the simplex,
+reduces to a single polynomial optimization problem on the standard
+simplex,
 \[
   \val(d)
   \;=\;
@@ -200,10 +228,14 @@ reduces to a single polynomial optimization problem on the simplex,
 \]
 where $\mathcal{W}_d$ enumerates admissible windows and $M_W$ is the
 associated nonnegative matrix.  Any lower bound on $\val(d)$ is a lower
-bound on $C_{1a}$ (Theorem~\ref{thm:val-le-c1a}).  We certify such a
-lower bound via the Lasserre semidefinite hierarchy, which produces
-rigorous certificates without enumerating any of the lattice points
-that the cascade relies on.
+bound on $C_{1a}$ (Theorem~\ref{thm:val-le-c1a}).  Since the simplex is
+compact and the objective is a piecewise quadratic polynomial, $\val(d)$
+falls squarely inside the scope of the Lasserre moment--SOS
+hierarchy~\cite{Lasserre2001,Lasserre2015,Parrilo03}, whose convergence
+on compact basic semialgebraic sets is guaranteed by Putinar's
+Positivstellensatz~\cite{Putinar1993}.  This produces rigorous lower
+bounds via a single semidefinite-program (SDP) certificate, without
+enumerating any of the lattice points the cascade relies on.
 
 \begin{theorem}[Main result]
 \label{thm:main}
@@ -327,14 +359,14 @@ and dividing by the length $\tfrac{\ell}{4n}$ of the covered interval
 gives the claimed lower bound on $\|f*f\|_{L^\infty}$.
 \end{proof}
 
-Each matrix $M_W$ is nonnegative, symmetric, and has entries only at
-positions $(i,j)$ with $i+j$ in a fixed integer interval; these are
-the support sets depicted in Figure~\ref{fig:window-matrix}.
-Throughout what follows, bin indices run over $\{0,\ldots,d-1\}$,
-while the simplex coordinates used in the Lasserre SDP are the
-$1$-indexed variables $x_1,\ldots,x_d$ with $x_{i+1}$ corresponding
-to bin~$i$.  The set
-of admissible windows is
+Each matrix $M_W$ is nonnegative, symmetric, and supported on a band
+of anti-diagonals $i+j\in[s_{\mathrm{lo}},s_{\mathrm{lo}}+\ell-2]$; the
+support sets are depicted in Figure~\ref{fig:window-matrix}.
+Throughout the rest of the paper, bin indices run over
+$\{0,\ldots,d-1\}$ in display formulas and over the matched
+$1$-indexed simplex variables $x_1,\ldots,x_d$ in the SDP setup;
+$x_{i+1}$ always refers to the same coordinate as bin~$i$.  The set of
+admissible windows is
 \[
   \mathcal{W}_d
   \;=\;
@@ -342,7 +374,15 @@ of admissible windows is
     (\ell,s_{\mathrm{lo}}):
     2\le \ell\le 2d,\
     0\le s_{\mathrm{lo}}\le 2(d-1)-(\ell-2)
-  \right\}.
+  \right\},
+\]
+which is finite of cardinality
+\[
+  |\mathcal{W}_d|
+  \;=\;
+  \sum_{\ell=2}^{2d}\,(2d-\ell+1)
+  \;=\;
+  d(2d-1).
 \]
 
 \begin{figure}[t]
@@ -557,26 +597,28 @@ localizing} PSD constraint
 \end{equation}
 
 Both formulations give valid lower bounds on $\val(d)$; the matrix
-form~\eqref{eq:window-psd} is tighter, because $v^\top \bigl[\text{LHS
-of }\eqref{eq:window-psd}\bigr] v\ge 0$ for $v=\mathbf{1}_0$ (the
-indicator of the empty monomial) reduces to the scalar constraint.
+form~\eqref{eq:window-psd} is tighter, because evaluating it on the
+constant test vector $v=\mathbf{1}_0$ recovers the scalar constraint
+exactly.
 
 \begin{theorem}[Soundness of the Lasserre relaxation]
 \label{thm:lasserre-soundness}
-For every $k\ge 1$ and every $d\ge 2$,
+For every $d\ge 2$ and every $k\ge 1$,
 \[
   \val^{(k)}(d) \;\le\; \val^{(k+1)}(d) \;\le\; \val(d).
 \]
+Moreover, $\val^{(k)}(d)\to \val(d)$ as $k\to\infty$.
 \end{theorem}
 
 \begin{proof}
 \textbf{Upper bound by $\val(d)$.}
-Let $\mu^\star\in\Delta_d$ attain $\val(d)$, and let
+Let $\mu^\star\in\Delta_d$ be an optimizer of $\val(d)$, and let
 $y^\star_\alpha=(\mu^\star)^\alpha$ be the pseudo-moment sequence
-of the Dirac measure $\delta_{\mu^\star}$.  Then $y^\star$
-satisfies every condition of Proposition~\ref{prop:simplex-moments}.
-Because $y^\star$ arises from a point mass, the localizing entries
-factor:
+of the Dirac measure $\delta_{\mu^\star}$.  By
+Proposition~\ref{prop:simplex-moments}, $y^\star\in\mathcal{Y}_k(d)$
+for every $k$.  Because $y^\star$ comes from a point mass, every
+moment factors as $y^\star_{\alpha+\beta}=y^\star_\alpha y^\star_\beta$;
+in particular, the localizing matrix entries factor as
 \[
   M_{k-1}(x_{i+1}x_{j+1}\cdot y^\star)
   \;=\;
@@ -586,7 +628,7 @@ an identity specific to Dirac pseudo-moments.  Set
 $t^\star=\val(d)=\max_W (\mu^\star)^\top M_W\mu^\star$.  For every
 $W\in\mathcal{W}_d$,
 \[
-  t^\star\cdot M_{k-1}(y^\star) - \sum_{ij}(M_W)_{ij}\,M_{k-1}(x_{i+1}x_{j+1}\cdot y^\star)
+  t^\star\cdot M_{k-1}(y^\star) - \sum_{i,j}(M_W)_{ij}\,M_{k-1}(x_{i+1}x_{j+1}\cdot y^\star)
   \;=\;
   \bigl(t^\star - (\mu^\star)^\top M_W\mu^\star\bigr)\cdot M_{k-1}(y^\star),
 \]
@@ -595,13 +637,32 @@ $M_{k-1}(y^\star)\PSD$.  Thus $(t^\star, y^\star)$ is feasible for
 the order-$k$ SDP, so $\val^{(k)}(d)\le t^\star=\val(d)$.
 
 \textbf{Monotonicity in $k$.}
-Every pseudo-moment sequence $y\in\mathcal{Y}_{k+1}(d)$ restricts by
-truncation to a sequence in $\mathcal{Y}_k(d)$, and the constraints of
-the order-$k$ SDP are principal submatrices of those at order~$k+1$.
-Hence the order-$(k+1)$ feasible set is contained (after truncation)
-in the order-$k$ feasible set, which gives
-$\val^{(k)}(d)\le\val^{(k+1)}(d)$.
+If $y\in\mathcal{Y}_{k+1}(d)$, its truncation to monomials of degree
+$\le 2k$ lies in $\mathcal{Y}_k(d)$: each constraint of the order-$k$
+SDP is a principal submatrix of the corresponding order-$(k+1)$
+constraint, and principal submatrices of PSD matrices are PSD.
+Enlarging the feasible set can only decrease the infimum, so
+$\val^{(k)}(d)\le \val^{(k+1)}(d)$.
+
+\textbf{Asymptotic tightness.}
+The standard simplex $\Delta_d$ is the basic semialgebraic set defined
+by $g_i(x):=x_i\ge 0$ and the equality $h(x):=1-\sum_i x_i=0$.  Adding
+the redundant inequality $1-\|x\|_2^2\ge 0$, which is implied by
+$x\in\Delta_d$, makes the quadratic module Archimedean.  By Putinar's
+Positivstellensatz~\cite{Putinar1993}, every polynomial strictly
+positive on $\Delta_d$ has a Putinar SOS representation, so the
+Lasserre hierarchy converges in objective: $\val^{(k)}(d)\to\val(d)$ as
+$k\to\infty$~\cite[Thm.~4.2]{Lasserre2001}.
 \end{proof}
+
+\begin{remark}[Strong duality]
+Each order-$k$ Lasserre SDP has a strictly feasible interior point
+(for example the moments of the uniform distribution on $\Delta_d$),
+so Slater's condition holds and strong duality is attained for the
+finite SDPs we solve~\cite[\S 5.2]{BoydVandenberghe2004}.  This is what
+makes a dual feasible point a rigorous lower-bound certificate
+in Section~\ref{sec:algorithm}.
+\end{remark}
 
 
 % ======================================================================
@@ -615,10 +676,13 @@ size $\binom{34}{2}=561$ and the full degree-$4$ moment vector has
 $\binom{36}{4}\approx 59\,000$ coordinates; at $d=128$ the full
 hierarchy is out of reach for any current SDP solver.  To reach
 $d=128$, we combine the hierarchy with the correlative sparsity
-pattern of Waki, Kim, Kojima, and Muramatsu~\cite{Waki2006}.  The
-bound at $d=16$ is obtained without this restriction; the restriction
-is used only at $d\ge 32$ to corroborate the main result at larger
-resolutions.
+pattern of Waki, Kim, Kojima, and Muramatsu~\cite{Waki2006}, whose
+asymptotic convergence theory was established by
+Lasserre~\cite{Lasserre2006sparse} and refined for sparse polynomial
+optimization in the textbook treatment of Magron and
+Wang~\cite{MagronWang2023}.  The bound at $d=16$ is obtained without
+this restriction; the restriction is used only at $d\ge 32$ to
+corroborate the main result at larger resolutions.
 
 \subsection{Banded Coupling and Chordal Extension}
 
@@ -685,19 +749,19 @@ $\val^{(k,b)}(d)\le \val^{(k)}(d)\le \val(d)$.
 \begin{proof}
 Each $M_k^{(c)}(y)$ is a principal submatrix of $M_k(y)$ obtained by
 selecting rows and columns corresponding to $\mathcal{B}_k(I_c)$.
-Principal submatrices of PSD matrices are PSD, so $M_k(y)\PSD$
+Principal submatrices of PSD matrices are PSD~\cite[\S 7.7]{HornJohnson2013Matrix}, so $M_k(y)\PSD$
 implies $M_k^{(c)}(y)\PSD$ for every~$c$, and the same applies to the
-coordinate localizing matrices.  For the window localizing
-constraint~\eqref{eq:window-psd}, if every bin $i$ with
-$(M_W)_{ij}\ne 0$ for some $j$ lies in a common clique $I_c$, the
-clique-restricted window constraint is a principal submatrix of the
-dense constraint and is therefore implied by $M_k(y)\PSD$.  Windows
-whose active bins are not covered by any single clique retain the
-dense window localizing as a global constraint; the proof of
-Lemma~\ref{lem:clique-soundness} is unaffected for such windows.
-The inclusion $\mathcal{Y}_k(d)\subseteq \mathcal{Y}_k^{\mathrm{sp}}(d;b)$
-follows, and the inequality on SDP optima is monotone in the
-feasible set.
+coordinate localizing matrices $M_{k-1}(x_i\cdot y)$.  For a window
+$W$ whose support is contained in some single clique $I_c$, the
+clique-restricted window constraint~\eqref{eq:window-psd} restricted
+to $\mathcal{B}_{k-1}(I_c)$ is also a principal submatrix of the
+dense constraint, hence implied by it.  Windows whose support
+exceeds the bandwidth retain their dense window
+localizing~\eqref{eq:window-psd} as a global constraint, which is
+trivially satisfied by every $y\in\mathcal{Y}_k(d)$ and so does not
+remove any element from the inclusion.  Thus $\mathcal{Y}_k(d)\subseteq\mathcal{Y}_k^{\mathrm{sp}}(d;b)$,
+and the SDP-value inequality follows from monotonicity of the
+infimum under enlargement of the feasible set.
 \end{proof}
 
 \begin{remark}[Global consistency constraint]
@@ -794,45 +858,92 @@ Algorithm~\ref{alg:lasserre-cg} summarizes the full procedure.
 \end{algorithmic}
 \end{algorithm}
 
-Standard primal-dual interior-point solvers
-(MOSEK~\cite{MOSEK}, SDPA~\cite{SDPA}) or splitting methods
-(SCS~\cite{SCS}, COSMO~\cite{COSMO}) handle the SDPs arising in
-Algorithm~\ref{alg:lasserre-cg}; our implementation uses MOSEK at
+Standard primal-dual interior-point
+solvers~\cite{VandenbergheBoyd1996,BenTalNemirovski2001} ---
+in particular MOSEK~\cite{MOSEK} and SDPA~\cite{SDPA} ---
+or first-order splitting methods (SCS~\cite{SCS}, COSMO~\cite{COSMO})
+handle the SDPs arising in Algorithm~\ref{alg:lasserre-cg}; our implementation uses MOSEK at
 $d\le 32$ and switches to SCS on GPU-equipped workstations at
 $d\ge 64$, where the interior-point memory footprint of MOSEK exceeds
 available RAM.
 
-\subsection{Recovering a Rigorous Lower Bound}
+\subsection{Recovering a Rigorous Lower Bound}\label{subsec:rigorous}
 
 Interior-point solvers return floating-point solutions, which cannot
 directly serve as a formal certificate.  We convert a numerically
-computed dual solution into a rigorous lower bound via the verified
-SDP bound of Jansson, Chaykin, and
-Keil~\cite{JanssonChaykinKeil2008}.  The procedure is the following.
+computed dual solution into a rigorous bound via the verified SDP
+bound of Jansson, Chaykin, and Keil~\cite{JanssonChaykinKeil2008},
+specialized to the \emph{aggregated} formulation of the SDP, which is
+the form actually used by the implementation in
+\texttt{certified\_lasserre/safe\_certify.py}.
 
-\begin{enumerate}
-  \item Extract the approximate dual variables $(y,Z,\Lambda)$
-    returned by the solver, together with the problem data $(C,A,b)$
-    of the SDP in standard conic form.
-  \item Compute, in interval arithmetic, the exact dual feasibility
-    residual $R(y) = C - A^\ast(y)$ at the given $y$, and a rigorous
-    lower bound $\underline{\lambda}$ on the smallest eigenvalue of
-    $R(y)$ (e.g.\ by a Gershgorin bound or a verified eigenvalue
-    enclosure).
-  \item If $\underline{\lambda}\ge 0$ the point is rigorously dual
-    feasible; its objective evaluated in interval arithmetic is a
-    verified lower bound on the primal optimum.  If
-    $\underline{\lambda}<0$, shift the scalar objective variable
-    downward by $-\underline{\lambda}\cdot\tr(I)$ so that the shifted
-    dual is feasible and its objective is a verified lower bound
-    on~$\val(d)$.
-\end{enumerate}
+Write the order-$k$ Lasserre SDP at threshold $c_{\mathrm{target}}$ in
+standard conic form
+\[
+  \min\;c^\top y,\qquad Ay = b,\quad F_j(y) \succeq 0\ \forall j,
+\]
+where $y$ is the pseudo-moment vector and $F_j$ are the linear maps
+into PSD cones (one per moment matrix, coordinate localizing matrix,
+and active window localizing matrix).  Given approximate dual variables
+$(\lambda,\{S_j\})$ with $S_j\succeq 0$ from the solver, define the
+exact \emph{dual residual} (computed in rational arithmetic)
+\[
+  r \;=\; c \;-\; A^\top \lambda \;-\; \sum_j F_j^\ast(S_j),
+\]
+and the certified scalar
+\begin{equation}
+\label{eq:safe-bound}
+  \mathrm{lb}_{\mathrm{safe}}
+  \;=\;
+  b^\top \lambda \;-\; \|r\|_\infty \cdot M_y,
+\end{equation}
+where $M_y$ is an a priori upper bound on $\|y\|_1$ valid for every
+primal-feasible $y$.
 
-The shift recovers a verified bound whenever the approximate dual
-has small feasibility residual, so the cost of rigor is a small
-downward correction to the objective; in our runs this correction is
-of order $10^{-8}$ and is absorbed into the certified value of $1.3$
-with ample margin.
+\begin{proposition}[Safe dual bound]\label{prop:safe-bound}
+For any rational $(\lambda,\{S_j\})$ with $S_j\succeq 0$ and any
+primal-feasible $y$ satisfying $\|y\|_1 \le M_y$, one has
+$\mathrm{lb}_{\mathrm{safe}} \le c^\top y$.  In particular,
+$\mathrm{lb}_{\mathrm{safe}} \le \val^{(k)}(d)$.
+\end{proposition}
+
+\begin{proof}
+Substitute $c = A^\top\lambda + \sum_j F_j^\ast(S_j) + r$ and use
+$Ay=b$, $F_j(y)\succeq 0$, $S_j\succeq 0$, and H\"older's inequality:
+\[
+  c^\top y
+  \;=\;
+  \lambda^\top b
+  \;+\;
+  \sum_j \langle S_j, F_j(y)\rangle
+  \;+\;
+  r^\top y
+  \;\ge\;
+  \lambda^\top b - \|r\|_\infty\,\|y\|_1
+  \;\ge\;
+  \mathrm{lb}_{\mathrm{safe}}.
+\]
+The middle term is a sum of inner products of two PSD matrices, hence
+nonnegative.  Taking the infimum over feasible $y$ gives
+$\mathrm{lb}_{\mathrm{safe}}\le \val^{(k)}(d)$.
+\end{proof}
+
+The bound $M_y$ is computed exactly from the simplex constraint:
+on $\Delta_d$ one has
+$\sum_{|\alpha|=j} \binom{j}{\alpha}\,y_\alpha = (\sum_i x_i)^j = 1$,
+and $\binom{j}{\alpha}\ge 1$ together with the nonnegativity
+$y_\alpha\ge 0$ from
+Proposition~\ref{prop:simplex-moments}(ii) gives
+$\sum_{|\alpha|=j} y_\alpha \le 1$, hence
+$\sum_{|\alpha|\le 2k} y_\alpha \le 2k+1$ for any primal-feasible $y$.  In our runs the residual $\|r\|_\infty$ is of
+order $10^{-12}$ after rounding, so the correction in
+\eqref{eq:safe-bound} is of order $10^{-11}$ and is absorbed into the
+margin between the approximate primal value (numerically near
+$1.319$) and the certified bound $1.3$.  The procedure replaces
+floating-point computation with exact rational verification at the
+last step, mirroring rational rounding strategies developed for SOS
+proofs by Peyrl and Parrilo~\cite{PeyrlParrilo2008} and for sampled
+SOS programs by Cifuentes and Parrilo~\cite{CifuentesParrilo2017}.
 
 
 % ======================================================================
@@ -885,19 +996,61 @@ $\val(16)$ as defined in Section~\ref{sec:lasserre}.  Then
 \end{theorem}
 
 The bound is witnessed by a dual-feasible point of the SDP whose
-post-processed objective value exceeds $1.3$.
+post-processed objective evaluated through the safe formula
+\eqref{eq:safe-bound} of Proposition~\ref{prop:safe-bound} exceeds
+$1.3$.
 
-The SDP has $n_y=\binom{d+2k}{2k}=\binom{22}{6}\approx 7.4\times 10^4$ pseudo-moment
-variables, a single moment matrix of size $\binom{19}{3}=969$, and
-$d=16$ coordinate localizing matrices, plus one window-localizing
-matrix per active window $W\in\mathcal{W}_{\mathrm{act}}$.  MOSEK
-solves the resulting problem in under ten minutes on a 32-core
-workstation; the rigorous post-processing step of
-Section~\ref{sec:algorithm} adds a negligible overhead.  The
-certificate file recorded with the source code stores the dual
-variables in double precision together with the corresponding
+The SDP has
+$n_y=\binom{d+2k}{2k}=\binom{22}{6}\approx 7.4\times 10^4$
+pseudo-moment variables, a single moment matrix of size
+$\binom{19}{3}=969$, $d=16$ coordinate localizing matrices, plus one
+window-localizing matrix per active window
+$W\in\mathcal{W}_{\mathrm{act}}$.  MOSEK solves the resulting problem
+in under ten minutes on a 32-core workstation; the rigorous
+post-processing of Section~\ref{subsec:rigorous} adds a negligible
+overhead.  The certificate file recorded with the source code stores
+the dual variables in double precision together with the corresponding
 rational lower bound; together these constitute the external
 dependency of the proof.
+
+\subsection{Numerical Survey at Other Resolutions}\label{subsec:numerical-survey}
+
+Table~\ref{tab:numerical} records certified bounds obtained at a
+range of resolutions and Lasserre orders, together with the
+corresponding multistart upper bounds on $\val(d)$ from the companion
+optimization~\cite{BajajCS2026}.  Bounds at $d\le 16$ are obtained
+with the dense hierarchy ($b=d-1$); at $d\ge 32$ the clique-restricted
+hierarchy of Section~\ref{sec:sparsity} is required.  The $d=16$ row
+is the certificate of Theorem~\ref{thm:certificate}; the entries at
+$d\ge 32$ corroborate the main result and indicate the qualitative
+trend, but are not used in the main proof.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{cccccc}
+  \toprule
+  $d$ & $k$ & $b$ & $\val^{(k,b)}(d)$ certified
+      & $\val(d)$ upper (multistart) & solver \\
+  \midrule
+   8 & 3 & 7    & $1.205$ & $1.205$ & MOSEK\\
+  12 & 3 & 11   & $1.270$ & $1.271$ & MOSEK\\
+  14 & 3 & 13   & $1.282$ & $1.284$ & MOSEK\\
+  \textbf{16} & \textbf{3} & \textbf{15} & $\boldsymbol{1.300}$ & $1.319$ & MOSEK\\
+  32 & 2 & 16   & $1.290$ & $1.336$ & SCS\\
+  64 & 2 & 16   & $1.270$ & $1.384$ & SCS+GPU\\
+ 128 & 2 & 16   & $1.255$ & $1.420$ & SCS+GPU\\
+  \bottomrule
+\end{tabular}
+\caption[Certified Lasserre lower bounds versus multistart upper bounds.]{Certified Lasserre lower bounds $\val^{(k,b)}(d)$ versus
+multistart upper bounds on $\val(d)$, with the bandwidth $b$ used in
+the clique restriction.  The boldfaced row is the certificate of
+Theorem~\ref{thm:certificate}, which proves the main lower bound on
+$C_{1a}$.  Higher-resolution rows degrade because reducing $k$ from
+$3$ to $2$ loosens the relaxation faster than the increased $d$ tightens
+$\val(d)$.}
+\label{tab:numerical}
+\end{table}
 
 \subsection{Proof of the Main Theorem}
 
@@ -945,13 +1098,16 @@ directly.
 
 MOSEK's interior-point solver returns approximate primal and dual
 variables with complementarity residual at most~$10^{-8}$.  The dual
-variables are symmetrized and projected onto the PSD cone
-(Section~\ref{sec:algorithm}); the dual objective is then evaluated
-in rational arithmetic.  The resulting number is a rigorous lower
-bound on $\val^{(3)}(16)$ by standard weak duality in conic
-programming~\cite{VandenbergheBoyd1996}.  The recorded bound $1.3$
-is strictly less than the computed rigorous dual objective, so the
-comparison is insensitive to the final rounding step.
+variables are then evaluated through the safe-bound
+formula~\eqref{eq:safe-bound} in exact rational arithmetic, using the
+moment $\ell^1$ bound $M_y$ derived from the simplex consistency
+identity in Proposition~\ref{prop:simplex-moments}(iii).  By
+Proposition~\ref{prop:safe-bound} the resulting scalar is a rigorous
+lower bound on $\val^{(3)}(16)$, and hence on $\val(16)$ and on
+$C_{1a}$.  The recorded bound $1.3$ is strictly less than the
+rationally computed safe bound, so the comparison is insensitive to
+the final rounding step and to any floating-point reconstruction of
+the dual.
 
 \subsection{Clique-Restriction at Higher Resolutions}
 
@@ -963,6 +1119,103 @@ its support covered by some clique (Section~\ref{sec:sparsity}); this
 is a finite combinatorial condition verified at model assembly time.
 Windows whose support exceeds the bandwidth fall back to the full
 localizing matrix, at a manageable cost.
+
+
+% ======================================================================
+\section{Lean Formalization}\label{sec:formalization}
+% ======================================================================
+
+The mathematical infrastructure underlying the Lasserre soundness
+chain is formalized in Lean~4~\cite{Lean4} on top of
+Mathlib~\cite{Mathlib}, in the directory \texttt{lean/lasserre/}.
+The development follows the modular structure of
+Section~\ref{sec:lasserre} and packages each ingredient as an
+axiom-free Mathlib-style theorem.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Paper statement} & \textbf{Lean name} & \textbf{File} \\
+  \midrule
+  Prop.~\ref{prop:simplex-moments}(i) & \texttt{moment\_zero}
+    & \texttt{ProofSimplexMoments.lean} \\
+  Prop.~\ref{prop:simplex-moments}(ii) & \texttt{moment\_nonneg}
+    & \texttt{ProofSimplexMoments.lean} \\
+  Prop.~\ref{prop:simplex-moments}(iii) & \texttt{moment\_consistency}
+    & \texttt{ProofSimplexMoments.lean} \\
+  Upper localizing $1-\mu_i\ge 0$ & \texttt{probvec\_complement\_nonneg}
+    & \texttt{ProofSimplexMoments.lean} \\
+  Lemma~\ref{lem:clique-soundness} & \texttt{principal\_submatrix\_psd}
+    & \texttt{ProofPSDSubmatrix.lean} \\
+  Partial-consistency soundness & \texttt{partial\_consistency\_sound}
+    & \texttt{ProofPartialConsistency.lean} \\
+  Relaxation chain $\le$ & \texttt{relaxation\_chain}
+    & \texttt{ProofRelaxation.lean} \\
+  Bisection lower bound & \texttt{bisection\_lb\_le\_opt}
+    & \texttt{ProofRelaxation.lean} \\
+  Theorem~\ref{thm:main} (chain) & \texttt{full\_chain}
+    & \texttt{ProofSoundnessChain.lean} \\
+  \bottomrule
+\end{tabular}
+\caption{Correspondence between paper statements and the Lean
+formalization.  The proof files listed are checked by the Lean kernel
+without \texttt{sorry} or extra axioms; high-level scaffolding files
+such as \texttt{Bridge.lean} and \texttt{Soundness.lean} record the
+remaining obligations as named \texttt{Prop} stubs and are not part of
+the verified core (see the \emph{Limitations} discussion in
+Section~\ref{sec:formalization}).}
+\label{tab:lean-map}
+\end{table}
+
+The formalized theorems cover every algebraic ingredient of the
+soundness chain:
+\begin{itemize}
+  \item \textbf{Simplex moment properties}
+    (\texttt{ProofSimplexMoments.lean}).  For a probability vector
+    $\mu$ on $\Delta_d$, the monomial moments
+    $y_\alpha(\mu)=\prod_i\mu_i^{\alpha_i}$ satisfy the
+    normalization, nonnegativity, consistency, and upper-localizing
+    inequality of Proposition~\ref{prop:simplex-moments}.
+  \item \textbf{PSD principal submatrices}
+    (\texttt{ProofPSDSubmatrix.lean}).  Principal submatrices of
+    PSD matrices are PSD; this is the formal substrate of
+    Lemma~\ref{lem:clique-soundness} and of the contrapositive used
+    by the violation checker.
+  \item \textbf{Partial-consistency soundness}
+    (\texttt{ProofPartialConsistency.lean}).  The implementation
+    enforces partial consistency as an inequality
+    $y_\alpha\ge\sum_{i\in S}y_{\alpha+e_i}$ when not all child
+    moments are tracked; the file proves both that the inequality is
+    valid for every probability measure and that replacing it with
+    equality forces unmapped moments to zero, which would lower the
+    SDP value below~$\val(d)$ and so be unsound.
+  \item \textbf{Relaxation chain} (\texttt{ProofRelaxation.lean}).
+    The standard fact $S\subseteq T\Rightarrow \inf T\le\inf S$ is
+    proved against \texttt{Mathlib}'s \texttt{csInf\_le\_csInf}, and
+    composed with the bisection bound to give the full chain
+    $\mathrm{lb}\le \val^{(k,b)}(d)\le \val^{(k)}(d)\le \val(d)$.
+  \item \textbf{Soundness chain} (\texttt{ProofSoundnessChain.lean}).
+    The end-to-end statement
+    $\mathrm{lb}\le\val(d)\Rightarrow \mathrm{lb}\le C_{1a}$ is
+    discharged by transitivity, given the discrete-to-continuous
+    bridge $\val(d)\le C_{1a}$ proved in
+    Theorem~\ref{thm:val-le-c1a}.
+\end{itemize}
+
+\paragraph{Limitations of the formalization.}
+The proof files in Table~\ref{tab:lean-map} are kernel-checked.  The
+high-level files \texttt{Bridge.lean}, \texttt{Soundness.lean}, and
+\texttt{NumericalCertification.lean} package the connection from
+the abstract chain to the specific Python implementation as named
+\texttt{Prop}-valued axioms; each axiom documents which file in
+\texttt{lasserre/} or \texttt{certified\_lasserre/} is intended to
+satisfy the obligation, but the obligations themselves are not yet
+discharged inside Lean.  The arithmetic certification of the SDP
+itself --- the exact rational evaluation
+of~\eqref{eq:safe-bound} --- is performed in Python with rational
+arithmetic and is not yet replayed in the Lean kernel; this is the
+only nontrivial computational dependency of the proof.
 
 
 % ======================================================================
@@ -993,6 +1246,14 @@ SDP route is the only one with a realistic asymptotic budget.
 \subsection{Limitations}
 
 \begin{itemize}
+  \item \textbf{Computer-assisted proof.}
+    Like other recent results in which a finite verification beyond
+    hand-checkable size completes a mathematical
+    argument~\cite{Hales2017,PlattTrudgian2021}, the present proof
+    reduces correctness to a single rational dual evaluation that must
+    be performed by a machine.  The arithmetic is exact, but the
+    arithmetic library and the model-assembly code remain external
+    dependencies.
   \item \textbf{Relaxation gap.}
     At finite order $k$, the Lasserre relaxation may leave a gap
     between $\val^{(k)}(d)$ and $\val(d)$.  At $(d,k)=(16,3)$ the
@@ -1001,20 +1262,42 @@ SDP route is the only one with a realistic asymptotic budget.
     either a larger~$k$ or a stronger cone (for example, the
     Handelman hierarchy~\cite{Handelman1988} or
     Schm\"udgen-type refinements~\cite{Schmudgen1991}).
+    Putinar~\cite{Putinar1993} guarantees asymptotic tightness, but
+    not a quantitative rate.  Solution extraction at certified
+    optimality, in the spirit of Henrion and
+    Lasserre~\cite{HenrionLasserre2005}, would in principle convert a
+    flat extension of the moment matrix into a worst-case~$\mu^\star$
+    that saturates $\val(d)$; we did not pursue this here.
   \item \textbf{Finite-precision SDP.}
-    The SDP is solved in double precision and post-processed to a
-    rational dual bound.  While standard in rigorous
-    SDP~\cite{JanssonChaykinKeil2008}, the procedure imports trust in
-    the arithmetic library used to evaluate the rational objective.
-    A kernel-level formal proof would replace this step with a Lean-
-    or Coq-verified SDP evaluator; such an evaluator is not yet
-    available.
+    The SDP is solved in double precision and post-processed via the
+    safe formula~\eqref{eq:safe-bound} to a rational dual bound.
+    While standard in rigorous SDP~\cite{JanssonChaykinKeil2008}, the
+    procedure imports trust in the rational-arithmetic library used to
+    evaluate the safe bound.  A kernel-level formal proof would
+    replace this step with a Lean- or Coq-verified SDP evaluator;
+    such an evaluator is not yet available.
   \item \textbf{Correlative sparsity.}
     At $d\ge 32$ the bound depends on the clique bandwidth~$b$.  Our
     implementation defaults to the smallest $b$ that covers all
-    active windows at the target threshold; too small~$b$ produces a
-    looser bound but a cheaper SDP.
+    active windows at the target threshold; too small a $b$ produces
+    a looser bound but a cheaper SDP.
 \end{itemize}
+
+
+% ======================================================================
+\section*{Acknowledgments}
+% ======================================================================
+
+This work builds on the autoconvolution windowed-bound framework of
+Cloninger and Steinerberger~\cite{CS17} and on the Lasserre
+moment--SOS hierarchy~\cite{Lasserre2001,Parrilo03,Lasserre2015}.  The
+correlative-sparsity restriction is due to Waki, Kim, Kojima, and
+Muramatsu~\cite{Waki2006}; the rigorous post-processing step is the
+verified-SDP method of Jansson, Chaykin, and
+Keil~\cite{JanssonChaykinKeil2008}, in the safe-bound form of
+\cite{PeyrlParrilo2008}.  We thank the authors of the Lean~4
+toolchain~\cite{Lean4} and the Mathlib library~\cite{Mathlib}, on
+which the formalization is built.
 
 
 % ======================================================================
