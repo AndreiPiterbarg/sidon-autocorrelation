@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Understanding the SDP Proof</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<section id="hero" class="hero">
+  <div class="hero-inner">
+    <h1>Understanding the SDP Proof</h1>
+    <p class="hero-sub">
+      How <em>semidefinite programming</em> proves that autoconvolution peaks
+      can't be avoided &mdash; explained from scratch.
+    </p>
+    <div class="algo-overview">
+      <div class="algo-step"><span class="algo-num">1</span> <strong>Minimize</strong> &mdash; find the spread that avoids peaks</div>
+      <div class="algo-step"><span class="algo-num">2</span> <strong>Relax</strong> &mdash; enlarge the search space</div>
+      <div class="algo-step"><span class="algo-num">3</span> <strong>Constrain</strong> &mdash; add PSD conditions to rule out fakes</div>
+      <div class="algo-step"><span class="algo-num">4</span> <strong>Certify</strong> &mdash; infeasibility proves the bound</div>
+    </div>
+    <div class="hero-stat">
+      <span class="stat-num">99.25%</span>
+      <span class="stat-label">gap closure at Lasserre order 3</span>
+    </div>
+    <div class="scroll-hint">Scroll to explore <span class="arrow-down">&#x25BC;</span></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: THE ORIGINAL PROBLEM -->
+<!-- ============================================================ -->
+<section id="problem" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">1</span>
+    <h2>The Original Problem</h2>
+    <p class="section-desc">
+      Imagine you have a fixed amount of paint to spread across <strong>3 bins</strong>.
+      For every way you spread it, we measure the <em>worst peak</em> across all
+      possible windows. Your goal: find the spread that makes the worst peak
+      as small as possible. That minimum is <strong>val(d)</strong>.
+    </p>
+  </div>
+  <div class="viz-controls">
+    <button id="prob-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="prob-reset" class="btn">Reset</button>
+    <input type="range" id="prob-scrubber" min="0" max="100" value="0" step="1">
+    <span id="prob-label" class="stage-label">Ready</span>
+  </div>
+  <div class="viz-panel">
+    <canvas id="prob-canvas" width="700" height="460"></canvas>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHAT IS RELAXATION? -->
+<!-- ============================================================ -->
+<section id="relax" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">2</span>
+    <h2>What Is Relaxation?</h2>
+    <p class="section-desc">
+      The original problem is hard because the feasible set (the simplex) is
+      complicated. <strong>Relaxation</strong> means enlarging the allowed
+      region to make the problem easier to solve. The trade-off: a bigger
+      region gives a <em>weaker bound</em>, but is computationally tractable.
+    </p>
+  </div>
+  <div class="viz-controls">
+    <button id="relax-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="relax-reset" class="btn">Reset</button>
+    <div class="toggle-group">
+      <button id="relax-tight" class="btn btn-sm active">Tight relaxation</button>
+      <button id="relax-loose" class="btn btn-sm">Loose relaxation</button>
+    </div>
+  </div>
+  <div class="viz-panel">
+    <div id="relax-container" class="relax-container"></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: MOMENT MATRICES & PSD -->
+<!-- ============================================================ -->
+<section id="moments" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">3</span>
+    <h2>Moment Matrices &amp; PSD</h2>
+    <p class="section-desc">
+      A <strong>moment matrix</strong> is a consistency check on measurements.
+      If the matrix is <em>positive semidefinite</em> (PSD), the measurements
+      could come from a real distribution. If not, they're impossible &mdash;
+      no real distribution could produce them.
+    </p>
+  </div>
+  <div class="moments-layout">
+    <div class="moments-panel">
+      <h3>Moments as Measurements</h3>
+      <canvas id="mom-dist" width="440" height="300"></canvas>
+    </div>
+    <div class="moments-panel">
+      <h3>What PSD Means</h3>
+      <canvas id="mom-psd" width="440" height="300"></canvas>
+    </div>
+  </div>
+  <div id="mom-status" class="result-panel">
+    Hover over matrix cells to see the connection to the distribution.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: THE LASSERRE LADDER -->
+<!-- ============================================================ -->
+<section id="hierarchy" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">4</span>
+    <h2>The Lasserre Ladder</h2>
+    <p class="section-desc">
+      Each <strong>order</strong> of the Lasserre hierarchy adds stronger
+      consistency checks. Order 1 checks averages. Order 2 checks pairwise
+      products. Order 3 checks triples. Each order rules out more fake
+      solutions, tightening the bound toward the true answer.
+    </p>
+  </div>
+  <div class="viz-controls">
+    <button id="hier-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="hier-reset" class="btn">Reset</button>
+    <select id="hier-d" class="d-select" style="width:auto;">
+      <option value="4">d = 4</option>
+      <option value="6">d = 6</option>
+      <option value="8">d = 8</option>
+    </select>
+  </div>
+  <div class="viz-panel">
+    <div id="hier-container" class="hier-container"></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: BUILD YOUR OWN RELAXATION -->
+<!-- ============================================================ -->
+<section id="playground" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">5</span>
+    <h2>Build Your Own Relaxation</h2>
+    <p class="section-desc">
+      Design a mass distribution, then toggle Lasserre constraints on and off
+      to see how the <strong>lower bound</strong> tightens. Each constraint
+      rules out more fake solutions. Can you close the gap?
+    </p>
+  </div>
+  <div class="playground-layout">
+    <div class="playground-left">
+      <h3>Your Distribution</h3>
+      <div class="preset-row">
+        <button class="btn btn-sm" data-preset="uniform">Uniform</button>
+        <button class="btn btn-sm" data-preset="concentrated">Concentrated</button>
+        <button class="btn btn-sm" data-preset="symmetric">Symmetric</button>
+        <button class="btn btn-sm" data-preset="random">Random</button>
+      </div>
+      <canvas id="pg-hist" width="440" height="220"></canvas>
+      <div class="drag-hint">Drag bars to reshape the distribution</div>
+      <div id="pg-trueval" class="trueval-display">
+        True val(4) = <span id="pg-trueval-num">1.102</span>
+      </div>
+    </div>
+    <div class="playground-right">
+      <h3>Constraint Stack</h3>
+      <div id="pg-constraints" class="constraint-stack"></div>
+      <div class="bound-display">
+        <div class="bound-label">SDP Lower Bound</div>
+        <div class="bound-bar-container">
+          <div id="pg-bound-bar" class="bound-bar"></div>
+          <div id="pg-bound-val" class="bound-val">0.000</div>
+        </div>
+        <div id="pg-gap" class="gap-display">Gap closure: <span id="pg-gap-pct">0%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: THE FARKAS CERTIFICATE -->
+<!-- ============================================================ -->
+<section id="farkas" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">6</span>
+    <h2>The Farkas Certificate</h2>
+    <p class="section-desc">
+      To prove a lower bound, we use <strong>binary search</strong>.
+      At each threshold <em>t</em>, the SDP checks: "could any distribution
+      (even a fake one) achieve a peak below <em>t</em>?"
+      If the answer is <strong>no</strong> &mdash; the system is
+      <em>infeasible</em> &mdash; then the true answer must be above <em>t</em>.
+    </p>
+  </div>
+  <div class="viz-controls">
+    <button id="fk-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="fk-reset" class="btn">Reset</button>
+    <label for="fk-speed">Speed:</label>
+    <input type="range" id="fk-speed" min="0" max="100" value="50">
+    <div class="toggle-group">
+      <button id="fk-d4" class="btn btn-sm active">d=4, order 3</button>
+      <button id="fk-d6" class="btn btn-sm">d=6, order 3</button>
+    </div>
+  </div>
+  <div class="viz-panel">
+    <canvas id="fk-canvas" width="900" height="340"></canvas>
+  </div>
+  <div class="farkas-doors">
+    <div class="door door-locked">
+      <div class="door-icon">&#128274;</div>
+      <div class="door-label">Solution</div>
+      <div class="door-desc">No distribution can beat threshold t</div>
+    </div>
+    <div class="door-arrow">&rArr;</div>
+    <div class="door door-open">
+      <div class="door-icon">&#128275;</div>
+      <div class="door-label">Certificate</div>
+      <div class="door-desc">A dual proof that the bound holds</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: CLOSING THE GAP -->
+<!-- ============================================================ -->
+<section id="convergence" class="viz-section">
+  <div class="section-header">
+    <span class="section-number">7</span>
+    <h2>Closing the Gap</h2>
+    <p class="section-desc">
+      As we increase the discretization <em>d</em> and the Lasserre order <em>k</em>,
+      the proven lower bound climbs toward the true value of C<sub>1a</sub>.
+      Watch the proven region expand as each configuration is solved.
+    </p>
+  </div>
+  <div class="viz-controls">
+    <button id="conv-play" class="btn btn-primary">&#9654; Play</button>
+    <button id="conv-reset" class="btn">Reset</button>
+    <button id="conv-projected" class="btn btn-sm">Show projected</button>
+  </div>
+  <div class="viz-panel">
+    <canvas id="conv-canvas" width="900" height="380"></canvas>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+<footer class="footer">
+  <p>
+    <a href="../cascade/index.html">Cascade Algorithm Visualizer</a> &middot;
+    Interactive explanation of the Lasserre SDP hierarchy for proving lower bounds on C<sub>1a</sub>
+  </p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
