@@ -1,0 +1,82 @@
+
+=== d=4 S=20 c=1.2: searching for L2 rescues ===
+    total hard cells: 79
+    Phase 1: Shor on first 79 cells (sorted by tri_net DESC)...
+    Phase 1 done in 4.4s
+    Shor cert: 9/79
+    Shor failing: 70
+    Phase 2: L2 on 20 Shor-failing cells...
+    [  0] tri_net=-0.004000  shor=1.20000(f) L2=1.20000(f)  gap=+4.01e-09  fail  T_L2=513ms
+    [  1] tri_net=-0.004000  shor=1.20000(f) L2=1.20000(f)  gap=+4.31e-09  fail  T_L2=499ms
+    [  2] tri_net=-0.006000  shor=1.19800(f) L2=1.19800(f)  gap=+-2.57e-09  fail  T_L2=493ms
+    [  3] tri_net=-0.006000  shor=1.19800(f) L2=1.19800(f)  gap=+-2.60e-09  fail  T_L2=446ms
+    [  4] tri_net=-0.016667  shor=1.19167(f) L2=1.19167(f)  gap=+7.03e-09  fail  T_L2=469ms
+    [  5] tri_net=-0.016667  shor=1.19167(f) L2=1.19167(f)  gap=+7.03e-09  fail  T_L2=519ms
+    [  6] tri_net=-0.016667  shor=1.19167(f) L2=1.19167(f)  gap=+8.17e-09  fail  T_L2=441ms
+    [  7] tri_net=-0.016667  shor=1.19167(f) L2=1.19167(f)  gap=+8.18e-09  fail  T_L2=446ms
+    [  8] tri_net=-0.013750  shor=1.19125(f) L2=1.19125(f)  gap=+-3.24e-10  fail  T_L2=444ms
+    [  9] tri_net=-0.013750  shor=1.19125(f) L2=1.19125(f)  gap=+-2.97e-10  fail  T_L2=467ms
+    [ 10] tri_net=-0.018750  shor=1.19125(f) L2=1.19125(f)  gap=+-5.37e-10  fail  T_L2=488ms
+    [ 11] tri_net=-0.018750  shor=1.19125(f) L2=1.19125(f)  gap=+-5.32e-10  fail  T_L2=352ms
+
+    --- Summary ---
+    Cells screened           : 79
+    Shor failing             : 70
+    L2 tested (closest)      : 20
+    L2 rescues (Shor fail to L2 cert): 0
+    L2 strict gain over Shor : 0
+    L2 time/cell (ms)        : med=446.1  max=519.0
+
+=== d=6 S=15 c=1.2: searching for L2 rescues ===
+    total hard cells: 535
+    Phase 1: Shor on first 100 cells (sorted by tri_net DESC)...
+    Phase 1 done in 10.5s
+    Shor cert: 95/100
+    Shor failing: 5
+    Phase 2: L2 on 5 Shor-failing cells...
+    [  0] tri_net=-0.009524  shor=1.19810(f) L2=1.19810(f)  gap=+1.19e-09  fail  T_L2=1527ms
+    [  1] tri_net=-0.009524  shor=1.19810(f) L2=1.19810(f)  gap=+3.58e-09  fail  T_L2=1506ms
+    [  2] tri_net=-0.009524  shor=1.19810(f) L2=1.19810(f)  gap=+4.26e-09  fail  T_L2=1453ms
+    [  3] tri_net=-0.005714  shor=1.19429(f) L2=1.19429(f)  gap=+8.95e-10  fail  T_L2=1589ms
+    [  4] tri_net=-0.005714  shor=1.19429(f) L2=1.19429(f)  gap=+8.75e-10  fail  T_L2=1883ms
+
+    --- Summary ---
+    Cells screened           : 100
+    Shor failing             : 5
+    L2 tested (closest)      : 5
+    L2 rescues (Shor fail to L2 cert): 0
+    L2 strict gain over Shor : 0
+    L2 time/cell (ms)        : med=1527.3  max=1883.2
+
+=== d=8 S=12 c=1.2: searching for L2 rescues ===
+    total hard cells: 4,670
+    Phase 1: Shor on first 100 cells (sorted by tri_net DESC)...
+    Phase 1 done in 15.7s
+    Shor cert: 86/100
+    Shor failing: 14
+    Phase 2: L2 on 14 Shor-failing cells...
+    [  0] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=4243ms
+    [  1] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=3686ms
+    [  2] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=3985ms
+    [  3] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=5459ms
+    [  4] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=4328ms
+    [  5] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=4467ms
+    [  6] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=5418ms
+    [  7] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+7.20e-10  fail  T_L2=4846ms
+    [  8] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+-4.45e-10  fail  T_L2=3978ms
+    [  9] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+-4.45e-10  fail  T_L2=4266ms
+    [ 10] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+-4.45e-10  fail  T_L2=5279ms
+    [ 11] tri_net=-0.000926  shor=1.19907(f) L2=1.19907(f)  gap=+-5.16e-10  fail  T_L2=5053ms
+
+    --- Summary ---
+    Cells screened           : 100
+    Shor failing             : 14
+    L2 tested (closest)      : 14
+    L2 rescues (Shor fail to L2 cert): 0
+    L2 strict gain over Shor : 0
+    L2 time/cell (ms)        : med=4566.1  max=5597.8
+
+=== OVERALL RESCUE SUMMARY ===
+  d=4 S=20: rescues = 0/20 (0.0%); Shor failing screened: 70/79
+  d=6 S=15: rescues = 0/5 (0.0%); Shor failing screened: 5/100
+  d=8 S=12: rescues = 0/14 (0.0%); Shor failing screened: 14/100

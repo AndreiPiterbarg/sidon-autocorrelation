@@ -1,0 +1,54 @@
+
+=== d=4, S=20, c_target=1.2 ===
+     total compositions = 1,771
+     processed:      1,771  (45.29% have at least one zero bin)
+     baseline survivors: 117  (pruned: 1,654, 47.88% of pruned were sparse)
+     O        survivors: 117  (pruned: 1,654, 47.88% of pruned were sparse)
+     O extra prunes: +0  (0.0000% over baseline)
+     wall: 0.01s
+
+=== d=4, S=30, c_target=1.25 ===
+     total compositions = 5,456
+     processed:      5,456  (33.03% have at least one zero bin)
+     baseline survivors: 657  (pruned: 4,799, 36.42% of pruned were sparse)
+     O        survivors: 657  (pruned: 4,799, 36.42% of pruned were sparse)
+     O extra prunes: +0  (0.0000% over baseline)
+     wall: 0.00s
+
+=== d=6, S=15, c_target=1.2 ===
+     total compositions = 15,504
+     processed:      15,504  (87.09% have at least one zero bin)
+     baseline survivors: 536  (pruned: 14,968, 88.05% of pruned were sparse)
+     O        survivors: 524  (pruned: 14,980, 88.04% of pruned were sparse)
+     O extra prunes: +12  (2.2388% over baseline)
+     wall: 0.02s
+     SOUND CHECK on 12 O-wins (cells pruned by O, not BL)...
+     SOUND CHECK PASSED: 0 violations in 12 samples.
+
+=== d=6, S=20, c_target=1.25 ===
+     total compositions = 53,130
+     processed:      53,130  (78.11% have at least one zero bin)
+     baseline survivors: 2,606  (pruned: 50,524, 79.65% of pruned were sparse)
+     O        survivors: 2,578  (pruned: 50,552, 79.66% of pruned were sparse)
+     O extra prunes: +28  (1.0744% over baseline)
+     wall: 0.02s
+     SOUND CHECK on 28 O-wins (cells pruned by O, not BL)...
+     SOUND CHECK PASSED: 0 violations in 28 samples.
+
+=== d=8, S=12, c_target=1.2 ===
+     total compositions = 50,388
+     processed:      50,388  (99.35% have at least one zero bin)
+     baseline survivors: 4,635  (pruned: 45,753, 99.64% of pruned were sparse)
+     O        survivors: 4,247  (pruned: 46,141, 99.64% of pruned were sparse)
+     O extra prunes: +388  (8.3711% over baseline)
+     wall: 0.08s
+     SOUND CHECK on 50 O-wins (cells pruned by O, not BL)...
+     SOUND CHECK PASSED: 0 violations in 50 samples.
+
+======================================================================
+Summary:
+  (d=4, S=20, c=1.2): BL=117 -> O=117, +0 (0.0000%) sparse-frac-of-pruned: BL=47.9%, O=47.9%; sound: 0/0
+  (d=4, S=30, c=1.25): BL=657 -> O=657, +0 (0.0000%) sparse-frac-of-pruned: BL=36.4%, O=36.4%; sound: 0/0
+  (d=6, S=15, c=1.2): BL=536 -> O=524, +12 (2.2388%) sparse-frac-of-pruned: BL=88.1%, O=88.0%; sound: 0/12
+  (d=6, S=20, c=1.25): BL=2,606 -> O=2,578, +28 (1.0744%) sparse-frac-of-pruned: BL=79.6%, O=79.7%; sound: 0/28
+  (d=8, S=12, c=1.2): BL=4,635 -> O=4,247, +388 (8.3711%) sparse-frac-of-pruned: BL=99.6%, O=99.6%; sound: 0/50

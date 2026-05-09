@@ -1,0 +1,92 @@
+(CVXPY) May 09 01:16:10 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 01:16:10 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+================================================================
+Two-window joint Shor SDP cell-cert bench
+================================================================
+
+=== d=4, S=20, c_target=1.2 ===
+  enumerated 1771 compositions (0.66s)
+  triangle-failing 'hard' cells: 79
+  [  2] c=[7, 3, 6, 4] cos=+0.984 pw_lb=1.2050C 2W_lb=1.2072C (lam*=0.68) jdK8=1.1964 
+  [  3] c=[4, 6, 3, 7] cos=+0.984 pw_lb=1.2050C 2W_lb=1.2072C (lam*=0.68) jdK8=1.1964 
+
+  --- Cert rate over 16 hard cells ---
+  per-window Shor (K=8) :    5  (31.2%)
+  2W joint SDP          :    7  (43.8%)
+  Joint dual K=8        :    6  (37.5%)
+
+  --- 2W win cosine analysis ---
+  2W won/tied (n=9): mean cos = 0.872, min = 0.782
+
+  --- Time per cell (ms) ---
+  per-window Shor med = 208.5, p95 = 486.5
+  2W joint     med = 1157.7, p95 = 1323.0
+  joint dual K=8 med = 2.2
+
+  --- Soundness check (2W) ---
+  checked 16 cells, 0 violations, max excess = 0.000e+00
+
+=== d=6, S=15, c_target=1.2 ===
+  enumerated 15504 compositions (30.03s)
+  triangle-failing 'hard' cells: 535
+  [  0] c=[5, 2, 0, 3, 0, 5] cos=+0.836 pw_lb=1.2756C 2W_lb=1.2756C (lam*=1.00) jdK8=1.2191C
+  [  1] c=[5, 0, 3, 1, 3, 3] cos=+0.957 pw_lb=1.2711C 2W_lb=1.2711C (lam*=1.00) jdK8=1.2135C
+  [  2] c=[5, 0, 3, 0, 2, 5] cos=+0.836 pw_lb=1.2756C 2W_lb=1.2756C (lam*=1.00) jdK8=1.2191C
+  [  3] c=[5, 2, 1, 1, 3, 3] cos=+0.971 pw_lb=1.2756C 2W_lb=1.2756C (lam*=1.00) jdK8=1.1913 
+  [  4] c=[1, 5, 2, 1, 1, 5] cos=+0.837 pw_lb=1.2578C 2W_lb=1.2578C (lam*=0.00) jdK8=1.2445C
+  [  5] c=[4, 3, 2, 0, 1, 5] cos=+0.935 pw_lb=1.2578C 2W_lb=1.2578C (lam*=1.00) jdK8=1.2035C
+
+  --- Cert rate over 30 hard cells ---
+  per-window Shor (K=8) :   30  (100.0%)
+  2W joint SDP          :   30  (100.0%)
+  Joint dual K=8        :   22  (73.3%)
+
+  --- 2W win cosine analysis ---
+  2W won/tied (n=14): mean cos = 0.817, min = 0.370
+
+  --- Time per cell (ms) ---
+  per-window Shor med = 863.1, p95 = 1370.6
+  2W joint     med = 1675.7, p95 = 2468.1
+  joint dual K=8 med = 3.0
+
+  --- Soundness check (2W) ---
+  checked 30 cells, 0 violations, max excess = 0.000e+00
+
+=== d=8, S=12, c_target=1.2 ===
+  enumerated 50388 compositions (133.56s)
+  triangle-failing 'hard' cells: 4670
+  [  0] c=[5, 0, 1, 2, 1, 2, 1, 0] cos=+0.939 pw_lb=1.3056C 2W_lb=1.3000C (lam*=1.00) jdK8=1.2497C
+  [  1] c=[5, 0, 0, 1, 2, 1, 1, 2] cos=+0.427 pw_lb=1.3000C 2W_lb=1.3098C (lam*=0.96) jdK8=1.2153C
+  [  2] c=[4, 1, 1, 2, 1, 2, 1, 0] cos=+0.972 pw_lb=1.3414C 2W_lb=1.3414C (lam*=0.00) jdK8=1.2402C
+  [  3] c=[4, 1, 0, 0, 2, 1, 3, 1] cos=+0.927 pw_lb=1.3222C 2W_lb=1.3222C (lam*=1.00) jdK8=1.1817 
+  [  4] c=[3, 2, 0, 3, 0, 2, 2, 0] cos=+0.821 pw_lb=1.2944C 2W_lb=1.3214C (lam*=0.28) jdK8=1.2688C
+  [  5] c=[2, 1, 1, 3, 0, 1, 0, 4] cos=+0.985 pw_lb=1.2778C 2W_lb=1.2778C (lam*=1.00) jdK8=1.1991 
+
+  --- Cert rate over 30 hard cells ---
+  per-window Shor (K=8) :   30  (100.0%)
+  2W joint SDP          :   27  (90.0%)
+  Joint dual K=8        :   19  (63.3%)
+
+  --- 2W win cosine analysis ---
+  2W won/tied (n=9): mean cos = 0.800, min = 0.427
+  2W lost (n=3): mean cos = 0.893, min = 0.801
+
+  --- Time per cell (ms) ---
+  per-window Shor med = 1516.9, p95 = 1878.1
+  2W joint     med = 2194.8, p95 = 2713.2
+  joint dual K=8 med = 2.8
+
+  --- Soundness check (2W) ---
+  checked 30 cells, 0 violations, max excess = 0.000e+00
+
+================================================================
+SUMMARY (all configs)
+================================================================
+  d    S     c  hard  pwShor    2W  jdK8  2W_med  pw_med  viol
+  4   20  1.20    16       5     7     6  1157.7   208.5     0
+  6   15  1.20    30      30    30    22  1675.7   863.1     0
+  8   12  1.20    30      30    27    19  2194.8  1516.9     0
+
+Results saved to C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_2W_bench_results.json

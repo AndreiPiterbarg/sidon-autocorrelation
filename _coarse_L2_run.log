@@ -1,0 +1,134 @@
+
+=== d=4 S=20 c=1.2 mode=top_hard ===
+    grid passers: 1,733  tri_cert: 1,654  hard: 79
+    [  0] c=[9, 2, 3, 6]  tri_net=-0.11000  shor=1.11000(f) L2=1.11000(f) gap=+-1.73e-09  fail  T_s=69ms T_L2=290ms
+    [  1] c=[6, 3, 2, 9]  tri_net=-0.11000  shor=1.11000(f) L2=1.11000(f) gap=+1.64e-09  fail  T_s=34ms T_L2=297ms
+    [  2] c=[8, 3, 2, 7]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+7.38e-11  fail  T_s=33ms T_L2=295ms
+    [  3] c=[8, 2, 3, 7]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+-7.42e-09  fail  T_s=32ms T_L2=294ms
+    [  4] c=[7, 3, 2, 8]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+-8.26e-09  fail  T_s=40ms T_L2=339ms
+    [  5] c=[7, 2, 3, 8]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+-7.05e-09  fail  T_s=42ms T_L2=383ms
+    [  6] c=[9, 3, 2, 6]  tri_net=-0.05800  shor=1.14600(f) L2=1.14600(f) gap=+-1.46e-09  fail  T_s=48ms T_L2=368ms
+    [  7] c=[6, 2, 3, 9]  tri_net=-0.05800  shor=1.14600(f) L2=1.14600(f) gap=+-1.87e-09  fail  T_s=44ms T_L2=383ms
+
+    --- Summary (top_hard) ---
+    Cells tested            : 8
+    Shor certified          : 0/8
+    Lasserre-2 certified    : 0/8
+    L2 strictly > Shor LB   : 0
+    L2 rescues (Shor fail to L2 cert): 0
+    Shor time/cell (ms)     : med=41.2  p95=61.6  max=68.7
+    L2  time/cell (ms)      : med=318.1  p95=383.0  max=383.0
+    Time ratio L2/Shor      : med=7.72x
+
+=== d=4 S=20 c=1.2 mode=shor_failing ===
+    grid passers: 1,733  tri_cert: 1,654  hard: 79
+    screening up to 100 most-negative cells with Shor...
+    truly hard (Shor-fail at W*): 70
+    [  0] c=[9, 2, 3, 6]  tri_net=-0.11000  shor=1.11000(f) L2=1.11000(f) gap=+-1.73e-09  fail  T_s=54ms T_L2=457ms
+    [  1] c=[6, 3, 2, 9]  tri_net=-0.11000  shor=1.11000(f) L2=1.11000(f) gap=+1.64e-09  fail  T_s=87ms T_L2=368ms
+    [  2] c=[8, 3, 2, 7]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+7.38e-11  fail  T_s=44ms T_L2=377ms
+    [  3] c=[8, 2, 3, 7]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+-7.42e-09  fail  T_s=49ms T_L2=413ms
+    [  4] c=[7, 3, 2, 8]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+-8.26e-09  fail  T_s=44ms T_L2=359ms
+    [  5] c=[7, 2, 3, 8]  tri_net=-0.07000  shor=1.15000(f) L2=1.15000(f) gap=+-7.05e-09  fail  T_s=44ms T_L2=392ms
+    [  6] c=[9, 3, 2, 6]  tri_net=-0.05800  shor=1.14600(f) L2=1.14600(f) gap=+-1.46e-09  fail  T_s=46ms T_L2=392ms
+    [  7] c=[6, 2, 3, 9]  tri_net=-0.05800  shor=1.14600(f) L2=1.14600(f) gap=+-1.87e-09  fail  T_s=50ms T_L2=424ms
+
+    --- Summary (shor_failing) ---
+    Cells tested            : 8
+    Shor certified          : 0/8
+    Lasserre-2 certified    : 0/8
+    L2 strictly > Shor LB   : 0
+    L2 rescues (Shor fail to L2 cert): 0
+    Shor time/cell (ms)     : med=47.3  p95=75.3  max=86.7
+    L2  time/cell (ms)      : med=392.0  p95=445.5  max=457.2
+    Time ratio L2/Shor      : med=8.28x
+
+=== d=6 S=15 c=1.2 mode=top_hard ===
+    grid passers: 15,504  tri_cert: 14,969  hard: 535
+    [  0] c=[5, 2, 2, 1, 1, 4]  tri_net=-0.14222  shor=1.11556(f) L2=1.11555(f) gap=+-5.43e-06  fail  T_s=117ms T_L2=1584ms
+    [  1] c=[4, 1, 1, 2, 2, 5]  tri_net=-0.14222  shor=1.11556(f) L2=1.11555(f) gap=+-5.43e-06  fail  T_s=131ms T_L2=1929ms
+    [  2] c=[5, 2, 3, 0, 1, 4]  tri_net=-0.14000  shor=1.09000(f) L2=1.09000(f) gap=+2.59e-09  fail  T_s=149ms T_L2=2279ms
+    [  3] c=[4, 1, 0, 3, 2, 5]  tri_net=-0.14000  shor=1.09000(f) L2=1.09000(f) gap=+2.60e-09  fail  T_s=176ms T_L2=2606ms
+    [  4] c=[5, 2, 2, 2, 0, 4]  tri_net=-0.12444  shor=1.08000(f) L2=1.08000(f) gap=+2.15e-08  fail  T_s=173ms T_L2=2823ms
+    [  5] c=[4, 0, 2, 2, 2, 5]  tri_net=-0.12444  shor=1.08000(f) L2=1.08000(f) gap=+2.15e-08  fail  T_s=146ms T_L2=2951ms
+    [  6] c=[5, 2, 2, 1, 2, 3]  tri_net=-0.12444  shor=1.11556(f) L2=1.11556(f) gap=+4.04e-09  fail  T_s=197ms T_L2=2370ms
+    [  7] c=[3, 2, 1, 2, 2, 5]  tri_net=-0.12444  shor=1.11556(f) L2=1.11556(f) gap=+-1.14e-08  fail  T_s=181ms T_L2=2952ms
+
+    --- Summary (top_hard) ---
+    Cells tested            : 8
+    Shor certified          : 0/8
+    Lasserre-2 certified    : 0/8
+    L2 strictly > Shor LB   : 2
+    L2 rescues (Shor fail to L2 cert): 0
+    Shor time/cell (ms)     : med=161.1  p95=191.0  max=196.6
+    L2  time/cell (ms)      : med=2488.1  p95=2952.0  max=2952.3
+    Time ratio L2/Shor      : med=15.45x
+
+=== d=6 S=15 c=1.2 mode=shor_failing ===
+    grid passers: 15,504  tri_cert: 14,969  hard: 535
+    screening up to 100 most-negative cells with Shor...
+    truly hard (Shor-fail at W*): 98
+    [  0] c=[5, 2, 2, 1, 1, 4]  tri_net=-0.14222  shor=1.11556(f) L2=1.11555(f) gap=+-5.43e-06  fail  T_s=196ms T_L2=3380ms
+    [  1] c=[4, 1, 1, 2, 2, 5]  tri_net=-0.14222  shor=1.11556(f) L2=1.11555(f) gap=+-5.43e-06  fail  T_s=229ms T_L2=2729ms
+    [  2] c=[5, 2, 3, 0, 1, 4]  tri_net=-0.14000  shor=1.09000(f) L2=1.09000(f) gap=+2.59e-09  fail  T_s=216ms T_L2=3276ms
+    [  3] c=[4, 1, 0, 3, 2, 5]  tri_net=-0.14000  shor=1.09000(f) L2=1.09000(f) gap=+2.60e-09  fail  T_s=137ms T_L2=2622ms
+    [  4] c=[5, 2, 2, 2, 0, 4]  tri_net=-0.12444  shor=1.08000(f) L2=1.08000(f) gap=+2.15e-08  fail  T_s=154ms T_L2=2979ms
+    [  5] c=[4, 0, 2, 2, 2, 5]  tri_net=-0.12444  shor=1.08000(f) L2=1.08000(f) gap=+2.15e-08  fail  T_s=223ms T_L2=2839ms
+    [  6] c=[5, 2, 2, 1, 2, 3]  tri_net=-0.12444  shor=1.11556(f) L2=1.11556(f) gap=+4.04e-09  fail  T_s=183ms T_L2=2688ms
+    [  7] c=[3, 2, 1, 2, 2, 5]  tri_net=-0.12444  shor=1.11556(f) L2=1.11556(f) gap=+-1.14e-08  fail  T_s=173ms T_L2=3233ms
+
+    --- Summary (shor_failing) ---
+    Cells tested            : 8
+    Shor certified          : 0/8
+    Lasserre-2 certified    : 0/8
+    L2 strictly > Shor LB   : 2
+    L2 rescues (Shor fail to L2 cert): 0
+    Shor time/cell (ms)     : med=189.6  p95=227.3  max=229.4
+    L2  time/cell (ms)      : med=2908.8  p95=3343.3  max=3379.5
+    Time ratio L2/Shor      : med=15.34x
+
+=== d=8 S=12 c=1.2 mode=top_hard ===
+    grid passers: 50,388  tri_cert: 45,718  hard: 4,670
+    [  0] c=[4, 1, 1, 2, 0, 0, 1, 3]  tri_net=-0.24444  shor=1.06528(f) L2=1.07721(f) gap=+1.19e-02  fail  T_s=328ms T_L2=7524ms
+    [  1] c=[3, 1, 0, 0, 2, 1, 1, 4]  tri_net=-0.24444  shor=1.06528(f) L2=1.07721(f) gap=+1.19e-02  fail  T_s=325ms T_L2=8495ms
+    [  2] c=[3, 1, 0, 1, 1, 1, 2, 3]  tri_net=-0.21852  shor=1.17593(f) L2=1.17591(f) gap=+-1.13e-05  fail  T_s=327ms T_L2=7226ms
+    [  3] c=[3, 2, 1, 1, 1, 0, 1, 3]  tri_net=-0.21852  shor=1.17593(f) L2=1.17591(f) gap=+-1.13e-05  fail  T_s=248ms T_L2=8192ms
+    [  4] c=[3, 2, 1, 1, 1, 1, 0, 3]  tri_net=-0.20617  shor=1.03086(f) L2=1.03086(f) gap=+1.44e-08  fail  T_s=308ms T_L2=8427ms
+    [  5] c=[3, 0, 1, 1, 1, 1, 2, 3]  tri_net=-0.20617  shor=1.03086(f) L2=1.03086(f) gap=+1.44e-08  fail  T_s=206ms T_L2=5110ms
+    [  6] c=[4, 1, 1, 2, 0, 1, 0, 3]  tri_net=-0.20278  shor=1.03056(f) L2=1.03056(f) gap=+-8.07e-10  fail  T_s=195ms T_L2=4783ms
+    [  7] c=[3, 0, 1, 0, 2, 1, 1, 4]  tri_net=-0.20278  shor=1.03056(f) L2=1.03056(f) gap=+2.95e-10  fail  T_s=275ms T_L2=5155ms
+
+    --- Summary (top_hard) ---
+    Cells tested            : 8
+    Shor certified          : 0/8
+    Lasserre-2 certified    : 0/8
+    L2 strictly > Shor LB   : 4
+    L2 rescues (Shor fail to L2 cert): 0
+    Shor time/cell (ms)     : med=291.5  p95=327.4  max=327.8
+    L2  time/cell (ms)      : med=7374.8  p95=8471.3  max=8494.9
+    Time ratio L2/Shor      : med=25.30x
+
+=== d=8 S=12 c=1.2 mode=shor_failing ===
+    grid passers: 50,388  tri_cert: 45,718  hard: 4,670
+    screening up to 100 most-negative cells with Shor...
+    truly hard (Shor-fail at W*): 90
+    [  0] c=[4, 1, 1, 2, 0, 0, 1, 3]  tri_net=-0.24444  shor=1.06528(f) L2=1.07721(f) gap=+1.19e-02  fail  T_s=163ms T_L2=5697ms
+    [  1] c=[3, 1, 0, 0, 2, 1, 1, 4]  tri_net=-0.24444  shor=1.06528(f) L2=1.07721(f) gap=+1.19e-02  fail  T_s=166ms T_L2=5482ms
+    [  2] c=[3, 1, 0, 1, 1, 1, 2, 3]  tri_net=-0.21852  shor=1.17593(f) L2=1.17591(f) gap=+-1.13e-05  fail  T_s=246ms T_L2=5276ms
+    [  3] c=[3, 2, 1, 1, 1, 0, 1, 3]  tri_net=-0.21852  shor=1.17593(f) L2=1.17591(f) gap=+-1.13e-05  fail  T_s=239ms T_L2=5373ms
+    [  4] c=[3, 2, 1, 1, 1, 1, 0, 3]  tri_net=-0.20617  shor=1.03086(f) L2=1.03086(f) gap=+1.44e-08  fail  T_s=243ms T_L2=4612ms
+    [  5] c=[3, 0, 1, 1, 1, 1, 2, 3]  tri_net=-0.20617  shor=1.03086(f) L2=1.03086(f) gap=+1.44e-08  fail  T_s=170ms T_L2=5159ms
+    [  6] c=[4, 1, 1, 2, 0, 1, 0, 3]  tri_net=-0.20278  shor=1.03056(f) L2=1.03056(f) gap=+-8.07e-10  fail  T_s=272ms T_L2=5368ms
+    [  7] c=[3, 0, 1, 0, 2, 1, 1, 4]  tri_net=-0.20278  shor=1.03056(f) L2=1.03056(f) gap=+2.95e-10  fail  T_s=252ms T_L2=5886ms
+
+    --- Summary (shor_failing) ---
+    Cells tested            : 8
+    Shor certified          : 0/8
+    Lasserre-2 certified    : 0/8
+    L2 strictly > Shor LB   : 4
+    L2 rescues (Shor fail to L2 cert): 0
+    Shor time/cell (ms)     : med=240.8  p95=265.0  max=272.2
+    L2  time/cell (ms)      : med=5370.7  p95=5819.8  max=5885.9
+    Time ratio L2/Shor      : med=22.30x
+
+Wrote _coarse_L2_compare.json

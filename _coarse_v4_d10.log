@@ -1,0 +1,26 @@
+
+====================================================================
+=== d=10, S=12, c_target=1.2 ===
+====================================================================
+  total compositions: 293,930  (0.28s)
+  v2 baseline: surv=48,141 certified=245,789  (0.16s)
+  v3 (N+O):    surv=39,276 certified=254,654  (0.60s)
+  identifying v3 hard cells (v3 surv with TV>=c at some W)... 39,276 hard cells (+ 0 true survivors)  (5.85s)
+  v4 (J): running Joint Dual on 39,276 hard cells... 2,030 certified  (36.38s)
+  (SDP capped to 200 cells of 37,246)
+  v4_full (L): running Shor SDP on 200 cells... 109 certified  (63.33s)
+  fine-grid soundness on 50 newly-closed cells (n_samples=2000)... 50 checked, 0 violations  (max_excess=0.000e+00, 69.8s)
+
+  --- SUMMARY ---
+  total cells       : 293,930
+  v2 BL pruned      : 245,789  (83.62%)
+  v3 NO certified   : 254,654  (86.64% of total; 100.00% of v3-pruned)
+  v4 J  newly cert  : 2,030  cumulative 256,684  (87.33%)
+  v4 L  newly cert  : 109  cumulative 256,793  (87.37%)
+  uncertified hard  : v4_J=37,246  v4_full=37,137
+  v3 subset of v2   : OK
+  v4 superset of v3 : OK  (by construction)
+  fine-grid sound   : 0/50 violations
+
+Total time: 176.7s
+Saved to _coarse_v4_d10_results.json
