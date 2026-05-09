@@ -1,0 +1,32 @@
+{
+  "config": {
+    "d": 8,
+    "n_half": 4,
+    "m": 10,
+    "c_target": 1.281
+  },
+  "n_FQ_survivors": 100,
+  "order1": {
+    "pruned": 25,
+    "n": 100,
+    "median_ms": 229.41648960113525,
+    "p95_ms": 297.28368520736683,
+    "max_ms": 412.78862953186035,
+    "statuses": {
+      "infeasible": 25,
+      "optimal": 75
+    }
+  },
+  "order2": {
+    "pruned": 25,
+    "n": 100,
+    "median_ms": 2657.3264598846436,
+    "p95_ms": 2959.2265963554382,
+    "max_ms": 3260.4739665985107,
+    "statuses": {
+      "infeasible": 25,
+      "optimal": 75
+    }
+  },
+  "solver": "CLARABEL"
+}
