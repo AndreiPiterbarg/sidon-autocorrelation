@@ -1,0 +1,62 @@
+[
+  {
+    "config": {
+      "n_half": 3,
+      "m": 10,
+      "c_target": 1.28,
+      "d": 6,
+      "S": 120
+    },
+    "n_total": 234531275,
+    "n_processed": 234531275,
+    "timed_out": false,
+    "n_canonical": 117266583,
+    "n_asym_feas": 102868303,
+    "n_F_surv": 3637794,
+    "elapsed_F": 574.0147938728333,
+    "filters": [
+      {
+        "name": "palindromic",
+        "n_remain": 172,
+        "n_removed": 3637622,
+        "soundness": "UNSOUND",
+        "note": "MV-2010 disproved Schinzel-Schmidt; Riesz wrong direction."
+      },
+      {
+        "name": "unimodal",
+        "n_remain": 196,
+        "n_removed": 3637598,
+        "soundness": "UNSOUND",
+        "note": "Subclass of symmetric-decreasing; sym-dec bound = 2."
+      },
+      {
+        "name": "unimodal-centered",
+        "n_remain": 0,
+        "n_removed": 3637794,
+        "soundness": "UNSOUND",
+        "note": "Strict subclass of unimodal \u2014 same obstruction."
+      },
+      {
+        "name": "no-interior-zeros",
+        "n_remain": 3314288,
+        "n_removed": 323506,
+        "soundness": "CONJECTURAL",
+        "note": "No published theorem; gaps possible (Cantor-like)."
+      },
+      {
+        "name": "mass-concentration",
+        "n_remain": 419625,
+        "n_removed": 3218169,
+        "soundness": "PARTIALLY USED",
+        "note": "Asymmetry filter already exploits the rigorous part."
+      },
+      {
+        "name": "nonneg-DFT",
+        "n_remain": 391631,
+        "n_removed": 3246163,
+        "soundness": "CONJECTURAL",
+        "note": "No published Fourier-positivity theorem for our extremizer."
+      }
+    ]
+  }
+]
