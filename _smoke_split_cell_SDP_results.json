@@ -1,0 +1,338 @@
+{
+  "n_half": 5,
+  "m": 5,
+  "c_target": 1.28,
+  "d": 10,
+  "solver": "MOSEK",
+  "n_workers": 12,
+  "n_l_survivors_total": 14,
+  "n_l_survivors_tested": 12,
+  "n_split_pruned": 7,
+  "total_time_s": 1561.007827758789,
+  "results": [
+    {
+      "c_int": [
+        20,
+        5,
+        6,
+        8,
+        11,
+        11,
+        8,
+        6,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 198.1572277545929,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        5,
+        6,
+        9,
+        10,
+        10,
+        9,
+        6,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 166.67989563941956,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        5,
+        7,
+        8,
+        10,
+        10,
+        8,
+        7,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 165.36155152320862,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        5,
+        7,
+        9,
+        9,
+        9,
+        9,
+        7,
+        5,
+        20
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 800,
+      "n_sub_tested": 801,
+      "time_s": 134.58178424835205,
+      "feasible_sigma": [
+        -1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "statuses": {
+        "infeasible": 800,
+        "EXC:SolverError": 1
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        6,
+        8,
+        10,
+        10,
+        8,
+        6,
+        6,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 169.7672564983368,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        6,
+        9,
+        9,
+        9,
+        9,
+        6,
+        6,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 161.54148364067078,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        7,
+        8,
+        9,
+        9,
+        8,
+        7,
+        6,
+        20
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 15,
+      "n_sub_tested": 16,
+      "time_s": 14.571627855300903,
+      "feasible_sigma": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "statuses": {
+        "infeasible": 15,
+        "optimal": 1
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        7,
+        9,
+        8,
+        8,
+        9,
+        7,
+        6,
+        20
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 737,
+      "n_sub_tested": 738,
+      "time_s": 118.73084354400635,
+      "feasible_sigma": [
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        1,
+        1,
+        -1
+      ],
+      "statuses": {
+        "infeasible": 737,
+        "EXC:SolverError": 1
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        6,
+        8,
+        10,
+        10,
+        8,
+        6,
+        5,
+        21
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 177.83037042617798,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        6,
+        9,
+        9,
+        9,
+        9,
+        6,
+        5,
+        21
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 155.28777766227722,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        7,
+        8,
+        9,
+        9,
+        8,
+        7,
+        5,
+        21
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 32,
+      "n_sub_tested": 33,
+      "time_s": 17.02139925956726,
+      "feasible_sigma": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "statuses": {
+        "infeasible": 32,
+        "optimal": 1
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        7,
+        9,
+        8,
+        8,
+        9,
+        7,
+        5,
+        21
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 482,
+      "n_sub_tested": 483,
+      "time_s": 81.44825792312622,
+      "feasible_sigma": [
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        1
+      ],
+      "statuses": {
+        "infeasible": 482,
+        "EXC:SolverError": 1
+      }
+    }
+  ]
+}

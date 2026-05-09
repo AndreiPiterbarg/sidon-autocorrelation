@@ -1,0 +1,64 @@
+(CVXPY) May 07 02:28:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 07 02:28:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 07 02:28:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 07 02:28:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+========================================================================
+Smoke L2 vs L1 at d=8 (n_half=4, m=10, c=1.28)
+========================================================================
+Solver: MOSEK
+d=8: n_win=120, n_sigma_balanced=70
+F survivors:  1014    (expected ~1014 from prior runs)
+Q survivors:  964    (expected ~964 from prior runs)
+F+Q wall:     8.77s   (F 0.25s, Q 8.52s)
+
+Running SDPs on first 60 Q-survivors (cap MAX_L_CELLS=60)
+
+--- L1 (order-1 Shor SDP) ---
+  L1 10/60: pruned=6  last=382ms (infeasible)
+  L1 20/60: pruned=13  last=359ms (infeasible)
+  L1 30/60: pruned=17  last=373ms (infeasible)
+  L1 40/60: pruned=18  last=378ms (optimal)
+  L1 50/60: pruned=19  last=370ms (optimal)
+  L1 60/60: pruned=25  last=315ms (infeasible)
+
+--- L2 (order-2 Lasserre SDP) ---
+  L2 5/60: pruned=4  last=3757ms (infeasible)
+  L2 10/60: pruned=6  last=4009ms (infeasible)
+  L2 15/60: pruned=8  last=3875ms (infeasible)
+  L2 20/60: pruned=12  last=3170ms (infeasible)
+  L2 25/60: pruned=14  last=2759ms (optimal)
+  L2 30/60: pruned=16  last=2800ms (infeasible)
+  L2 35/60: pruned=16  last=2732ms (optimal)
+  L2 40/60: pruned=17  last=10008ms (optimal)
+  L2 45/60: pruned=18  last=6317ms (optimal)
+  L2 50/60: pruned=18  last=6136ms (optimal)
+  L2 55/60: pruned=21  last=6551ms (optimal)
+  L2 60/60: pruned=24  last=7309ms (infeasible)
+
+--- L2 retry on cell 17 (was EXC:SolverError) at tol=1e-7 ---
+  retry: pruned=True status=infeasible took 6790ms
+
+========================================================================
+SUMMARY
+========================================================================
+F survivors:     1014
+Q survivors:     964
+Tested cells:    60
+L1 pruned:       25 / 60
+L2 pruned:       25 / 60
+L2 extra over L1: 0 cells
+L1-only with L2 solver failure (EXC/unknown): 0 cells
+L1-only with L2 status optimal (SOUNDNESS BUG): 0
+L1 time avg/med/max: 382.6 / 380.3 / 570.2 ms
+L2 time avg/med/max: 4631.1 / 3861.5 / 10007.7 ms
+L1 total wall:    22.96s
+L2 total wall:    277.87s
+Total wall:       309.60s
+
+ORDER2_NO_GAIN: 0 extra prunes over L1 (L1 pruned 25, L2 pruned 25, plus 0 L2 solver-fails); avg time order1=383 ms, order2=4631 ms (~12.1x slower)
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_smoke_L2_vs_L1.json

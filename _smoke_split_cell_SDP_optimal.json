@@ -1,0 +1,35 @@
+{
+  "n_half": 5,
+  "m": 5,
+  "c_target": 1.28,
+  "d": 10,
+  "depth": 1,
+  "n_workers": 4,
+  "n_l_survivors_tested": 1,
+  "n_split_pruned": 1,
+  "total_time_s": 56.60546851158142,
+  "results": [
+    {
+      "c_int": [
+        20,
+        5,
+        6,
+        8,
+        11,
+        11,
+        8,
+        6,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 56.599467039108276,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    }
+  ]
+}

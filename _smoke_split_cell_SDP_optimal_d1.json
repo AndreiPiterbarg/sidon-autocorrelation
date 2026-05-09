@@ -1,0 +1,380 @@
+{
+  "n_half": 5,
+  "m": 5,
+  "c_target": 1.28,
+  "d": 10,
+  "depth": 1,
+  "n_workers": 4,
+  "n_l_survivors_tested": 14,
+  "n_split_pruned": 9,
+  "total_time_s": 483.47159123420715,
+  "results": [
+    {
+      "c_int": [
+        20,
+        5,
+        6,
+        8,
+        11,
+        11,
+        8,
+        6,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 44.67823338508606,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        5,
+        6,
+        9,
+        10,
+        10,
+        9,
+        6,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 41.6993682384491,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        5,
+        7,
+        8,
+        10,
+        10,
+        8,
+        7,
+        5,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 45.14887523651123,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        5,
+        7,
+        9,
+        9,
+        9,
+        9,
+        7,
+        5,
+        20
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 902,
+      "n_sub_tested": 903,
+      "time_s": 45.40962600708008,
+      "feasible_sigma": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        -1
+      ],
+      "statuses": {
+        "infeasible": 902,
+        "solsta=solsta.prim_illposed_cer": 1
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        6,
+        8,
+        10,
+        10,
+        8,
+        6,
+        6,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 47.109867572784424,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        6,
+        9,
+        9,
+        9,
+        9,
+        6,
+        6,
+        20
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 41.8393828868866,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        7,
+        8,
+        9,
+        9,
+        8,
+        7,
+        6,
+        20
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 0,
+      "n_sub_tested": 1,
+      "time_s": 3.8520922660827637,
+      "feasible_sigma": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "statuses": {
+        "optimal": 1
+      }
+    },
+    {
+      "c_int": [
+        20,
+        6,
+        7,
+        9,
+        8,
+        8,
+        9,
+        7,
+        6,
+        20
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 191,
+      "n_sub_tested": 192,
+      "time_s": 12.45860767364502,
+      "feasible_sigma": [
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        1,
+        1,
+        -1
+      ],
+      "statuses": {
+        "infeasible": 191,
+        "solsta=solsta.prim_illposed_cer": 1
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        6,
+        8,
+        10,
+        10,
+        8,
+        6,
+        5,
+        21
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 42.54118800163269,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        6,
+        9,
+        9,
+        9,
+        9,
+        6,
+        5,
+        21
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 44.420398473739624,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        7,
+        8,
+        9,
+        9,
+        8,
+        7,
+        5,
+        21
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 60,
+      "n_sub_tested": 61,
+      "time_s": 6.163203954696655,
+      "feasible_sigma": [
+        1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "statuses": {
+        "infeasible": 60,
+        "optimal": 1
+      }
+    },
+    {
+      "c_int": [
+        21,
+        5,
+        7,
+        9,
+        8,
+        8,
+        9,
+        7,
+        5,
+        21
+      ],
+      "split_pruned": false,
+      "n_sub_infeasible": 122,
+      "n_sub_tested": 123,
+      "time_s": 9.435088634490967,
+      "feasible_sigma": [
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        1
+      ],
+      "statuses": {
+        "infeasible": 122,
+        "solsta=solsta.prim_illposed_cer": 1
+      }
+    },
+    {
+      "c_int": [
+        21,
+        6,
+        7,
+        8,
+        8,
+        8,
+        8,
+        7,
+        6,
+        21
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 50.8439359664917,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    },
+    {
+      "c_int": [
+        21,
+        6,
+        7,
+        9,
+        7,
+        7,
+        9,
+        7,
+        6,
+        21
+      ],
+      "split_pruned": true,
+      "n_sub_infeasible": 1024,
+      "n_sub_tested": 1024,
+      "time_s": 47.78270602226257,
+      "feasible_sigma": null,
+      "statuses": {
+        "infeasible": 1024
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "config": {
+    "n_half": 3,
+    "m": 10,
+    "d": 6,
+    "c_target": 1.28
+  },
+  "cuda_avail": true,
+  "device": "cuda",
+  "mosek_avail": true,
+  "q_survivors": 30,
+  "mosek": {
+    "pruned": 3,
+    "total_ms": 9270.581722259521,
+    "per_sdp_med_ms": 301.4465570449829,
+    "per_sdp_max_ms": 447.542667388916
+  },
+  "gpu_torch": {
+    "pruned": 30,
+    "total_ms": 644.9794769287109
+  },
+  "parity": {
+    "agree": 3,
+    "gpu_extra_unsound_count": 27,
+    "gpu_miss_count": 0
+  },
+  "raw_speedup": 14.373452263015482,
+  "arch_note": "Batched torch IPM (heuristic, not Farkas-certified). For production, use cuClarabel (Julia/Rust) or scs-gpu (CUDA build) with proper Farkas certificates. Wire into cloninger-steinerberger/cpu/post_filters.py:apply_L_filter_parallel as a new branch when device==cuda and len(survivors) >= 100."
+}

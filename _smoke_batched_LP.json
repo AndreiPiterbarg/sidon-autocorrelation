@@ -1,0 +1,27 @@
+{
+  "config": {
+    "n_half": 4,
+    "m": 10,
+    "c_target": 1.28,
+    "d": 8,
+    "n_win": 120,
+    "n_sigma": 70,
+    "n_lps": 1014
+  },
+  "profile_scipy": {
+    "per_lp_build_ms": 3.1876499998907093,
+    "per_lp_solve_ms": 11.219926000121632,
+    "build_pct": 22.12481821985863
+  },
+  "scipy_total_s": 14.463855999998486,
+  "scipy_per_lp_ms": 14.264157790925529,
+  "highspy_fresh_total_s": 10.974409700000251,
+  "highspy_fresh_per_lp_ms": 10.822889250493345,
+  "highspy_reused_total_s": 12.10308289999739,
+  "highspy_reused_per_lp_ms": 11.935979191318925,
+  "speedup_fresh": 1.317962095036251,
+  "speedup_reused": 1.1950555176319255,
+  "soundness_max_diff_fresh": 0.0,
+  "soundness_max_diff_reused": 0.0,
+  "sound": true
+}
