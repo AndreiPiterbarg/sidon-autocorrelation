@@ -33,3 +33,7 @@ import Sidon.Proof.WRefinedBound
 import Sidon.Proof.SpectralDiscretizationBound
 import Sidon.Proof.TightContinuousBridge
 import Sidon.Proof.CoarseCascade
+import Sidon.Proof.PostFilterF
+import Sidon.Proof.PostFilterQ
+import Sidon.Proof.PostFilterL
+import Sidon.Proof.PostFilterChain
