@@ -1,0 +1,29 @@
+[
+  {
+    "n_half": 6,
+    "m": 5,
+    "c_target": 1.28,
+    "d": 12,
+    "n_processed": 8259888,
+    "n_lp_runs": 7,
+    "n_win": 276,
+    "n_sigma": 924,
+    "surv_F": 7,
+    "surv_FN": 5,
+    "surv_Q": 0,
+    "surv_QN": 0,
+    "extra_FN_over_F": 2,
+    "extra_Q_over_F": 7,
+    "extra_QN_over_Q": 0,
+    "soundness_FN_minus_F": 0,
+    "soundness_Q_minus_F": 0,
+    "soundness_QN_minus_Q": 0,
+    "t_F": 21.49099636077881,
+    "t_FN": 21.73649764060974,
+    "t_Q": 1.3779194355010986,
+    "t_QN": 0.0,
+    "ms_per_LP_Q": 196.84563364301408,
+    "ms_per_LP_QN": 0.0,
+    "wall_sec": 45.12158226966858
+  }
+]
