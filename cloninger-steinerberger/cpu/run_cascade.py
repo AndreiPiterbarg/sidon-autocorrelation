@@ -3783,7 +3783,9 @@ def _default_buf_cap(d_child):
 
 
 def process_parent_fused(parent_int, m, c_target, n_half_child, buf_cap=None,
-                          use_flat_threshold=False, use_F=False):
+                          use_flat_threshold=False, use_F=False,
+                          skip_sdp_cert=False,
+                          use_Q=False, use_L=False):
     """Wrapper: compute x_cap, allocate buffer, call fused kernel.
 
     Parameters
@@ -3800,6 +3802,12 @@ def process_parent_fused(parent_int, m, c_target, n_half_child, buf_cap=None,
         as an additional filter.  F is a strictly tighter rule than
         W-refined, so any F-survivor is also a W-survivor.  Empirically
         prunes 25-65% additional survivors at L0 and beyond.
+    skip_sdp_cert : bool
+        When True, skip the CVXPY-based SDP parent cert (which has been
+        observed to clear <1% of parents at typical configs while costing
+        50-500ms per call).  Theorem-1 interval cert and LP dual cert
+        still run.  Soundness preserved (we just prune fewer parents
+        before enumeration).
 
     Returns
     -------
@@ -3844,7 +3852,7 @@ def process_parent_fused(parent_int, m, c_target, n_half_child, buf_cap=None,
         # SDP relaxation: tests global feasibility of survivor region.
         # Handles cases where LP fails (balanced children) by exploiting
         # joint quadratic structure across ALL windows simultaneously.
-        if d_parent <= 12 and sdp_certify_parent(
+        if (not skip_sdp_cert) and d_parent <= 12 and sdp_certify_parent(
                 parent_int, lo_arr, hi_arr,
                 int(n_half_child), int(m), c_target):
             return np.empty((0, d_child), dtype=np.int32), total_children
@@ -3872,17 +3880,19 @@ def process_parent_fused(parent_int, m, c_target, n_half_child, buf_cap=None,
             f"retry {n2}")
         n_survivors = n2
 
-    # Variant F post-filter: F is strictly tighter than the kernel's
-    # W-refined / Theorem-1 rule.  F-survivors ⊆ kernel-survivors, so this
-    # is sound by monotonicity.  Cost is O(survivors · d log d) — trivial
-    # vs. the enumeration just performed.
+    # Per-composition post-filter chain F → Q → L.  Each is a strict
+    # subset of the previous; soundness is by construction.
+    survivors_view = out_buf[:n_survivors]
     if use_F and n_survivors > 0 and not use_flat_threshold:
-        survivors_view = out_buf[:n_survivors]
         f_mask = _prune_dynamic(survivors_view, n_half_child, m, c_target,
                                  use_flat_threshold=False, use_F=True)
-        return survivors_view[f_mask].copy(), total_children
-
-    return out_buf[:n_survivors].copy(), total_children
+        survivors_view = survivors_view[f_mask]
+    if (use_Q or use_L) and len(survivors_view) > 0 and not use_flat_threshold:
+        from post_filters import apply_post_filter_chain
+        survivors_view = apply_post_filter_chain(
+            survivors_view, n_half_child, m, c_target,
+            use_Q=use_Q, use_L=use_L)
+    return survivors_view.copy(), total_children
 
 
 # =====================================================================
@@ -3949,7 +3959,9 @@ def process_parent_coarse(parent_int, S, c_target, d_child, buf_cap=None):
 
 def process_parent_verbose(parent_int, m, c_target, n_half_child,
                             parent_idx, n_parents,
-                            use_flat_threshold=False, use_F=False):
+                            use_flat_threshold=False, use_F=False,
+                            skip_sdp_cert=False,
+                            use_Q=False, use_L=False):
     """Like process_parent_fused but logs intra-parent progress.
 
     Splits the Cartesian product along cursor[0]'s range so we can
@@ -3983,7 +3995,9 @@ def process_parent_verbose(parent_int, m, c_target, n_half_child,
         _log(f"       {label}: {total_children:,} children (single pass)...")
         surv, tc = process_parent_fused(parent_int, m, c_target, n_half_child,
                                          use_flat_threshold=use_flat_threshold,
-                                         use_F=use_F)
+                                         use_F=use_F,
+                                         skip_sdp_cert=skip_sdp_cert,
+                                         use_Q=use_Q, use_L=use_L)
         _log(f"       {label}: done, {len(surv):,} survivors")
         return surv, tc
 
@@ -4063,11 +4077,16 @@ def process_parent_verbose(parent_int, m, c_target, n_half_child,
     else:
         survivors = np.empty((0, d_child), dtype=np.int32)
 
-    # Variant F post-filter (see process_parent_fused for explanation).
+    # F → Q → L post-filter chain (see process_parent_fused).
     if use_F and len(survivors) > 0 and not use_flat_threshold:
         f_mask = _prune_dynamic(survivors, n_half_child, m, c_target,
                                  use_flat_threshold=False, use_F=True)
         survivors = survivors[f_mask]
+    if (use_Q or use_L) and len(survivors) > 0 and not use_flat_threshold:
+        from post_filters import apply_post_filter_chain
+        survivors = apply_post_filter_chain(
+            survivors, n_half_child, m, c_target,
+            use_Q=use_Q, use_L=use_L)
 
     elapsed = time.time() - t_start
     _log(f"       {label}: done in {_fmt_time(elapsed)}, "
@@ -4099,7 +4118,8 @@ _warmup_jit()
 # =====================================================================
 
 def run_level0(n_half, m, c_target, verbose=True, use_flat_threshold=False,
-               d0=None, use_bnb=True, coarse_S=None, use_F=False):
+               d0=None, use_bnb=True, coarse_S=None, use_F=False,
+               skip_sdp_cert=False, use_Q=False, use_L=False):
     """Run Level 0: enumerate compositions, prune, collect survivors.
 
     Parameters
@@ -4233,15 +4253,21 @@ def run_level0(n_half, m, c_target, verbose=True, use_flat_threshold=False,
             n_non_canonical = int(np.sum(~canon_mask))
             survivors = survivors[canon_mask]
 
-        # Variant F post-filter on B&B output.  B&B uses W-refined inline;
-        # F is strictly tighter (F-survivors ⊆ W-survivors).  Sound by
-        # monotonicity.
+        # F → Q → L post-filter chain on B&B output.  Each is strictly
+        # tighter and sound by monotonicity (F ⊇ Q ⊇ L).
         n_F_pruned = 0
         if use_F and len(survivors) > 0 and not use_flat_threshold:
             f_mask = _prune_dynamic(survivors, n_half, m, c_target,
                                      use_flat_threshold=False, use_F=True)
             n_F_pruned = int(np.sum(~f_mask))
             survivors = survivors[f_mask]
+        if (use_Q or use_L) and len(survivors) > 0 and not use_flat_threshold:
+            from post_filters import apply_post_filter_chain
+            n_before = len(survivors)
+            survivors = apply_post_filter_chain(
+                survivors, n_half, m, c_target,
+                use_Q=use_Q, use_L=use_L)
+            n_F_pruned += (n_before - len(survivors))
 
         elapsed = time.time() - t0
         n_survivors = len(survivors)
@@ -4309,6 +4335,14 @@ def run_level0(n_half, m, c_target, verbose=True, use_flat_threshold=False,
         n_pruned_test += int(np.sum(~survived_mask))
 
         survivors = candidates[survived_mask]
+        # F → Q → L per-batch post-filter chain at L0.
+        if (use_Q or use_L) and len(survivors) > 0 and not use_flat_threshold:
+            from post_filters import apply_post_filter_chain
+            n_before = len(survivors)
+            survivors = apply_post_filter_chain(
+                survivors, n_half, m, c_target,
+                use_Q=use_Q, use_L=use_L)
+            n_pruned_test += (n_before - len(survivors))
         if len(survivors) > 0:
             all_survivors.append(survivors)
 
@@ -4597,11 +4631,13 @@ def _process_single_parent(args):
 # =====================================================================
 
 def _init_worker_shm(mmap_path, shape, dtype_str, m, c_target, n_half_child,
-                     numba_threads, use_flat_threshold=False, use_F=False):
+                     numba_threads, use_flat_threshold=False, use_F=False,
+                     skip_sdp_cert=False, use_Q=False, use_L=False):
     """Pool initializer: open mmap of parent array and store params in globals."""
     numba.set_num_threads(numba_threads)
     global _shared_parents, _shm_m, _shm_c_target, _shm_n_half_child
-    global _shm_use_flat_threshold, _shm_use_F
+    global _shm_use_flat_threshold, _shm_use_F, _shm_skip_sdp
+    global _shm_use_Q, _shm_use_L
     _shared_parents = np.memmap(mmap_path, dtype=np.dtype(dtype_str),
                                 mode='r', shape=shape)
     _shm_m = m
@@ -4609,6 +4645,9 @@ def _init_worker_shm(mmap_path, shape, dtype_str, m, c_target, n_half_child,
     _shm_n_half_child = n_half_child
     _shm_use_flat_threshold = use_flat_threshold
     _shm_use_F = use_F
+    _shm_skip_sdp = skip_sdp_cert
+    _shm_use_Q = use_Q
+    _shm_use_L = use_L
 
 
 def _process_parent_shm(idx):
@@ -4617,7 +4656,9 @@ def _process_parent_shm(idx):
     survivors, total_children = process_parent_fused(
         parent, _shm_m, _shm_c_target, _shm_n_half_child,
         use_flat_threshold=_shm_use_flat_threshold,
-        use_F=_shm_use_F)
+        use_F=_shm_use_F,
+        skip_sdp_cert=_shm_skip_sdp,
+        use_Q=_shm_use_Q, use_L=_shm_use_L)
     n_survived = len(survivors)
     result = survivors if n_survived > 0 else None
     return result, {
@@ -4767,7 +4808,8 @@ def _effective_cpu_count():
 def run_cascade(n_half, m, c_target, max_levels=10, n_workers=None,
                 verbose=True, output_dir='data', resume_dir=None,
                 use_flat_threshold=False, mass_grid=False, d0=None,
-                use_bnb=True, coarse_S=None, use_F=False):
+                use_bnb=True, coarse_S=None, use_F=False,
+                skip_sdp_cert=False, use_Q=False, use_L=False):
     """Run the full CPU cascade: L0 + refinement levels.
 
     Parameters
@@ -4911,7 +4953,9 @@ def run_cascade(n_half, m, c_target, max_levels=10, n_workers=None,
         else:
             l0 = run_level0(n_half, m, c_target, verbose=verbose,
                              use_flat_threshold=use_flat_threshold,
-                             d0=d0, use_bnb=use_bnb, use_F=use_F)
+                             d0=d0, use_bnb=use_bnb, use_F=use_F,
+                             skip_sdp_cert=skip_sdp_cert,
+                             use_Q=use_Q, use_L=use_L)
 
         info = {
             'n_half': n_half, 'm': m, 'd0': d0, 'c_target': c_target,
@@ -5353,7 +5397,9 @@ def run_cascade(n_half, m, c_target, max_levels=10, n_workers=None,
                                   m, c_target, n_half_child,
                                   numba_threads,
                                   use_flat_threshold,
-                                  use_F)) as pool:
+                                  use_F,
+                                  skip_sdp_cert,
+                                  use_Q, use_L)) as pool:
                     for surv, stats in pool.imap_unordered(
                             _process_parent_shm, range(n_parents),
                             chunksize=chunksize):
@@ -5423,12 +5469,16 @@ def run_cascade(n_half, m, c_target, max_levels=10, n_workers=None,
                         parent, m, c_target, n_half_child,
                         p_idx, n_parents,
                         use_flat_threshold=use_flat_threshold,
-                        use_F=use_F)
+                        use_F=use_F,
+                        skip_sdp_cert=skip_sdp_cert,
+                        use_Q=use_Q, use_L=use_L)
                 else:
                     survivors, n_children = process_parent_fused(
                         parent, m, c_target, n_half_child,
                         use_flat_threshold=use_flat_threshold,
-                        use_F=use_F)
+                        use_F=use_F,
+                        skip_sdp_cert=skip_sdp_cert,
+                        use_Q=use_Q, use_L=use_L)
                 total_children += n_children
                 n_survived_this = len(survivors)
                 total_survived += n_survived_this
@@ -5859,6 +5909,21 @@ def main():
                              'as a two-stage post-filter on W-survivors so '
                              'the hot Gray-code kernel is unchanged.  '
                              'Mutually exclusive with --use_flat_threshold.')
+    parser.add_argument('--skip_sdp', action='store_true',
+                        help='Skip the CVXPY SDP parent cert (50-500ms per '
+                             'parent at d_parent ≤ 12, clears <1%% in '
+                             'practice).  Theorem-1 + LP cert still run, '
+                             'so soundness is preserved.')
+    parser.add_argument('--use_Q', action='store_true',
+                        help='Apply variant Q (multi-window joint LP) as a '
+                             'post-filter on F-survivors.  Sound: F ⊇ Q.  '
+                             'Decisive at d ≥ 10 (57-92%% additional pruning '
+                             'over F).  Cost ~5-30 ms per LP.  Requires F.')
+    parser.add_argument('--use_L', action='store_true',
+                        help='Apply variant L (Lasserre/Shor SDP) as a '
+                             'post-filter on F→Q survivors.  Sound: F ⊇ Q ⊇ L.  '
+                             'Theoretical SDP ceiling: at d=10 prunes 94%% of '
+                             'Q-survivors.  Cost 0.5-2 s per SDP.  Requires F.')
     parser.add_argument('--mass_grid', action='store_true',
                         help='Use MATLAB-style mass-based grid with palindrome '
                              'symmetry.  S=2*m (constant), only d_parent/2 '
@@ -5904,6 +5969,10 @@ def main():
               'uses Theorem 1 directly with no m-discretization correction.',
               flush=True)
 
+    if (args.use_Q or args.use_L) and not args.use_F:
+        parser.error('--use_Q and --use_L require --use_F (they are '
+                     'post-filters on F-survivors).')
+
     info = run_cascade(
         n_half=args.n_half,
         m=args.m,
@@ -5919,6 +5988,9 @@ def main():
         use_bnb=not args.no_l0_bnb,
         coarse_S=coarse_S,
         use_F=args.use_F,
+        skip_sdp_cert=args.skip_sdp,
+        use_Q=args.use_Q,
+        use_L=args.use_L,
     )
 
     print_summary(info)
