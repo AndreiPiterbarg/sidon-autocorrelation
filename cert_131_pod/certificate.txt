@@ -1,0 +1,47 @@
+======================================================================
+PROOF CERTIFICATE — C_{1a} >= 1.31
+======================================================================
+Generated: 2026-05-07T14:57:34Z
+Host:      computeinstance-e01x9bm9ct6f7zt9qk
+
+CLAIM: C_{1a} >= 1.31
+
+METHOD: Cloninger-Steinerberger 2017 fine-grid + variant F (LP-tight Δ_BB) + variant Q (multi-window LP) at L0 enumeration
+
+Config:
+  n_half: 6
+  m: 15
+  d: 12
+  c_target: 1.31
+  correction: 0.13777777777777778
+  threshold_for_g: 1.4477777777777778
+  integer_sum_constraint_S: 360
+  palindromic_half_sum: 180
+  n_palindromic_compositions: 1710052162
+
+Independent runs:
+  F+Q (no L):
+    n_processed = 1,710,052,162
+    surv_F      = 10
+    surv_Q      = 0
+    wall        = 309.3s
+
+  F+Q+L:
+    n_processed = 1,710,052,162
+    surv_F      = 10
+    surv_Q      = 0
+    surv_L      = 0
+    wall        = 308.71s
+
+Cross-check: CONSISTENT
+VERDICT: PROVEN
+
+Soundness chain:
+  1. C&S 2017 Lemma 3: ||g*g - f*f||_inf <= 2/m + 1/m^2
+  2. For m=15: correction = 2/15 + 1/225 = 0.13777777777777778
+  3. Therefore C_{1a}(f) >= c_target iff C_{1a}(g) >= c_target + correction = 1.44778
+  4. Reduce f to integer composition c, c_i >= 0, sum c = 4nm
+  5. F filter: per-window LP-tight lower bound on max-over-cell
+  6. Q filter: multi-window LP tightening of F, joint over all windows
+  7. Q-pruned ⇒ F-pruned ⇒ C_{1a}(g) >= threshold over the cell
+  8. Q=0 means all compositions are Q-pruned ⇒ proof complete

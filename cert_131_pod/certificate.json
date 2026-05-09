@@ -1,0 +1,71 @@
+{
+  "created_utc": "2026-05-07T14:57:34Z",
+  "host": "computeinstance-e01x9bm9ct6f7zt9qk",
+  "claim": "C_{1a} >= 1.31",
+  "method": "Cloninger-Steinerberger 2017 fine-grid + variant F (LP-tight \u0394_BB) + variant Q (multi-window LP) at L0 enumeration",
+  "config": {
+    "n_half": 6,
+    "m": 15,
+    "d": 12,
+    "c_target": 1.31,
+    "correction": 0.13777777777777778,
+    "threshold_for_g": 1.4477777777777778,
+    "integer_sum_constraint_S": 360,
+    "palindromic_half_sum": 180,
+    "n_palindromic_compositions": 1710052162
+  },
+  "soundness_chain": [
+    "C&S 2017 Lemma 3: ||g*g - f*f||_inf <= 2/m + 1/m^2",
+    "For m=15: correction = 2/15 + 1/225 = 0.13777777777777778",
+    "Therefore C_{1a}(f) >= c_target iff C_{1a}(g) >= c_target + correction = 1.44778",
+    "Reduce f to integer composition c, c_i >= 0, sum c = 4nm",
+    "F filter: per-window LP-tight lower bound on max-over-cell",
+    "Q filter: multi-window LP tightening of F, joint over all windows",
+    "Q-pruned \u21d2 F-pruned \u21d2 C_{1a}(g) >= threshold over the cell",
+    "Q=0 means all compositions are Q-pruned \u21d2 proof complete"
+  ],
+  "environment": {
+    "kernel": "Linux computeinstance-e01x9bm9ct6f7zt9qk 5.15.0-177-generic #187-Ubuntu SMP Sat Apr 11 22:54:33 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux",
+    "python": "Python 3.10.12",
+    "libs": "numpy=2.2.6 scipy=1.15.3 numba=0.65.1 mosek=(11, 1, 11) cvxpy=1.7.5",
+    "bench_md5": "9dcbfaa0f9abb9e41602833b96594205  /home/ubuntu/_L_bench.py\n0f8e009b821d84b070a7f888b8eba724  /home/ubuntu/_Q_bench.py\n6e990a4e21ee111a2e5291722c98d2cc  /home/ubuntu/_M1_bench.py",
+    "bench_wc": "756 /home/ubuntu/_L_bench.py\n  555 /home/ubuntu/_Q_bench.py\n  502 /home/ubuntu/_M1_bench.py\n 1813 total",
+    "cores": "64",
+    "memory": "total        used        free      shared  buff/cache   available\nMem:           251Gi       709Mi       248Gi       1.0Mi       2.1Gi       249Gi"
+  },
+  "runs": [
+    {
+      "name": "F+Q (no L)",
+      "wall_sec": 309.3,
+      "json_file": "/home/ubuntu/cert_131/bench_FQ.json",
+      "log_file": "/home/ubuntu/cert_131/run_FQ.log",
+      "n_processed": 1710052162,
+      "surv_F": 10,
+      "surv_Q": 0,
+      "t_F": 246.74782371520996,
+      "t_Q": 0.7775423526763916
+    },
+    {
+      "name": "F+Q+L",
+      "wall_sec": 308.71,
+      "json_file": "/home/ubuntu/cert_131/bench_FQL.json",
+      "log_file": "/home/ubuntu/cert_131/run_FQL.log",
+      "n_processed": 1710052162,
+      "surv_F": 10,
+      "surv_Q": 0,
+      "surv_L": 0,
+      "l_solve_t_med_ms": 0.0,
+      "l_n_solves": 0,
+      "l_status_counter": {},
+      "t_F": 245.9663064479828,
+      "t_Q": 0.7827301025390625,
+      "t_L": 0.012343645095825195
+    }
+  ],
+  "verdict": {
+    "FQ_run_closed": true,
+    "FQL_run_closed": true,
+    "cross_check_consistent": true,
+    "PROVEN": true
+  }
+}
