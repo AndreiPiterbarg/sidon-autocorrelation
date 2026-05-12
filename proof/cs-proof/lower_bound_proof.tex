@@ -200,9 +200,8 @@ catalog of historical and current bounds is maintained by
 Tao~\cite{Tao}.
 
 The \emph{lower bound} is fundamentally harder: one must show that
-\emph{no} function can achieve a peak below the threshold.  This
-requires exhaustive elimination of all possibilities, which is the
-subject of this paper.
+\emph{no} function can achieve a peak below the threshold, which
+requires exhaustive elimination of all candidate configurations.
 
 The published lower bounds of Martin--O'Bryant~\cite{MO2007,MO2009},
 Matolcsi--Vinuesa~\cite{MV10}, and
@@ -365,8 +364,8 @@ $\sum_i a_i=4n$ after normalizing $\int f=1$.}
 
 \subsection{Window Lower Bound for the Ratio}
 
-The next lemma is the analytic bridge from the continuous problem to
-the discrete windowed expressions of Cloninger and
+The next lemma passes from the continuous problem to the discrete
+windowed expressions of Cloninger and
 Steinerberger~\cite[Lemma~1]{CS17}.
 
 \begin{lemma}[Per-window test-value bound]
@@ -839,9 +838,8 @@ value.
 
 \subsection{Asymmetry Pruning}
 
-At first glance, the following bound might seem too crude to be useful:
-it ignores everything about $f$ except how much mass sits on each half
-of the support.  Yet in practice, this single test eliminates the vast
+The following bound depends on $f$ only through the mass on each half
+of the support.  Despite its coarseness, this single test eliminates a
 majority of configurations at every cascade level.
 
 \begin{theorem}[Asymmetry Bound]
@@ -879,7 +877,7 @@ ruled out.  The threshold left-mass fraction is:
 \[
   p^* \;=\; \sqrt{c_{\mathrm{target}} / 2}.
 \]
-For $c_{\mathrm{target}} = 1.4$: $p^* \approx 0.8367$.
+For $c_{\mathrm{target}} = \tfrac{7}{5}$, $p^* = \sqrt{0.7} \approx 0.8367$.
 \end{corollary}
 
 \begin{remark}[Exactness for step functions and under refinement]
@@ -906,11 +904,9 @@ roles for asymmetry:
     inexpensive early pruning rule before the more expensive
     window scan.
 \end{itemize}
-The final Lean theorem no longer depends on carrying asymmetry
-certificates through the continuous-to-discrete transfer.  Instead, the
-formal theorem imports a stronger terminal-grid window certificate at
-$d = 128$, so asymmetry remains part of the trusted external
-computation but not part of the final analytic reduction.
+Asymmetry pruning therefore lives inside the trusted certificate
+computation only; the final Lean reduction relies solely on the
+terminal-grid window certificate at $d = 128$.
 \end{remark}
 
 \begin{remark}[What the certificate computation prunes by]
@@ -977,11 +973,10 @@ the inner pairs when outer pairs tie.
 \section{The Multiscale Cascade}\label{sec:cascade}
 % ======================================================================
 
-Brute-force enumeration at fine resolution is hopelessly infeasible ---
-even modest parameters yield billions of lattice points.  The key idea
-is to start
-coarse: most configurations can be ruled out cheaply at low resolution,
-and only the stubborn survivors need to be examined more closely.
+Direct enumeration at the terminal resolution is intractable: even
+modest parameters yield billions of lattice points.  The cascade
+starts at coarse resolution, eliminates configurations cheaply, and
+refines only those that survive.
 
 \subsection{Overview}
 
@@ -1096,11 +1091,9 @@ claim.
 \end{proof}
 
 \begin{remark}[Tighter Cauchy--Schwarz cap]
-The looser cap $x_{\text{cap}}^{\mathrm{TV}}$ mirrors the older global
-correction narrative, while the direct cap
-$x_{\text{cap}}^{\mathrm{CS}}$ is the effective one in the
-implementation.  It is tighter and does not need any discretization
-correction term.
+The cap $x_{\text{cap}}^{\mathrm{CS}}$ is tighter than
+$x_{\text{cap}}^{\mathrm{TV}}$ and requires no discretization
+correction term; the implementation uses the minimum of the two.
 \end{remark}
 
 \subsection{Terminal Certificate}
@@ -1433,8 +1426,8 @@ statement at $d=128$.
 
 \subsection{Relationship to the Original CS17 Proof}
 
-Our framework is a direct extension of
-Cloninger--Steinerberger~\cite{CS17}.  The key differences:
+The framework here directly extends
+Cloninger--Steinerberger~\cite{CS17}.  The principal differences:
 
 \begin{enumerate}
   \item \textbf{Dynamic correction}: We use a sharper per-window
@@ -1445,10 +1438,9 @@ Cloninger--Steinerberger~\cite{CS17}.  The key differences:
     from $n = 3$ through $n = 24$.  We use $m = 20$ with dyadic
     refinement from $d = 4$ through $d = 128$.
 
-  \item \textbf{Fused generation}: Instead of materializing all
-    children and then testing them, we generate and test each child
-    inline, reducing memory from $O(N_{\text{children}} \cdot d)$ to
-    $O(d)$ per parent.
+  \item \textbf{Fused generation}: each child is generated and tested
+    inline, reducing per-parent memory from
+    $O(N_{\text{children}} \cdot d)$ to $O(d)$.
 
   \item \textbf{Integer arithmetic}: Autoconvolution and threshold
     comparisons use exact integer operations, with floating-point
