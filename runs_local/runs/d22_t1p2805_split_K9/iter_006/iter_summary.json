@@ -1,0 +1,40 @@
+{
+  "iter": 6,
+  "n_input": 4,
+  "n_after_split": 1981,
+  "n_after_lp": 416,
+  "n_lp_cert": 1565,
+  "n_sdp_input": 416,
+  "n_sdp_cert": 217,
+  "n_survivors": 199,
+  "wall_s": 9736.851720571518,
+  "sdp_stage_summaries": [
+    {
+      "K": 0,
+      "n_input": 416,
+      "n_cert": 39,
+      "n_fail": 377,
+      "max_rss_gb": 6.93,
+      "n_parallel": 48,
+      "sweep_wall_s": 1497.840985774994
+    },
+    {
+      "K": 16,
+      "n_input": 377,
+      "n_cert": 123,
+      "n_fail": 254,
+      "max_rss_gb": 67.26,
+      "n_parallel": 13,
+      "sweep_wall_s": 3334.243414402008
+    },
+    {
+      "K": 32,
+      "n_input": 254,
+      "n_cert": 55,
+      "n_fail": 199,
+      "max_rss_gb": 109.09,
+      "n_parallel": 9,
+      "sweep_wall_s": 4206.91957616806
+    }
+  ]
+}

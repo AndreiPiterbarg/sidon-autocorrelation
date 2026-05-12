@@ -1,0 +1,11 @@
+loaded 416 d=22 LP-residual boxes
+  lp_val range: 1.0000 - 1.2778
+sample = [35, 290, 355, 269, 178, 180, 36, 317]
+|W|=946, target=1.2805
+building cache...
+
+K values: [32, 80, 120], time_limit=300s each
+================================================================================
+
+[box 1/8, idx=35, lp_val=1.0970]
+  K=32 starting...

@@ -1,0 +1,144 @@
+
+#### SPLIT-FIRST PIPELINE ####
+  d=22 target=1.2805 tag=d22_t1p2805_split_20260503T132427Z
+  output: runs/d22_t1p2805_split_20260503T132427Z
+  iters max: 12, split_depth: 4
+  k_ladder: [0, 16, 32]
+
+[skip-bnb] starting from root simplex (no cascade) — soundness path
+[skip-bnb] initial pool = 1 root box → pending_survivors.npz
+
+=== ITER 1 === (1 pending, split_depth=4)
+  [split] 1 → 11 children
+  [lp]    10 LP-cert  →  1 need SDP
+
+======================================================================
+K=0 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['3.12e-02'])...
+    calib 1/1: hash=9c0109111bb2edba verdict=feas t=45.9s rss=4.56 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=4.56 GB
+              usable_ram=562.3 GB  rss_with_safety=5.93 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=0 boxes
+  [stage K=0] cert=0 fail=1 exc=0  max_rss=4.56 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=16 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['3.12e-02'])...
+    calib 1/1: hash=9c0109111bb2edba verdict=feas t=68.3s rss=28.98 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=28.98 GB
+              usable_ram=562.3 GB  rss_with_safety=37.67 GB
+              n_par by_ram=14 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=14, threads/proc=13
+  [sweep] launching pool: 14 procs × 13 threads, sweep_size=0 boxes
+  [stage K=16] cert=0 fail=1 exc=0  max_rss=28.98 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=32 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['3.12e-02'])...
+    calib 1/1: hash=9c0109111bb2edba verdict=feas t=96.9s rss=43.74 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=43.74 GB
+              usable_ram=562.3 GB  rss_with_safety=56.86 GB
+              n_par by_ram=9 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=9, threads/proc=21
+  [sweep] launching pool: 9 procs × 21 threads, sweep_size=0 boxes
+  [stage K=32] cert=0 fail=1 exc=0  max_rss=43.74 GB  sweep_wall=0s (0.0 min)
+
+######################################################################
+# K-LADDER COMPLETE  total=1  cert=0  survivors=1  wall=212s (3.5 min)
+######################################################################
+  [iter 1] DONE  in=1 children=11 lp_cert=10 sdp_cert=0 survivors=1 wall=213s
+
+=== ITER 2 === (1 pending, split_depth=4)
+  [split] 1 → 11 children
+  [lp]    10 LP-cert  →  1 need SDP
+
+======================================================================
+K=0 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['1.95e-03'])...
+    calib 1/1: hash=6d2d090dd5a0186b verdict=feas t=44.9s rss=4.57 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=4.57 GB
+              usable_ram=562.3 GB  rss_with_safety=5.94 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=0 boxes
+  [stage K=0] cert=0 fail=1 exc=0  max_rss=4.57 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=16 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['1.95e-03'])...
+    calib 1/1: hash=6d2d090dd5a0186b verdict=feas t=65.5s rss=29.0 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=29.00 GB
+              usable_ram=562.3 GB  rss_with_safety=37.70 GB
+              n_par by_ram=14 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=14, threads/proc=13
+  [sweep] launching pool: 14 procs × 13 threads, sweep_size=0 boxes
+  [stage K=16] cert=0 fail=1 exc=0  max_rss=29.00 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=32 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['1.95e-03'])...
+    calib 1/1: hash=6d2d090dd5a0186b verdict=feas t=103.6s rss=42.03 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=42.03 GB
+              usable_ram=562.3 GB  rss_with_safety=54.64 GB
+              n_par by_ram=10 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=10, threads/proc=19
+  [sweep] launching pool: 10 procs × 19 threads, sweep_size=0 boxes
+  [stage K=32] cert=0 fail=1 exc=0  max_rss=42.03 GB  sweep_wall=0s (0.0 min)
+
+######################################################################
+# K-LADDER COMPLETE  total=1  cert=0  survivors=1  wall=215s (3.6 min)
+######################################################################
+  [iter 2] DONE  in=1 children=11 lp_cert=10 sdp_cert=0 survivors=1 wall=216s
+
+=== ITER 3 === (1 pending, split_depth=4)
+  [split] 1 → 11 children
+  [lp]    10 LP-cert  →  1 need SDP
+
+======================================================================
+K=0 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['1.22e-04'])...
+    calib 1/1: hash=3423417013882dba verdict=feas t=45.1s rss=4.57 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=4.57 GB
+              usable_ram=562.3 GB  rss_with_safety=5.94 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=0 boxes
+  [stage K=0] cert=0 fail=1 exc=0  max_rss=4.57 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=16 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['1.22e-04'])...
+    calib 1/1: hash=3423417013882dba verdict=feas t=55.4s rss=16.45 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=16.45 GB
+              usable_ram=562.3 GB  rss_with_safety=21.39 GB
+              n_par by_ram=26 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=26, threads/proc=7
+  [sweep] launching pool: 26 procs × 7 threads, sweep_size=0 boxes
+  [stage K=16] cert=0 fail=1 exc=0  max_rss=16.45 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=32 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['1.22e-04'])...
+    calib 1/1: hash=3423417013882dba verdict=feas t=85.3s rss=37.87 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=37.87 GB
+              usable_ram=562.3 GB  rss_with_safety=49.23 GB
+              n_par by_ram=11 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=11, threads/proc=17
+  [sweep] launching pool: 11 procs × 17 threads, sweep_size=0 boxes
+  [stage K=32] cert=0 fail=1 exc=0  max_rss=37.87 GB  sweep_wall=0s (0.0 min)
+
+######################################################################
+# K-LADDER COMPLETE  total=1  cert=0  survivors=1  wall=187s (3.1 min)
+######################################################################
+  [iter 3] DONE  in=1 children=11 lp_cert=10 sdp_cert=0 survivors=1 wall=188s
+
+[FATAL] STUCK_AT_d=22: 1/1 boxes have survived 3 iters of split-then-SDP without cert (threshold=3). Raise d or relax target. Sample stuck box: hash=3423417013882dba depth=12.
+
+######################################################################
+# PIPELINE END  iters=3/12  remaining=1
+# verdict: STUCK_AT_d=22: 1/1 boxes have survived 3 iters of split-then-SDP without cert (threshold=3). Raise d or relax target. Sample stuck box: hash=3423417013882dba depth=12.
+# wall: 617s (10.3 min)
+# output: runs/d22_t1p2805_split_20260503T132427Z
+######################################################################

@@ -1,0 +1,51 @@
+{
+  "k": 3,
+  "N": 4,
+  "two_pt": {
+    "k": 3,
+    "N": 4,
+    "with_3pt": false,
+    "n_orbits_y": 0,
+    "n_orbits_g": 10,
+    "n_orbits_m": 4,
+    "block_sizes": [
+      10,
+      6,
+      6,
+      4,
+      3,
+      3,
+      2
+    ],
+    "n_constraints": 21,
+    "build_seconds": 0.009000539779663086,
+    "solve_seconds": 0.054001569747924805,
+    "peak_mem_mb": 0.544768,
+    "status": "optimal",
+    "objective": 1.0000000233906507
+  },
+  "three_pt": {
+    "k": 3,
+    "N": 4,
+    "with_3pt": true,
+    "n_orbits_y": 14,
+    "n_orbits_g": 0,
+    "n_orbits_m": 0,
+    "block_sizes": [
+      20,
+      10,
+      10,
+      10,
+      3,
+      2
+    ],
+    "n_constraints": 12,
+    "build_seconds": 0.021998167037963867,
+    "solve_seconds": 0.1060020923614502,
+    "peak_mem_mb": 8.27392,
+    "status": "optimal",
+    "objective": 1.0000000000725864
+  },
+  "delta": -2.3318064368282876e-08,
+  "solver": "MOSEK"
+}

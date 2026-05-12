@@ -1,0 +1,20 @@
+======================================================================
+V2 asymmetric near-extremizer search (Gaussian-mixture, anneal)
+NX=4001  dx=1.2500e-04
+======================================================================
+Sanity uniform: M = 2.000500 (analytic 2)
+
+--- K=3 (anneal) ---
+  [K=3 seed=0] new best M = 1.6930087
+  [K=3 seed=1] new best M = 1.6170345
+  [K=3 seed=2] new best M = 1.6170344
+  [K=3 seed=4] new best M = 1.6168089
+  [K=3 seed=9] new best M = 1.6141923
+  [K=3 seed=23] new best M = 1.6138624
+  best (NX=4001)  M = 1.6138624
+  verify NX=16001: M = 1.6136538, K = 3.22832, integ = 1.000000
+  asym = 0.9983, n_peaks = 3, time = 304.9s
+
+--- K=5 (anneal) ---
+  [K=5 seed=0] new best M = 1.5811501
+  [K=5 seed=7] new best M = 1.5771079

@@ -1,0 +1,72 @@
+[
+  {
+    "d": 8,
+    "R": 4,
+    "error": "no_result",
+    "wall": 0.4535706043243408,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 8,
+    "R": 8,
+    "error": "no_result",
+    "wall": 0.4289844036102295,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 8,
+    "R": 12,
+    "error": "no_result",
+    "wall": 0.4400472640991211,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 16,
+    "R": 4,
+    "error": "no_result",
+    "wall": 0.46832704544067383,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 16,
+    "R": 6,
+    "error": "no_result",
+    "wall": 0.4569733142852783,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 16,
+    "R": 8,
+    "error": "no_result",
+    "wall": 0.5202322006225586,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 32,
+    "R": 4,
+    "error": "no_result",
+    "wall": 0.8378336429595947,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 32,
+    "R": 6,
+    "error": "no_result",
+    "wall": 1.496946096420288,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 64,
+    "R": 4,
+    "error": "no_result",
+    "wall": 10.246639728546143,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  },
+  {
+    "d": 64,
+    "R": 6,
+    "error": "no_result",
+    "wall": 35.715633153915405,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_mosek_ipm_probe.py\", line 9, in <module>\n    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos"
+  }
+]

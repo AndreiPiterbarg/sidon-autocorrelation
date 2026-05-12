@@ -1,0 +1,93 @@
+{
+  "d": 4,
+  "order": 2,
+  "bandwidth": 7,
+  "t_lo_init": 1.05,
+  "t_hi_init": 1.3,
+  "bisect_tol": 0.001,
+  "largest_certified_t": 1.0724609375,
+  "largest_certified_t_str": "5491/5120",
+  "probes": [
+    {
+      "t": 1.175,
+      "status": "FEASIBLE",
+      "safety_margin_sign": "na",
+      "wall_s": 0.05619335174560547,
+      "peak_rss_after_gb": 0.0812530517578125,
+      "notes": "SDP feasible at t_test \u2014 t_test is above val^{k,b}(d). Try a smaller t_test."
+    },
+    {
+      "t": 1.1125,
+      "status": "FEASIBLE",
+      "safety_margin_sign": "na",
+      "wall_s": 0.05424189567565918,
+      "peak_rss_after_gb": 0.08295059204101562,
+      "notes": "SDP feasible at t_test \u2014 t_test is above val^{k,b}(d). Try a smaller t_test."
+    },
+    {
+      "t": 1.08125,
+      "status": "FEASIBLE",
+      "safety_margin_sign": "na",
+      "wall_s": 0.05447888374328613,
+      "peak_rss_after_gb": 0.08507156372070312,
+      "notes": "SDP feasible at t_test \u2014 t_test is above val^{k,b}(d). Try a smaller t_test."
+    },
+    {
+      "t": 1.065625,
+      "status": "CERTIFIED",
+      "safety_margin_sign": "pos",
+      "wall_s": 0.21892237663269043,
+      "peak_rss_after_gb": 0.0921478271484375,
+      "notes": "Total time: 0.2s, cert_path=C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\lasserre\\certs\\d4_cert.json"
+    },
+    {
+      "t": 1.0734375,
+      "status": "ERROR",
+      "safety_margin_sign": "na",
+      "wall_s": 0.08467960357666016,
+      "peak_rss_after_gb": 0.09402084350585938,
+      "notes": "Solver returned status=UNKNOWN(SolutionStatus.Unknown/SolutionStatus.Unknown); cannot extract cert."
+    },
+    {
+      "t": 1.06953125,
+      "status": "CERTIFIED",
+      "safety_margin_sign": "pos",
+      "wall_s": 0.17935848236083984,
+      "peak_rss_after_gb": 0.09564590454101562,
+      "notes": "Total time: 0.2s, cert_path=C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\lasserre\\certs\\d4_cert.json"
+    },
+    {
+      "t": 1.071484375,
+      "status": "CERTIFIED",
+      "safety_margin_sign": "pos",
+      "wall_s": 0.17706537246704102,
+      "peak_rss_after_gb": 0.0973358154296875,
+      "notes": "Total time: 0.2s, cert_path=C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\lasserre\\certs\\d4_cert.json"
+    },
+    {
+      "t": 1.0724609375,
+      "status": "CERTIFIED",
+      "safety_margin_sign": "pos",
+      "wall_s": 0.20551729202270508,
+      "peak_rss_after_gb": 0.09935379028320312,
+      "notes": "Total time: 0.2s, cert_path=C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\lasserre\\certs\\d4_cert.json"
+    }
+  ],
+  "n_y": 70,
+  "n_clique": 1,
+  "n_loc_blocks": 4,
+  "n_win_blocks": 28,
+  "largest_psd_block": 15,
+  "mosek_iter_count": null,
+  "total_wall_s": 1.1142621040344238,
+  "peak_rss_overall_gb": 0.09935379028320312,
+  "status": "COMPLETED",
+  "timestamp": "2026-04-29T12:55:07",
+  "host_info": {
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.11.9",
+    "cpu_count": 16,
+    "mem_total_gb": 31.8
+  },
+  "notes": ""
+}

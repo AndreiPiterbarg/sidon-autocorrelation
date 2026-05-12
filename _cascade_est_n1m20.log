@@ -1,0 +1,19 @@
+Run dir: cascade_est_n1m20_c1281
+
+======================================================================
+CONFIG: n_half=1, m=20, c_target=1.281
+======================================================================
+  L0: enumerating 81 compositions @ d=2
+  L0 done: F+FN+Q=25 -> +L=25 -> +SP=25  in 3.9s (L=2.2s, SP=1.5s)
+
+  L1: d_parent=2 -> d_child=4, n_curr=25, sampling 4 parents
+    [1/4] children=6,461  F=2197 -> FN=2195 -> Q=2171 -> QN=2170 -> L=2160 -> SP=2160  wall=13.3s (F=0.2 FN=0.0 Q=3.2 QN=3.6 L=6.3 SP=0.0)
+    [2/4] children=6,279  F=2206 -> FN=2203 -> Q=2182 -> QN=2181 -> L=2171 -> SP=2171  wall=13.0s (F=0.0 FN=0.0 Q=3.3 QN=3.2 L=6.4 SP=0.0)
+    [3/4] children=6,561  F=1904 -> FN=1902 -> Q=1902 -> QN=1902 -> L=1894 -> SP=1894  wall=11.3s (F=0.0 FN=0.0 Q=2.8 QN=2.9 L=5.6 SP=0.0)
+    [4/4] children=0  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0 -> SP=0  wall=0.0s (F=0.0 FN=0.0 Q=0.0 QN=0.0 L=0.0 SP=0.0)
+    level summary: avg_children=4,825  avg_F=1576.8  avg_FN=1575.0  avg_Q=1563.8  avg_QN=1563.2  avg_L=1556.25  avg_SP=1556.25  est_total_children=1.21e+05  est_total_F=39,419  est_total_FN=39,375  est_total_Q=39,094  est_total_QN=39,081  est_total_L=38,906  est_total_SP=38,906  wall=37.6s
+
+  L2: d_parent=4 -> d_child=8, n_curr=38,906, sampling 4 parents
+    [1/4] children=9,433,215  F=12386 -> FN=12131 -> Q=10493 -> QN=10368 -> L=9289 -> SP=9289  wall=232.7s (F=0.9 FN=0.2 Q=31.9 QN=33.3 L=166.4 SP=0.0)
+    [2/4] children=19,268,565  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0 -> SP=0  wall=0.5s (F=0.5 FN=0.0 Q=0.0 QN=0.0 L=0.0 SP=0.0)
+    [3/4] children=34,100,521  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0 -> SP=0  wall=0.8s (F=0.8 FN=0.0 Q=0.0 QN=0.0 L=0.0 SP=0.0)

@@ -1,0 +1,35 @@
+{
+  "config": {
+    "n_half": 4,
+    "m": 10,
+    "c_target": 1.28,
+    "d": 8
+  },
+  "n_q_survivors_total": 964,
+  "n_tested": 250,
+  "dsos_pruned": 250,
+  "sdsos_pruned": 250,
+  "l_pruned": 60,
+  "dsos_caught_of_l": 60,
+  "sdsos_caught_of_l": 60,
+  "dsos_times_ms": {
+    "median": 397.38714694976807,
+    "p95": 563.9002203941344,
+    "max": 1787.2636318206787,
+    "mean": 421.14949321746826
+  },
+  "sdsos_times_ms": {
+    "median": 493.37613582611084,
+    "p95": 701.1806964874268,
+    "max": 1796.3850498199463,
+    "mean": 519.5288324356079
+  },
+  "l_times_ms": {
+    "median": 394.82736587524414,
+    "p95": 563.0429863929747,
+    "max": 1203.772783279419,
+    "mean": 410.95736598968506
+  },
+  "soundness_dsos_violations": 190,
+  "soundness_sdsos_violations": 190
+}

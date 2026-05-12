@@ -1,0 +1,40 @@
+{
+  "success": false,
+  "target_q": "1.2805",
+  "d": 22,
+  "elapsed_s": 43762.00267767906,
+  "total_nodes": 1061053,
+  "total_leaves_certified": 529569,
+  "closed_volume": 3.0279157726909034e-05,
+  "total_volume": 3.0279159545898438e-05,
+  "coverage_fraction": 0.9999999399260273,
+  "in_flight_final": 2169,
+  "max_depth": 171,
+  "workers": 16,
+  "init_boxes": 254,
+  "cctr_stats": {
+    "attempts": 0,
+    "sw_ne_certs": 0,
+    "joint_attempts": 0,
+    "joint_certs": 0,
+    "rlt_attempts": 0,
+    "rlt_certs": 0
+  },
+  "epi_stats": {
+    "attempts": 1060760,
+    "certs": 529300
+  },
+  "anchor_stats": {
+    "attempts": 1060760,
+    "certs": 0
+  },
+  "centroid_stats": {
+    "attempts": 531159,
+    "certs": 0
+  },
+  "sdp_stats": {
+    "attempts": 0,
+    "certs": 0
+  },
+  "wall_time_s": 43762.00467681885
+}

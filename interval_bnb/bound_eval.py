@@ -447,6 +447,108 @@ def batch_bounds_rank1(
     return result + (new_cache,)
 
 
+def _min_max_linear_box_simplex(g, lo, hi):
+    """(min, max) of g^T mu over {sum mu = 1, lo <= mu <= hi} (greedy)."""
+    lo_sum = float(lo.sum())
+    hi_sum = float(hi.sum())
+    if lo_sum > 1.0 + 1e-12 or hi_sum < 1.0 - 1e-12:
+        return float("nan"), float("nan")
+    remaining = 1.0 - lo_sum
+    base = float((g * lo).sum())
+    order_min = np.argsort(g, kind="stable")
+    val_min = base
+    rem = remaining
+    for i in order_min:
+        if rem <= 0:
+            break
+        cap = float(hi[i] - lo[i])
+        add = cap if cap < rem else rem
+        val_min += float(g[i]) * add
+        rem -= add
+    val_max = base
+    rem = remaining
+    for i in order_min[::-1]:
+        if rem <= 0:
+            break
+        cap = float(hi[i] - lo[i])
+        add = cap if cap < rem else rem
+        val_max += float(g[i]) * add
+        rem -= add
+    return val_min, val_max
+
+
+def shor_bound_float(lo: np.ndarray, hi: np.ndarray,
+                      w: "WindowMeta", d: int) -> float:
+    """P4: eigenvalue-Shor LB on min_{mu in box ∩ simplex} mu^T M_W mu.
+
+    Decompose A_W = sum_k lam_k v_k v_k^T (eigh, float). Then
+        mu^T M_W mu = scale_W * sum_k lam_k (v_k^T mu)^2.
+    Per eigenmode, compute (a_k, b_k) = (min, max) of v_k^T mu over
+    box ∩ simplex via greedy LP (O(d log d)); then for each k:
+        L_k = 0 if 0 in [a_k, b_k] else min(a_k^2, b_k^2)  (lower bound)
+        U_k = max(a_k^2, b_k^2)                            (upper bound)
+        contribution = lam_k * L_k if lam_k >= 0 else lam_k * U_k
+
+    Returns float LB; NOT rigorous (uses float eigenvectors). Used as a
+    cheap pre-filter to gate the expensive int joint-face LP cert.
+    Cost: O(d^3) for eigh + O(d * d log d) for the LPs ≈ 100 us at d=20.
+    """
+    A = _adjacency_matrix(w, d)
+    eigvals, eigvecs = np.linalg.eigh(A)
+    lb = 0.0
+    for k in range(d):
+        lam = float(eigvals[k])
+        v = eigvecs[:, k]
+        a, b = _min_max_linear_box_simplex(v, lo, hi)
+        if not np.isfinite(a) or not np.isfinite(b):
+            return float("-inf")
+        a2 = a * a
+        b2 = b * b
+        U_k = a2 if a2 > b2 else b2
+        if a <= 0.0 <= b:
+            L_k = 0.0
+        else:
+            L_k = a2 if a2 < b2 else b2
+        lb += lam * (L_k if lam >= 0 else U_k)
+    if lb < 0:
+        lb = 0.0
+    return w.scale * lb
+
+
+def eval_all_window_lbs_from_cached(
+    lo: np.ndarray, hi: np.ndarray,
+    A_tensor: np.ndarray, scales: np.ndarray,
+    Alo: np.ndarray, Ahi: np.ndarray,
+    loAlo: np.ndarray, hiAhi: np.ndarray,
+    lo_sum: float, hi_sum: float,
+) -> np.ndarray:
+    """Compute lb_all (per-window max of autoconv, SW, NE) for ALL windows.
+
+    Always evaluates autoconv + SW + NE (no short-circuit). Used by the
+    P1-LITE top-K joint-face escalation path: when the primary winning
+    window's int rigor fails on a deep box, try int joint-face dual cert
+    on alternate top-K windows.
+
+    Cost: same as the full _eval_bounds_from_cached path with both SW and
+    NE computed (no early-exit). At d=20 with W~780 windows: ~30 us.
+    """
+    auto_raw = 1.0 - hi_sum * hi_sum + hiAhi
+    lb_auto = scales * np.maximum(auto_raw, 0.0)
+    if lo_sum > 1.0 + 1e-14 or hi_sum < 1.0 - 1e-14:
+        # Float-infeasible: only autoconv is sound (per existing
+        # _eval_bounds_from_cached logic). Caller is responsible for
+        # recognising this and not proceeding further.
+        return lb_auto
+    remaining = 1.0 - lo_sum
+    lb_sw = _batch_min_linear_lb_only(
+        2.0 * Alo, lo, hi, remaining, scales, loAlo,
+    )
+    lb_ne = _batch_min_linear_lb_only(
+        2.0 * Ahi, lo, hi, remaining, scales, hiAhi,
+    )
+    return np.maximum(np.maximum(lb_auto, lb_sw), lb_ne)
+
+
 def _eval_bounds_from_cached(
     lo: np.ndarray, hi: np.ndarray,
     A_tensor: np.ndarray, scales: np.ndarray,

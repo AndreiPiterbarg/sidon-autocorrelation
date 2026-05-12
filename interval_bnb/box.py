@@ -2,28 +2,33 @@
 
 A box B is an axis-aligned hyperrectangle [lo, hi] in R^d, INTERSECTED
 with the closed simplex {mu : sum mu = 1, mu >= 0} and (optionally)
-the half-simplex symmetry cuts {mu_i <= mu_{d-1-i} : i < d/2}.
+the single half-simplex symmetry cut {mu_0 <= mu_{d-1}} via
+`Box.initial(..., sym_cuts=[(0, d-1)])`.
 
-Endpoints are stored as float64 numpy arrays. The BnB starts from the
-initial box [0, 1/2]^{d/2} x [0, 1]^{d/2} (or [0, 1]^d without sym)
-and only ever divides an axis at its midpoint. Both 0 and 1 are exactly
-representable in float64 and midpoints of float64 dyadic rationals are
-themselves exact (division by 2 is bit-shift on the exponent), so every
-endpoint visited during the search is an EXACT dyadic rational.
+Each Box stores BOTH float64 numpy arrays (`lo`, `hi`) AND Python
+shared-denominator integers (`lo_int`, `hi_int`) at denom 2**D_SHIFT
+(D_SHIFT = 60). The integer form is the rigor-bearing representation:
+all certified bounds (`bound_*_int_ge`) consume `lo_int/hi_int` and
+operate in exact integer arithmetic. The float form drives the fast
+batched bound evaluation (numpy BLAS) and is non-soundness-critical.
 
-At rigor-check time, `to_fractions()` converts the float endpoints to
-`fractions.Fraction` losslessly (Python's `Fraction(float)` decodes the
-float's exact dyadic value). All exact-arithmetic leaf verification
-happens there; the hot path stays in float64.
+The BnB starts from the initial box [0, 1/2] x [0, 1]^{d-1} (with the
+single sym cut) or [0, 1]^d (without). Splits bisect along an axis at
+the integer midpoint `(lo_int + hi_int) >> 1`; `Box.split` raises
+`RuntimeError` if the dyadic-2^60 grid is exhausted (which would
+otherwise round silently and break soundness).
 
-Simplex intersection check:
-    B intersects Delta_d  <=>  sum(lo) <= 1  AND  sum(hi) >= 1
-(computed in float64; all endpoints are dyadic rationals whose sum is
-exact in float64 up to depth ~50, which is well beyond any realistic
-min_box_width).
+`to_fractions()` returns `Fraction(v, SCALE)` per endpoint — exact and
+reproducible. It refuses if integer metadata is missing. `to_ints()`
+returns `(lo_int, hi_int)`; the float-fallback rounds outward (floor
+for `lo_int`, ceil for `hi_int`) to preserve box CONTAINMENT.
+
+Simplex intersection check uses exact integer sums:
+    B intersects Delta_d  <=>  sum(lo_int) <= 2^60  AND  sum(hi_int) >= 2^60.
 """
 from __future__ import annotations
 
+import math
 from fractions import Fraction
 from typing import List, Optional, Tuple
 
@@ -104,12 +109,38 @@ class Box:
     def widest_axis(self) -> int:
         return int(np.argmax(self.hi - self.lo))
 
+    def widest_splittable_axis(self) -> int:
+        """Widest axis with integer width >= 2 (i.e. still splittable
+        without exhausting the D_SHIFT-bit dyadic grid). Returns -1 if
+        no axis is splittable.
+
+        Falls back to `widest_axis()` if integer metadata is missing.
+        """
+        if self.lo_int is None or self.hi_int is None:
+            return self.widest_axis()
+        widths = self.hi - self.lo
+        best_axis = -1
+        best_width = -1.0
+        for i in range(self.d):
+            if (self.hi_int[i] - self.lo_int[i]) >= 2:
+                w = float(widths[i])
+                if w > best_width:
+                    best_width = w
+                    best_axis = i
+        return best_axis
+
     def max_width(self) -> float:
         return float((self.hi - self.lo).max())
 
     def volume(self) -> float:
-        """Box volume (product of axis widths). Float64 is fine for ETA
-        accounting -- we only need relative precision, not exactness."""
+        """Hyperrectangle volume (product of axis widths) in R^d.
+
+        NOTE: this is NOT vol(B ∩ Delta_d) — it ignores the simplex
+        constraint and is therefore an UPPER bound on the simplex-feasible
+        volume. Used in the parallel driver for ETA / progress display
+        only; the soundness invariant is `in_flight == 0 AND not
+        failed_event`, NOT `coverage_fraction == 1`.
+        """
         return float(np.prod(self.hi - self.lo))
 
     def tighten_to_simplex(self) -> bool:
@@ -197,10 +228,17 @@ class Box:
 
     def to_ints(self) -> Tuple[List[int], List[int]]:
         """Integer endpoints with denominator 2**D_SHIFT. Materialises
-        from float if not cached (shouldn't happen in normal BnB use)."""
+        from float if not cached (shouldn't happen in normal BnB use).
+
+        SOUNDNESS: the float fallback uses outward rounding (floor for
+        `lo_int`, ceil for `hi_int`) so the integer box CONTAINS the
+        float box. Inward rounding (round-to-nearest) would silently
+        produce an integer box that is a strict SUBSET of the float
+        box — rigor would not transfer to bound_*_int_ge consumers.
+        """
         if self.lo_int is None or self.hi_int is None:
-            self.lo_int = [int(round(float(x) * SCALE)) for x in self.lo]
-            self.hi_int = [int(round(float(x) * SCALE)) for x in self.hi]
+            self.lo_int = [math.floor(float(x) * SCALE) for x in self.lo]
+            self.hi_int = [math.ceil(float(x) * SCALE) for x in self.hi]
         return self.lo_int, self.hi_int
 
     def shape_summary(self) -> str:

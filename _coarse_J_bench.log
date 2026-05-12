@@ -1,0 +1,52 @@
+================================================================
+Joint multi-window cell-cert (variant J) bench
+================================================================
+
+=== d=4, S=20, c_target=1.2 ===
+  total compositions: 1771 (0.00s)
+  pruned (TV>=c at grid): 1737
+  triangle baseline certs: 1654
+  joint K=2: NEW certs =      2 (over baseline)  total =   1656
+  joint K=4: NEW certs =      6 (over baseline)  total =   1660
+  joint K=8: NEW certs =      6 (over baseline)  total =   1660
+  cert phase time: 4.88s
+  soundness check: 0 violations, max excess = 0.000e+00
+
+=== d=4, S=30, c_target=1.25 ===
+  total compositions: 5456 (0.00s)
+  pruned (TV>=c at grid): 5064
+  triangle baseline certs: 4799
+  joint K=2: NEW certs =     16 (over baseline)  total =   4815
+  joint K=4: NEW certs =     16 (over baseline)  total =   4815
+  joint K=8: NEW certs =     16 (over baseline)  total =   4815
+  cert phase time: 10.76s
+  soundness check: 0 violations, max excess = 0.000e+00
+
+=== d=6, S=15, c_target=1.2 ===
+  total compositions: 15504 (0.00s)
+  pruned (TV>=c at grid): 15504
+  triangle baseline certs: 14978
+  joint K=2: NEW certs =     83 (over baseline)  total =  15061
+  joint K=4: NEW certs =    159 (over baseline)  total =  15137
+  joint K=8: NEW certs =    180 (over baseline)  total =  15158
+  cert phase time: 50.00s
+  soundness check: 0 violations, max excess = 0.000e+00
+
+=== d=6, S=20, c_target=1.25 ===
+  total compositions: 53130 (0.02s)
+  pruned (TV>=c at grid): 52993
+  triangle baseline certs: 50528
+  joint K=2: NEW certs =    292 (over baseline)  total =  50820
+  joint K=4: NEW certs =    416 (over baseline)  total =  50944
+  joint K=8: NEW certs =    428 (over baseline)  total =  50956
+  cert phase time: 127.44s
+  soundness check: 0 violations, max excess = 0.000e+00
+
+=== d=8, S=12, c_target=1.2 ===
+  total compositions: 50388 (0.02s)
+  pruned (TV>=c at grid): 50388
+  triangle baseline certs: 45804
+  joint K=2: NEW certs =    309 (over baseline)  total =  46113
+  joint K=4: NEW certs =    819 (over baseline)  total =  46623
+  joint K=8: NEW certs =   1428 (over baseline)  total =  47232
+  cert phase time: 139.51s

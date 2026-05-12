@@ -1,0 +1,6 @@
+=== d=32 R=8 ===
+  ERROR after 44s: Error: rescode.err_space(1051): A (potentially) large memory allocation has failed.
+
+=== d=64 R=6 ===
+  ERROR after 117s: Error: rescode.err_space(1051): A (potentially) large memory allocation has failed.
+

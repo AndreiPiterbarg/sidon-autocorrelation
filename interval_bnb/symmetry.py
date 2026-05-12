@@ -64,3 +64,32 @@ def half_simplex_cuts(d: int) -> List[Tuple[int, int]]:
 def sigma_pairs(d: int) -> List[Tuple[int, int]]:
     """Return (i, sigma(i)) for i = 0..d-1 (including fixed points)."""
     return [(i, d - 1 - i) for i in range(d)]
+
+
+def box_outside_hd(box) -> bool:
+    """Return True iff the box lies STRICTLY outside the half-simplex
+    H_d = {mu : mu_0 <= mu_{d-1}}, i.e. every mu in the box has
+    mu_0 > mu_{d-1}.
+
+    The check uses the exact integer endpoints so it is rigorously
+    correct at all dyadic depths. A box is strictly outside H_d iff
+    its forced-min mu_0 strictly exceeds its forced-max mu_{d-1}, i.e.
+        lo_int[0] > hi_int[d-1].
+
+    Boxes whose interval-projection straddles the H_d boundary
+    {mu_0 = mu_{d-1}} (i.e. lo_int[0] <= hi_int[d-1]) are KEPT because
+    they may contain points in H_d.
+
+    SOUNDNESS: by Lemma 3.4 of THEOREM.md, val(d) = min_{H_d} f. The
+    BnB explores a cover of {mu_0 <= 1/2}, which is a SUPERSET of H_d
+    (any mu in Delta_d with mu_0 > mu_{d-1} satisfies mu_{d-1} < 1/2,
+    so its sigma-image has (sigma mu)_0 = mu_{d-1} < 1/2 and lies in
+    {mu_0 <= 1/2}). Hence dropping any box strictly outside H_d is
+    sound: no min(H_d) candidate is lost.
+    """
+    if box.lo_int is None or box.hi_int is None:
+        return False  # cannot judge; keep box (conservative)
+    d = len(box.lo_int)
+    if d < 2:
+        return False
+    return box.lo_int[0] > box.hi_int[d - 1]

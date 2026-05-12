@@ -200,7 +200,7 @@ def test_rigor_leaves_only_closed_when_fraction_bound_passes():
     tight target and confirming success (meaning Fraction agreed)."""
     from interval_bnb.bnb import branch_and_bound
     res = branch_and_bound(d=4, target_c="1.102", verbose=False,
-                           time_budget_s=30.0, method="combined")
+                           time_budget_s=30.0)
     assert res.success
     assert res.stats.rigor_retries == 0, (
         f"fast path and Fraction path diverged: "
@@ -394,8 +394,8 @@ def test_int_rigor_matches_fraction_rigor():
             B = Box(lo, hi, lo_int, hi_int)
             target_q = F(11, 10)  # 1.1
             for w in windows[:6]:  # subset for speed
-                r_int = rigor_replay(B, w, d, "mccormick", target_q)
-                r_frac = rigor_replay_fraction(B, w, d, "mccormick", target_q)
+                r_int = rigor_replay(B, w, d, target_q)
+                r_frac = rigor_replay_fraction(B, w, d, target_q)
                 assert r_int == r_frac, (
                     f"int vs fraction rigor disagree at d={d}, "
                     f"window={w.name}, target={target_q}: "

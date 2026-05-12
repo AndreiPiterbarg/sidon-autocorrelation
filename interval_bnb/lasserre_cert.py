@@ -230,3 +230,309 @@ def lasserre_box_certifies(
         return False
     target_f = float(target_q)
     return lb >= target_f * (1.0 + rel_tol)
+
+
+# ---------------------------------------------------------------------
+# Residual-aware variant for publication-rigor escalation.
+#
+# Bypasses CVXPY's high-level solve() to call Clarabel's DefaultSolver
+# directly on the canonicalised conic data so that we can read the
+# native KKT residuals (r_prim, r_dual) and the dual-objective value
+# (obj_val_dual) needed for cushion-based rigorous certificates.
+#
+# See bound_sdp_escalation.py for the consuming routine and the full
+# soundness derivation.
+# ---------------------------------------------------------------------
+
+
+def lasserre_box_lb_float_with_residuals(
+    lo: np.ndarray, hi: np.ndarray,
+    windows, d: int,
+    *,
+    order: int = 2,
+    tol_gap_abs: float = 1e-9,
+    tol_gap_rel: float = 1e-9,
+    tol_feas: float = 1e-9,
+    time_limit_s: float = 5.0,
+    max_iter: int = 200,
+    verbose: bool = False,
+) -> dict:
+    """Solve the Lasserre order-`order` box SDP and return primal/dual
+    objective values plus Clarabel's native KKT residuals.
+
+    Returns dict with keys:
+      'status'        : str — Clarabel termination status
+                        ('Solved' | 'AlmostSolved' | 'PrimalInfeasible'
+                         | 'DualInfeasible' | 'AlmostPrimalInfeasible'
+                         | 'AlmostDualInfeasible' | 'MaxIterations'
+                         | 'MaxTime' | 'NumericalError'
+                         | 'InsufficientProgress' | 'CallbackTerminated'
+                         | 'PRESOLVE_INFEASIBLE' | 'BUILD_FAILED'
+                         | 'EMPTY' on early-exit before solve attempt)
+      'obj_val'       : float — primal objective at termination (NaN if no soln)
+      'obj_val_dual'  : float — dual objective at termination (NaN if no soln)
+      'r_prim'        : float — Clarabel native primal residual
+                        (relative, KKT-style)
+      'r_dual'        : float — Clarabel native dual residual
+                        (relative, KKT-style)
+      'duality_gap'   : float — abs(obj_val - obj_val_dual)
+      'iterations'    : int
+      'solve_time'    : float
+      'is_feasible_status' : bool — True iff status indicates a usable
+                                    solution (Solved / AlmostSolved)
+      'n_y'           : int — number of pseudo-moment vars in the SDP
+      'n_psd_blocks'  : int — number of PSD cones (moment + 2d localizing)
+
+    For the consuming "is u_dual_LB >= target?" cert: we use obj_val_dual
+    (lower bound on the SDP optimum by weak duality, when the dual is
+    feasible) minus a cushion of max(100 * max(r_prim, r_dual,
+    duality_gap_abs), 1e-6).
+
+    Soundness: for the `min u` SDP, obj_val_dual is the dual function
+    value at termination. By weak duality, if the DUAL is feasible then
+    obj_val_dual <= primal_opt. Clarabel's r_dual measures stationarity
+    residual (dual feasibility violation in the relative-KKT sense). A
+    cushion of 100x the largest residual conservatively absorbs both
+    the dual-feasibility violation and float64 finite-precision noise.
+
+    Empty box (sum(lo) > 1 or sum(hi) < 1) returns status 'EMPTY' and
+    obj_val_dual = +inf (vacuous; caller may treat as certifying).
+    """
+    import cvxpy as cp
+    import scipy.sparse as sp
+    import clarabel
+
+    lo = np.asarray(lo, dtype=np.float64)
+    hi = np.asarray(hi, dtype=np.float64)
+
+    # Empty-box short-circuit (vacuous cert convention used by callers).
+    lo_sum = float(lo.sum())
+    hi_sum = float(hi.sum())
+    if lo_sum > 1.0 + 1e-12 or hi_sum < 1.0 - 1e-12:
+        return {
+            'status': 'EMPTY',
+            'obj_val': float('inf'),
+            'obj_val_dual': float('inf'),
+            'r_prim': 0.0,
+            'r_dual': 0.0,
+            'duality_gap': 0.0,
+            'iterations': 0,
+            'solve_time': 0.0,
+            'is_feasible_status': True,
+            'n_y': 0,
+            'n_psd_blocks': 0,
+        }
+
+    # ---- Build the same CVXPY problem as lasserre_box_lb_float ----
+    max_deg = 2 * order
+    monos = _build_monomials(d, max_deg)
+    alpha_to_idx: Dict[Tuple[int, ...], int] = {}
+    for mon in monos:
+        a = _alpha_of(mon, d)
+        if a not in alpha_to_idx:
+            alpha_to_idx[a] = len(alpha_to_idx)
+    n_y = len(alpha_to_idx)
+
+    y = cp.Variable(n_y)
+    basis_order = [mon for mon in monos if len(mon) <= order]
+    alphas_basis = [_alpha_of(m, d) for m in basis_order]
+    B = len(basis_order)
+
+    def add_alpha(a: Tuple[int, ...], b: Tuple[int, ...]) -> Tuple[int, ...]:
+        return tuple(x + z for x, z in zip(a, b))
+
+    M_mat = []
+    for i in range(B):
+        row = []
+        for j in range(B):
+            a = add_alpha(alphas_basis[i], alphas_basis[j])
+            row.append(y[alpha_to_idx[a]])
+        M_mat.append(row)
+    M = cp.bmat(M_mat)
+
+    basis_loc = [mon for mon in monos if len(mon) <= order - 1]
+    alphas_loc = [_alpha_of(m, d) for m in basis_loc]
+    B1 = len(basis_loc)
+
+    def build_loc_matrix(var_k: int, coef_lo: float) -> 'cp.Expression':
+        rows = []
+        e_k = [0] * d
+        e_k[var_k] = 1
+        e_k = tuple(e_k)
+        for i in range(B1):
+            rr = []
+            for j in range(B1):
+                base = add_alpha(alphas_loc[i], alphas_loc[j])
+                base_idx = alpha_to_idx[base]
+                a_plus = add_alpha(base, e_k)
+                if sum(a_plus) > max_deg:
+                    rr.append(cp.Constant(0.0))
+                    continue
+                rr.append(y[alpha_to_idx[a_plus]] - coef_lo * y[base_idx])
+            rows.append(rr)
+        return cp.bmat(rows)
+
+    def build_upper_loc_matrix(var_k: int, coef_hi: float) -> 'cp.Expression':
+        rows = []
+        e_k = [0] * d
+        e_k[var_k] = 1
+        e_k = tuple(e_k)
+        for i in range(B1):
+            rr = []
+            for j in range(B1):
+                base = add_alpha(alphas_loc[i], alphas_loc[j])
+                base_idx = alpha_to_idx[base]
+                a_plus = add_alpha(base, e_k)
+                if sum(a_plus) > max_deg:
+                    rr.append(cp.Constant(0.0))
+                    continue
+                rr.append(coef_hi * y[base_idx] - y[alpha_to_idx[a_plus]])
+            rows.append(rr)
+        return cp.bmat(rows)
+
+    cons = []
+    cons += [y[alpha_to_idx[(0,) * d]] == 1]
+    cons += [y >= 0]
+    cons += [M >> 0]
+
+    def e_i(i: int) -> Tuple[int, ...]:
+        v = [0] * d
+        v[i] = 1
+        return tuple(v)
+
+    cons += [cp.sum([y[alpha_to_idx[e_i(i)]] for i in range(d)]) == 1]
+    for alpha, ai in alpha_to_idx.items():
+        s = sum(alpha)
+        if s >= max_deg:
+            continue
+        children = []
+        for i in range(d):
+            a2 = list(alpha)
+            a2[i] += 1
+            a2 = tuple(a2)
+            if a2 in alpha_to_idx:
+                children.append(y[alpha_to_idx[a2]])
+        if children:
+            cons += [cp.sum(children) == y[ai]]
+    n_psd_blocks = 1  # M
+    for k in range(d):
+        lo_k = float(lo[k])
+        hi_k = float(hi[k])
+        cons += [build_loc_matrix(k, lo_k) >> 0]
+        cons += [build_upper_loc_matrix(k, hi_k) >> 0]
+        n_psd_blocks += 2
+
+    u = cp.Variable()
+    for w in windows:
+        if len(w.pairs_all) == 0:
+            continue
+        terms = []
+        for (i, j) in w.pairs_all:
+            a = [0] * d
+            a[i] += 1
+            a[j] += 1
+            terms.append(y[alpha_to_idx[tuple(a)]])
+        cons += [u >= float(w.scale) * cp.sum(terms)]
+
+    prob = cp.Problem(cp.Minimize(u), cons)
+
+    # Canonicalize to conic form, then call Clarabel directly so we can
+    # read native KKT residuals.
+    try:
+        data, _chain, _inverse_data = prob.get_problem_data(cp.CLARABEL)
+    except Exception as e:
+        if verbose:
+            print(f"[sdp-residual] canon exception: {e}")
+        return {
+            'status': 'BUILD_FAILED',
+            'obj_val': float('nan'),
+            'obj_val_dual': float('nan'),
+            'r_prim': float('inf'),
+            'r_dual': float('inf'),
+            'duality_gap': float('inf'),
+            'iterations': 0,
+            'solve_time': 0.0,
+            'is_feasible_status': False,
+            'n_y': n_y,
+            'n_psd_blocks': n_psd_blocks,
+        }
+
+    A = data['A']
+    b = data['b']
+    q = data['c']
+    P = data.get('P')
+    if P is None:
+        P = sp.csc_matrix((q.size, q.size))
+    P = sp.triu(P).tocsc()
+    dims = data['dims']
+
+    # Build clarabel cones from cvxpy dims (order matters: zero,
+    # nonneg, soc, psd, exp, p3d).
+    cones = []
+    if dims.zero > 0:
+        cones.append(clarabel.ZeroConeT(int(dims.zero)))
+    if dims.nonneg > 0:
+        cones.append(clarabel.NonnegativeConeT(int(dims.nonneg)))
+    for sd in dims.soc:
+        cones.append(clarabel.SecondOrderConeT(int(sd)))
+    for sd in dims.psd:
+        cones.append(clarabel.PSDTriangleConeT(int(sd)))
+    for _ in range(int(dims.exp)):
+        cones.append(clarabel.ExponentialConeT())
+    for sd in dims.p3d:
+        cones.append(clarabel.PowerConeT(float(sd)))
+
+    sett = clarabel.DefaultSettings()
+    sett.verbose = bool(verbose)
+    sett.tol_gap_abs = float(tol_gap_abs)
+    sett.tol_gap_rel = float(tol_gap_rel)
+    sett.tol_feas = float(tol_feas)
+    sett.tol_infeas_abs = float(tol_feas)
+    sett.tol_infeas_rel = float(tol_feas)
+    sett.time_limit = float(time_limit_s)
+    sett.max_iter = int(max_iter)
+
+    try:
+        solver = clarabel.DefaultSolver(P, q, A, b, cones, sett)
+        sol = solver.solve()
+    except Exception as e:
+        if verbose:
+            print(f"[sdp-residual] solve exception: {e}")
+        return {
+            'status': f'EXCEPTION:{type(e).__name__}',
+            'obj_val': float('nan'),
+            'obj_val_dual': float('nan'),
+            'r_prim': float('inf'),
+            'r_dual': float('inf'),
+            'duality_gap': float('inf'),
+            'iterations': 0,
+            'solve_time': 0.0,
+            'is_feasible_status': False,
+            'n_y': n_y,
+            'n_psd_blocks': n_psd_blocks,
+        }
+
+    status_str = str(sol.status)
+    is_feas = status_str in ('Solved', 'AlmostSolved')
+    primal_obj = float(sol.obj_val)
+    # Clarabel exposes obj_val and obj_val_dual; cvxpy sense already
+    # encodes minimisation, so the offset is zero.
+    dual_obj = float(sol.obj_val_dual)
+    r_prim = float(sol.r_prim)
+    r_dual = float(sol.r_dual)
+    gap = abs(primal_obj - dual_obj) if (
+        np.isfinite(primal_obj) and np.isfinite(dual_obj)) else float('inf')
+
+    return {
+        'status': status_str,
+        'obj_val': primal_obj,
+        'obj_val_dual': dual_obj,
+        'r_prim': r_prim,
+        'r_dual': r_dual,
+        'duality_gap': gap,
+        'iterations': int(sol.iterations),
+        'solve_time': float(sol.solve_time),
+        'is_feasible_status': is_feas,
+        'n_y': n_y,
+        'n_psd_blocks': n_psd_blocks,
+    }

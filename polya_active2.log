@@ -1,0 +1,25 @@
+d=8 active-set acceleration test
+  [seed] full LP at R=6, n_W=64
+  [seed] alpha=1.103118, active windows: 5/64, wall=0.0s
+  [step] R=8, |active|=5/64
+  [step] R=8 alpha=1.127232, |active|=4, wall=0.1s
+  [step] R=10, |active|=4/64
+  [step] R=10 alpha=1.138282, |active|=4, wall=0.7s
+  [step] R=12, |active|=4/64
+  [step] R=12 alpha=1.149567, |active|=4, wall=5.3s
+  [step] R=14, |active|=4/64
+  [step] R=14 alpha=1.156354, |active|=4, wall=35.9s
+  [step] R=16, |active|=4/64
+  [step] R=16 alpha=1.161820, |active|=4, wall=286.9s
+
+Final alpha: 1.161820 (target val(8)=1.205)
+Final |active|: 4
+Total wall: 329.0s
+
+R vs alpha:
+  R=6: alpha=1.103118, |W|=64, solve+build=0.0s
+  R=8: alpha=1.127232, |W|=5, solve+build=0.1s
+  R=10: alpha=1.138282, |W|=4, solve+build=0.7s
+  R=12: alpha=1.149567, |W|=4, solve+build=5.3s
+  R=14: alpha=1.156354, |W|=4, solve+build=35.9s
+  R=16: alpha=1.161820, |W|=4, solve+build=286.9s

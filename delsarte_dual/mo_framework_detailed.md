@@ -306,23 +306,27 @@ it succeeds where MV does not.
 | Source              | Potential new lower bound | Status         |
 | ------------------- | ------------------------- | -------------- |
 | MO 2004 Conj. 2.9 (Hölder tightening) | ~1.367 | Open; conjectural |
-| MO 2004 Prop. 2.11, m=3 (pull out f̂(2)) | ~1.28–1.30 | Achievable but not yet done |
+| MO 2004 Prop. 2.11, m=3 (pull out f̂(2)) | 1.2748 (proven, **below** CS 2017) | Closed — see [proof/multifreq_mo217_proof.md](../proof/multifreq_mo217_proof.md) |
 | MO 2004 Beckner-HY sharpening         | Unknown | Untested |
 | Change of kernel K (away from β⋆β)    | ≤ 0.0002/δ extra | Negligible gain |
 | MV `|f̂(1)|` moment (current use)      | 1.27481 | Achieved |
 | Theoretical MV ceiling (fixed K_β)    | ~1.276 | Heuristic only |
 | CS 2017 (different method)            | 1.28 | Proved |
 
-The **single highest-value open direction** is **combining MO 2004 Prop 2.11 at m=3
-with Lemma 2.17** in the MV dual framework. This requires:
+**This direction is now closed.** The combination "MO 2004 Prop 2.11 at
+m=3 + Lemma 2.17 + Lemma 2.14 + MV master inequality" was carried out
+in [`proof/multifreq_mo217_proof.md`](../proof/multifreq_mo217_proof.md).
+The optimum of the lifted QP is `M* = 1.2748376` — *strictly below* the
+Cloninger–Steinerberger value `1.2802`. Theorems 1 and 2 of that file
+prove the structural reason the lift cannot exceed `1.2802` even with
+arbitrary tightenings: the active L2.17 constraint is met with equality
+at the optimum, leaving no slack for further per-frequency moment
+tightening within the MV dual ansatz. See the proof file for the full
+argument and a diagnostic certificate at mpmath dps=80.
 
-1. Generalise MV eq. (10) to pull out both `|f̂(1)|` and `|f̂(2)|` from the Cauchy–Schwarz.
-2. Add the linear constraint `Re f̂(2) ≤ 2 Re f̂(1) − 1` (MO 2004 Lemma 2.17).
-3. Add the quadratic constraint `|f̂(2)|² ≤ (M/π) sin(π/M)` (MO 2004 Lemma 2.14).
-4. Re-solve the QP for the 119 cosine coefficients subject to the expanded system.
-
-**Expected gain:** `1.27481` → somewhere in `[1.28, 1.30]`, which would push over
-Cloninger–Steinerberger's `1.28` via pure Delsarte duality. This has not been done.
+In short: the row **"MO 2004 Prop. 2.11, m=3 (pull out f̂(2))"** in the
+table above should be read as "Closed — gives 1.2748, structurally
+caps below 1.2802," not "Achievable but not yet done."
 
 ---
 

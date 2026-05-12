@@ -1,0 +1,29 @@
+Generated: 2026-05-07T14:57:34Z
+
+--- kernel: uname -a ---
+Linux computeinstance-e01x9bm9ct6f7zt9qk 5.15.0-177-generic #187-Ubuntu SMP Sat Apr 11 22:54:33 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+--- python: python3 --version ---
+Python 3.10.12
+
+--- libs: python3 -c "import numpy, scipy, numba, mosek, cvxpy; print(f\"numpy={numpy.__version__} scipy={scipy.__version__} numba={numba.__version__} mosek={mosek.Env.getversion()} cvxpy={cvxpy.__version__}\")" ---
+numpy=2.2.6 scipy=1.15.3 numba=0.65.1 mosek=(11, 1, 11) cvxpy=1.7.5
+
+--- bench_md5: md5sum /home/ubuntu/_L_bench.py /home/ubuntu/_Q_bench.py /home/ubuntu/_M1_bench.py ---
+9dcbfaa0f9abb9e41602833b96594205  /home/ubuntu/_L_bench.py
+0f8e009b821d84b070a7f888b8eba724  /home/ubuntu/_Q_bench.py
+6e990a4e21ee111a2e5291722c98d2cc  /home/ubuntu/_M1_bench.py
+
+--- bench_wc: wc -l /home/ubuntu/_L_bench.py /home/ubuntu/_Q_bench.py /home/ubuntu/_M1_bench.py ---
+  756 /home/ubuntu/_L_bench.py
+  555 /home/ubuntu/_Q_bench.py
+  502 /home/ubuntu/_M1_bench.py
+ 1813 total
+
+--- cores: nproc ---
+64
+
+--- memory: free -h | head -2 ---
+               total        used        free      shared  buff/cache   available
+Mem:           251Gi       709Mi       248Gi       1.0Mi       2.1Gi       249Gi
+

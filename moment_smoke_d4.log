@@ -1,0 +1,22 @@
+Moment LP POC at d=4, R=4
+Target val(d) = 1.102
+  28 windows
+  Computing Krein-Poisson cuts: 4 s x 5 t0 = 20 cuts
+  Total cuts: 20
+
+--- BASELINE (mu-only LP, no Fourier cuts, no Z/2) ---
+  n_eq=71, n_vars=134, build=0.00s, solve=0.01s, alpha=1.0
+
+--- MOMENT LP (mu, nu) with Krein-Poisson cuts ---
+  Moment LP: n_rows=495, n_lambda=48, n_q=165, n_c=1820, n_vars=2034
+  build wall: 0.03s
+  n_eq=496, n_vars=2034, nnz(A)=10704
+  Variable layout: alpha=1, lambda=48, q=165, c=1820
+  Solving...
+  status=OPTIMAL, alpha=1.0, wall=0.07s
+
+  SANITY OK: alpha=1.000000 <= C_{1a} <= 1.5029
+
+  Baseline alpha = 1.000000
+  Moment LP alpha = 1.000000
+  Improvement: +0.000000

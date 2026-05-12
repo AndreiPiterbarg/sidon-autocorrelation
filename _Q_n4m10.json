@@ -1,0 +1,20 @@
+[
+  {
+    "n_half": 4,
+    "m": 10,
+    "c_target": 1.28,
+    "d": 8,
+    "n_win": 120,
+    "n_sigma": 70,
+    "n_processed": 91881,
+    "surv_F": 1014,
+    "surv_Q": 964,
+    "pruned_F": 90867,
+    "pruned_Q": 90917,
+    "extra_Q_over_F": 50,
+    "soundness_bugs_Q_minus_F": 0,
+    "t_F": 0.191636323928833,
+    "t_Q": 5.788039445877075,
+    "elapsed": 6.309099197387695
+  }
+]

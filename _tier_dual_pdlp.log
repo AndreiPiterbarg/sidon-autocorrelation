@@ -1,0 +1,145 @@
+
+=== d=8 R=4  tol=0.0001  halpern=False ===
+  Dual LP at d=4 R=4: n_vars=71 (1 free + 70 bounded), n_eq=36 (1 + 35 recursion), n_ub=64, nnz_eq=176, nnz_ub=559, build=1.0ms
+  MOSEK dual: alpha=1.0666666667  wall=17.0ms
+  --- PDLP on dual ---
+  spectral norm A: 1.3498e+00
+  m_eq=36 m_ub=64 n=71
+  outer   0 inner    1000  obj=-10.994437/-352.268315  kkt=1.52e+01  best=1.11e+00  pres=3.05e+01  dres=1.77e-01  omega=2.38e+00  wall=0.5s
+  outer   4 inner    5000  obj=-50.000000/-1025.324464  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=2.0s
+  outer   8 inner    9000  obj=-50.000000/-1099.863698  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=3.6s
+  outer  12 inner   13000  obj=-50.000000/-1174.402932  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=5.1s
+  outer  16 inner   17000  obj=-50.000000/-1248.942166  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=6.6s
+  outer  20 inner   21000  obj=-50.000000/-1323.481400  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=8.1s
+  outer  24 inner   25000  obj=-50.000000/-1398.020633  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=9.6s
+  outer  28 inner   29000  obj=-50.000000/-1472.559867  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=11.1s
+  outer  32 inner   33000  obj=-50.000000/-1547.099101  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=12.6s
+  outer  36 inner   37000  obj=-50.000000/-1621.638335  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=14.1s
+  outer  40 inner   41000  obj=-50.000000/-1696.177569  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=15.7s
+  outer  44 inner   45000  obj=-50.000000/-1770.716803  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=17.2s
+  outer  48 inner   49000  obj=-50.000000/-1845.256037  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=18.7s
+  outer  52 inner   53000  obj=-50.000000/-1919.795271  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=20.3s
+  outer  56 inner   57000  obj=-50.000000/-1994.334505  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=3.78e+01  wall=21.8s
+
+  PDLP dual : alpha=-0.713925  diff=1.78e+00  kkt=1.11e+00  converged=False  wall=24347.6ms
+
+=== d=8 R=4  tol=0.0001  halpern=True ===
+  Dual LP at d=4 R=4: n_vars=71 (1 free + 70 bounded), n_eq=36 (1 + 35 recursion), n_ub=64, nnz_eq=176, nnz_ub=559, build=2.0ms
+  MOSEK dual: alpha=1.0666666667  wall=9.4ms
+  --- PDLP on dual ---
+  spectral norm A: 1.3498e+00
+  m_eq=36 m_ub=64 n=71
+  outer   0 inner    1000  obj=-5.497219/-176.134157  kkt=7.64e+00  best=8.66e-01  pres=1.53e+01  dres=1.77e-01  omega=2.38e+00  wall=0.5s
+  outer   4 inner    5000  obj=-45.919816/-558.766585  kkt=6.36e+01  best=8.66e-01  pres=1.27e+02  dres=1.77e-01  omega=1.93e+00  wall=2.4s
+  outer   8 inner    9000  obj=-50.000000/-732.299689  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+02  wall=4.2s
+  outer  12 inner   13000  obj=-50.000000/-732.522978  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=6.1s
+  outer  16 inner   17000  obj=-50.000000/-732.523137  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=7.9s
+  outer  20 inner   21000  obj=-50.000000/-732.523296  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=9.7s
+  outer  24 inner   25000  obj=-50.000000/-732.523455  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=11.6s
+  outer  28 inner   29000  obj=-50.000000/-732.523614  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=13.6s
+  outer  32 inner   33000  obj=-50.000000/-732.523773  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=15.4s
+  outer  36 inner   37000  obj=-50.000000/-732.523932  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=17.3s
+  outer  40 inner   41000  obj=-50.000000/-732.524091  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=19.2s
+  outer  44 inner   45000  obj=-50.000000/-732.524250  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=21.0s
+  outer  48 inner   49000  obj=-50.000000/-732.524409  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=22.9s
+  outer  52 inner   53000  obj=-50.000000/-732.524568  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=24.8s
+  outer  56 inner   57000  obj=-50.000000/-732.524727  kkt=6.93e+01  best=8.66e-01  pres=1.39e+02  dres=1.77e-01  omega=8.85e+06  wall=26.6s
+
+  PDLP dual : alpha=-0.356962  diff=1.42e+00  kkt=8.66e-01  converged=False  wall=28051.3ms
+
+=== d=8 R=6  tol=0.0001  halpern=False ===
+  Dual LP at d=4 R=6: n_vars=211 (1 free + 210 bounded), n_eq=127 (1 + 126 recursion), n_ub=64, nnz_eq=631, nnz_ub=559, build=1.0ms
+  MOSEK dual: alpha=1.1031175051  wall=11.1ms
+  --- PDLP on dual ---
+  spectral norm A: 1.3497e+00
+  m_eq=127 m_ub=64 n=211
+  outer   0 inner    1500  obj=-16.486278/-528.230159  kkt=2.29e+01  best=1.11e+00  pres=4.57e+01  dres=1.77e-01  omega=2.38e+00  wall=0.6s
+  outer   4 inner    7500  obj=-50.000000/-1242.935502  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=3.0s
+  outer   8 inner   13500  obj=-50.000000/-1270.914964  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=5.3s
+  outer  12 inner   19500  obj=-50.000000/-1298.894427  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=7.6s
+  outer  16 inner   25500  obj=-50.000000/-1326.873889  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=10.1s
+  outer  20 inner   31500  obj=-50.000000/-1354.853351  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=12.5s
+  outer  24 inner   37500  obj=-50.000000/-1382.832813  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=15.2s
+  outer  28 inner   43500  obj=-50.000000/-1410.812276  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=17.6s
+  outer  32 inner   49500  obj=-50.000000/-1438.791738  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=20.1s
+  outer  36 inner   55500  obj=-50.000000/-1466.771200  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=22.9s
+  outer  40 inner   61500  obj=-50.000000/-1494.750663  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=25.7s
+  outer  44 inner   67500  obj=-50.000000/-1522.730125  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=28.7s
+  outer  48 inner   73500  obj=-50.000000/-1550.709587  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=31.6s
+  outer  52 inner   79500  obj=-50.000000/-1578.689050  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=34.4s
+  outer  56 inner   85500  obj=-50.000000/-1606.668512  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=37.3s
+  outer  60 inner   91500  obj=-50.000000/-1634.647974  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=40.2s
+  outer  64 inner   97500  obj=-50.000000/-1662.627437  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=43.1s
+  outer  68 inner  103500  obj=-50.000000/-1690.606899  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=46.0s
+  outer  72 inner  109500  obj=-50.000000/-1718.586361  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=48.7s
+  outer  76 inner  115500  obj=-50.000000/-1746.565824  kkt=6.93e+01  best=1.11e+00  pres=1.39e+02  dres=1.77e-01  omega=1.51e+02  wall=51.6s
+
+  PDLP dual : alpha=-0.713929  diff=1.82e+00  kkt=1.11e+00  converged=False  wall=53654.6ms
+
+=== d=10 R=4  tol=0.0001  halpern=False ===
+  Dual LP at d=5 R=4: n_vars=127 (1 free + 126 bounded), n_eq=57 (1 + 56 recursion), n_ub=100, nnz_eq=337, nnz_ub=1245, build=1.7ms
+  MOSEK dual: alpha=1.0772357723  wall=12.2ms
+  --- PDLP on dual ---
+  spectral norm A: 1.3886e+00
+  m_eq=57 m_ub=100 n=127
+  outer   0 inner    1500  obj=-10.191326/-513.450077  kkt=1.52e+01  best=9.20e-01  pres=3.05e+01  dres=1.41e-01  omega=2.66e+00  wall=0.7s
+  outer   4 inner    7500  obj=-49.999983/-1318.493733  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+01  wall=3.5s
+  outer   8 inner   13500  obj=-50.000000/-1366.022862  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=6.6s
+  outer  12 inner   19500  obj=-50.000000/-1380.647209  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=9.6s
+  outer  16 inner   25500  obj=-50.000000/-1395.271557  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=12.8s
+  outer  20 inner   31500  obj=-50.000000/-1409.895904  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=15.9s
+  outer  24 inner   37500  obj=-50.000000/-1424.520251  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=18.7s
+  outer  28 inner   43500  obj=-50.000000/-1439.144599  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=21.5s
+  outer  32 inner   49500  obj=-50.000000/-1453.768946  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=24.2s
+  outer  36 inner   55500  obj=-50.000000/-1468.393293  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=27.1s
+  outer  40 inner   61500  obj=-50.000000/-1483.017641  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=29.8s
+  outer  44 inner   67500  obj=-50.000000/-1497.641988  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=32.6s
+  outer  48 inner   73500  obj=-50.000000/-1512.266335  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=35.4s
+  outer  52 inner   79500  obj=-50.000000/-1526.890683  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=38.3s
+  outer  56 inner   85500  obj=-50.000000/-1541.515030  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=41.0s
+  outer  60 inner   91500  obj=-50.000000/-1556.139378  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=44.0s
+  outer  64 inner   97500  obj=-50.000000/-1570.763725  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=47.0s
+  outer  68 inner  103500  obj=-50.000000/-1585.388072  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=49.9s
+  outer  72 inner  109500  obj=-50.000000/-1600.012420  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=52.9s
+  outer  76 inner  115500  obj=-50.000000/-1614.636767  kkt=7.48e+01  best=9.20e-01  pres=1.50e+02  dres=1.41e-01  omega=2.81e+02  wall=55.8s
+
+  PDLP dual : alpha=-0.441330  diff=1.52e+00  kkt=9.20e-01  converged=False  wall=58064.5ms
+
+=== d=12 R=4  tol=0.0001  halpern=False ===
+  Dual LP at d=6 R=4: n_vars=211 (1 free + 210 bounded), n_eq=85 (1 + 84 recursion), n_ub=144, nnz_eq=589, nnz_ub=2433, build=5.1ms
+  MOSEK dual: alpha=1.0848214285  wall=16.0ms
+  --- PDLP on dual ---
+  spectral norm A: 1.4270e+00
+  m_eq=85 m_ub=144 n=211
+  outer   0 inner    1500  obj=-6.810896/-499.647668  kkt=1.09e+01  best=9.31e-01  pres=2.17e+01  dres=1.17e-01  omega=2.93e+00  wall=0.8s
+  outer   4 inner    7500  obj=-49.928940/-1386.285329  kkt=7.95e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=5.23e+00  wall=3.7s
+  outer   8 inner   13500  obj=-50.000000/-1523.707297  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=6.7s
+  outer  12 inner   19500  obj=-50.000000/-1537.647250  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=9.7s
+  outer  16 inner   25500  obj=-50.000000/-1551.587203  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=12.8s
+  outer  20 inner   31500  obj=-50.000000/-1565.527156  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=15.7s
+  outer  24 inner   37500  obj=-50.000000/-1579.467109  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=18.8s
+  outer  28 inner   43500  obj=-50.000000/-1593.407062  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=21.8s
+  outer  32 inner   49500  obj=-50.000000/-1607.347015  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=24.7s
+  outer  36 inner   55500  obj=-50.000000/-1621.286968  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=27.7s
+  outer  40 inner   61500  obj=-50.000000/-1635.226921  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=30.6s
+  outer  44 inner   67500  obj=-50.000000/-1649.166874  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=33.6s
+  outer  48 inner   73500  obj=-50.000000/-1663.106827  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=36.7s
+  outer  52 inner   79500  obj=-50.000000/-1677.046780  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=39.9s
+  outer  56 inner   85500  obj=-50.000000/-1690.986733  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=42.9s
+  outer  60 inner   91500  obj=-50.000000/-1704.926686  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=45.8s
+  outer  64 inner   97500  obj=-50.000000/-1718.866639  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=48.8s
+  outer  68 inner  103500  obj=-50.000000/-1732.806592  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=51.7s
+  outer  72 inner  109500  obj=-50.000000/-1746.746545  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=54.7s
+  outer  76 inner  115500  obj=-50.000000/-1760.686498  kkt=7.96e+01  best=9.31e-01  pres=1.59e+02  dres=1.17e-01  omega=2.87e+02  wall=57.7s
+
+  PDLP dual : alpha=-0.294942  diff=1.38e+00  kkt=9.31e-01  converged=False  wall=59920.0ms
+
+--- SUMMARY ---
+  d   R  halp    a_mosek     a_pdlp       diff       kkt      pres      dres  conv   w_mos  w_pdlp
+  8   4 False   1.066667  -0.713925   1.78e+00  1.11e+00  2.22e+00  1.77e-01 False   17.0ms 24347.6ms
+  8   4  True   1.066667  -0.356962   1.42e+00  8.66e-01  1.41e+00  1.77e-01 False    9.4ms 28051.3ms
+  8   6 False   1.103118  -0.713929   1.82e+00  1.11e+00  2.22e+00  1.77e-01 False   11.1ms 53654.6ms
+ 10   4 False   1.077236  -0.441330   1.52e+00  9.20e-01  1.66e+00  1.41e-01 False   12.2ms 58064.5ms
+ 12   4 False   1.084821  -0.294942   1.38e+00  9.31e-01  1.37e+00  1.17e-01 False   16.0ms 59920.0ms
+
+Wrote _tier_dual_pdlp_results.json

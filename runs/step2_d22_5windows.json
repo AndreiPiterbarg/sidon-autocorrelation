@@ -1,0 +1,136 @@
+{
+  "d": 22,
+  "target": "2561/2000",
+  "margin": "1/1000000",
+  "lo": [
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "hi": [
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2",
+    "1/2"
+  ],
+  "n_eval": 5,
+  "n_excluded": 0,
+  "n_undecided": 5,
+  "n_counterex": 0,
+  "n_invalid": 0,
+  "total_wall_s": 8.205130577087402,
+  "results": [
+    {
+      "A_W": [
+        21
+      ],
+      "A_plus": [],
+      "A_minus": [],
+      "n_F": 22,
+      "n_vars": 25,
+      "verdict": "UNDECIDED",
+      "n_excluded_leaves": 13,
+      "n_unique_leaves": 0,
+      "n_undecided_leaves": 4,
+      "wall_s": 1.6829636096954346,
+      "notes": "Bisection budget exhausted: 13 excluded, 0 unique-zero, 4 undecided leaves"
+    },
+    {
+      "A_W": [
+        63
+      ],
+      "A_plus": [],
+      "A_minus": [],
+      "n_F": 22,
+      "n_vars": 25,
+      "verdict": "UNDECIDED",
+      "n_excluded_leaves": 13,
+      "n_unique_leaves": 0,
+      "n_undecided_leaves": 3,
+      "wall_s": 1.591585636138916,
+      "notes": "Bisection budget exhausted: 13 excluded, 0 unique-zero, 3 undecided leaves"
+    },
+    {
+      "A_W": [
+        64
+      ],
+      "A_plus": [],
+      "A_minus": [],
+      "n_F": 22,
+      "n_vars": 25,
+      "verdict": "UNDECIDED",
+      "n_excluded_leaves": 13,
+      "n_unique_leaves": 0,
+      "n_undecided_leaves": 3,
+      "wall_s": 1.5779614448547363,
+      "notes": "Bisection budget exhausted: 13 excluded, 0 unique-zero, 3 undecided leaves"
+    },
+    {
+      "A_W": [
+        105
+      ],
+      "A_plus": [],
+      "A_minus": [],
+      "n_F": 22,
+      "n_vars": 25,
+      "verdict": "UNDECIDED",
+      "n_excluded_leaves": 13,
+      "n_unique_leaves": 0,
+      "n_undecided_leaves": 4,
+      "wall_s": 1.787553071975708,
+      "notes": "Bisection budget exhausted: 13 excluded, 0 unique-zero, 4 undecided leaves"
+    },
+    {
+      "A_W": [
+        106
+      ],
+      "A_plus": [],
+      "A_minus": [],
+      "n_F": 22,
+      "n_vars": 25,
+      "verdict": "UNDECIDED",
+      "n_excluded_leaves": 13,
+      "n_unique_leaves": 0,
+      "n_undecided_leaves": 3,
+      "wall_s": 1.5650668144226074,
+      "notes": "Bisection budget exhausted: 13 excluded, 0 unique-zero, 3 undecided leaves"
+    }
+  ]
+}

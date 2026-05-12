@@ -1,0 +1,29 @@
+{
+  "d": 22,
+  "target": "1.2805",
+  "tag": "d22_t1p2805_split_K9",
+  "skip_bnb": true,
+  "bnb_workers": 16,
+  "bnb_init_split_depth": 22,
+  "bnb_warmup_s": 300,
+  "bnb_stuck_window_s": 600,
+  "bnb_time_budget_s": 1800,
+  "split_depth": 9,
+  "max_iters": 4,
+  "k_ladder": [
+    0,
+    16,
+    32
+  ],
+  "sdp_time_limit_s": 600.0,
+  "stuck_iters_threshold": 4,
+  "utc_start": "2026-05-03T13:56:58.508870Z",
+  "machine": {
+    "cores": 192,
+    "platform": "linux"
+  },
+  "python": "3.10.12 (main, Mar  3 2026, 11:56:32) [GCC 11.4.0]",
+  "git": {
+    "git_rev": "unknown"
+  }
+}

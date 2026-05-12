@@ -1,0 +1,16 @@
+{
+  "d": 22,
+  "target": "2561/2000",
+  "margin": "1/1000000",
+  "A_W": [
+    63
+  ],
+  "A_plus": [],
+  "A_minus": [],
+  "verdict": "UNDECIDED",
+  "n_excluded": 13,
+  "n_unique": 0,
+  "n_undecided": 3,
+  "wall_s": 1.595850944519043,
+  "notes": "Bisection budget exhausted: 13 excluded, 0 unique-zero, 3 undecided leaves"
+}

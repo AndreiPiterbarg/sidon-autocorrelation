@@ -1,0 +1,75 @@
+########################################################################
+# PHASE 1: cheap-cascade BnB, budget 120.0s
+########################################################################
+[par] d=10  target=1.2  init_boxes=107  workers=8  init_split_depth=12
+[par] t=    5.1s  nodes=         0  cert=         0  in_flight=    32  queue=   0  active= 3/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   10.1s  nodes=       500  cert=       189  in_flight=    63  queue=   0  active= 8/8  rate=     99/s  progress=  2.80446%  eta=    352s
+[par] t=   15.2s  nodes=      3000  cert=      1404  in_flight=    42  queue=   0  active= 7/8  rate=    496/s  progress= 77.53908%  eta=      4s
+[par] t=   20.2s  nodes=      4500  cert=      2112  in_flight=    57  queue=   0  active= 8/8  rate=    298/s  progress= 99.98633%  eta=      0s
+[par] t=   25.3s  nodes=      7000  cert=      3310  in_flight=    53  queue=   0  active= 8/8  rate=    496/s  progress= 99.99145%  eta=      0s
+[par] t=   30.3s  nodes=      8500  cert=      4036  in_flight=    22  queue=   0  active= 5/8  rate=    298/s  progress= 99.99579%  eta=      0s
+[par] t=   35.4s  nodes=     10000  cert=      4690  in_flight=   886  queue=  41  active= 8/8  rate=    297/s  progress= 99.99851%  eta=      0s
+[par] t=   40.4s  nodes=     13000  cert=      5817  in_flight=   927  queue=  87  active= 8/8  rate=    592/s  progress= 99.99956%  eta=      0s
+[par] t=   45.4s  nodes=     15500  cert=      7066  in_flight=   930  queue= 127  active= 8/8  rate=    497/s  progress= 99.99956%  eta=      0s
+[par] t=   50.5s  nodes=     17500  cert=      8067  in_flight=   922  queue= 154  active= 8/8  rate=    396/s  progress= 99.99956%  eta=      0s
+[par] t=   55.6s  nodes=     20500  cert=      9568  in_flight=   925  queue= 155  active= 8/8  rate=    592/s  progress= 99.99956%  eta=      0s
+[par] t=   60.6s  nodes=     23500  cert=     11072  in_flight=   928  queue= 157  active= 8/8  rate=    593/s  progress= 99.99956%  eta=      0s
+[par] t=   65.7s  nodes=     25500  cert=     12076  in_flight=   919  queue= 160  active= 8/8  rate=    397/s  progress= 99.99956%  eta=      0s
+[par] t=   70.7s  nodes=     28000  cert=     13327  in_flight=   916  queue= 160  active= 8/8  rate=    494/s  progress= 99.99956%  eta=      0s
+[par] t=   75.8s  nodes=     29500  cert=     14074  in_flight=   919  queue= 160  active= 8/8  rate=    296/s  progress= 99.99956%  eta=      0s
+[par] t=   80.8s  nodes=     32500  cert=     15573  in_flight=   920  queue= 160  active= 8/8  rate=    593/s  progress= 99.99956%  eta=      0s
+[par] t=   85.9s  nodes=     33500  cert=     16072  in_flight=   915  queue= 160  active= 8/8  rate=    198/s  progress= 99.99956%  eta=      0s
+[par] t=   90.9s  nodes=     36500  cert=     17572  in_flight=   914  queue= 160  active= 8/8  rate=    594/s  progress= 99.99956%  eta=      0s
+[par] t=   96.0s  nodes=     38000  cert=     18325  in_flight=   904  queue= 160  active= 8/8  rate=    298/s  progress= 99.99956%  eta=      0s
+[par] t=  101.0s  nodes=     40500  cert=     19574  in_flight=   907  queue= 160  active= 8/8  rate=    496/s  progress= 99.99956%  eta=      0s
+[par] t=  106.1s  nodes=     42000  cert=     20322  in_flight=   917  queue= 162  active= 8/8  rate=    297/s  progress= 99.99956%  eta=      0s
+[par] t=  111.1s  nodes=     44500  cert=     21547  in_flight=   979  queue= 166  active= 8/8  rate=    497/s  progress= 99.99956%  eta=      0s
+[par] t=  116.2s  nodes=     46500  cert=     22543  in_flight=   973  queue= 172  active= 8/8  rate=    396/s  progress= 99.99956%  eta=      0s
+[par] time_budget_s=120.0 exceeded; aborting
+[par] master drained queue: 905 boxes -> proof_d10_phase1_master_queue.npz
+[par] FINAL_STATE kbd_interrupt=0 failed=1 cert=24300 in_flight=981 nodes=50010 closed_volume=1.306147e-02 elapsed_s=120.58
+[par] DONE success=False elapsed=120.6s  nodes=50010  cert=24300  coverage=100.000%  in_flight_final=981
+[par] EPIGRAPH: certs=23824/48920
+
+[phase1] elapsed=120.6s  success=False  coverage=99.99956%  in_flight_final=981  certs=24300
+[phase1] dump proof_d10_phase1_master_queue.npz: 905 boxes
+[phase1] dump proof_d10_phase1_w0.npz: 6 boxes
+[phase1] dump proof_d10_phase1_w1.npz: 9 boxes
+[phase1] dump proof_d10_phase1_w2.npz: 18 boxes
+[phase1] dump proof_d10_phase1_w3.npz: 10 boxes
+[phase1] dump proof_d10_phase1_w4.npz: 9 boxes
+[phase1] dump proof_d10_phase1_w5.npz: 7 boxes
+[phase1] dump proof_d10_phase1_w6.npz: 8 boxes
+[phase1] dump proof_d10_phase1_w7.npz: 9 boxes
+[phase1] total stuck boxes: 981
+########################################################################
+# PHASE 2: SDP K=32 on 981 stuck boxes
+########################################################################
+[phase2] 25/981  cert=25  fail=0  avg_t=2.20s  elapsed=55.0s
+[phase2] 50/981  cert=50  fail=0  avg_t=2.22s  elapsed=110.9s
+[phase2] 75/981  cert=75  fail=0  avg_t=2.25s  elapsed=168.7s
+[phase2] 100/981  cert=100  fail=0  avg_t=2.22s  elapsed=221.7s
+[phase2] 125/981  cert=125  fail=0  avg_t=2.20s  elapsed=274.8s
+[phase2] 150/981  cert=150  fail=0  avg_t=2.18s  elapsed=326.8s
+[phase2] 175/981  cert=175  fail=0  avg_t=2.17s  elapsed=379.4s
+[phase2] 200/981  cert=200  fail=0  avg_t=2.11s  elapsed=421.7s
+[phase2] 225/981  cert=225  fail=0  avg_t=2.11s  elapsed=474.4s
+[phase2] 250/981  cert=250  fail=0  avg_t=2.11s  elapsed=528.3s
+[phase2] 275/981  cert=275  fail=0  avg_t=2.09s  elapsed=573.5s
+[phase2] 300/981  cert=300  fail=0  avg_t=2.05s  elapsed=614.0s
+[phase2] 325/981  cert=325  fail=0  avg_t=2.04s  elapsed=663.6s
+[phase2] 350/981  cert=350  fail=0  avg_t=2.05s  elapsed=716.2s
+[phase2] 375/981  cert=375  fail=0  avg_t=2.05s  elapsed=770.3s
+[phase2] 400/981  cert=400  fail=0  avg_t=2.06s  elapsed=822.3s
+[phase2] 425/981  cert=425  fail=0  avg_t=2.06s  elapsed=877.0s
+[phase2] 450/981  cert=450  fail=0  avg_t=2.09s  elapsed=942.2s
+[phase2] 475/981  cert=475  fail=0  avg_t=2.12s  elapsed=1005.1s
+[phase2] 500/981  cert=500  fail=0  avg_t=2.10s  elapsed=1048.4s
+[phase2] 525/981  cert=525  fail=0  avg_t=2.09s  elapsed=1099.3s
+[phase2] 550/981  cert=550  fail=0  avg_t=2.13s  elapsed=1171.1s
+[phase2] 575/981  cert=575  fail=0  avg_t=2.16s  elapsed=1240.9s
+[phase2] 600/981  cert=600  fail=0  avg_t=2.18s  elapsed=1306.6s
+[phase2] 625/981  cert=625  fail=0  avg_t=2.15s  elapsed=1342.4s
+[phase2] 650/981  cert=650  fail=0  avg_t=2.13s  elapsed=1386.1s
+[phase2] 675/981  cert=675  fail=0  avg_t=2.14s  elapsed=1447.7s
+[phase2] 700/981  cert=700  fail=0  avg_t=2.13s  elapsed=1493.5s

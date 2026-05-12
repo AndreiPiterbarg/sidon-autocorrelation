@@ -1,0 +1,2 @@
+d=64 LP solve: target val(64) = 1.384
+  R      alpha        gap       n_vars         n_eq          nnz    build_s    solve_s

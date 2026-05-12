@@ -1,0 +1,45 @@
+{
+  "comment": "Aggregated Pólya/Handelman LP results, manually compiled from sweep logs.",
+  "all_use_z2": true,
+  "all_variable_lambda": true,
+  "all_use_q_polynomial": true,
+  "solver": "highspy",
+  "host": {
+    "platform": "Windows-10",
+    "cpu": "16-core",
+    "mem_total_gb": 31.8
+  },
+  "runs": [
+    {"d": 4, "R": 4, "alpha": 1.000000, "gap": 0.102, "n_eq": 16, "n_vars": 42, "build_s": 0.00, "solve_s": 0.01},
+    {"d": 4, "R": 6, "alpha": 1.047619, "gap": 0.054, "n_eq": 29, "n_vars": 66, "build_s": 0.00, "solve_s": 0.00},
+    {"d": 4, "R": 8, "alpha": 1.062500, "gap": 0.040, "n_eq": 46, "n_vars": 98, "build_s": 0.00, "solve_s": 0.00},
+    {"d": 4, "R": 10, "alpha": 1.066667, "gap": 0.035, "n_eq": 67, "n_vars": 138, "build_s": 0.00, "solve_s": 0.00},
+    {"d": 4, "R": 12, "alpha": 1.076923, "gap": 0.025, "n_eq": 92, "n_vars": 186, "build_s": 0.00, "solve_s": 0.00},
+
+    {"d": 8, "R": 4, "alpha": 1.066667, "gap": 0.138, "n_eq": 71, "n_vars": 170, "build_s": 0.00, "solve_s": 0.01},
+    {"d": 8, "R": 6, "alpha": 1.103118, "gap": 0.102, "n_eq": 211, "n_vars": 401, "build_s": 0.00, "solve_s": 0.01},
+    {"d": 8, "R": 8, "alpha": 1.130952, "gap": 0.074, "n_eq": 496, "n_vars": 890, "build_s": 0.00, "solve_s": 0.08},
+    {"d": 8, "R": 10, "alpha": 1.147885, "gap": 0.057, "n_eq": 1002, "n_vars": 1781, "build_s": 0.00, "solve_s": 0.49},
+    {"d": 8, "R": 12, "alpha": 1.158661, "gap": 0.046, "n_eq": 1821, "n_vars": 3250, "build_s": 0.01, "solve_s": 3.27},
+    {"d": 8, "R": 14, "alpha": 1.166959, "gap": 0.038, "n_eq": 3061, "n_vars": 5505, "build_s": 0.01, "solve_s": 26.06},
+    {"d": 8, "R": 16, "alpha": 1.173332, "gap": 0.032, "n_eq": 4846, "n_vars": 8786, "build_s": 0.02, "solve_s": 123.76},
+
+    {"d": 12, "R": 4, "alpha": 1.084821, "gap": 0.186, "n_eq": 211, "n_vars": 439, "build_s": 0.01, "solve_s": 0.02},
+    {"d": 12, "R": 6, "alpha": 1.133183, "gap": 0.138, "n_eq": 925, "n_vars": 1531, "build_s": 0.01, "solve_s": 0.25},
+    {"d": 12, "R": 8, "alpha": 1.164166, "gap": 0.107, "n_eq": 3004, "n_vars": 4864, "build_s": 0.01, "solve_s": 14.65}
+  ],
+  "active_set_d8": [
+    {"R": 6, "alpha": 1.103118, "active_size": 5,  "wall_s": 0.0, "mode": "seed-full"},
+    {"R": 8, "alpha": 1.127232, "active_size": 4,  "wall_s": 0.1, "mode": "active"},
+    {"R": 10, "alpha": 1.138282, "active_size": 4, "wall_s": 0.7, "mode": "active"},
+    {"R": 12, "alpha": 1.149567, "active_size": 4, "wall_s": 5.3, "mode": "active"},
+    {"R": 14, "alpha": 1.156354, "active_size": 4, "wall_s": 35.9, "mode": "active"},
+    {"R": 16, "alpha": 1.161820, "active_size": 4, "wall_s": 286.9, "mode": "active"}
+  ],
+  "comparison_to_sdp": {
+    "d8_sdp_certified_t": 1.141796875,
+    "d8_lp_R16_alpha":    1.173332,
+    "d8_lp_advantage":    0.031535,
+    "comment": "At d=8 the LP at R=16 BEATS the SDP-certified bound by 0.032; LP wall=124s vs SDP per-probe=13s but with multiple probes/total ~71s."
+  }
+}

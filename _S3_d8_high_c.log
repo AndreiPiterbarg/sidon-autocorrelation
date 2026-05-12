@@ -1,0 +1,5 @@
+n_half=4 m=10 c=1.5 d_parent=8 (HIGH c, expect FALSEs)
+  L0 survivors 49114
+  examined=50 T1=0 LP_orig_True=50 LP_act_True=50
+  match=50 orig=T/act=F=0 orig=F/act=T (UNSOUND)=0
+  avg ms orig=277.9 act=128.0 speedup=2.17x

@@ -562,6 +562,27 @@ stricter region, which the driver's code comments implicitly claim.
 GAP-ADJACENT: this note only rigorously justifies the weaker single-cut
 $\mu_0 \le \mu_{d-1}$.)
 
+**Practical implementation note.** The driver `box.py:75-89` actually
+imposes the **looser** cut $\mu_0 \le 1/2$, not $\mu_0 \le \mu_{d-1}$.
+This is a SUPERSET cut:
+
+$$
+H_d^{\text{box}} \;:=\; \{\mu\in\Delta_d : \mu_0 \le 1/2\}
+\;\supseteq\; H_d.
+$$
+
+Containment: for $\mu \in H_d$, $\mu_0 \le \mu_{d-1}$ and $\mu_0 + \mu_{d-1}
+\le \sum_i \mu_i = 1$ give $2\mu_0 \le \mu_0 + \mu_{d-1} \le 1$, so
+$\mu_0 \le 1/2$, i.e. $\mu \in H_d^{\text{box}}$.
+
+Since $H_d \subseteq H_d^{\text{box}}$, certifying the per-box bound
+$\max_W \mu^\top M_W \mu \ge c$ for every $\mu \in H_d^{\text{box}}$
+**a fortiori** certifies it for every $\mu \in H_d$. Combined with
+Lemma 3.4 ($\mathrm{val}(d) = \min_{H_d} \max_W \mu^\top M_W \mu$),
+this gives $\mathrm{val}(d) \ge c$. So the looser-cut implementation is
+**sound**, just slightly less efficient (covers a marginally larger
+search region than necessary).
+
 ---
 
 ## Summary

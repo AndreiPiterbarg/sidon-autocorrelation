@@ -1,0 +1,64 @@
+[bench] generated 6 boxes by root-split (depth=8)
+
+[bench] box 1/6 hash=6d2d090dd5a0186b threads=4
+  → wall=88.6s  verdict=feas  lam=-0.000  rss=4.58 GB
+
+[bench] box 1/6 hash=6d2d090dd5a0186b threads=8
+  → wall=61.6s  verdict=feas  lam=-0.000  rss=4.58 GB
+
+[bench] box 1/6 hash=6d2d090dd5a0186b threads=16
+  → wall=46.3s  verdict=feas  lam=-0.000  rss=4.58 GB
+
+[bench] box 2/6 hash=4cfc4c8c291d7fd7 threads=4
+  → wall=62.2s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 2/6 hash=4cfc4c8c291d7fd7 threads=8
+  → wall=44.7s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 2/6 hash=4cfc4c8c291d7fd7 threads=16
+  → wall=34.2s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 3/6 hash=3313f6b98718bf36 threads=4
+  → wall=62.4s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 3/6 hash=3313f6b98718bf36 threads=8
+  → wall=44.1s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 3/6 hash=3313f6b98718bf36 threads=16
+  → wall=34.4s  verdict=infeas  lam=1.000  rss=4.57 GB
+
+[bench] box 4/6 hash=cf8db98ff4143ac6 threads=4
+  → wall=56.2s  verdict=infeas  lam=1.000  rss=4.57 GB
+
+[bench] box 4/6 hash=cf8db98ff4143ac6 threads=8
+  → wall=41.2s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 4/6 hash=cf8db98ff4143ac6 threads=16
+  → wall=32.4s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 5/6 hash=b12625ce84d72eb4 threads=4
+  → wall=62.5s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 5/6 hash=b12625ce84d72eb4 threads=8
+  → wall=44.7s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 5/6 hash=b12625ce84d72eb4 threads=16
+  → wall=34.6s  verdict=infeas  lam=1.000  rss=4.58 GB
+
+[bench] box 6/6 hash=43d4d1802d5a22b2 threads=4
+  → wall=56.3s  verdict=infeas  lam=1.000  rss=4.57 GB
+
+[bench] box 6/6 hash=43d4d1802d5a22b2 threads=8
+  → wall=41.0s  verdict=infeas  lam=1.000  rss=4.57 GB
+
+[bench] box 6/6 hash=43d4d1802d5a22b2 threads=16
+  → wall=32.4s  verdict=infeas  lam=1.000  rss=4.57 GB
+
+======================================================================
+[bench] DONE  output=bench_threads_d22_K0.json
+  per-threads roll-up:
+    threads=  4  median_wall=  62.3s  n_par= 48  tput=2774 box/h
+    threads=  8  median_wall=  44.4s  n_par= 24  tput=1945 box/h
+    threads= 16  median_wall=  34.3s  n_par= 12  tput=1259 box/h
+  RECOMMENDATION: MIN_THREADS_PER_PROC = 4 (2774 boxes/h)
+======================================================================

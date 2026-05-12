@@ -1,0 +1,40 @@
+{
+  "iter": 1,
+  "n_input": 1,
+  "n_after_split": 46,
+  "n_after_lp": 1,
+  "n_lp_cert": 45,
+  "n_sdp_input": 1,
+  "n_sdp_cert": 0,
+  "n_survivors": 1,
+  "wall_s": 207.76781368255615,
+  "sdp_stage_summaries": [
+    {
+      "K": 0,
+      "n_input": 1,
+      "n_cert": 0,
+      "n_fail": 1,
+      "max_rss_gb": 4.56,
+      "n_parallel": 48,
+      "sweep_wall_s": 0.0
+    },
+    {
+      "K": 16,
+      "n_input": 1,
+      "n_cert": 0,
+      "n_fail": 1,
+      "max_rss_gb": 25.26,
+      "n_parallel": 17,
+      "sweep_wall_s": 0.0
+    },
+    {
+      "K": 32,
+      "n_input": 1,
+      "n_cert": 0,
+      "n_fail": 1,
+      "max_rss_gb": 36.82,
+      "n_parallel": 11,
+      "sweep_wall_s": 0.0
+    }
+  ]
+}

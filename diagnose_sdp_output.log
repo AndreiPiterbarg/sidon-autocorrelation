@@ -1,0 +1,4 @@
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\interval_bnb\lasserre_cert.py:204: UserWarning: Constraint #2 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  prob = cp.Problem(cp.Minimize(u), cons)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\interval_bnb\lasserre_cert.py:206: UserWarning: Constraint #2 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  prob.solve(solver=solver, verbose=verbose)

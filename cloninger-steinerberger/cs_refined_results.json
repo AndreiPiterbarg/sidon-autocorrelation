@@ -1,0 +1,37 @@
+{
+  "comment": "Refined Cloninger-Steinerberger evaluation. See CS_REFINED_REPORT.md.",
+  "paper_id": "1403.7988v3",
+  "date": "2026-04-29",
+  "heuristic_a_n_upper_bounds": [
+    {"n": 2, "a_n_upper_heuristic": 1.103118, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 3, "a_n_upper_heuristic": 1.173216, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 4, "a_n_upper_heuristic": 1.203269, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 6, "a_n_upper_heuristic": 1.246071, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 7, "a_n_upper_heuristic": 1.261889, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 8, "a_n_upper_heuristic": 1.277160, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 9, "a_n_upper_heuristic": 1.291576, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 10, "a_n_upper_heuristic": 1.302797, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 12, "a_n_upper_heuristic": 1.326394, "method": "PGD-softmax", "restarts": 128, "iters": 3000},
+    {"n": 16, "a_n_upper_heuristic": 1.368293, "method": "PGD-softmax", "restarts": 64, "iters": 2000},
+    {"n": 32, "a_n_upper_heuristic": 1.453251, "method": "PGD-softmax", "restarts": 64, "iters": 2000},
+    {"n": 64, "a_n_upper_heuristic": 1.522518, "method": "PGD-softmax", "restarts": 64, "iters": 2000},
+    {"n": 100, "a_n_upper_heuristic": 1.548682, "method": "PGD-softmax", "restarts": 64, "iters": 2000}
+  ],
+  "rigorous_lower_bounds_on_c": [
+    {"n_half": 2, "m": 50, "c_lb": 1.063190, "b_nm": 1.103590, "correction": 0.0404, "time_s": 0.7},
+    {"n_half": 2, "m": 80, "c_lb": 1.078090, "b_nm": 1.103246, "correction": 0.0252, "time_s": 0.1},
+    {"n_half": 2, "m": 100, "c_lb": 1.082956, "b_nm": 1.103056, "correction": 0.0201, "time_s": 0.1},
+    {"n_half": 3, "m": 30, "c_lb": 1.104105, "b_nm": 1.171883, "correction": 0.0678, "time_s": 149.2}
+  ],
+  "validation": {
+    "comment": "Heuristic upper-bounds match rigorous values to 3 decimals at small n",
+    "n2_heuristic": 1.103118,
+    "n2_rigorous_b_nm": 1.103056,
+    "n3_heuristic": 1.173216,
+    "n3_rigorous_b_nm": 1.171883
+  },
+  "best_rigorous_LB_on_c": 1.104105,
+  "current_best_known_LB_on_c": 1.2802,
+  "improvement_vs_existing": -0.176,
+  "verdict": "DID NOT exceed 1.2802. See CS_REFINED_REPORT.md for analysis."
+}

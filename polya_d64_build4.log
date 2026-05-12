@@ -1,0 +1,9 @@
+d=64 LP build test (no solve)
+  R    n_eq theory   n_var theory    n_eq actual   n_var actual            nnz    build_s
+d=64, Z/2 d_eff=32
+  Built 8128 windows -> 4096 unique symmetric in 2.5s
+  R=4: theory n_eq=58,905, n_q=6,545, n_vars~=69,547
+  R=4: actual n_eq=58,906, n_vars=69,547, nnz(A)=1,866,067, build=8.3s
+  R=6: theory n_eq=2,760,681, n_q=435,897, n_vars~=3,200,675
+  R=6: actual n_eq=2,760,682, n_vars=3,200,675, nnz(A)=18,736,459, build=48.0s
+  R=8: theory n_eq=76,904,685, n_q=15,380,937, n_vars~=92,289,719

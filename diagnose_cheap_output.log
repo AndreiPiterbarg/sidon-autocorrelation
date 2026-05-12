@@ -1,0 +1,36 @@
+================================================================================
+CHEAP-TIER cert rate by box width × position (50 random boxes per cell)
+Bounds tested: natural, autoconv, McCormick SW, McCormick NE, joint-face
+================================================================================
+
+=== d=22 (|W|=946, mu_0=0.184>0.144 so sigma_mu in H_d) ===
+  hw     | natural% autoconv%   SW%    NE%   joint%  | ANY_cheap%   batch_full_pass%
+  0.1000 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0500 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0250 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0100 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0050 |    0.0      0.0      3.3    0.0    0.0   |   3.3          3.3
+
+=== d=24 (|W|=1128, mu_0=0.166>0.139 so sigma_mu in H_d) ===
+  hw     | natural% autoconv%   SW%    NE%   joint%  | ANY_cheap%   batch_full_pass%
+  0.1000 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0500 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0250 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0100 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0050 |    0.0      0.0     10.0    0.0    0.0   |  10.0         10.0
+
+=== d=30 (|W|=1770, mu_0=0.148>0.129 so sigma_mu in H_d) ===
+  hw     | natural% autoconv%   SW%    NE%   joint%  | ANY_cheap%   batch_full_pass%
+  0.1000 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0500 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0250 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0100 |    0.0      0.0      0.0    0.0    0.0   |   0.0          0.0
+  0.0050 |    0.0      0.0     66.7    0.0    0.0   |  66.7         66.7
+
+================================================================================
+What does this tell us?
+  - "fastpass%" = boxes where lb_fast >= target (cheap bounds even attempted)
+  - "ANY_cheap%" = boxes that pass the cheap rigor tier
+  - The diff (fastpass - ANY_cheap) = boxes that lb_fast says yes but rigor refuses
+  - If d=30 has lower fastpass% at moderate hw, the CHEAP tier is the binder
+================================================================================

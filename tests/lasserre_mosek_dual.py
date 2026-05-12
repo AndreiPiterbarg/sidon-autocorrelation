@@ -203,6 +203,12 @@ def solve_mosek_dual(
     lazy_ab_eiej: bool = False,
     use_preelim: bool = False,
     preelim_max_fill_ratio: float = 10.0,
+    preelim_protect_degrees: Optional[List[int]] = None,
+    min_window_ell: Optional[int] = None,
+    early_stop_on_clear_verdict: bool = False,
+    early_stop_gap_tol: float = 1e-2,
+    early_stop_feas_frac: float = 0.15,
+    early_stop_infeas_frac: float = 0.85,
     audit_windows: bool = False,
     audit_tol: float = 1e-6,
     drop_window_indices: Optional[List[int]] = None,
@@ -286,6 +292,22 @@ def solve_mosek_dual(
                   f"{len(active_windows)} (dropped {before - len(active_windows)})",
                   flush=True)
 
+    # C1 min-window-ell filter: drop narrow-bandwidth windows (ell < min_ell).
+    # windows[w] = (ell, s_lo).  Filter ALSO applies when active_windows is
+    # None (the full-build path), so we materialise the default list first.
+    if min_window_ell is not None and int(min_window_ell) > 0:
+        windows_list = P_raw['windows']
+        if active_windows is None:
+            active_windows = list(P.get('nontrivial_windows', []))
+        before = len(active_windows)
+        active_windows = [w for w in active_windows
+                          if int(windows_list[w][0]) >= int(min_window_ell)]
+        if verbose:
+            print(f"  [min-window-ell={min_window_ell}] active_windows "
+                  f"{before} -> {len(active_windows)} "
+                  f"(dropped {before - len(active_windows)} narrow)",
+                  flush=True)
+
     env = mosek.Env()
     params_applied: Optional[Dict[str, Any]] = None
 
@@ -349,6 +371,9 @@ def solve_mosek_dual(
                 # In single-t or non-reuse mode, skip the _all_* triplet
                 # cache — saves ~300 MB at d=14 and ~1.6 GB at d=20.
                 _cache_for_reuse = bool(reuse_task and single_t is None)
+                _protect_deg_set = (set(int(x) for x in preelim_protect_degrees)
+                                    if preelim_protect_degrees is not None
+                                    else None)
                 task, info = build_dual_task_preelim(
                     P, t_val=t_val, env=env,
                     include_upper_loc=add_upper_loc,
@@ -357,6 +382,7 @@ def solve_mosek_dual(
                     active_windows=active_windows,
                     lambda_upper_bound=lambda_upper_bound,
                     preelim_max_fill_ratio=preelim_max_fill_ratio,
+                    preelim_protect_degrees=_protect_deg_set,
                     cache_for_reuse=_cache_for_reuse,
                     verbose=verbose and mosek_log)
             else:
@@ -414,6 +440,10 @@ def solve_mosek_dual(
             task, info,
             feas_threshold=feas_threshold,
             infeas_threshold=infeas_threshold,
+            early_stop_on_clear_verdict=early_stop_on_clear_verdict,
+            early_stop_gap_tol=early_stop_gap_tol,
+            early_stop_feas_frac=early_stop_feas_frac,
+            early_stop_infeas_frac=early_stop_infeas_frac,
             verbose=verbose)
         total = time.time() - ts
 
@@ -938,6 +968,28 @@ def _main() -> int:
     p.add_argument('--preelim-max-fill-ratio', type=float, default=10.0,
                    help="Fill-cap for preelim Gauss-Jordan elimination "
                         "(default 10.0, matches preelim.DEFAULT_MAX_FILL_RATIO).")
+    p.add_argument('--preelim-protect-degrees', type=str, default=None,
+                   help="Comma-separated monomial total degrees to protect "
+                        "from pivoting in preelim (default: '1,2').  Pass "
+                        "'0' for deg-0-only protection = maximum elimination.")
+    p.add_argument('--min-window-ell', type=int, default=None,
+                   help="Drop windows with bandwidth ell < min-window-ell "
+                        "(C1 sacrifice).  Filters active_windows by the "
+                        "first entry of each (ell, s_lo) tuple in P['windows'].")
+    p.add_argument('--early-stop-on-clear-verdict', action='store_true',
+                   help="B1 sacrifice: install an IPM info-callback that "
+                        "terminates once the primal obj (= λ*) is clearly "
+                        "FEAS (|λ*| < 0.15·Λ) or INFEAS (λ* > 0.85·Λ) and "
+                        "the dual gap is < 1e-2.")
+    p.add_argument('--early-stop-gap-tol', type=float, default=1e-2,
+                   help="Gap tolerance for early-stop (default 1e-2). "
+                        "Loosen to 0.1 to fire earlier (fewer IPM iters).")
+    p.add_argument('--early-stop-feas-frac', type=float, default=0.15,
+                   help="FEAS threshold fraction of Λ (default 0.15). "
+                        "Loosen to e.g. 0.25 to fire earlier.")
+    p.add_argument('--early-stop-infeas-frac', type=float, default=0.85,
+                   help="INFEAS threshold fraction of Λ (default 0.85). "
+                        "Tighten toward 0.75 to fire earlier for INFEAS probes.")
     # #3 window-audit + drop levers.
     p.add_argument('--audit-windows', action='store_true',
                    help="Post-solve: report ||X_W||_F per window bar "
@@ -1034,6 +1086,14 @@ def _main() -> int:
         lazy_ab_eiej=args.lazy_ab_eiej,
         use_preelim=args.use_preelim,
         preelim_max_fill_ratio=args.preelim_max_fill_ratio,
+        preelim_protect_degrees=(
+            [int(x) for x in args.preelim_protect_degrees.split(',') if x.strip()]
+            if args.preelim_protect_degrees else None),
+        min_window_ell=args.min_window_ell,
+        early_stop_on_clear_verdict=args.early_stop_on_clear_verdict,
+        early_stop_gap_tol=args.early_stop_gap_tol,
+        early_stop_feas_frac=args.early_stop_feas_frac,
+        early_stop_infeas_frac=args.early_stop_infeas_frac,
         audit_windows=args.audit_windows,
         audit_tol=args.audit_tol,
         drop_window_indices=(

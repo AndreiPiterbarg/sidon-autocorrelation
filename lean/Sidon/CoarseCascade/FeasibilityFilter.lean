@@ -1,5 +1,5 @@
 /-
-Sidon Autocorrelation Project — Feasibility Pre-Filter Soundness (Proof Stubs)
+Sidon Autocorrelation Project — Feasibility Pre-Filter Soundness
 
 When transitioning from cascade level d to 2d, each parent bin with integer
 mass p splits into children (c, p-c) where both c and p-c must satisfy
@@ -41,49 +41,61 @@ def feasible_split (p x_cap : ℕ) : Prop :=
 
 /-- **Feasibility necessary condition:** if a valid split exists, then p <= 2*x_cap.
 
-    Proof: c <= x_cap and p - c <= x_cap, so p = c + (p-c) <= 2*x_cap. -/
+    Proof: c <= x_cap and p - c <= x_cap (in ℕ), so p ≤ c + x_cap ≤ 2*x_cap. -/
 theorem feasibility_necessary (p x_cap : ℕ) :
     feasible_split p x_cap → p ≤ 2 * x_cap := by
-  sorry
+  rintro ⟨c, hc, hpc, hcp⟩
+  -- c ≤ x_cap and p - c ≤ x_cap and c ≤ p, so p = (p - c) + c ≤ 2 * x_cap
+  omega
 
 /-- **Feasibility sufficient condition:** if p <= 2*x_cap, then a valid split exists.
 
     Construction: c = min(p, x_cap). Then c <= x_cap by definition.
-    And p - c = p - min(p, x_cap) <= p - (p - x_cap) = x_cap when p >= x_cap,
-    or p - c = 0 when p <= x_cap. Either way, p - c <= x_cap. -/
+    And p - c <= x_cap when p <= 2*x_cap. -/
 theorem feasibility_sufficient (p x_cap : ℕ) (h : p ≤ 2 * x_cap) :
     feasible_split p x_cap := by
-  sorry
+  refine ⟨min p x_cap, ?_, ?_, ?_⟩
+  · exact min_le_right p x_cap
+  · -- p - min(p, x_cap) ≤ x_cap iff p ≤ x_cap + min(p, x_cap)
+    -- Case p ≤ x_cap: min = p, so p - p = 0 ≤ x_cap ✓
+    -- Case p > x_cap: min = x_cap, so p - x_cap ≤ x_cap ⟺ p ≤ 2*x_cap ✓
+    omega
+  · exact min_le_left p x_cap
 
 /-- **Feasibility iff:** p <= 2*x_cap is necessary and sufficient. -/
 theorem feasibility_iff (p x_cap : ℕ) :
-    feasible_split p x_cap ↔ p ≤ 2 * x_cap := by
-  sorry
+    feasible_split p x_cap ↔ p ≤ 2 * x_cap :=
+  ⟨feasibility_necessary p x_cap, feasibility_sufficient p x_cap⟩
 
 -- =============================================================================
 -- PART 2: Pre-Filter Soundness
 -- =============================================================================
 
 /-- **Pre-filter soundness:** Discarding parents where any bin > 2*x_cap
-    does not lose any parent that could produce unpruned children.
+    does not lose any parent that could produce children with all bins ≤ x_cap.
 
     If parent bin p_i > 2*x_cap, then no child split of bin i can have both
-    halves in [0, x_cap], so no valid child exists. But since children must
-    have all bins in [0, x_cap] (per_bin_mass_cap), this parent generates
-    NO children at all. Discarding it is therefore safe.
+    halves in [0, x_cap], so any child of this parent must have at least one
+    bin > x_cap.
 
     Source: run_cascade_coarse.py lines 593-599. -/
 theorem prefilter_sound {d : ℕ} (S : ℕ) (c_target : ℝ)
-    (parent : Fin d → ℕ) (h_sum : ∑ i, parent i = S)
+    (parent : Fin d → ℕ) (_h_sum : ∑ i, parent i = S)
     (x_cap : ℕ)
-    (h_xcap_def : x_cap = Nat.floor ((S : ℝ) * Real.sqrt (c_target / (d : ℝ))))
+    (_h_xcap_def : x_cap = Nat.floor ((S : ℝ) * Real.sqrt (c_target / (d : ℝ))))
     (i : Fin d) (h_infeasible : parent i > 2 * x_cap) :
-    -- No valid child composition exists for this parent
     ¬∃ child : Fin (2 * d) → ℕ,
       (∀ j : Fin d,
         child ⟨2 * j.val, by omega⟩ + child ⟨2 * j.val + 1, by omega⟩ = parent j) ∧
       (∀ k : Fin (2 * d), child k ≤ x_cap) := by
-  sorry
+  rintro ⟨child, h_split, h_bound⟩
+  -- For bin i: child[2i] + child[2i+1] = parent_i > 2*x_cap
+  -- But each child ≤ x_cap, so child[2i] + child[2i+1] ≤ 2*x_cap. Contradiction.
+  have h_pair : child ⟨2 * i.val, by omega⟩ + child ⟨2 * i.val + 1, by omega⟩ = parent i :=
+    h_split i
+  have h1 : child ⟨2 * i.val, by omega⟩ ≤ x_cap := h_bound _
+  have h2 : child ⟨2 * i.val + 1, by omega⟩ ≤ x_cap := h_bound _
+  omega
 
 -- =============================================================================
 -- PART 3: Old Filter Was Unsound (Counterexample Witness)
@@ -94,13 +106,12 @@ theorem prefilter_sound {d : ℕ} (S : ℕ) (c_target : ℝ)
 
     Counterexample: x_cap = 10, parent bin p = 15.
     Split c = 8, p-c = 7: both <= 10. Valid!
-    But old filter rejects since 15 > 10.
-
-    This means the old code could miss survivors, potentially invalidating
-    the proof (survivors thought to be pruned were actually just not explored). -/
+    But old filter rejects since 15 > 10. -/
 theorem old_filter_unsound :
     ∃ p x_cap : ℕ, p > x_cap ∧ feasible_split p x_cap := by
-  sorry
+  refine ⟨15, 10, by norm_num, ?_⟩
+  -- 15 ≤ 2 * 10 = 20, so by feasibility_sufficient, feasible.
+  exact feasibility_sufficient 15 10 (by norm_num)
 
 -- =============================================================================
 -- PART 4: Cursor Range Correctness
@@ -119,14 +130,36 @@ theorem cursor_range_correct (p x_cap : ℕ) (h : p ≤ 2 * x_cap) :
     lo ≤ hi ∧
     (∀ c, lo ≤ c → c ≤ hi → c ≤ x_cap ∧ p - c ≤ x_cap ∧ c ≤ p) ∧
     (∀ c, c ≤ x_cap → p - c ≤ x_cap → c ≤ p → lo ≤ c ∧ c ≤ hi) := by
-  sorry
+  simp only
+  refine ⟨?_, ?_, ?_⟩
+  · -- lo = p - min(p, x_cap), hi = min(p, x_cap). Show lo ≤ hi.
+    -- Case p ≤ x_cap: min = p, lo = 0, hi = p. 0 ≤ p ✓
+    -- Case p > x_cap: min = x_cap, lo = p - x_cap, hi = x_cap.
+    --   Need p - x_cap ≤ x_cap, i.e., p ≤ 2 * x_cap ✓ by hypothesis
+    omega
+  · intro c hc_lo hc_hi
+    refine ⟨?_, ?_, ?_⟩
+    · -- c ≤ hi = min(p, x_cap) ≤ x_cap
+      exact le_trans hc_hi (min_le_right _ _)
+    · -- p - c ≤ x_cap
+      -- From hc_lo: c ≥ p - min(p, x_cap)
+      -- Case p ≤ x_cap: min = p, c ≥ 0, p - c ≤ p ≤ x_cap
+      -- Case p > x_cap: min = x_cap, c ≥ p - x_cap, p - c ≤ x_cap
+      omega
+    · -- c ≤ p: c ≤ hi = min(p, x_cap) ≤ p
+      exact le_trans hc_hi (min_le_left _ _)
+  · intro c hc hpc hcp
+    refine ⟨?_, ?_⟩
+    · -- p - min(p, x_cap) ≤ c
+      omega
+    · -- c ≤ min(p, x_cap)
+      exact le_min hcp hc
 
-/-- The number of children per parent bin is (hi - lo + 1) = min(p, x_cap) - max(0, p-x_cap) + 1.
-    Total children = product over all parent bins. -/
-theorem children_count (p x_cap : ℕ) (h : p ≤ 2 * x_cap) :
+/-- The number of children per parent bin is (hi - lo + 1) = min(p, x_cap) - max(0, p-x_cap) + 1. -/
+theorem children_count (p x_cap : ℕ) (_h : p ≤ 2 * x_cap) :
     let lo := p - min p x_cap
     let hi := min p x_cap
     hi - lo + 1 = min p x_cap - (p - min p x_cap) + 1 := by
-  sorry
+  rfl
 
 end -- noncomputable section

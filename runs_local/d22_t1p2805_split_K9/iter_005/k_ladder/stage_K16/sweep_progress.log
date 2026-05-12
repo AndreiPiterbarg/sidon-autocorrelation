@@ -1,0 +1,16 @@
+{"event": "worker_ready", "worker_id": 0, "ready": true, "cache_build_s": 0.11697530746459961}
+{"event": "worker_ready", "worker_id": 3, "ready": true, "cache_build_s": 0.11742448806762695}
+{"event": "worker_ready", "worker_id": 1, "ready": true, "cache_build_s": 0.11984395980834961}
+{"event": "worker_ready", "worker_id": 4, "ready": true, "cache_build_s": 0.11587142944335938}
+{"event": "worker_ready", "worker_id": 2, "ready": true, "cache_build_s": 0.1192617416381836}
+{"event": "worker_ready", "worker_id": 6, "ready": true, "cache_build_s": 0.11743998527526855}
+{"event": "worker_ready", "worker_id": 7, "ready": true, "cache_build_s": 0.11708521842956543}
+{"event": "worker_ready", "worker_id": 5, "ready": true, "cache_build_s": 0.11736249923706055}
+{"event": "worker_ready", "worker_id": 8, "ready": true, "cache_build_s": 0.11611032485961914}
+{"event": "worker_ready", "worker_id": 11, "ready": true, "cache_build_s": 0.11706948280334473}
+{"event": "worker_ready", "worker_id": 9, "ready": true, "cache_build_s": 0.11876773834228516}
+{"event": "worker_ready", "worker_id": 12, "ready": true, "cache_build_s": 0.11474823951721191}
+{"event": "worker_ready", "worker_id": 10, "ready": true, "cache_build_s": 0.11884856224060059}
+{"event": "worker_ready", "worker_id": 13, "ready": true, "cache_build_s": 0.11550235748291016}
+{"event": "box_result", "hash": "e82d7abfe44e73f9", "verdict": "feas", "wall_s": 71.09866404533386, "peak_rss_gb": 24.35, "lambda_star": -1.7684817259985625e-07, "wall_t": 71.2632143497467}
+{"event": "box_result", "hash": "15d4e341ea7c9e0f", "verdict": "feas", "wall_s": 81.57259464263916, "peak_rss_gb": 27.06, "lambda_star": -1.8422837559731589e-06, "wall_t": 81.72938585281372}

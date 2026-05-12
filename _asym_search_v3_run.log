@@ -1,0 +1,52 @@
+======================================================================
+V3 (FFT) asymmetric near-ext search
+NX=4001 dx=1.2500e-04
+======================================================================
+Sanity uniform M = 2.000500 (analytic 2.000)
+
+--- K = 3 ---
+    K=3 seed=0  new best M = 1.6170605
+    K=3 seed=5  new best M = 1.6155039
+    K=3 seed=8  new best M = 1.6150496
+  -> K=3 best M = 1.6150496 after 20 seeds/warmstarts
+  K=3 done: M=1.6150496  verify NX=16001 M=1.6148423  K=3.23477  time 48.0s
+
+--- K = 5 ---
+    K=5 seed=0  new best M = 1.5822380
+    K=5 seed=1  new best M = 1.5772763
+    K=5 warm-start=from_K3_split  M = 1.6237675
+  -> K=5 best M = 1.5772763 after 21 seeds/warmstarts
+  K=5 done: M=1.5772763  verify NX=16001 M=1.5772142  K=3.40612  time 199.0s
+
+--- K = 10 ---
+    K=10 seed=0  new best M = 1.6010924
+    K=10 seed=1  new best M = 1.5866433
+    K=10 seed=7  new best M = 1.5749457
+    K=10 seed=14  new best M = 1.5707283
+    K=10 warm-start=from_K5_split  M = 1.5874366
+  -> K=10 best M = 1.5707283 after 21 seeds/warmstarts
+  K=10 done: M=1.5707283  verify NX=16001 M=1.5701607  K=2.76332  time 491.1s
+
+======================================================================
+SUMMARY (V3 FFT)
+======================================================================
+   K     M (4001)    M (16001)     K_l2sq     asym   M-1.2802
+  K3    1.6150496    1.6148423    3.23488   0.9969  +0.334850
+  K5    1.5772763    1.5772142    3.40655   1.0777  +0.297076
+ K10    1.5707283    1.5701607    2.76416   0.9728  +0.290528
+
+LOWEST M overall = 1.5707283
+CS 2017 bound      = 1.2802000
+MV near-ext theory = ~1.2748
+Total time = 738.1s
+
+Best near-min description:
+  Best: K10, M=1.5707283, K=||f||_2^2=2.76416
+  asymmetry=0.9728
+  n_peaks=4
+    peak at x = -0.2349  height f(x) = 4.9265
+    peak at x = -0.1242  height f(x) = 0.8575
+    peak at x = +0.0150  height f(x) = 5.3743
+    peak at x = +0.0591  height f(x) = 3.0939
+
+Saved _asym_search_v3_results.json

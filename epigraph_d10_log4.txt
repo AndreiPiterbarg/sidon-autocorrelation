@@ -1,0 +1,46 @@
+======================================================================
+d=10 t=1.208 BnB — EPIGRAPH FIX TEST
+Goal: break the 99.06% bound stall.
+======================================================================
+[par] d=10  target=1.208  init_boxes=211  workers=8  init_split_depth=14
+[par] t=    5.1s  nodes=         0  cert=         0  in_flight=   126  queue=   4  active= 8/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   10.1s  nodes=         0  cert=         0  in_flight=    98  queue=   2  active= 8/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   15.2s  nodes=     20000  cert=     10086  in_flight=    93  queue=   1  active= 8/8  rate=   3974/s  progress= 89.56858%  eta=      2s
+[par] t=   20.2s  nodes=     25000  cert=     12583  in_flight=    95  queue=   1  active= 8/8  rate=    991/s  progress= 93.35825%  eta=      1s
+[par] t=   25.3s  nodes=     40000  cert=     20067  in_flight=    83  queue=   1  active= 8/8  rate=   2975/s  progress= 97.62556%  eta=      1s
+[par] t=   30.3s  nodes=     50000  cert=     25065  in_flight=    85  queue=   1  active= 8/8  rate=   1980/s  progress= 97.62724%  eta=      1s
+[par] t=   35.4s  nodes=     65000  cert=     32564  in_flight=    89  queue=   1  active= 8/8  rate=   2969/s  progress= 99.52743%  eta=      0s
+[par] t=   40.4s  nodes=     80000  cert=     40063  in_flight=    86  queue=   1  active= 8/8  rate=   2979/s  progress= 99.52891%  eta=      0s
+[par] t=   45.4s  nodes=     85000  cert=     42563  in_flight=    88  queue=   1  active= 8/8  rate=    993/s  progress= 99.52915%  eta=      0s
+[par] t=   50.5s  nodes=     90000  cert=     45062  in_flight=    84  queue=   1  active= 8/8  rate=    992/s  progress= 99.52954%  eta=      0s
+[par] t=   55.5s  nodes=    110000  cert=     55064  in_flight=    88  queue=   1  active= 8/8  rate=   3965/s  progress= 99.53125%  eta=      0s
+[par] t=   60.6s  nodes=    110000  cert=     55064  in_flight=    89  queue=   0  active= 8/8  rate=      0/s  progress= 99.53125%  eta=      0s
+[par] t=   65.6s  nodes=    120000  cert=     60063  in_flight=    83  queue=   1  active= 8/8  rate=   1978/s  progress= 99.53231%  eta=      0s
+[par] t=   70.7s  nodes=    135000  cert=     67563  in_flight=    84  queue=   1  active= 8/8  rate=   2972/s  progress= 99.53484%  eta=      0s
+[par] t=   75.7s  nodes=    150000  cert=     75062  in_flight=    75  queue=   1  active= 8/8  rate=   2967/s  progress= 99.53684%  eta=      0s
+[par] t=   80.8s  nodes=    160000  cert=     80061  in_flight=    86  queue=   0  active= 8/8  rate=   1984/s  progress= 99.53855%  eta=      0s
+[par] t=   85.8s  nodes=    180000  cert=     90062  in_flight=    80  queue=   0  active= 7/8  rate=   3970/s  progress= 99.54556%  eta=      0s
+[par] t=   90.8s  nodes=    190000  cert=     95053  in_flight=    89  queue=   1  active= 8/8  rate=   1981/s  progress= 99.56915%  eta=      0s
+[par] t=   95.9s  nodes=    205000  cert=    102559  in_flight=    55  queue=   0  active= 8/8  rate=   2973/s  progress= 99.63628%  eta=      0s
+[par] t=  100.9s  nodes=    210000  cert=    105060  in_flight=    53  queue=   0  active= 7/8  rate=    988/s  progress= 99.64702%  eta=      0s
+[par] t=  106.0s  nodes=    215000  cert=    107561  in_flight=    67  queue=   0  active= 8/8  rate=    989/s  progress= 99.64930%  eta=      0s
+[par] t=  111.0s  nodes=    215000  cert=    107561  in_flight=    65  queue=   0  active= 8/8  rate=      0/s  progress= 99.64930%  eta=      0s
+[par] t=  116.1s  nodes=    215000  cert=    107561  in_flight=    53  queue=   0  active= 7/8  rate=      0/s  progress= 99.64930%  eta=      0s
+[par] t=  121.1s  nodes=    225000  cert=    112567  in_flight=    53  queue=   0  active= 7/8  rate=   1979/s  progress= 99.76458%  eta=      0s
+[par] t=  126.2s  nodes=    230000  cert=    115075  in_flight=    24  queue=   0  active= 3/8  rate=    993/s  progress= 99.76573%  eta=      0s
+[par] t=  131.2s  nodes=    230000  cert=    115075  in_flight=    45  queue=   0  active= 6/8  rate=      0/s  progress= 99.76573%  eta=      0s
+[par] t=  136.2s  nodes=    245000  cert=    122580  in_flight=    16  queue=   0  active= 3/8  rate=   2978/s  progress= 99.99849%  eta=      0s
+[par] t=  141.3s  nodes=    245000  cert=    122580  in_flight=    14  queue=   0  active= 2/8  rate=      0/s  progress= 99.99849%  eta=      0s
+[par] DONE success=True elapsed=142.1s  nodes=266057  cert=133134  coverage=100.000%  in_flight_final=0
+[par] EPIGRAPH: certs=52038/58651
+
+======================================================================
+FINAL RESULT
+======================================================================
+  success: True
+  nodes: 266,057
+  coverage: 99.999882%
+  time: 142.1s
+  in_flight: 0
+  CCTR stats: {'attempts': 0, 'sw_ne_certs': 0, 'joint_attempts': 0, 'joint_certs': 0, 'rlt_attempts': 0, 'rlt_certs': 0}
+  EPIGRAPH stats: {'attempts': 58651, 'certs': 52038}

@@ -1,0 +1,18 @@
+{
+  "n_half": 5,
+  "m": 5,
+  "c_target": 1.28,
+  "d": 10,
+  "n_win": 190,
+  "F_survivors": 558,
+  "Q_survivors": 240,
+  "joint_spectral_survivors": 179,
+  "extra_prunes": 61,
+  "elapsed_joint_spectral": 25.89494562149048,
+  "audit_F_pruned_N": 200,
+  "audit_F_pruned_NOT_JS": 0,
+  "source_counts": {
+    "Q": 176,
+    "eW": 3
+  }
+}

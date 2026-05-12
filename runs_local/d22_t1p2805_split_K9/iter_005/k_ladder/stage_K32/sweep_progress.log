@@ -1,0 +1,11 @@
+{"event": "worker_ready", "worker_id": 1, "ready": true, "cache_build_s": 0.11440157890319824}
+{"event": "worker_ready", "worker_id": 0, "ready": true, "cache_build_s": 0.1157689094543457}
+{"event": "worker_ready", "worker_id": 4, "ready": true, "cache_build_s": 0.1154329776763916}
+{"event": "worker_ready", "worker_id": 2, "ready": true, "cache_build_s": 0.11843061447143555}
+{"event": "worker_ready", "worker_id": 3, "ready": true, "cache_build_s": 0.11711883544921875}
+{"event": "worker_ready", "worker_id": 5, "ready": true, "cache_build_s": 0.11535763740539551}
+{"event": "worker_ready", "worker_id": 6, "ready": true, "cache_build_s": 0.1149909496307373}
+{"event": "worker_ready", "worker_id": 7, "ready": true, "cache_build_s": 0.11559462547302246}
+{"event": "worker_ready", "worker_id": 8, "ready": true, "cache_build_s": 0.11508870124816895}
+{"event": "box_result", "hash": "e82d7abfe44e73f9", "verdict": "feas", "wall_s": 88.77270579338074, "peak_rss_gb": 48.03, "lambda_star": -3.3436915730270944e-08, "wall_t": 88.94191813468933}
+{"event": "box_result", "hash": "15d4e341ea7c9e0f", "verdict": "feas", "wall_s": 125.50092792510986, "peak_rss_gb": 53.34, "lambda_star": -4.9533854642611126e-08, "wall_t": 125.6700930595398}

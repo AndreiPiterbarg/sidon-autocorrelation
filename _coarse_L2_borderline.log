@@ -1,0 +1,80 @@
+
+=== d=4 S=20 c=1.2 (BORDERLINE: most savable) ===
+    grid passers: 1,733  tri_cert: 1,654  hard: 79
+    [  0] tri_net=-0.003333  shor=1.20500(C) L2=1.20500(C) gap=+-1.44e-09 cert  T=115/483ms
+    [  1] tri_net=-0.003333  shor=1.20500(C) L2=1.20500(C) gap=+-1.79e-09 cert  T=51/440ms
+    [  2] tri_net=-0.003333  shor=1.20500(C) L2=1.20500(C) gap=+-6.39e-09 cert  T=47/425ms
+    [  3] tri_net=-0.003333  shor=1.20500(C) L2=1.20500(C) gap=+-6.59e-09 cert  T=47/390ms
+    [  4] tri_net=-0.004000  shor=1.20000(f) L2=1.20000(f) gap=+4.31e-09 fail  T=43/527ms
+    [  5] tri_net=-0.004000  shor=1.20000(f) L2=1.20000(f) gap=+4.01e-09 fail  T=81/653ms
+    [  6] tri_net=-0.006000  shor=1.19800(f) L2=1.19800(f) gap=+-2.60e-09 fail  T=69/604ms
+    [  7] tri_net=-0.006000  shor=1.19800(f) L2=1.19800(f) gap=+-2.57e-09 fail  T=65/674ms
+    [  8] tri_net=-0.007500  shor=1.20250(C) L2=1.20250(C) gap=+-6.96e-10 cert  T=83/637ms
+    [  9] tri_net=-0.010000  shor=1.21000(C) L2=1.21000(C) gap=+-1.16e-08 cert  T=68/600ms
+    [ 10] tri_net=-0.010000  shor=1.21000(C) L2=1.21000(C) gap=+-2.61e-09 cert  T=74/445ms
+    [ 11] tri_net=-0.010000  shor=1.21000(C) L2=1.21000(C) gap=+-7.98e-10 cert  T=60/433ms
+
+    --- Summary ---
+    Cells tested            : 12
+    Shor certified          : 8/12
+    Lasserre-2 certified    : 8/12
+    L2 strictly > Shor LB   : 0
+    L2 rescues (Shor fail->L2 cert): 0
+    Shor time/cell (ms)     : med=66.3
+    L2  time/cell (ms)      : med=504.8
+    Time ratio L2/Shor      : med=7.61x
+
+=== d=6 S=15 c=1.2 (BORDERLINE: most savable) ===
+    grid passers: 15,504  tri_cert: 14,969  hard: 535
+    [  0] tri_net=-0.000000  shor=1.27556(C) L2=1.27556(C) gap=+4.00e-09 cert  T=92/1619ms
+    [  1] tri_net=-0.000000  shor=1.27111(C) L2=1.27111(C) gap=+-8.04e-09 cert  T=133/2144ms
+    [  2] tri_net=-0.000000  shor=1.27556(C) L2=1.27556(C) gap=+4.82e-09 cert  T=148/2085ms
+    [  3] tri_net=-0.000000  shor=1.27556(C) L2=1.27556(C) gap=+2.34e-08 cert  T=111/1521ms
+    [  4] tri_net=-0.000000  shor=1.25778(C) L2=1.25778(C) gap=+1.12e-09 cert  T=102/2130ms
+    [  5] tri_net=-0.000000  shor=1.25778(C) L2=1.25778(C) gap=+-1.71e-08 cert  T=151/2224ms
+    [  6] tri_net=-0.000000  shor=1.27556(C) L2=1.27556(C) gap=+-1.91e-08 cert  T=124/1610ms
+    [  7] tri_net=-0.000000  shor=1.24000(C) L2=1.24000(C) gap=+4.16e-09 cert  T=112/1893ms
+    [  8] tri_net=-0.000000  shor=1.25778(C) L2=1.25778(C) gap=+6.36e-10 cert  T=170/1926ms
+    [  9] tri_net=-0.001905  shor=1.22095(C) L2=1.22095(C) gap=+2.47e-10 cert  T=155/1577ms
+    [ 10] tri_net=-0.001905  shor=1.20571(C) L2=1.20571(C) gap=+6.31e-09 cert  T=129/1496ms
+    [ 11] tri_net=-0.001905  shor=1.20571(C) L2=1.20571(C) gap=+6.31e-09 cert  T=152/2058ms
+
+    --- Summary ---
+    Cells tested            : 12
+    Shor certified          : 12/12
+    Lasserre-2 certified    : 12/12
+    L2 strictly > Shor LB   : 1
+    L2 rescues (Shor fail->L2 cert): 0
+    Shor time/cell (ms)     : med=131.4
+    L2  time/cell (ms)      : med=1909.5
+    Time ratio L2/Shor      : med=14.53x
+
+=== d=8 S=12 c=1.2 (BORDERLINE: most savable) ===
+    grid passers: 50,388  tri_cert: 45,718  hard: 4,670
+    [  0] tri_net=+0.000000  shor=1.30000(C) L2=1.30000(C) gap=+5.01e-10 cert  T=232/5156ms
+    [  1] tri_net=+0.000000  shor=1.30000(C) L2=1.30000(C) gap=+-5.31e-08 cert  T=225/5229ms
+    [  2] tri_net=+0.000000  shor=1.30000(C) L2=1.30000(C) gap=+1.40e-09 cert  T=229/5414ms
+    [  3] tri_net=+0.000000  shor=1.32222(C) L2=1.32222(C) gap=+7.23e-10 cert  T=253/5243ms
+    [  4] tri_net=+0.000000  shor=1.29444(C) L2=1.30000(C) gap=+5.56e-03 cert  T=237/5033ms
+    [  5] tri_net=+0.000000  shor=1.27778(C) L2=1.27778(C) gap=+3.11e-09 cert  T=244/5504ms
+    [  6] tri_net=+0.000000  shor=1.32222(C) L2=1.32222(C) gap=+7.23e-10 cert  T=228/4820ms
+    [  7] tri_net=+0.000000  shor=1.29444(C) L2=1.30000(C) gap=+5.56e-03 cert  T=208/5036ms
+    [  8] tri_net=+0.000000  shor=1.30000(C) L2=1.30000(C) gap=+1.60e-08 cert  T=217/5559ms
+    [  9] tri_net=-0.000000  shor=1.21111(C) L2=1.21111(C) gap=+-5.80e-09 cert  T=226/5962ms
+    [ 10] tri_net=-0.000000  shor=1.21111(C) L2=1.21111(C) gap=+-2.09e-08 cert  T=193/5093ms
+    [ 11] tri_net=-0.000000  shor=1.25556(C) L2=1.25556(C) gap=+1.43e-08 cert  T=231/5145ms
+
+    --- Summary ---
+    Cells tested            : 12
+    Shor certified          : 12/12
+    Lasserre-2 certified    : 12/12
+    L2 strictly > Shor LB   : 4
+    L2 rescues (Shor fail->L2 cert): 0
+    Shor time/cell (ms)     : med=228.1
+    L2  time/cell (ms)      : med=5192.6
+    Time ratio L2/Shor      : med=22.76x
+
+=== OVERALL BORDERLINE SUMMARY ===
+  d=4 S=20: 0/12 L2 rescues (0.0%)  time L2/Shor = 7.6x
+  d=6 S=15: 0/12 L2 rescues (0.0%)  time L2/Shor = 14.5x
+  d=8 S=12: 0/12 L2 rescues (0.0%)  time L2/Shor = 22.8x

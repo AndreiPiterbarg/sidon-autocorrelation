@@ -1,0 +1,18 @@
+(CVXPY) May 05 10:38:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 05 10:38:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+/usr/local/lib/python3.10/dist-packages/cvxpy/atoms/affine/reshape.py:68: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  warnings.warn(reshape_order_warning, FutureWarning)
+d_parent | MOSEK time (mean of 5)  | CVXPY time (single)
+----------------------------------------------------------------
+   4   |    73.8 ms (status=primal-infeasible-cer)  |   338.1 ms (cv_res=True)
+   6   |    92.8 ms (status=primal-infeasible-cer)  |   201.4 ms (cv_res=True)
+   8   |   145.9 ms (status=primal-infeasible-cer)  |   411.2 ms (cv_res=True)
+  10   |  2291.8 ms (status=primal-infeasible-cer)  |   692.6 ms (cv_res=True)
+  12   |   507.0 ms (status=primal-infeasible-cer)  |  1217.0 ms (cv_res=True)

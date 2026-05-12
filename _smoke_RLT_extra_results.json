@@ -1,0 +1,13 @@
+{
+  "n_half": 3,
+  "m": 10,
+  "c_target": 1.28,
+  "n_total": 1891,
+  "n_F": 172,
+  "n_Q": 100,
+  "n_baseline_L_prune": 5,
+  "n_extra_L_prune": 5,
+  "delta": 0,
+  "t_baseline": 24.145265102386475,
+  "t_extra": 36.59375309944153
+}

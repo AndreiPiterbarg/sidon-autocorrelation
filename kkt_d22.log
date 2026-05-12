@@ -1,0 +1,172 @@
+
+########################################################################
+# d=22 KKT-correct mu* finder (local, 16-core box)
+# n_starts=1500, n_workers=8, top_K_phase2=50, top_K_phase3=10
+########################################################################
+
+======================================================================
+  KKT-correct μ* finder at d=22, x_cap=1.0000
+======================================================================
+Phase 1: 1500 multistarts at d=22
+Phase 1: 1500 done in 369.6s
+  top-50: f range [1.392886, 1.431613]
+
+Phase 2: LSE-Newton continuation on top-50
+  Phase 2 done in 105.1s. Top 10 f range: [1.320348, 1.360885], min residual: 1.4326e-01
+
+Phase 3: Newton-KKT + subgradient polish on top-10
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.0411611176676662e-17.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 6.444981477411335e-17.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.486692781702639e-17.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.9784431074375235e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.1597200898558384e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.7613852777787737e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.133007074929993e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.9715571999829556e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.6755928000067178e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.1143641753955242e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.5784677049963448e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.9135560410755527e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.5125473445522405e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 9.649602054238258e-17.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 6.48415803256524e-17.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.2045532301032114e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.1143646236490317e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.578466707455579e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.9135104270029248e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.5125450757945618e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.8253735497768203e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.03368558187938e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.6292011784290612e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.6335869569481874e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.664965219361962e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.398499477920319e-17.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.7444952624224603e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.1147371810440564e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.5946001468942162e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.9135614793998147e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.5125451869883815e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.8299548070323288e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.8414251017055815e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.195204740163716e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.739351383977535e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\kkt_correct_mu_star.py:619: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 2.1161668668967207e-16.
+  dz = solve(J + nu_lm * np.diag(np.maximum(JtJ_diag, 1e-12)), -F)
+
+Phase 3 done in 45.7s.
+  best by residual P2: f=1.3537840, res=1.4326e-01
+  best by residual P3: f=1.3093356, res=3.4228e-14, m=subgrad
+  best by f-val P3: f=1.3093356, res=3.4228e-14, m=subgrad
+
+======================================================================
+  RESULT at d=22
+======================================================================
+  mu* = [0.18394399 0.04933037 0.04052644 0.         0.         0.
+ 0.         0.         0.         0.01131208 0.12305017 0.
+ 0.05073947 0.06700646 0.05854895 0.04572918 0.05424538 0.05686697
+ 0.05228644 0.04674051 0.01566428 0.14400931]
+  f(mu*) = 1.30933556
+  KKT residual = 3.422803e-14
+  active windows: 29
+  selected from phase 3 (subgrad)
+  Phase times: P1=369.7s, P2=105.1s, P3=45.7s, total=520.5s
+
+========================================================================
+MASTER PIPELINE RESULT at d=22
+========================================================================
+  f(mu*) = val(22) UB = 1.3093355586
+  KKT residual = 3.422803e-14
+  active windows: 29
+  selected from phase 3 (subgrad)
+  master total time: 520.5s
+
+========================================================================
+INDEPENDENT PHASE 1+2 RUN (no Phase 3) at d=22
+========================================================================
+Phase 1: 1500 multistarts at d=22PhPhase 1: 1500 done in 616.4s
+  top-50: f range [1.375037, 1.424443]
+
+Phase 2: LSE-Newton continuation on top-50Phase 2 done in 96.0s, 50 successful starts
+
+========================================================================
+TOP 20 BY f-VALUE (Phase 2)
+========================================================================
+rank  f             residual      active  
+0     1.3316006     4.7498e+00    2       
+1     1.3390926     6.2345e+00    1       
+2     1.3411964     2.2763e+00    7       
+3     1.3413691     6.0283e+00    2       
+4     1.3437132     4.4310e+00    3       
+5     1.3460839     2.0004e+00    4       
+6     1.3509507     4.1084e-01    9       
+7     1.3509796     6.1918e+00    1       
+8     1.3516177     4.1641e+00    2       
+9     1.3544997     3.4925e-01    12      
+10    1.3549267     6.5087e+00    1       
+11    1.3619076     4.7874e+00    2       
+12    1.3629186     6.4609e+00    1       
+13    1.3727076     2.5687e+00    4       
+14    1.3735277     3.6983e+00    4       
+15    1.3774768     5.7830e+00    1       
+16    1.3778252     2.4256e+00    4       
+17    1.3795411     2.8519e+00    8       
+18    1.3845764     2.3036e+00    8       
+19    1.3898894     6.2025e+00    1       
+
+========================================================================
+BEST mu* SELECTED at d=22
+========================================================================
+  source: master(phase=3,method=subgrad)
+  f(mu*) = val(22) UB = 1.3093355586
+  KKT residual = 3.422803e-14
+  active windows: 29
+  mu* = [0.18394399 0.04933037 0.04052644 0.         0.         0.
+ 0.         0.         0.         0.01131208 0.12305017 0.
+ 0.05073947 0.06700646 0.05854895 0.04572918 0.05424538 0.05686697
+ 0.05228644 0.04674051 0.01566428 0.14400931]
+  Phase 1 time: 678.3s, Phase 2 time: 96.0s, master time: 427.0s
+
+Saved C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\mu_star_d22.npz
+
+========================================================================
+VERDICT FOR c=1.281
+========================================================================
+  val(22) UB = 1.309336
+  c_target    = 1.281000
+  margin = val(22)_UB - c = +0.028336
+  >>> POSSIBLY FEASIBLE: val(22) >= 1.281 if pipeline is at true minimum

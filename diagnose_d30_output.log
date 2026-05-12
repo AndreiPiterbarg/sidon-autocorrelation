@@ -1,0 +1,96 @@
+================================================================================
+TEST A: Cert rate by box width × position (50 random boxes per cell)
+================================================================================
+
+=== d=22 ===
+f(mu*)=1.3093, margin=0.0283, |W|=946
+  hw     |  anchor%  centroid%  LP%  any_cert%  | LP_ms_avg
+  0.0500 |    0.0%     0.0%     0.0%     0.0%   | 261
+  0.0250 |    0.0%     0.0%     0.0%     0.0%   | 236
+  0.0100 |    0.0%     0.0%   100.0%   100.0%   | 202
+  0.0050 |    0.0%     0.0%   100.0%   100.0%   | 185
+  0.0020 |   20.0%    26.7%   100.0%   100.0%   | 172
+
+=== d=24 ===
+f(mu*)=1.3137, margin=0.0327, |W|=1128
+  hw     |  anchor%  centroid%  LP%  any_cert%  | LP_ms_avg
+  0.0500 |    0.0%     0.0%     0.0%     0.0%   | 429
+  0.0250 |    0.0%     0.0%     0.0%     0.0%   | 574
+  0.0100 |    0.0%     0.0%   100.0%   100.0%   | 533
+  0.0050 |    0.0%     0.0%   100.0%   100.0%   | 569
+  0.0020 |    0.0%    20.0%   100.0%   100.0%   | 535
+
+=== d=30 ===
+f(mu*)=1.3320, margin=0.0510, |W|=1770
+  hw     |  anchor%  centroid%  LP%  any_cert%  | LP_ms_avg
+  0.0500 |    0.0%     0.0%     0.0%     0.0%   | 2144
+  0.0250 |    0.0%     0.0%     0.0%     0.0%   | 1879
+  0.0100 |    0.0%     0.0%   100.0%   100.0%   | 882
+  0.0050 |    0.0%     0.0%   100.0%   100.0%   | 836
+  0.0020 |   40.0%    26.7%   100.0%   100.0%   | 834
+
+================================================================================
+TEST B: Tree-size simulation (random walk, expected nodes to drain)
+================================================================================
+  Assuming uniform box width as simulation parameter, track in_flight
+  random walk with cert prob p (from Test A "any_cert%" at width hw)
+
+  d=22:
+    hw=0.05: cert_rate=  0.0%, drift=+1.000/box → tree GROWS
+    hw=0.025: cert_rate=  0.0%, drift=+1.000/box → tree GROWS
+    hw=0.01: cert_rate=100.0%, drain rate=1.000/box → drain 500 nodes per 500 in_flight
+  d=24:
+    hw=0.05: cert_rate=  0.0%, drift=+1.000/box → tree GROWS
+    hw=0.025: cert_rate=  0.0%, drift=+1.000/box → tree GROWS
+    hw=0.01: cert_rate=100.0%, drain rate=1.000/box → drain 500 nodes per 500 in_flight
+  d=30:
+    hw=0.05: cert_rate=  0.0%, drift=+1.000/box → tree GROWS
+    hw=0.025: cert_rate=  0.0%, drift=+1.000/box → tree GROWS
+    hw=0.01: cert_rate=100.0%, drain rate=1.000/box → drain 500 nodes per 500 in_flight
+
+================================================================================
+TEST C: WHERE does d=30 fail vs d=22? Check failed-LP boxes structurally.
+================================================================================
+
+  d=22 failing box: hw=0.025, f(center)=1.8340, LP=1.2354, gap=0.5986
+    widest axes (top 5): [11, 7, 19, 6, 9], widths: [0.05000000000000002, 0.05000000000000001, 0.05000000000000001, 0.05, 0.05]
+
+  d=30 failing box: hw=0.025, f(center)=2.0656, LP=1.1819, gap=0.8837
+    widest axes (top 5): [14, 21, 17, 27, 20], widths: [0.05000000000000002, 0.05000000000000001, 0.05000000000000001, 0.05000000000000001, 0.05000000000000001]
+
+================================================================================
+TEST D: Effective dimension — how many axes are "important"?
+================================================================================
+  d=22: # axes with |mu_i| < 1e-6: 7, < 1e-3: 7, > 0.05: 9
+    effective dim (axes with > 1e-3 mass): 15
+  d=24: # axes with |mu_i| < 1e-6: 6, < 1e-3: 6, > 0.05: 8
+    effective dim (axes with > 1e-3 mass): 18
+  d=30: # axes with |mu_i| < 1e-6: 9, < 1e-3: 9, > 0.05: 6
+    effective dim (axes with > 1e-3 mass): 21
+
+================================================================================
+SUMMARY
+================================================================================
+
+  d=22 cert profile:
+    hw=0.05: any-cert=  0.0% (anchor=0.0, centroid=0.0, LP=0.0) ✗ GROWS
+    hw=0.025: any-cert=  0.0% (anchor=0.0, centroid=0.0, LP=0.0) ✗ GROWS
+    hw=0.01: any-cert=100.0% (anchor=0.0, centroid=0.0, LP=100.0) ✓ DRAINS
+    hw=0.005: any-cert=100.0% (anchor=0.0, centroid=0.0, LP=100.0) ✓ DRAINS
+    hw=0.002: any-cert=100.0% (anchor=20.0, centroid=26.7, LP=100.0) ✓ DRAINS
+
+  d=24 cert profile:
+    hw=0.05: any-cert=  0.0% (anchor=0.0, centroid=0.0, LP=0.0) ✗ GROWS
+    hw=0.025: any-cert=  0.0% (anchor=0.0, centroid=0.0, LP=0.0) ✗ GROWS
+    hw=0.01: any-cert=100.0% (anchor=0.0, centroid=0.0, LP=100.0) ✓ DRAINS
+    hw=0.005: any-cert=100.0% (anchor=0.0, centroid=0.0, LP=100.0) ✓ DRAINS
+    hw=0.002: any-cert=100.0% (anchor=0.0, centroid=20.0, LP=100.0) ✓ DRAINS
+
+  d=30 cert profile:
+    hw=0.05: any-cert=  0.0% (anchor=0.0, centroid=0.0, LP=0.0) ✗ GROWS
+    hw=0.025: any-cert=  0.0% (anchor=0.0, centroid=0.0, LP=0.0) ✗ GROWS
+    hw=0.01: any-cert=100.0% (anchor=0.0, centroid=0.0, LP=100.0) ✓ DRAINS
+    hw=0.005: any-cert=100.0% (anchor=0.0, centroid=0.0, LP=100.0) ✓ DRAINS
+    hw=0.002: any-cert=100.0% (anchor=40.0, centroid=26.7, LP=100.0) ✓ DRAINS
+
+Full data → diagnose_d30_summary.json

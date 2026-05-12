@@ -1,0 +1,118 @@
+{
+  "seed": 3416403220,
+  "args": {
+    "input": "runs_local/d22_t1p2805_split_K9/iter_005/survivors_after_kladder.npz",
+    "d": 22,
+    "target": 1.2805,
+    "split_depth": 3,
+    "subset_size": 4,
+    "max_levels": 8,
+    "out": "_convergence_probe.json"
+  },
+  "log": [
+    {
+      "level": 1,
+      "n_parents": 4,
+      "depth_in": 45,
+      "depth_out": 48,
+      "n_children": 32,
+      "n_lp_cert": 6,
+      "n_lp_fail": 26,
+      "close_frac": 0.1875,
+      "mult_per_parent": 6.5,
+      "t_split_s": 0.004992008209228516,
+      "t_lp_s": 5.836854934692383
+    },
+    {
+      "level": 2,
+      "n_parents": 4,
+      "depth_in": 48,
+      "depth_out": 51,
+      "n_children": 32,
+      "n_lp_cert": 17,
+      "n_lp_fail": 15,
+      "close_frac": 0.53125,
+      "mult_per_parent": 3.75,
+      "t_split_s": 0.0009951591491699219,
+      "t_lp_s": 5.667878866195679
+    },
+    {
+      "level": 3,
+      "n_parents": 4,
+      "depth_in": 51,
+      "depth_out": 54,
+      "n_children": 32,
+      "n_lp_cert": 19,
+      "n_lp_fail": 13,
+      "close_frac": 0.59375,
+      "mult_per_parent": 3.25,
+      "t_split_s": 0.000997781753540039,
+      "t_lp_s": 5.765523672103882
+    },
+    {
+      "level": 4,
+      "n_parents": 4,
+      "depth_in": 54,
+      "depth_out": 57,
+      "n_children": 32,
+      "n_lp_cert": 18,
+      "n_lp_fail": 14,
+      "close_frac": 0.5625,
+      "mult_per_parent": 3.5,
+      "t_split_s": 0.0,
+      "t_lp_s": 5.939731121063232
+    },
+    {
+      "level": 5,
+      "n_parents": 4,
+      "depth_in": 57,
+      "depth_out": 60,
+      "n_children": 32,
+      "n_lp_cert": 24,
+      "n_lp_fail": 8,
+      "close_frac": 0.75,
+      "mult_per_parent": 2.0,
+      "t_split_s": 0.00099945068359375,
+      "t_lp_s": 5.832046031951904
+    },
+    {
+      "level": 6,
+      "n_parents": 4,
+      "depth_in": 60,
+      "depth_out": 63,
+      "n_children": 32,
+      "n_lp_cert": 25,
+      "n_lp_fail": 7,
+      "close_frac": 0.78125,
+      "mult_per_parent": 1.75,
+      "t_split_s": 0.0009992122650146484,
+      "t_lp_s": 6.148699045181274
+    },
+    {
+      "level": 7,
+      "n_parents": 4,
+      "depth_in": 63,
+      "depth_out": 66,
+      "n_children": 32,
+      "n_lp_cert": 19,
+      "n_lp_fail": 13,
+      "close_frac": 0.59375,
+      "mult_per_parent": 3.25,
+      "t_split_s": 0.0009996891021728516,
+      "t_lp_s": 6.587307929992676
+    },
+    {
+      "level": 8,
+      "n_parents": 4,
+      "depth_in": 66,
+      "depth_out": 69,
+      "n_children": 32,
+      "n_lp_cert": 21,
+      "n_lp_fail": 11,
+      "close_frac": 0.65625,
+      "mult_per_parent": 2.75,
+      "t_split_s": 0.0009999275207519531,
+      "t_lp_s": 6.098688840866089
+    }
+  ]
+}

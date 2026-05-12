@@ -1,0 +1,462 @@
+{"event": "worker_ready", "worker_id": 0, "ready": true, "cache_build_s": 0.11793255805969238}
+{"event": "worker_ready", "worker_id": 2, "ready": true, "cache_build_s": 0.11804318428039551}
+{"event": "worker_ready", "worker_id": 1, "ready": true, "cache_build_s": 0.11699295043945312}
+{"event": "worker_ready", "worker_id": 3, "ready": true, "cache_build_s": 0.11765503883361816}
+{"event": "worker_ready", "worker_id": 4, "ready": true, "cache_build_s": 0.11643648147583008}
+{"event": "worker_ready", "worker_id": 5, "ready": true, "cache_build_s": 0.11673450469970703}
+{"event": "worker_ready", "worker_id": 6, "ready": true, "cache_build_s": 0.11619710922241211}
+{"event": "worker_ready", "worker_id": 7, "ready": true, "cache_build_s": 0.11804676055908203}
+{"event": "worker_ready", "worker_id": 8, "ready": true, "cache_build_s": 0.11678314208984375}
+{"event": "worker_ready", "worker_id": 9, "ready": true, "cache_build_s": 0.11619949340820312}
+{"event": "worker_ready", "worker_id": 10, "ready": true, "cache_build_s": 0.1178591251373291}
+{"event": "worker_ready", "worker_id": 11, "ready": true, "cache_build_s": 0.11729001998901367}
+{"event": "worker_ready", "worker_id": 12, "ready": true, "cache_build_s": 0.11621594429016113}
+{"event": "worker_ready", "worker_id": 13, "ready": true, "cache_build_s": 0.11725449562072754}
+{"event": "worker_ready", "worker_id": 14, "ready": true, "cache_build_s": 0.11729001998901367}
+{"event": "worker_ready", "worker_id": 15, "ready": true, "cache_build_s": 0.11724114418029785}
+{"event": "worker_ready", "worker_id": 18, "ready": true, "cache_build_s": 0.11665201187133789}
+{"event": "worker_ready", "worker_id": 16, "ready": true, "cache_build_s": 0.11742162704467773}
+{"event": "worker_ready", "worker_id": 17, "ready": true, "cache_build_s": 0.11895918846130371}
+{"event": "worker_ready", "worker_id": 19, "ready": true, "cache_build_s": 0.11752128601074219}
+{"event": "worker_ready", "worker_id": 20, "ready": true, "cache_build_s": 0.11571431159973145}
+{"event": "worker_ready", "worker_id": 21, "ready": true, "cache_build_s": 0.11581110954284668}
+{"event": "worker_ready", "worker_id": 29, "ready": true, "cache_build_s": 0.1196143627166748}
+{"event": "worker_ready", "worker_id": 30, "ready": true, "cache_build_s": 0.12073063850402832}
+{"event": "worker_ready", "worker_id": 22, "ready": true, "cache_build_s": 0.12094831466674805}
+{"event": "worker_ready", "worker_id": 26, "ready": true, "cache_build_s": 0.12052226066589355}
+{"event": "worker_ready", "worker_id": 25, "ready": true, "cache_build_s": 0.1207892894744873}
+{"event": "worker_ready", "worker_id": 32, "ready": true, "cache_build_s": 0.12052392959594727}
+{"event": "worker_ready", "worker_id": 24, "ready": true, "cache_build_s": 0.1222224235534668}
+{"event": "worker_ready", "worker_id": 28, "ready": true, "cache_build_s": 0.12192273139953613}
+{"event": "worker_ready", "worker_id": 27, "ready": true, "cache_build_s": 0.12188577651977539}
+{"event": "worker_ready", "worker_id": 31, "ready": true, "cache_build_s": 0.12122559547424316}
+{"event": "worker_ready", "worker_id": 33, "ready": true, "cache_build_s": 0.11805081367492676}
+{"event": "worker_ready", "worker_id": 23, "ready": true, "cache_build_s": 0.12239384651184082}
+{"event": "worker_ready", "worker_id": 34, "ready": true, "cache_build_s": 0.1179819107055664}
+{"event": "worker_ready", "worker_id": 35, "ready": true, "cache_build_s": 0.11794328689575195}
+{"event": "worker_ready", "worker_id": 36, "ready": true, "cache_build_s": 0.11955547332763672}
+{"event": "worker_ready", "worker_id": 37, "ready": true, "cache_build_s": 0.11784696578979492}
+{"event": "worker_ready", "worker_id": 38, "ready": true, "cache_build_s": 0.1197209358215332}
+{"event": "worker_ready", "worker_id": 39, "ready": true, "cache_build_s": 0.11873173713684082}
+{"event": "worker_ready", "worker_id": 40, "ready": true, "cache_build_s": 0.11719465255737305}
+{"event": "worker_ready", "worker_id": 42, "ready": true, "cache_build_s": 0.11933732032775879}
+{"event": "worker_ready", "worker_id": 41, "ready": true, "cache_build_s": 0.11783790588378906}
+{"event": "worker_ready", "worker_id": 43, "ready": true, "cache_build_s": 0.1177830696105957}
+{"event": "worker_ready", "worker_id": 44, "ready": true, "cache_build_s": 0.11927175521850586}
+{"event": "worker_ready", "worker_id": 45, "ready": true, "cache_build_s": 0.11914706230163574}
+{"event": "worker_ready", "worker_id": 47, "ready": true, "cache_build_s": 0.11913204193115234}
+{"event": "worker_ready", "worker_id": 46, "ready": true, "cache_build_s": 0.11867713928222656}
+{"event": "box_result", "hash": "ec1fe287c71f1429", "verdict": "feas", "wall_s": 141.94932675361633, "peak_rss_gb": 4.56, "lambda_star": -8.257819191561896e-06, "wall_t": 142.09985828399658}
+{"event": "box_result", "hash": "63616f033ea7397c", "verdict": "feas", "wall_s": 143.0402319431305, "peak_rss_gb": 4.57, "lambda_star": -9.575635215684256e-06, "wall_t": 143.10574960708618}
+{"event": "box_result", "hash": "f44fa09696326994", "verdict": "feas", "wall_s": 144.2381772994995, "peak_rss_gb": 4.57, "lambda_star": -5.062513689924267e-06, "wall_t": 144.391845703125}
+{"event": "box_result", "hash": "3e9f77c0202cb2fc", "verdict": "feas", "wall_s": 145.04612803459167, "peak_rss_gb": 4.57, "lambda_star": -7.1323331716869755e-06, "wall_t": 145.15775680541992}
+{"event": "box_result", "hash": "b79fce2bd2052c15", "verdict": "feas", "wall_s": 147.51184058189392, "peak_rss_gb": 4.56, "lambda_star": -6.308035320917304e-06, "wall_t": 147.66301274299622}
+{"event": "box_result", "hash": "a57d28f1017d581c", "verdict": "feas", "wall_s": 148.4058599472046, "peak_rss_gb": 4.57, "lambda_star": -7.261057058725986e-06, "wall_t": 148.47236275672913}
+{"event": "box_result", "hash": "811492082455708e", "verdict": "feas", "wall_s": 148.5296790599823, "peak_rss_gb": 4.57, "lambda_star": -7.754695744619734e-06, "wall_t": 148.6808638572693}
+{"event": "box_result", "hash": "0169acc8db58598c", "verdict": "feas", "wall_s": 149.17003417015076, "peak_rss_gb": 4.57, "lambda_star": -7.017797700221159e-06, "wall_t": 149.32364416122437}
+{"event": "box_result", "hash": "1a2960eab15570e3", "verdict": "feas", "wall_s": 149.16403818130493, "peak_rss_gb": 4.56, "lambda_star": -5.096903735527322e-06, "wall_t": 149.35976791381836}
+{"event": "box_result", "hash": "4264191bf15d52a8", "verdict": "feas", "wall_s": 149.68978428840637, "peak_rss_gb": 4.57, "lambda_star": -6.863503930652462e-06, "wall_t": 149.84085845947266}
+{"event": "box_result", "hash": "141607c2a10e13d3", "verdict": "feas", "wall_s": 150.4031422138214, "peak_rss_gb": 4.57, "lambda_star": -3.658033686610837e-06, "wall_t": 150.5959255695343}
+{"event": "box_result", "hash": "52810a2abbbc0b8d", "verdict": "feas", "wall_s": 150.49618458747864, "peak_rss_gb": 4.57, "lambda_star": -5.944884537815776e-06, "wall_t": 150.60575890541077}
+{"event": "box_result", "hash": "501f673d341125e3", "verdict": "feas", "wall_s": 150.48295712471008, "peak_rss_gb": 4.57, "lambda_star": -9.131263557093018e-06, "wall_t": 150.6845347881317}
+{"event": "box_result", "hash": "a50596a213c83ae1", "verdict": "feas", "wall_s": 150.8963725566864, "peak_rss_gb": 4.57, "lambda_star": -5.298928885632556e-06, "wall_t": 150.9542362689972}
+{"event": "box_result", "hash": "a7344b8dabcb2d0e", "verdict": "feas", "wall_s": 151.2069375514984, "peak_rss_gb": 4.57, "lambda_star": -9.766167234514156e-06, "wall_t": 151.29559516906738}
+{"event": "box_result", "hash": "5f29c8cfaae8cc1a", "verdict": "feas", "wall_s": 151.20145630836487, "peak_rss_gb": 4.57, "lambda_star": -6.839012121768439e-06, "wall_t": 151.3657455444336}
+{"event": "box_result", "hash": "0e7ea9986e08d8cc", "verdict": "feas", "wall_s": 151.3394899368286, "peak_rss_gb": 4.57, "lambda_star": -5.162408774951961e-06, "wall_t": 151.49940156936646}
+{"event": "box_result", "hash": "f76c9be3b3cecab3", "verdict": "feas", "wall_s": 151.6890950202942, "peak_rss_gb": 4.57, "lambda_star": -5.826703215078619e-06, "wall_t": 151.75856232643127}
+{"event": "box_result", "hash": "d1295112431a5c54", "verdict": "feas", "wall_s": 151.63895726203918, "peak_rss_gb": 4.56, "lambda_star": -4.444092084097953e-06, "wall_t": 151.82242369651794}
+{"event": "box_result", "hash": "8a6813c9d82d762e", "verdict": "feas", "wall_s": 151.77757573127747, "peak_rss_gb": 4.57, "lambda_star": -4.99360761598859e-06, "wall_t": 151.92948365211487}
+{"event": "box_result", "hash": "8fbe7ceb67925f45", "verdict": "feas", "wall_s": 152.0283441543579, "peak_rss_gb": 4.56, "lambda_star": -6.205117294667733e-06, "wall_t": 152.1060826778412}
+{"event": "box_result", "hash": "b2d568749c2eb619", "verdict": "feas", "wall_s": 152.0146279335022, "peak_rss_gb": 4.57, "lambda_star": -6.956590703635069e-06, "wall_t": 152.16634845733643}
+{"event": "box_result", "hash": "12da0dfaa8fb3458", "verdict": "feas", "wall_s": 152.13519859313965, "peak_rss_gb": 4.57, "lambda_star": -6.754222976688871e-06, "wall_t": 152.23162817955017}
+{"event": "box_result", "hash": "3aff99ffd9f8b65e", "verdict": "feas", "wall_s": 152.24670672416687, "peak_rss_gb": 4.57, "lambda_star": -6.593414730595702e-06, "wall_t": 152.3420705795288}
+{"event": "box_result", "hash": "3635916c03f80ac6", "verdict": "feas", "wall_s": 152.36090874671936, "peak_rss_gb": 4.57, "lambda_star": -1.3107797676593393e-05, "wall_t": 152.54084539413452}
+{"event": "box_result", "hash": "449a30eb3e3913ee", "verdict": "feas", "wall_s": 152.5508942604065, "peak_rss_gb": 4.57, "lambda_star": -9.572412572521275e-06, "wall_t": 152.65538835525513}
+{"event": "box_result", "hash": "c5d94bd71903d942", "verdict": "feas", "wall_s": 152.5228135585785, "peak_rss_gb": 4.57, "lambda_star": -7.089478589170997e-06, "wall_t": 152.6760594844818}
+{"event": "box_result", "hash": "d73cce97fc032e5d", "verdict": "feas", "wall_s": 152.78625798225403, "peak_rss_gb": 4.57, "lambda_star": -6.3115496855349676e-06, "wall_t": 152.87188935279846}
+{"event": "box_result", "hash": "cd862ad8d3fd4568", "verdict": "feas", "wall_s": 152.8282814025879, "peak_rss_gb": 4.56, "lambda_star": -4.54099173176442e-06, "wall_t": 152.91573238372803}
+{"event": "box_result", "hash": "ed5d5581e3c8290f", "verdict": "feas", "wall_s": 152.9246187210083, "peak_rss_gb": 4.57, "lambda_star": -6.713726714665708e-06, "wall_t": 153.02970051765442}
+{"event": "box_result", "hash": "132e37746fa37ca6", "verdict": "feas", "wall_s": 156.77298521995544, "peak_rss_gb": 4.57, "lambda_star": -4.647082166015778e-06, "wall_t": 156.9279727935791}
+{"event": "box_result", "hash": "14740097437f217e", "verdict": "feas", "wall_s": 156.9613287448883, "peak_rss_gb": 4.57, "lambda_star": -4.794523296883544e-06, "wall_t": 157.0708601474762}
+{"event": "box_result", "hash": "fce6e83e2f5e0d9e", "verdict": "feas", "wall_s": 157.91519117355347, "peak_rss_gb": 4.57, "lambda_star": -3.7852857281752692e-06, "wall_t": 158.06979775428772}
+{"event": "box_result", "hash": "8e86365844116833", "verdict": "feas", "wall_s": 158.26217651367188, "peak_rss_gb": 4.57, "lambda_star": -8.983190614573095e-06, "wall_t": 158.45228457450867}
+{"event": "box_result", "hash": "8719ec36e7dea590", "verdict": "feas", "wall_s": 158.84232139587402, "peak_rss_gb": 4.57, "lambda_star": -4.070938476827431e-06, "wall_t": 159.00596022605896}
+{"event": "box_result", "hash": "fe0d9a22f9c48b69", "verdict": "feas", "wall_s": 159.18869066238403, "peak_rss_gb": 4.57, "lambda_star": -4.571463074843122e-06, "wall_t": 159.35274171829224}
+{"event": "box_result", "hash": "d15c9353acef4f4a", "verdict": "feas", "wall_s": 159.4663791656494, "peak_rss_gb": 4.57, "lambda_star": -2.642605966361926e-06, "wall_t": 159.53187084197998}
+{"event": "box_result", "hash": "1a40a4dac69dcb20", "verdict": "feas", "wall_s": 159.86586022377014, "peak_rss_gb": 4.57, "lambda_star": -9.769374617939104e-06, "wall_t": 159.93578386306763}
+{"event": "box_result", "hash": "01162ac09b7ef01c", "verdict": "feas", "wall_s": 159.7680971622467, "peak_rss_gb": 4.57, "lambda_star": -4.0389642222810055e-06, "wall_t": 159.94882035255432}
+{"event": "box_result", "hash": "58e262682d01c80d", "verdict": "feas", "wall_s": 160.04046034812927, "peak_rss_gb": 4.57, "lambda_star": -4.483581089347994e-06, "wall_t": 160.14475536346436}
+{"event": "box_result", "hash": "a3d45242e8f2a601", "verdict": "feas", "wall_s": 160.27267169952393, "peak_rss_gb": 4.57, "lambda_star": -9.327934265835169e-06, "wall_t": 160.3523886203766}
+{"event": "box_result", "hash": "b39458511ad98caf", "verdict": "feas", "wall_s": 160.27231860160828, "peak_rss_gb": 4.57, "lambda_star": -7.959202138528837e-06, "wall_t": 160.44367122650146}
+{"event": "box_result", "hash": "c54f5faf14913465", "verdict": "feas", "wall_s": 160.725515127182, "peak_rss_gb": 4.57, "lambda_star": -7.166302611150848e-06, "wall_t": 160.89714169502258}
+{"event": "box_result", "hash": "a7ee2a9123ce4223", "verdict": "feas", "wall_s": 162.8073604106903, "peak_rss_gb": 4.57, "lambda_star": -2.5113556435799833e-06, "wall_t": 162.88679385185242}
+{"event": "box_result", "hash": "cde497563f8ea139", "verdict": "feas", "wall_s": 164.74076223373413, "peak_rss_gb": 4.57, "lambda_star": -3.897553090250535e-06, "wall_t": 164.91130447387695}
+{"event": "box_result", "hash": "eebdf14b5ddd1452", "verdict": "feas", "wall_s": 165.06726694107056, "peak_rss_gb": 4.57, "lambda_star": -7.536509193306818e-06, "wall_t": 165.1640944480896}
+{"event": "box_result", "hash": "4a8712718455c4c3", "verdict": "feas", "wall_s": 165.25380110740662, "peak_rss_gb": 4.57, "lambda_star": -7.569387177095361e-06, "wall_t": 165.32582902908325}
+{"event": "box_result", "hash": "98a45a4c9b528bac", "verdict": "feas", "wall_s": 165.71487140655518, "peak_rss_gb": 4.57, "lambda_star": -7.586114473005774e-06, "wall_t": 165.86549067497253}
+{"event": "box_result", "hash": "8fdbfae77edbf006", "verdict": "feas", "wall_s": 138.9646282196045, "peak_rss_gb": 6.81, "lambda_star": -6.069762269640854e-06, "wall_t": 282.07155752182007}
+{"event": "box_result", "hash": "ad91650af71926ef", "verdict": "feas", "wall_s": 141.40893149375916, "peak_rss_gb": 6.82, "lambda_star": -4.241407089959438e-06, "wall_t": 283.50888228416443}
+{"event": "box_result", "hash": "f7789c66b2b10737", "verdict": "feas", "wall_s": 139.96656608581543, "peak_rss_gb": 6.81, "lambda_star": -5.453452577465835e-06, "wall_t": 288.440096616745}
+{"event": "box_result", "hash": "8011c3813df3f341", "verdict": "feas", "wall_s": 139.95982456207275, "peak_rss_gb": 6.82, "lambda_star": -3.979432409353575e-06, "wall_t": 289.32120871543884}
+{"event": "box_result", "hash": "d21f3078a545bb47", "verdict": "feas", "wall_s": 141.4089891910553, "peak_rss_gb": 6.86, "lambda_star": -5.476535380917437e-06, "wall_t": 290.09227538108826}
+{"event": "box_result", "hash": "c1a494daf85fc06c", "verdict": "feas", "wall_s": 140.09108972549438, "peak_rss_gb": 6.78, "lambda_star": -1.224244970022246e-05, "wall_t": 291.4593126773834}
+{"event": "box_result", "hash": "642843567c30ee83", "verdict": "feas", "wall_s": 141.71278524398804, "peak_rss_gb": 6.83, "lambda_star": -1.2318706018569962e-05, "wall_t": 291.5552635192871}
+{"event": "box_result", "hash": "701fcbdc4661ab10", "verdict": "feas", "wall_s": 142.22116088867188, "peak_rss_gb": 6.78, "lambda_star": -5.203108266274406e-06, "wall_t": 292.9058029651642}
+{"event": "box_result", "hash": "befab5e6d0061717", "verdict": "feas", "wall_s": 141.32144355773926, "peak_rss_gb": 6.78, "lambda_star": -1.1157427811098247e-05, "wall_t": 293.48953199386597}
+{"event": "box_result", "hash": "5d05c89244b0a07f", "verdict": "feas", "wall_s": 141.85132217407227, "peak_rss_gb": 6.8, "lambda_star": -6.422768374411877e-06, "wall_t": 293.6729440689087}
+{"event": "box_result", "hash": "c0fdbc38933831a2", "verdict": "feas", "wall_s": 142.09329676628113, "peak_rss_gb": 6.83, "lambda_star": -6.969450304397592e-06, "wall_t": 294.7497789859772}
+{"event": "box_result", "hash": "dd7c557f85c63672", "verdict": "feas", "wall_s": 142.26811909675598, "peak_rss_gb": 6.83, "lambda_star": -3.611862665118014e-06, "wall_t": 294.9460163116455}
+{"event": "box_result", "hash": "3f1557f0ab5e4182", "verdict": "feas", "wall_s": 143.16012835502625, "peak_rss_gb": 6.82, "lambda_star": -5.678502195447128e-06, "wall_t": 296.03237676620483}
+{"event": "box_result", "hash": "20894f360b09ac59", "verdict": "feas", "wall_s": 143.43459010124207, "peak_rss_gb": 6.82, "lambda_star": -4.694858651154641e-06, "wall_t": 296.46472120285034}
+{"event": "box_result", "hash": "69bf03d49e758d57", "verdict": "feas", "wall_s": 144.54968404769897, "peak_rss_gb": 6.78, "lambda_star": -6.2852989314805e-06, "wall_t": 296.8927683830261}
+{"event": "box_result", "hash": "1e20bae9ba497eb4", "verdict": "feas", "wall_s": 145.14585041999817, "peak_rss_gb": 6.82, "lambda_star": -5.2908440427122375e-06, "wall_t": 297.254337310791}
+{"event": "box_result", "hash": "f1eeac641ed6989b", "verdict": "feas", "wall_s": 145.56608295440674, "peak_rss_gb": 6.83, "lambda_star": -5.833088429951866e-06, "wall_t": 297.8005301952362}
+{"event": "box_result", "hash": "f7397bde654292d4", "verdict": "feas", "wall_s": 150.42030096054077, "peak_rss_gb": 6.85, "lambda_star": -7.187333951986475e-06, "wall_t": 298.0845363140106}
+{"event": "box_result", "hash": "9005518ec84813ea", "verdict": "feas", "wall_s": 154.39036011695862, "peak_rss_gb": 6.88, "lambda_star": -5.231233306730449e-06, "wall_t": 298.7840576171875}
+{"event": "box_result", "hash": "9988731d7da634bf", "verdict": "feas", "wall_s": 141.37766122817993, "peak_rss_gb": 6.84, "lambda_star": -4.029768149016653e-06, "wall_t": 299.44770884513855}
+{"event": "box_result", "hash": "258fdbccffe589d7", "verdict": "feas", "wall_s": 140.1976900100708, "peak_rss_gb": 6.82, "lambda_star": -8.23675726992258e-06, "wall_t": 300.13420152664185}
+{"event": "box_result", "hash": "07ca2b75e0788be8", "verdict": "feas", "wall_s": 143.80237817764282, "peak_rss_gb": 6.82, "lambda_star": -4.6119354637520495e-06, "wall_t": 300.729798078537}
+{"event": "box_result", "hash": "9543dcdcda120341", "verdict": "feas", "wall_s": 141.93843626976013, "peak_rss_gb": 6.8, "lambda_star": -5.900006512770737e-06, "wall_t": 301.47215461730957}
+{"event": "box_result", "hash": "17ae4b7f2a6274fd", "verdict": "feas", "wall_s": 142.01078367233276, "peak_rss_gb": 6.81, "lambda_star": -7.0037851975837795e-06, "wall_t": 302.4561104774475}
+{"event": "box_result", "hash": "2fc525558b446b9f", "verdict": "feas", "wall_s": 142.34768962860107, "peak_rss_gb": 6.79, "lambda_star": -7.578192808038609e-06, "wall_t": 302.4932005405426}
+{"event": "box_result", "hash": "6203d881754c9c98", "verdict": "feas", "wall_s": 152.347238779068, "peak_rss_gb": 6.81, "lambda_star": -6.7072434532537904e-06, "wall_t": 302.9558322429657}
+{"event": "box_result", "hash": "1d116717586252ea", "verdict": "feas", "wall_s": 145.0545244216919, "peak_rss_gb": 6.82, "lambda_star": -4.593547127859413e-06, "wall_t": 304.06184005737305}
+{"event": "box_result", "hash": "01ef17c4d1297203", "verdict": "feas", "wall_s": 153.72980165481567, "peak_rss_gb": 6.8, "lambda_star": -4.403817343353552e-06, "wall_t": 304.3373327255249}
+{"event": "box_result", "hash": "f6c25c88511a6817", "verdict": "feas", "wall_s": 153.49868273735046, "peak_rss_gb": 6.8, "lambda_star": -5.700445010874226e-06, "wall_t": 304.45461106300354}
+{"event": "box_result", "hash": "3ff735ca6dd0e9d7", "verdict": "feas", "wall_s": 142.04513955116272, "peak_rss_gb": 6.82, "lambda_star": -6.711598843969842e-06, "wall_t": 307.3712832927704}
+{"event": "box_result", "hash": "9e7762848d211ce0", "verdict": "feas", "wall_s": 155.09956240653992, "peak_rss_gb": 6.81, "lambda_star": -5.970601702849168e-06, "wall_t": 307.64656114578247}
+{"event": "box_result", "hash": "1c35351996010ffa", "verdict": "feas", "wall_s": 143.2205753326416, "peak_rss_gb": 6.83, "lambda_star": -1.0539727382327161e-05, "wall_t": 308.3837659358978}
+{"event": "box_result", "hash": "57b92f6830cee351", "verdict": "feas", "wall_s": 142.73136687278748, "peak_rss_gb": 6.82, "lambda_star": -8.81122920390278e-06, "wall_t": 308.59754633903503}
+{"event": "box_result", "hash": "2877341e42f9ac1d", "verdict": "feas", "wall_s": 161.50456762313843, "peak_rss_gb": 6.82, "lambda_star": -6.411322163498257e-06, "wall_t": 310.8286952972412}
+{"event": "box_result", "hash": "43c1706b56a48019", "verdict": "feas", "wall_s": 152.67284321784973, "peak_rss_gb": 6.79, "lambda_star": -4.279623955559269e-06, "wall_t": 311.1260139942169}
+{"event": "box_result", "hash": "004894eb65e86a4a", "verdict": "feas", "wall_s": 152.1264181137085, "peak_rss_gb": 6.82, "lambda_star": -7.208429437160425e-06, "wall_t": 311.4802792072296}
+{"event": "box_result", "hash": "eab408e2759ff3a1", "verdict": "feas", "wall_s": 160.85425758361816, "peak_rss_gb": 6.82, "lambda_star": -7.785780555098039e-06, "wall_t": 312.6125190258026}
+{"event": "box_result", "hash": "8895bb1793ef4b27", "verdict": "feas", "wall_s": 160.97299528121948, "peak_rss_gb": 6.81, "lambda_star": -2.994310547703369e-06, "wall_t": 312.9050109386444}
+{"event": "box_result", "hash": "063f910a9882639c", "verdict": "feas", "wall_s": 163.53331565856934, "peak_rss_gb": 6.81, "lambda_star": -2.189317812609521e-06, "wall_t": 315.0335884094238}
+{"event": "box_result", "hash": "43f717e757b07e7d", "verdict": "feas", "wall_s": 163.6157557964325, "peak_rss_gb": 6.81, "lambda_star": -6.31308845242871e-06, "wall_t": 316.53164505958557}
+{"event": "box_result", "hash": "7dfae380926d1b98", "verdict": "feas", "wall_s": 161.2387728691101, "peak_rss_gb": 6.83, "lambda_star": -3.079400469816246e-06, "wall_t": 318.3098785877228}
+{"event": "box_result", "hash": "0ced45f0deeb47f3", "verdict": "feas", "wall_s": 162.15997290611267, "peak_rss_gb": 6.82, "lambda_star": -6.498748875895726e-06, "wall_t": 325.04975628852844}
+{"event": "box_result", "hash": "261884a46b4a97dd", "verdict": "feas", "wall_s": 164.74693083763123, "peak_rss_gb": 6.8, "lambda_star": -7.67964531935654e-06, "wall_t": 325.64643573760986}
+{"event": "box_result", "hash": "5287533c3e935a66", "verdict": "feas", "wall_s": 180.99851512908936, "peak_rss_gb": 6.84, "lambda_star": -6.324654810897701e-06, "wall_t": 340.9491534233093}
+{"event": "box_result", "hash": "6ddb2dd336800b76", "verdict": "feas", "wall_s": 189.92265963554382, "peak_rss_gb": 6.8, "lambda_star": -3.8002144965318237e-06, "wall_t": 341.220751285553}
+{"event": "box_result", "hash": "0c9606a7f71aa411", "verdict": "infeas", "wall_s": 242.2305884361267, "peak_rss_gb": 6.8, "lambda_star": 0.9999999818914306, "wall_t": 402.5833728313446}
+{"event": "box_result", "hash": "da8ad71393b70b43", "verdict": "infeas", "wall_s": 246.2611744403839, "peak_rss_gb": 6.87, "lambda_star": 0.9999937264010291, "wall_t": 411.173810005188}
+{"event": "box_result", "hash": "3fbc41536b819d4e", "verdict": "infeas", "wall_s": 267.2794346809387, "peak_rss_gb": 6.82, "lambda_star": 1.0000000000001188, "wall_t": 412.4376046657562}
+{"event": "box_result", "hash": "b9dee4f8cfee5110", "verdict": "feas", "wall_s": 138.12522792816162, "peak_rss_gb": 6.82, "lambda_star": -7.645275797450286e-06, "wall_t": 426.56597805023193}
+{"event": "box_result", "hash": "5685e1acbe3686bd", "verdict": "feas", "wall_s": 145.30393528938293, "peak_rss_gb": 6.82, "lambda_star": -5.646562000526378e-06, "wall_t": 427.3760929107666}
+{"event": "box_result", "hash": "798a0934ff126e1e", "verdict": "feas", "wall_s": 137.72206282615662, "peak_rss_gb": 6.81, "lambda_star": -8.937427080864107e-06, "wall_t": 431.3972074985504}
+{"event": "box_result", "hash": "7b48152d7deb49a2", "verdict": "feas", "wall_s": 137.36142945289612, "peak_rss_gb": 6.84, "lambda_star": -9.306682320375448e-06, "wall_t": 432.11311292648315}
+{"event": "box_result", "hash": "0ddab062af0dbaea", "verdict": "feas", "wall_s": 137.63612484931946, "peak_rss_gb": 6.84, "lambda_star": -8.869928013574444e-06, "wall_t": 433.66895174980164}
+{"event": "box_result", "hash": "ba3244e6b8c07276", "verdict": "feas", "wall_s": 138.2715618610382, "peak_rss_gb": 6.83, "lambda_star": -9.633483735046468e-06, "wall_t": 435.52524852752686}
+{"event": "box_result", "hash": "1d32a899548ed6d6", "verdict": "feas", "wall_s": 141.1474380493164, "peak_rss_gb": 6.84, "lambda_star": -9.943472228461824e-06, "wall_t": 437.61319303512573}
+{"event": "box_result", "hash": "a4a356619c7dfebf", "verdict": "feas", "wall_s": 142.96669840812683, "peak_rss_gb": 6.83, "lambda_star": -1.1753035881239902e-05, "wall_t": 437.91377806663513}
+{"event": "box_result", "hash": "53b0e76775fa6e01", "verdict": "feas", "wall_s": 141.14997124671936, "peak_rss_gb": 6.84, "lambda_star": -4.167651492895446e-06, "wall_t": 438.9496855735779}
+{"event": "box_result", "hash": "826b4d7ed00f03a3", "verdict": "feas", "wall_s": 143.21563577651978, "peak_rss_gb": 6.81, "lambda_star": -5.889237410317186e-06, "wall_t": 440.10909509658813}
+{"event": "box_result", "hash": "3c7bf8db081c587e", "verdict": "feas", "wall_s": 142.64754843711853, "peak_rss_gb": 6.86, "lambda_star": -7.0247031341070976e-06, "wall_t": 440.7333915233612}
+{"event": "box_result", "hash": "0937c79d30366992", "verdict": "feas", "wall_s": 141.09023094177246, "peak_rss_gb": 6.84, "lambda_star": -4.395929999861769e-06, "wall_t": 442.5613660812378}
+{"event": "box_result", "hash": "249c82250b0e51b4", "verdict": "feas", "wall_s": 141.08630776405334, "peak_rss_gb": 6.83, "lambda_star": -5.7552528275026e-06, "wall_t": 445.1490411758423}
+{"event": "box_result", "hash": "9cff3c82916ff4b2", "verdict": "feas", "wall_s": 143.06862878799438, "peak_rss_gb": 6.85, "lambda_star": -5.892183989599668e-06, "wall_t": 445.5256595611572}
+{"event": "box_result", "hash": "3d579e83796d07dd", "verdict": "feas", "wall_s": 141.3034074306488, "peak_rss_gb": 6.84, "lambda_star": -6.22982729165564e-06, "wall_t": 445.758309841156}
+{"event": "box_result", "hash": "f5aaee4993abbb9c", "verdict": "feas", "wall_s": 154.42420434951782, "peak_rss_gb": 6.82, "lambda_star": -6.453359960997542e-06, "wall_t": 447.91750597953796}
+{"event": "box_result", "hash": "e01ae85bf7896ef8", "verdict": "feas", "wall_s": 153.1765558719635, "peak_rss_gb": 6.83, "lambda_star": -4.7891642493529206e-06, "wall_t": 453.9077422618866}
+{"event": "box_result", "hash": "eea37350dd5c1dcb", "verdict": "feas", "wall_s": 153.4474503993988, "peak_rss_gb": 6.81, "lambda_star": -1.1070920175770862e-05, "wall_t": 455.94161009788513}
+{"event": "box_result", "hash": "5b664bc63db7c93e", "verdict": "feas", "wall_s": 157.38625979423523, "peak_rss_gb": 6.86, "lambda_star": -9.345753387758613e-06, "wall_t": 456.8323333263397}
+{"event": "box_result", "hash": "a3f4d504c16dd3a2", "verdict": "feas", "wall_s": 146.1055281162262, "peak_rss_gb": 6.83, "lambda_star": -7.4038121696017734e-06, "wall_t": 457.5906720161438}
+{"event": "box_result", "hash": "d893f883514b33a3", "verdict": "feas", "wall_s": 142.69270992279053, "peak_rss_gb": 6.83, "lambda_star": -1.0048891784917494e-05, "wall_t": 457.72636365890503}
+{"event": "box_result", "hash": "843539b190e668dd", "verdict": "feas", "wall_s": 156.2768874168396, "peak_rss_gb": 6.83, "lambda_star": -3.148600064007419e-06, "wall_t": 459.2312111854553}
+{"event": "box_result", "hash": "9b1ce94b341c1545", "verdict": "feas", "wall_s": 151.43253254890442, "peak_rss_gb": 6.84, "lambda_star": -4.431008904651514e-06, "wall_t": 460.0404944419861}
+{"event": "box_result", "hash": "e72438d57bb9aa12", "verdict": "feas", "wall_s": 168.7851004600525, "peak_rss_gb": 6.84, "lambda_star": -7.332597148309466e-06, "wall_t": 460.24731373786926}
+{"event": "box_result", "hash": "7fd6ca85e687b863", "verdict": "feas", "wall_s": 154.99900841712952, "peak_rss_gb": 6.83, "lambda_star": -4.398813356447382e-06, "wall_t": 462.37252855300903}
+{"event": "box_result", "hash": "3eef1e27195bbf86", "verdict": "feas", "wall_s": 179.6246144771576, "peak_rss_gb": 6.84, "lambda_star": -3.059682686585682e-06, "wall_t": 463.1359543800354}
+{"event": "box_result", "hash": "ce3b7e108ba603bc", "verdict": "feas", "wall_s": 155.58180475234985, "peak_rss_gb": 6.9, "lambda_star": -5.038893701713356e-06, "wall_t": 463.9677200317383}
+{"event": "box_result", "hash": "79991bde83897603", "verdict": "feas", "wall_s": 153.8186023235321, "peak_rss_gb": 6.83, "lambda_star": -3.554466370707905e-06, "wall_t": 464.6481294631958}
+{"event": "box_result", "hash": "9410687ff560ee49", "verdict": "feas", "wall_s": 180.48921275138855, "peak_rss_gb": 6.82, "lambda_star": -4.016007295325563e-06, "wall_t": 473.39580392837524}
+{"event": "box_result", "hash": "e8bcf31f7a791530", "verdict": "feas", "wall_s": 169.05402755737305, "peak_rss_gb": 6.83, "lambda_star": -8.521341610071538e-06, "wall_t": 480.18080711364746}
+{"event": "box_result", "hash": "522254e7ec56385c", "verdict": "feas", "wall_s": 167.56915736198425, "peak_rss_gb": 6.83, "lambda_star": -3.618759442963669e-06, "wall_t": 480.1812403202057}
+{"event": "box_result", "hash": "b16a9a0fad894334", "verdict": "feas", "wall_s": 156.21859192848206, "peak_rss_gb": 6.81, "lambda_star": -7.846931713521745e-06, "wall_t": 481.86411452293396}
+{"event": "box_result", "hash": "46617e684de01dfb", "verdict": "feas", "wall_s": 182.0950357913971, "peak_rss_gb": 6.84, "lambda_star": -2.6346106661801572e-06, "wall_t": 482.23210525512695}
+{"event": "box_result", "hash": "6c265710478e0912", "verdict": "feas", "wall_s": 193.5311667919159, "peak_rss_gb": 6.83, "lambda_star": -4.49753841976571e-06, "wall_t": 482.8540918827057}
+{"event": "box_result", "hash": "d9cf0fbd8dfeebd0", "verdict": "feas", "wall_s": 143.3085641860962, "peak_rss_gb": 6.85, "lambda_star": -4.361865223340846e-06, "wall_t": 484.25961565971375}
+{"event": "box_result", "hash": "e1d40f65e69e1bbf", "verdict": "feas", "wall_s": 144.33277440071106, "peak_rss_gb": 6.82, "lambda_star": -7.198501178331103e-06, "wall_t": 485.5533890724182}
+{"event": "box_result", "hash": "6733c6761c945e1e", "verdict": "feas", "wall_s": 174.0223593711853, "peak_rss_gb": 6.84, "lambda_star": -8.547890084667871e-06, "wall_t": 490.55740666389465}
+{"event": "box_result", "hash": "51b19bcaad8600de", "verdict": "feas", "wall_s": 183.39904952049255, "peak_rss_gb": 6.82, "lambda_star": -9.551721015845184e-06, "wall_t": 496.30408811569214}
+{"event": "box_result", "hash": "f055e2650275e686", "verdict": "feas", "wall_s": 184.05952262878418, "peak_rss_gb": 6.84, "lambda_star": -7.23711914470194e-06, "wall_t": 502.3723657131195}
+{"event": "box_result", "hash": "7cac8a7275927b6f", "verdict": "infeas", "wall_s": 232.69593691825867, "peak_rss_gb": 6.84, "lambda_star": 1.0000000000001847, "wall_t": 537.0241432189941}
+{"event": "box_result", "hash": "02336564e1b581b5", "verdict": "infeas", "wall_s": 229.83413314819336, "peak_rss_gb": 6.83, "lambda_star": 0.9999998381849508, "wall_t": 537.4775791168213}
+{"event": "box_result", "hash": "4e5f2c3e8bbcde99", "verdict": "infeas", "wall_s": 265.2060778141022, "peak_rss_gb": 6.84, "lambda_star": 1.000000000000492, "wall_t": 556.7633697986603}
+{"event": "box_result", "hash": "829068c08730afa4", "verdict": "feas", "wall_s": 157.6121666431427, "peak_rss_gb": 6.88, "lambda_star": -5.90862535773669e-06, "wall_t": 568.7881991863251}
+{"event": "box_result", "hash": "4a516b79e0098931", "verdict": "feas", "wall_s": 142.27691102027893, "peak_rss_gb": 6.82, "lambda_star": -5.84427381771839e-06, "wall_t": 568.8449647426605}
+{"event": "box_result", "hash": "25d926970c7197cb", "verdict": "infeas", "wall_s": 286.5861668586731, "peak_rss_gb": 6.87, "lambda_star": 1.0000000000000142, "wall_t": 576.6797111034393}
+{"event": "box_result", "hash": "9da11dae1677df15", "verdict": "infeas", "wall_s": 278.27167987823486, "peak_rss_gb": 6.88, "lambda_star": 0.9999999846975961, "wall_t": 577.0562877655029}
+{"event": "box_result", "hash": "2045484003afa049", "verdict": "feas", "wall_s": 141.25403547286987, "peak_rss_gb": 6.84, "lambda_star": -6.689285515545234e-06, "wall_t": 583.8168606758118}
+{"event": "box_result", "hash": "ae8a2ceda68c473f", "verdict": "feas", "wall_s": 137.60254216194153, "peak_rss_gb": 6.83, "lambda_star": -1.2839049153890947e-05, "wall_t": 585.5202422142029}
+{"event": "box_result", "hash": "4e246628b8db2657", "verdict": "feas", "wall_s": 173.56232380867004, "peak_rss_gb": 6.84, "lambda_star": -1.0930728912392993e-05, "wall_t": 586.0023024082184}
+{"event": "box_result", "hash": "924944eaffca0e62", "verdict": "feas", "wall_s": 141.02557563781738, "peak_rss_gb": 6.83, "lambda_star": -6.5151087339392485e-06, "wall_t": 586.1754636764526}
+{"event": "box_result", "hash": "04a66dae8658745f", "verdict": "feas", "wall_s": 154.03894448280334, "peak_rss_gb": 6.84, "lambda_star": -9.500427972383019e-06, "wall_t": 589.5666000843048}
+{"event": "box_result", "hash": "25b89953d0d5007c", "verdict": "feas", "wall_s": 187.61288213729858, "peak_rss_gb": 6.83, "lambda_star": -3.508178209805979e-06, "wall_t": 590.1990587711334}
+{"event": "box_result", "hash": "74d51a8ac3104320", "verdict": "feas", "wall_s": 152.9937605857849, "peak_rss_gb": 6.85, "lambda_star": -3.760845759282653e-06, "wall_t": 590.6074509620667}
+{"event": "box_result", "hash": "bc0b833ee6e79ba6", "verdict": "feas", "wall_s": 158.70520496368408, "peak_rss_gb": 6.88, "lambda_star": -8.853404634960808e-06, "wall_t": 590.8183491230011}
+{"event": "box_result", "hash": "754efd6189969050", "verdict": "infeas", "wall_s": 269.8741989135742, "peak_rss_gb": 6.83, "lambda_star": 0.9999999999990768, "wall_t": 594.922105550766}
+{"event": "box_result", "hash": "88181fef45f88289", "verdict": "feas", "wall_s": 155.11045289039612, "peak_rss_gb": 6.82, "lambda_star": -1.1536504701824429e-05, "wall_t": 595.221536397934}
+{"event": "box_result", "hash": "bf39ac4e53832820", "verdict": "feas", "wall_s": 154.86561608314514, "peak_rss_gb": 6.86, "lambda_star": -5.571484537200781e-06, "wall_t": 595.6003108024597}
+{"event": "box_result", "hash": "bcf7197f5fa04199", "verdict": "feas", "wall_s": 168.97900199890137, "peak_rss_gb": 6.83, "lambda_star": -3.6002720309198406e-06, "wall_t": 596.3568317890167}
+{"event": "box_result", "hash": "d8c5b79770e148be", "verdict": "feas", "wall_s": 164.48895692825317, "peak_rss_gb": 6.85, "lambda_star": -4.887282638554401e-06, "wall_t": 598.158821105957}
+{"event": "box_result", "hash": "a4a0f30652d69c66", "verdict": "feas", "wall_s": 157.11564922332764, "peak_rss_gb": 6.85, "lambda_star": -2.984593051104055e-06, "wall_t": 602.6417949199677}
+{"event": "box_result", "hash": "c1b5b30d7de99a5b", "verdict": "feas", "wall_s": 140.08034420013428, "peak_rss_gb": 6.91, "lambda_star": -1.2011630728999046e-05, "wall_t": 604.0470156669617}
+{"event": "box_result", "hash": "23175007734c8bb2", "verdict": "feas", "wall_s": 168.04452395439148, "peak_rss_gb": 6.86, "lambda_star": -3.5617043780579973e-06, "wall_t": 605.958984375}
+{"event": "box_result", "hash": "e75a02779499839d", "verdict": "feas", "wall_s": 140.3140561580658, "peak_rss_gb": 6.84, "lambda_star": -1.3575659786934434e-05, "wall_t": 613.7119793891907}
+{"event": "box_result", "hash": "7e77c5a217bdc90b", "verdict": "feas", "wall_s": 154.4662721157074, "peak_rss_gb": 6.84, "lambda_star": -6.662010091634811e-06, "wall_t": 614.7111783027649}
+{"event": "box_result", "hash": "d059f652ebe165d6", "verdict": "feas", "wall_s": 169.66154742240906, "peak_rss_gb": 6.84, "lambda_star": -2.7908330063840012e-06, "wall_t": 615.4216413497925}
+{"event": "box_result", "hash": "a4076fbed5decf7a", "verdict": "feas", "wall_s": 152.47742414474487, "peak_rss_gb": 6.84, "lambda_star": -1.178113910323542e-05, "wall_t": 617.12633228302}
+{"event": "box_result", "hash": "9b96d4416548995c", "verdict": "feas", "wall_s": 155.5091588497162, "peak_rss_gb": 6.83, "lambda_star": -2.531441022034904e-06, "wall_t": 617.8814189434052}
+{"event": "box_result", "hash": "4fbd2034ac35fb80", "verdict": "feas", "wall_s": 136.54250168800354, "peak_rss_gb": 6.83, "lambda_star": -4.978776858087883e-06, "wall_t": 618.4076631069183}
+{"event": "box_result", "hash": "982939f07dffa83a", "verdict": "feas", "wall_s": 166.350172996521, "peak_rss_gb": 6.83, "lambda_star": -5.963575891849065e-06, "wall_t": 620.2586345672607}
+{"event": "box_result", "hash": "4e35731993763b19", "verdict": "feas", "wall_s": 165.2525520324707, "peak_rss_gb": 6.84, "lambda_star": -4.202489446122089e-06, "wall_t": 621.195164680481}
+{"event": "box_result", "hash": "deba2480acf41dd2", "verdict": "feas", "wall_s": 138.57981491088867, "peak_rss_gb": 6.85, "lambda_star": -1.2442088773024395e-05, "wall_t": 622.8396739959717}
+{"event": "box_result", "hash": "344fa27e1bb2a40b", "verdict": "feas", "wall_s": 143.4119484424591, "peak_rss_gb": 6.83, "lambda_star": -8.499429473791563e-06, "wall_t": 623.5949463844299}
+{"event": "box_result", "hash": "d6959e200ccf9446", "verdict": "feas", "wall_s": 165.41474890708923, "peak_rss_gb": 6.85, "lambda_star": -8.952163456702116e-06, "wall_t": 625.4466173648834}
+{"event": "box_result", "hash": "83f0eee2d584f078", "verdict": "feas", "wall_s": 166.14729261398315, "peak_rss_gb": 6.84, "lambda_star": -2.822936900234216e-06, "wall_t": 629.283774137497}
+{"event": "box_result", "hash": "c84c02d42206813e", "verdict": "feas", "wall_s": 155.16352891921997, "peak_rss_gb": 6.87, "lambda_star": -5.349339229519993e-06, "wall_t": 635.3467786312103}
+{"event": "box_result", "hash": "1f89aafc25b63255", "verdict": "feas", "wall_s": 153.79328274726868, "peak_rss_gb": 6.84, "lambda_star": -1.00972333002875e-05, "wall_t": 636.0253310203552}
+{"event": "box_result", "hash": "75e9930f6579214c", "verdict": "feas", "wall_s": 178.69457483291626, "peak_rss_gb": 6.84, "lambda_star": -6.699740246544193e-06, "wall_t": 636.2825436592102}
+{"event": "box_result", "hash": "82c1b34f3d214e9d", "verdict": "feas", "wall_s": 179.48614287376404, "peak_rss_gb": 6.84, "lambda_star": -8.680075737423442e-06, "wall_t": 637.2132706642151}
+{"event": "box_result", "hash": "d38f0a79346bc403", "verdict": "feas", "wall_s": 138.27978420257568, "peak_rss_gb": 6.84, "lambda_star": -1.2606253221242952e-05, "wall_t": 640.6525385379791}
+{"event": "box_result", "hash": "d5854903302ab5a1", "verdict": "feas", "wall_s": 158.3136167526245, "peak_rss_gb": 6.83, "lambda_star": -6.679671191617386e-06, "wall_t": 641.1685762405396}
+{"event": "box_result", "hash": "4815c8b0f97fb45d", "verdict": "feas", "wall_s": 152.4565544128418, "peak_rss_gb": 6.84, "lambda_star": -6.637996788742888e-06, "wall_t": 643.0123949050903}
+{"event": "box_result", "hash": "c6d68242f6994753", "verdict": "feas", "wall_s": 148.76013159751892, "peak_rss_gb": 6.82, "lambda_star": -4.182807891140067e-06, "wall_t": 645.0663471221924}
+{"event": "box_result", "hash": "f55e9969941e473b", "verdict": "feas", "wall_s": 163.75665855407715, "peak_rss_gb": 6.84, "lambda_star": -3.0984672459736133e-06, "wall_t": 649.310263633728}
+{"event": "box_result", "hash": "e4d0f9be511c4513", "verdict": "infeas", "wall_s": 239.41708779335022, "peak_rss_gb": 6.83, "lambda_star": 0.9999935896853432, "wall_t": 670.8140091896057}
+{"event": "box_result", "hash": "b1dc7cd27a78a0dc", "verdict": "feas", "wall_s": 134.51579070091248, "peak_rss_gb": 6.84, "lambda_star": -7.384198718754404e-06, "wall_t": 671.994624376297}
+{"event": "box_result", "hash": "68e01e9c6007f780", "verdict": "infeas", "wall_s": 248.8556456565857, "peak_rss_gb": 6.85, "lambda_star": 0.9999923846872688, "wall_t": 687.8064482212067}
+{"event": "box_result", "hash": "a89700f9ccb5ae1e", "verdict": "infeas", "wall_s": 238.21906352043152, "peak_rss_gb": 6.87, "lambda_star": 0.9999999987965273, "wall_t": 695.0531663894653}
+{"event": "box_result", "hash": "1a05becf8b413522", "verdict": "feas", "wall_s": 133.28121757507324, "peak_rss_gb": 6.83, "lambda_star": -4.295987349059891e-06, "wall_t": 702.126624584198}
+{"event": "box_result", "hash": "3c5abb74e903fa39", "verdict": "infeas", "wall_s": 244.29264616966248, "peak_rss_gb": 6.83, "lambda_star": 0.9999999991411709, "wall_t": 703.5250144004822}
+{"event": "box_result", "hash": "89d350470dca6e02", "verdict": "feas", "wall_s": 166.548077583313, "peak_rss_gb": 6.85, "lambda_star": -2.8709505906554818e-06, "wall_t": 703.5726869106293}
+{"event": "box_result", "hash": "03c2a3d48d918b18", "verdict": "feas", "wall_s": 160.33876609802246, "peak_rss_gb": 6.84, "lambda_star": -4.288974236954315e-06, "wall_t": 717.1024556159973}
+{"event": "box_result", "hash": "a906569cdaeadff9", "verdict": "feas", "wall_s": 138.28083086013794, "peak_rss_gb": 6.85, "lambda_star": -1.3570681059759533e-05, "wall_t": 728.8903205394745}
+{"event": "box_result", "hash": "57457f19e75a5463", "verdict": "feas", "wall_s": 148.5618860721588, "peak_rss_gb": 6.84, "lambda_star": -1.1794231675053244e-05, "wall_t": 734.5644383430481}
+{"event": "box_result", "hash": "0c6519e19ecd0d85", "verdict": "feas", "wall_s": 167.80240297317505, "peak_rss_gb": 6.89, "lambda_star": -4.066081341743148e-06, "wall_t": 736.5921952724457}
+{"event": "box_result", "hash": "f81edda513b17261", "verdict": "feas", "wall_s": 151.2230408191681, "peak_rss_gb": 6.85, "lambda_star": -4.463354780388386e-06, "wall_t": 736.7427151203156}
+{"event": "box_result", "hash": "b161adfe5a319eea", "verdict": "feas", "wall_s": 147.824458360672, "peak_rss_gb": 6.84, "lambda_star": -5.6030860299353935e-06, "wall_t": 737.3912394046783}
+{"event": "box_result", "hash": "be62df9cb18e18bf", "verdict": "feas", "wall_s": 136.39225363731384, "peak_rss_gb": 6.88, "lambda_star": -4.00290349126165e-06, "wall_t": 742.3521540164948}
+{"event": "box_result", "hash": "411018b45cc41b8c", "verdict": "feas", "wall_s": 155.41371297836304, "peak_rss_gb": 6.83, "lambda_star": -1.192685304759241e-05, "wall_t": 745.6124980449677}
+{"event": "box_result", "hash": "cb06e50317abfa72", "verdict": "feas", "wall_s": 142.67311453819275, "peak_rss_gb": 6.91, "lambda_star": -3.5846999099538473e-06, "wall_t": 746.7207951545715}
+{"event": "box_result", "hash": "0d7d1a8275bbe3a4", "verdict": "feas", "wall_s": 170.77294921875, "peak_rss_gb": 6.89, "lambda_star": -5.7600559375749285e-06, "wall_t": 747.8302855491638}
+{"event": "box_result", "hash": "c6dd9258163fe351", "verdict": "feas", "wall_s": 167.02117824554443, "peak_rss_gb": 6.84, "lambda_star": -6.383490134313326e-06, "wall_t": 750.8390786647797}
+{"event": "box_result", "hash": "4ef9e282f21e3ff5", "verdict": "feas", "wall_s": 148.61252188682556, "peak_rss_gb": 6.85, "lambda_star": -6.62613801031695e-06, "wall_t": 751.2561264038086}
+{"event": "box_result", "hash": "26074ab9b6ea9d9d", "verdict": "feas", "wall_s": 162.34590888023376, "peak_rss_gb": 6.9, "lambda_star": -1.3191637729992434e-05, "wall_t": 753.1654675006866}
+{"event": "box_result", "hash": "ef6eeb1f44ba493c", "verdict": "feas", "wall_s": 138.18409633636475, "peak_rss_gb": 6.84, "lambda_star": -5.142076888124852e-06, "wall_t": 756.5915019512177}
+{"event": "box_result", "hash": "e1241796f448ab1e", "verdict": "feas", "wall_s": 121.2120349407196, "peak_rss_gb": 6.84, "lambda_star": -1.2301368871066924e-05, "wall_t": 757.4955620765686}
+{"event": "box_result", "hash": "395e2162f92e6d37", "verdict": "feas", "wall_s": 183.1803650856018, "peak_rss_gb": 6.88, "lambda_star": -2.6452799659738075e-06, "wall_t": 759.8601005077362}
+{"event": "box_result", "hash": "763c49bb12b69131", "verdict": "feas", "wall_s": 165.41948318481445, "peak_rss_gb": 6.83, "lambda_star": -4.547549635928892e-06, "wall_t": 760.3418462276459}
+{"event": "box_result", "hash": "7d326f316b252b40", "verdict": "feas", "wall_s": 166.8159990310669, "peak_rss_gb": 6.86, "lambda_star": -6.683977646261915e-06, "wall_t": 762.4174165725708}
+{"event": "box_result", "hash": "9111b3ab238fc156", "verdict": "feas", "wall_s": 166.481440782547, "peak_rss_gb": 6.83, "lambda_star": -7.262984142699163e-06, "wall_t": 762.8389849662781}
+{"event": "box_result", "hash": "ed61de08dceb3ba9", "verdict": "feas", "wall_s": 156.0817527770996, "peak_rss_gb": 6.85, "lambda_star": -1.0716971847022591e-05, "wall_t": 769.7940590381622}
+{"event": "box_result", "hash": "0e1f5811ff3ffec9", "verdict": "feas", "wall_s": 154.67469573020935, "peak_rss_gb": 6.85, "lambda_star": -3.751614325155336e-06, "wall_t": 770.0957651138306}
+{"event": "box_result", "hash": "6e30d90386b2c9de", "verdict": "feas", "wall_s": 155.7072470188141, "peak_rss_gb": 6.85, "lambda_star": -3.123806757587702e-06, "wall_t": 770.4194951057434}
+{"event": "box_result", "hash": "1f16980a7e41ca91", "verdict": "feas", "wall_s": 149.6465871334076, "peak_rss_gb": 6.85, "lambda_star": -1.1491853864849812e-05, "wall_t": 772.4862196445465}
+{"event": "box_result", "hash": "0329d6a4af6befa2", "verdict": "feas", "wall_s": 136.83545875549316, "peak_rss_gb": 6.85, "lambda_star": -7.1826956667422076e-06, "wall_t": 772.8605251312256}
+{"event": "box_result", "hash": "7c3509cb5f3006d2", "verdict": "feas", "wall_s": 179.87980818748474, "peak_rss_gb": 6.83, "lambda_star": -1.0500582332843878e-05, "wall_t": 775.1011352539062}
+{"event": "box_result", "hash": "e730d21f6d0e7c56", "verdict": "feas", "wall_s": 138.70616102218628, "peak_rss_gb": 6.84, "lambda_star": -1.1348854794260469e-05, "wall_t": 775.9212818145752}
+{"event": "box_result", "hash": "6c7980e599a1e86e", "verdict": "feas", "wall_s": 158.97545981407166, "peak_rss_gb": 6.83, "lambda_star": -5.3098596292680035e-06, "wall_t": 776.8571906089783}
+{"event": "box_result", "hash": "cc95ca6a7f3c2f17", "verdict": "feas", "wall_s": 156.65145325660706, "peak_rss_gb": 6.83, "lambda_star": -9.82118367238283e-06, "wall_t": 776.9112451076508}
+{"event": "box_result", "hash": "fabce61e3ea75289", "verdict": "feas", "wall_s": 157.80717253684998, "peak_rss_gb": 6.85, "lambda_star": -3.7797917646001593e-06, "wall_t": 779.003871679306}
+{"event": "box_result", "hash": "35ba410212370ed2", "verdict": "feas", "wall_s": 154.89841985702515, "peak_rss_gb": 6.86, "lambda_star": -7.601027673399164e-06, "wall_t": 780.3460896015167}
+{"event": "box_result", "hash": "07a8c46c847466b6", "verdict": "feas", "wall_s": 139.30268001556396, "peak_rss_gb": 6.83, "lambda_star": -8.966973557633135e-06, "wall_t": 780.4718654155731}
+{"event": "box_result", "hash": "c4e0b38355b05b69", "verdict": "feas", "wall_s": 165.37510681152344, "peak_rss_gb": 6.84, "lambda_star": -2.8538652005244395e-06, "wall_t": 782.5030481815338}
+{"event": "box_result", "hash": "cff355feff5fba8e", "verdict": "feas", "wall_s": 204.56999039649963, "peak_rss_gb": 6.84, "lambda_star": -4.025890427882456e-06, "wall_t": 790.7472088336945}
+{"event": "box_result", "hash": "53e73dff6d054d23", "verdict": "feas", "wall_s": 151.50623154640198, "peak_rss_gb": 6.83, "lambda_star": -7.7376914968934e-06, "wall_t": 796.5729284286499}
+{"event": "box_result", "hash": "56e6b00f1b61f753", "verdict": "feas", "wall_s": 176.48228454589844, "peak_rss_gb": 6.84, "lambda_star": -6.599039678406763e-06, "wall_t": 800.0773615837097}
+{"event": "box_result", "hash": "d39b0fe66f99a4e8", "verdict": "feas", "wall_s": 170.26912546157837, "peak_rss_gb": 6.84, "lambda_star": -3.9421727129398324e-06, "wall_t": 819.5800292491913}
+{"event": "box_result", "hash": "6bbc2483472fa770", "verdict": "feas", "wall_s": 170.8376796245575, "peak_rss_gb": 6.84, "lambda_star": -5.130449484448892e-06, "wall_t": 842.8355572223663}
+{"event": "box_result", "hash": "932faa6d4d7bfdfc", "verdict": "feas", "wall_s": 154.11342191696167, "peak_rss_gb": 6.87, "lambda_star": -1.3204946317959979e-05, "wall_t": 849.1677076816559}
+{"event": "box_result", "hash": "cf2c20caf465417d", "verdict": "infeas", "wall_s": 253.1593952178955, "peak_rss_gb": 6.88, "lambda_star": 0.9999959731352516, "wall_t": 851.319179058075}
+{"event": "box_result", "hash": "4ea1f413155deca2", "verdict": "feas", "wall_s": 153.14630961418152, "peak_rss_gb": 6.83, "lambda_star": -7.029652685218881e-06, "wall_t": 856.6726338863373}
+{"event": "box_result", "hash": "8753f88f79fb1849", "verdict": "feas", "wall_s": 156.59560775756836, "peak_rss_gb": 6.89, "lambda_star": -4.400923045846927e-06, "wall_t": 860.1697888374329}
+{"event": "box_result", "hash": "3f8937c285452af8", "verdict": "infeas", "wall_s": 227.63433837890625, "peak_rss_gb": 6.88, "lambda_star": 0.9999999987237035, "wall_t": 862.9827535152435}
+{"event": "box_result", "hash": "cf3fdcccf6f9812f", "verdict": "feas", "wall_s": 153.2578468322754, "peak_rss_gb": 6.87, "lambda_star": -1.0605313533288283e-05, "wall_t": 870.3631637096405}
+{"event": "box_result", "hash": "f9ff940b4f817e87", "verdict": "feas", "wall_s": 186.31416821479797, "peak_rss_gb": 6.85, "lambda_star": -3.3639327951351917e-06, "wall_t": 874.1207821369171}
+{"event": "box_result", "hash": "962e1dfcea068061", "verdict": "infeas", "wall_s": 255.35892605781555, "peak_rss_gb": 6.84, "lambda_star": 1.000000000000333, "wall_t": 884.6429274082184}
+{"event": "box_result", "hash": "1aeded8c8fe3225f", "verdict": "feas", "wall_s": 138.66446137428284, "peak_rss_gb": 6.89, "lambda_star": -3.767589481972077e-06, "wall_t": 886.4960887432098}
+{"event": "box_result", "hash": "0f5f09aff06e1675", "verdict": "feas", "wall_s": 142.29292821884155, "peak_rss_gb": 6.85, "lambda_star": -8.256923373659366e-06, "wall_t": 887.9075744152069}
+{"event": "box_result", "hash": "322b1b71fa9834dd", "verdict": "feas", "wall_s": 154.4533052444458, "peak_rss_gb": 6.84, "lambda_star": -4.285472342543443e-06, "wall_t": 889.01922082901}
+{"event": "box_result", "hash": "745975b77f98005a", "verdict": "feas", "wall_s": 139.17098951339722, "peak_rss_gb": 6.85, "lambda_star": -1.2938822128194795e-05, "wall_t": 890.4288268089294}
+{"event": "box_result", "hash": "6c64134820ffb4f0", "verdict": "feas", "wall_s": 143.94113636016846, "peak_rss_gb": 6.91, "lambda_star": -7.084981381741974e-06, "wall_t": 890.6639368534088}
+{"event": "box_result", "hash": "e34e7c208fd50078", "verdict": "infeas", "wall_s": 253.64121341705322, "peak_rss_gb": 6.84, "lambda_star": 0.9999954929241556, "wall_t": 894.2940304279327}
+{"event": "box_result", "hash": "56e47c20f39c78bd", "verdict": "feas", "wall_s": 152.17275977134705, "peak_rss_gb": 6.89, "lambda_star": -6.080976633114804e-06, "wall_t": 894.5259871482849}
+{"event": "box_result", "hash": "596b415e22a5d1d4", "verdict": "infeas", "wall_s": 254.09750151634216, "peak_rss_gb": 6.84, "lambda_star": 0.9999984883851876, "wall_t": 897.1106629371643}
+{"event": "box_result", "hash": "46a46c152ef799e6", "verdict": "feas", "wall_s": 169.09763979911804, "peak_rss_gb": 6.85, "lambda_star": -3.789431482841255e-06, "wall_t": 897.9886517524719}
+{"event": "box_result", "hash": "b243f4b86b0c248c", "verdict": "feas", "wall_s": 141.28966856002808, "peak_rss_gb": 6.84, "lambda_star": -1.3651977817591127e-05, "wall_t": 898.7857120037079}
+{"event": "box_result", "hash": "1d280e5584d59319", "verdict": "feas", "wall_s": 151.14895510673523, "peak_rss_gb": 6.89, "lambda_star": -5.3938241989069654e-06, "wall_t": 911.010781288147}
+{"event": "box_result", "hash": "07a3db80467fe8c1", "verdict": "feas", "wall_s": 155.6549515724182, "peak_rss_gb": 6.83, "lambda_star": -1.0950755289486702e-05, "wall_t": 918.4946236610413}
+{"event": "box_result", "hash": "01a15da0b40c044c", "verdict": "infeas", "wall_s": 248.37200593948364, "peak_rss_gb": 6.87, "lambda_star": 0.9999996144486188, "wall_t": 919.1871652603149}
+{"event": "box_result", "hash": "54f67350906cf9bf", "verdict": "feas", "wall_s": 184.19047355651855, "peak_rss_gb": 6.89, "lambda_star": -6.489909566708936e-06, "wall_t": 920.7842741012573}
+{"event": "box_result", "hash": "dff0f5375e19af32", "verdict": "feas", "wall_s": 167.68929028511047, "peak_rss_gb": 6.9, "lambda_star": -2.838344541928243e-06, "wall_t": 920.8545181751251}
+{"event": "box_result", "hash": "1b1ff06fb24a1295", "verdict": "feas", "wall_s": 150.51998329162598, "peak_rss_gb": 6.85, "lambda_star": -1.3466330640029746e-05, "wall_t": 920.9412984848022}
+{"event": "box_result", "hash": "c841182d2ac8356b", "verdict": "feas", "wall_s": 139.55222368240356, "peak_rss_gb": 6.84, "lambda_star": -1.3363698697255142e-05, "wall_t": 930.3009521961212}
+{"event": "box_result", "hash": "e3ca3fd52d30b523", "verdict": "feas", "wall_s": 195.16455173492432, "peak_rss_gb": 6.85, "lambda_star": -4.40277616698855e-06, "wall_t": 931.9082493782043}
+{"event": "box_result", "hash": "e4bd378ccce88cba", "verdict": "feas", "wall_s": 163.7981436252594, "peak_rss_gb": 6.86, "lambda_star": -2.9644231201880256e-06, "wall_t": 933.8951783180237}
+{"event": "box_result", "hash": "3b03e6542eda6467", "verdict": "feas", "wall_s": 175.97317171096802, "peak_rss_gb": 6.83, "lambda_star": -2.3800308229640555e-06, "wall_t": 936.3165059089661}
+{"event": "box_result", "hash": "aa07226dd0ebc023", "verdict": "feas", "wall_s": 165.12367129325867, "peak_rss_gb": 6.85, "lambda_star": -8.19072384671139e-06, "wall_t": 937.9857122898102}
+{"event": "box_result", "hash": "bab79f0887dddaca", "verdict": "feas", "wall_s": 168.35712099075317, "peak_rss_gb": 6.86, "lambda_star": -1.1292690860930212e-05, "wall_t": 938.1521184444427}
+{"event": "box_result", "hash": "0cdc57cbe61ebcf4", "verdict": "feas", "wall_s": 143.6912717819214, "peak_rss_gb": 6.86, "lambda_star": -4.156510739055105e-06, "wall_t": 940.2656848430634}
+{"event": "box_result", "hash": "ad6d2f1b4ad893fb", "verdict": "infeas", "wall_s": 239.16934633255005, "peak_rss_gb": 6.86, "lambda_star": 1.0000000000142204, "wall_t": 941.2973036766052}
+{"event": "box_result", "hash": "e97834a2dbe58df7", "verdict": "feas", "wall_s": 141.61943793296814, "peak_rss_gb": 6.84, "lambda_star": -5.754720723083206e-06, "wall_t": 941.6981499195099}
+{"event": "box_result", "hash": "70f4b2dad5ce21b7", "verdict": "feas", "wall_s": 181.42886543273926, "peak_rss_gb": 6.84, "lambda_star": -2.9541269073029457e-06, "wall_t": 957.3500900268555}
+{"event": "box_result", "hash": "1c4b7eeb8f3e4d18", "verdict": "feas", "wall_s": 185.78936386108398, "peak_rss_gb": 6.83, "lambda_star": -6.001247320188941e-06, "wall_t": 962.6476681232452}
+{"event": "box_result", "hash": "11355b4d48b713c5", "verdict": "feas", "wall_s": 187.69196915626526, "peak_rss_gb": 6.84, "lambda_star": -8.430133073985558e-06, "wall_t": 962.7953600883484}
+{"event": "box_result", "hash": "bcfa9b6d78e84b7f", "verdict": "feas", "wall_s": 182.88792037963867, "peak_rss_gb": 6.86, "lambda_star": -8.276518640942088e-06, "wall_t": 963.2350430488586}
+{"event": "box_result", "hash": "4c47095d0ebe806f", "verdict": "feas", "wall_s": 153.9125521183014, "peak_rss_gb": 6.84, "lambda_star": -1.0711652100037088e-05, "wall_t": 973.4931354522705}
+{"event": "box_result", "hash": "4fc7ed2293c9b027", "verdict": "infeas", "wall_s": 240.88873434066772, "peak_rss_gb": 6.84, "lambda_star": 0.9999999993541074, "wall_t": 978.2815763950348}
+{"event": "box_result", "hash": "ddd5b78b32b9b985", "verdict": "feas", "wall_s": 136.0576422214508, "peak_rss_gb": 6.84, "lambda_star": -4.124120896028511e-06, "wall_t": 978.8922667503357}
+{"event": "box_result", "hash": "8bd7dcd99c8fe852", "verdict": "feas", "wall_s": 141.0659122467041, "peak_rss_gb": 6.87, "lambda_star": -7.799935140957037e-06, "wall_t": 990.2347323894501}
+{"event": "box_result", "hash": "1ed4c088cf0abe67", "verdict": "feas", "wall_s": 140.18077325820923, "peak_rss_gb": 6.9, "lambda_star": -1.2465533896687077e-05, "wall_t": 1000.3557345867157}
+{"event": "box_result", "hash": "d4113b02335bf28c", "verdict": "feas", "wall_s": 137.65329241752625, "peak_rss_gb": 6.89, "lambda_star": -5.000197476555304e-06, "wall_t": 1000.6369178295135}
+{"event": "box_result", "hash": "a41fa4224ef8826a", "verdict": "feas", "wall_s": 155.56095695495605, "peak_rss_gb": 6.88, "lambda_star": -1.057484336600288e-05, "wall_t": 1006.8817181587219}
+{"event": "box_result", "hash": "831fce06283c9130", "verdict": "infeas", "wall_s": 260.9345896244049, "peak_rss_gb": 6.85, "lambda_star": 0.999999900560772, "wall_t": 1011.7755351066589}
+{"event": "box_result", "hash": "932daac1a893c9d5", "verdict": "infeas", "wall_s": 232.43649196624756, "peak_rss_gb": 6.88, "lambda_star": 0.999997903515588, "wall_t": 1014.940482378006}
+{"event": "box_result", "hash": "48c7499539768e6b", "verdict": "infeas", "wall_s": 241.84882879257202, "peak_rss_gb": 6.85, "lambda_star": 0.9999995955668451, "wall_t": 1020.8520874977112}
+{"event": "box_result", "hash": "8220e11f22089b31", "verdict": "infeas", "wall_s": 264.9140639305115, "peak_rss_gb": 6.84, "lambda_star": 0.9999999999980972, "wall_t": 1021.5070691108704}
+{"event": "box_result", "hash": "856ef164abd23d3a", "verdict": "infeas", "wall_s": 241.79505443572998, "peak_rss_gb": 6.83, "lambda_star": 0.9999997651086643, "wall_t": 1022.2688274383545}
+{"event": "box_result", "hash": "468a208d3918ba27", "verdict": "infeas", "wall_s": 247.10099029541016, "peak_rss_gb": 6.87, "lambda_star": 0.9999931511250572, "wall_t": 1024.0118699073792}
+{"event": "box_result", "hash": "ec9d0ea06ebdf4ab", "verdict": "infeas", "wall_s": 257.1762230396271, "peak_rss_gb": 6.86, "lambda_star": 1.000000000000223, "wall_t": 1029.66450715065}
+{"event": "box_result", "hash": "0edde9c38048bd5a", "verdict": "feas", "wall_s": 165.81150364875793, "peak_rss_gb": 6.87, "lambda_star": -5.876130050972748e-06, "wall_t": 1036.1741781234741}
+{"event": "box_result", "hash": "8976edca4cd4695d", "verdict": "feas", "wall_s": 155.69697070121765, "peak_rss_gb": 6.84, "lambda_star": -8.255314644102165e-06, "wall_t": 1040.343650341034}
+{"event": "box_result", "hash": "6b3171775b95c7b8", "verdict": "feas", "wall_s": 154.68595719337463, "peak_rss_gb": 6.89, "lambda_star": -5.370542825571025e-06, "wall_t": 1041.183091878891}
+{"event": "box_result", "hash": "f86a42c525c9b9bd", "verdict": "feas", "wall_s": 153.92348861694336, "peak_rss_gb": 6.85, "lambda_star": -5.208272300128664e-06, "wall_t": 1044.3530700206757}
+{"event": "box_result", "hash": "9a9b59f0ceca4efd", "verdict": "feas", "wall_s": 171.03155207633972, "peak_rss_gb": 6.85, "lambda_star": -3.3721412331840847e-06, "wall_t": 1045.1542332172394}
+{"event": "box_result", "hash": "be836d1ee4b5849f", "verdict": "feas", "wall_s": 151.1509404182434, "peak_rss_gb": 6.84, "lambda_star": -4.192317254454239e-06, "wall_t": 1045.446662902832}
+{"event": "box_result", "hash": "ae0de9bc345f0a50", "verdict": "feas", "wall_s": 151.93558192253113, "peak_rss_gb": 6.9, "lambda_star": -1.2750885814576865e-05, "wall_t": 1046.4629139900208}
+{"event": "box_result", "hash": "6e53ad18db7dbd69", "verdict": "infeas", "wall_s": 284.72863364219666, "peak_rss_gb": 6.86, "lambda_star": 0.9999999999951659, "wall_t": 1047.1475472450256}
+{"event": "box_result", "hash": "231a3106d42d178e", "verdict": "feas", "wall_s": 156.58229160308838, "peak_rss_gb": 6.91, "lambda_star": -4.0778151037622776e-06, "wall_t": 1047.2505147457123}
+{"event": "box_result", "hash": "f5cb49989ca3f0dc", "verdict": "feas", "wall_s": 151.41101241111755, "peak_rss_gb": 6.84, "lambda_star": -1.2398075157922035e-05, "wall_t": 1050.1984724998474}
+{"event": "box_result", "hash": "1bd3afe3728f6aab", "verdict": "feas", "wall_s": 166.81949067115784, "peak_rss_gb": 6.84, "lambda_star": -3.816772954217923e-06, "wall_t": 1055.839605331421}
+{"event": "box_result", "hash": "654b537a3d7b18a4", "verdict": "feas", "wall_s": 168.9253261089325, "peak_rss_gb": 6.85, "lambda_star": -2.708660048774892e-06, "wall_t": 1056.8335554599762}
+{"event": "box_result", "hash": "aee6080b96ea2e3b", "verdict": "feas", "wall_s": 160.44223809242249, "peak_rss_gb": 6.85, "lambda_star": -7.708067323858742e-06, "wall_t": 1058.4318010807037}
+{"event": "box_result", "hash": "f9d8d090a48bcb5b", "verdict": "feas", "wall_s": 138.01060962677002, "peak_rss_gb": 6.85, "lambda_star": -3.861422700583548e-06, "wall_t": 1058.9517216682434}
+{"event": "box_result", "hash": "66339690d3a4b6df", "verdict": "feas", "wall_s": 141.04833793640137, "peak_rss_gb": 6.88, "lambda_star": -6.703850792833487e-06, "wall_t": 1060.236885547638}
+{"event": "box_result", "hash": "65aaeaf96093fefe", "verdict": "feas", "wall_s": 139.62568497657776, "peak_rss_gb": 6.89, "lambda_star": -7.857009581521245e-06, "wall_t": 1060.4107074737549}
+{"event": "box_result", "hash": "8ae9c7483969ee44", "verdict": "feas", "wall_s": 153.98524594306946, "peak_rss_gb": 6.88, "lambda_star": -6.937209464985248e-06, "wall_t": 1072.480620622635}
+{"event": "box_result", "hash": "19dc7a7902ac74fd", "verdict": "feas", "wall_s": 163.2106909751892, "peak_rss_gb": 6.89, "lambda_star": -3.1223691119162887e-06, "wall_t": 1074.2223191261292}
+{"event": "box_result", "hash": "c72e50b4e687d1dc", "verdict": "feas", "wall_s": 178.48391771316528, "peak_rss_gb": 6.84, "lambda_star": -4.426583005689165e-06, "wall_t": 1075.59547829628}
+{"event": "box_result", "hash": "ec8b62aa1bbc8b6b", "verdict": "infeas", "wall_s": 223.94475984573364, "peak_rss_gb": 6.83, "lambda_star": 0.9999978594213459, "wall_t": 1080.6178340911865}
+{"event": "box_result", "hash": "d92fc0a5a60e30fd", "verdict": "feas", "wall_s": 151.63117480278015, "peak_rss_gb": 6.84, "lambda_star": -3.887670059804532e-06, "wall_t": 1081.9325516223907}
+{"event": "box_result", "hash": "ed7917348a90167f", "verdict": "feas", "wall_s": 152.56625199317932, "peak_rss_gb": 6.86, "lambda_star": -4.329496218221061e-06, "wall_t": 1086.4623181819916}
+{"event": "box_result", "hash": "48cea5416f4059b9", "verdict": "feas", "wall_s": 149.75295329093933, "peak_rss_gb": 6.85, "lambda_star": -1.0788043259628875e-05, "wall_t": 1087.739309310913}
+{"event": "box_result", "hash": "2e459dd9be532132", "verdict": "feas", "wall_s": 150.08625674247742, "peak_rss_gb": 6.86, "lambda_star": -3.6250723144016473e-06, "wall_t": 1088.2399287223816}
+{"event": "box_result", "hash": "ec2d7ce4609bb96a", "verdict": "feas", "wall_s": 163.0062277317047, "peak_rss_gb": 6.85, "lambda_star": -6.58699960514073e-06, "wall_t": 1094.9156892299652}
+{"event": "box_result", "hash": "b29c15c57399e9cc", "verdict": "feas", "wall_s": 186.03070735931396, "peak_rss_gb": 6.9, "lambda_star": -5.660983127905663e-06, "wall_t": 1106.8873963356018}
+{"event": "box_result", "hash": "ad8b8a27bc7b795f", "verdict": "feas", "wall_s": 165.94768023490906, "peak_rss_gb": 6.86, "lambda_star": -9.859077098834803e-06, "wall_t": 1107.2461233139038}
+{"event": "box_result", "hash": "a83a481726470783", "verdict": "feas", "wall_s": 166.99000000953674, "peak_rss_gb": 6.89, "lambda_star": -9.823386640599737e-06, "wall_t": 1107.256168603897}
+{"event": "box_result", "hash": "198950b0470808d7", "verdict": "feas", "wall_s": 168.99589085578918, "peak_rss_gb": 6.84, "lambda_star": -5.709564809018818e-06, "wall_t": 1110.6949236392975}
+{"event": "box_result", "hash": "2a5d34cb83fda539", "verdict": "feas", "wall_s": 151.83166599273682, "peak_rss_gb": 6.84, "lambda_star": -5.00809070793264e-06, "wall_t": 1114.6277191638947}
+{"event": "box_result", "hash": "290a42019347e778", "verdict": "feas", "wall_s": 151.57834696769714, "peak_rss_gb": 6.86, "lambda_star": -3.976872513776684e-06, "wall_t": 1114.814956665039}
+{"event": "box_result", "hash": "a349423fad27958a", "verdict": "feas", "wall_s": 167.63819408416748, "peak_rss_gb": 6.84, "lambda_star": -3.5043367033820084e-06, "wall_t": 1124.9900214672089}
+{"event": "box_result", "hash": "9da1b0ac0a93c5eb", "verdict": "feas", "wall_s": 189.2847535610199, "peak_rss_gb": 6.86, "lambda_star": -3.958667028621125e-06, "wall_t": 1125.6046981811523}
+{"event": "box_result", "hash": "73fe057bdf3e1945", "verdict": "feas", "wall_s": 163.72213125228882, "peak_rss_gb": 6.84, "lambda_star": -3.0380220714942057e-06, "wall_t": 1126.3725826740265}
+{"event": "box_result", "hash": "2241f7ca274eacf4", "verdict": "feas", "wall_s": 153.92931175231934, "peak_rss_gb": 6.85, "lambda_star": -2.727937385150208e-06, "wall_t": 1127.4252140522003}
+{"event": "box_result", "hash": "e2cc76ffb7f585ed", "verdict": "feas", "wall_s": 159.26850938796997, "peak_rss_gb": 6.85, "lambda_star": -4.562184335927432e-06, "wall_t": 1137.5514688491821}
+{"event": "box_result", "hash": "6bae6ce2b2c12b3c", "verdict": "feas", "wall_s": 168.93194580078125, "peak_rss_gb": 6.84, "lambda_star": -4.6497582871097085e-06, "wall_t": 1147.8276000022888}
+{"event": "box_result", "hash": "1db33d1659cbc7b3", "verdict": "feas", "wall_s": 153.58226037025452, "peak_rss_gb": 6.88, "lambda_star": -1.139840481148707e-05, "wall_t": 1160.4652926921844}
+{"event": "box_result", "hash": "458e5437157ecfdb", "verdict": "feas", "wall_s": 135.01934504508972, "peak_rss_gb": 6.86, "lambda_star": -3.8203092349595375e-06, "wall_t": 1164.6847796440125}
+{"event": "box_result", "hash": "fda751473929f706", "verdict": "feas", "wall_s": 167.2080729007721, "peak_rss_gb": 6.89, "lambda_star": -2.71988480483391e-06, "wall_t": 1167.8445897102356}
+{"event": "box_result", "hash": "fa43152c9977f8d1", "verdict": "feas", "wall_s": 171.7034728527069, "peak_rss_gb": 6.9, "lambda_star": -7.120578564245587e-06, "wall_t": 1172.0593974590302}
+{"event": "box_result", "hash": "49e29419f0688d87", "verdict": "feas", "wall_s": 152.8193736076355, "peak_rss_gb": 6.85, "lambda_star": -1.2578502062966383e-05, "wall_t": 1173.6725363731384}
+{"event": "box_result", "hash": "dbf9649c34ba0a1d", "verdict": "feas", "wall_s": 154.82205629348755, "peak_rss_gb": 6.87, "lambda_star": -4.071861567049406e-06, "wall_t": 1178.83545255661}
+{"event": "box_result", "hash": "2d3cc1a22b1c0ddf", "verdict": "feas", "wall_s": 138.8749499320984, "peak_rss_gb": 6.85, "lambda_star": -3.9588707687019914e-06, "wall_t": 1184.0301675796509}
+{"event": "box_result", "hash": "a62282de16c00a07", "verdict": "feas", "wall_s": 139.9907100200653, "peak_rss_gb": 6.85, "lambda_star": -5.22386616424244e-06, "wall_t": 1184.3453056812286}
+{"event": "box_result", "hash": "eeacabe226d622f6", "verdict": "feas", "wall_s": 169.67520403862, "peak_rss_gb": 6.88, "lambda_star": -4.353522715357824e-06, "wall_t": 1184.6167964935303}
+{"event": "box_result", "hash": "18830f6db417ece4", "verdict": "feas", "wall_s": 194.38866472244263, "peak_rss_gb": 6.87, "lambda_star": -4.315582111737421e-06, "wall_t": 1184.625596523285}
+{"event": "box_result", "hash": "29694504ab8fb356", "verdict": "feas", "wall_s": 163.76092886924744, "peak_rss_gb": 6.83, "lambda_star": -2.9505977458386947e-06, "wall_t": 1186.0310661792755}
+{"event": "box_result", "hash": "d80a208a98725e7b", "verdict": "feas", "wall_s": 149.78471088409424, "peak_rss_gb": 6.86, "lambda_star": -3.1101208294412857e-06, "wall_t": 1196.9333934783936}
+{"event": "box_result", "hash": "c204b987f7a3fe76", "verdict": "feas", "wall_s": 177.471364736557, "peak_rss_gb": 6.84, "lambda_star": -3.310554154732996e-06, "wall_t": 1198.9791333675385}
+{"event": "box_result", "hash": "d4af4b347fbe1439", "verdict": "feas", "wall_s": 154.16344165802002, "peak_rss_gb": 6.9, "lambda_star": -4.851043779909815e-06, "wall_t": 1200.6294751167297}
+{"event": "box_result", "hash": "972bb9a9f23641bf", "verdict": "feas", "wall_s": 156.6285161972046, "peak_rss_gb": 6.84, "lambda_star": -2.9478307333995894e-06, "wall_t": 1202.0757489204407}
+{"event": "box_result", "hash": "c9340156ede73fbd", "verdict": "feas", "wall_s": 162.10561418533325, "peak_rss_gb": 6.92, "lambda_star": -1.8100213209488464e-06, "wall_t": 1203.2906398773193}
+{"event": "box_result", "hash": "64f8a6b71fa1b866", "verdict": "feas", "wall_s": 154.04999947547913, "peak_rss_gb": 6.84, "lambda_star": -3.3216367608690554e-06, "wall_t": 1204.2504386901855}
+{"event": "box_result", "hash": "9f3f1db828d149f0", "verdict": "feas", "wall_s": 151.69736099243164, "peak_rss_gb": 6.87, "lambda_star": -2.2341997822782656e-06, "wall_t": 1208.5333654880524}
+{"event": "box_result", "hash": "0c17468841fadd34", "verdict": "feas", "wall_s": 168.37284898757935, "peak_rss_gb": 6.91, "lambda_star": -7.70414081856917e-06, "wall_t": 1215.62264585495}
+{"event": "box_result", "hash": "58282fb4357efe98", "verdict": "feas", "wall_s": 157.68015313148499, "peak_rss_gb": 6.85, "lambda_star": -6.648747794704065e-06, "wall_t": 1216.1152164936066}
+{"event": "box_result", "hash": "8214eeb8b837aae0", "verdict": "feas", "wall_s": 157.4866487979889, "peak_rss_gb": 6.85, "lambda_star": -1.150502205916992e-05, "wall_t": 1216.439934015274}
+{"event": "box_result", "hash": "4d6ac16b8db5c287", "verdict": "feas", "wall_s": 161.0331335067749, "peak_rss_gb": 6.84, "lambda_star": -1.1588552028185052e-05, "wall_t": 1216.8747191429138}
+{"event": "box_result", "hash": "bbfd95f2df7413f0", "verdict": "feas", "wall_s": 184.02423071861267, "peak_rss_gb": 6.87, "lambda_star": -9.125927660054553e-06, "wall_t": 1220.2005939483643}
+{"event": "box_result", "hash": "ed4548f7e6a942bf", "verdict": "feas", "wall_s": 181.05423521995544, "peak_rss_gb": 6.84, "lambda_star": -4.052260747433877e-06, "wall_t": 1221.398095369339}
+{"event": "box_result", "hash": "fc1a39bc5f4958bd", "verdict": "feas", "wall_s": 154.05863690376282, "peak_rss_gb": 6.88, "lambda_star": -6.2796742966648465e-06, "wall_t": 1226.5437800884247}
+{"event": "box_result", "hash": "7dee114ace370761", "verdict": "feas", "wall_s": 154.06100964546204, "peak_rss_gb": 6.89, "lambda_star": -6.0074120093633374e-06, "wall_t": 1228.2849247455597}
+{"event": "box_result", "hash": "4f583d85f94f4b1c", "verdict": "feas", "wall_s": 168.1445450782776, "peak_rss_gb": 6.88, "lambda_star": -4.6135188593070095e-06, "wall_t": 1228.3826160430908}
+{"event": "box_result", "hash": "a26e16ad23b3b1e7", "verdict": "feas", "wall_s": 154.27602076530457, "peak_rss_gb": 6.84, "lambda_star": -4.760259285433761e-06, "wall_t": 1229.8736078739166}
+{"event": "box_result", "hash": "ab9ec8fa787a89bf", "verdict": "feas", "wall_s": 154.283833026886, "peak_rss_gb": 6.83, "lambda_star": -2.6642029946958417e-06, "wall_t": 1234.904287815094}
+{"event": "box_result", "hash": "793fc6ed253cb668", "verdict": "feas", "wall_s": 154.79007291793823, "peak_rss_gb": 6.86, "lambda_star": -6.268969612208089e-06, "wall_t": 1243.0327401161194}
+{"event": "box_result", "hash": "1f97cc53744ace89", "verdict": "feas", "wall_s": 139.7075765132904, "peak_rss_gb": 6.84, "lambda_star": -3.540023688851805e-06, "wall_t": 1250.4037845134735}
+{"event": "box_result", "hash": "ca006b03d7b8bb88", "verdict": "feas", "wall_s": 144.6363091468811, "peak_rss_gb": 6.9, "lambda_star": -3.236576430509798e-06, "wall_t": 1251.8942697048187}
+{"event": "box_result", "hash": "22400c3a200eb1d8", "verdict": "feas", "wall_s": 171.6218135356903, "peak_rss_gb": 6.85, "lambda_star": -6.722271136256695e-06, "wall_t": 1259.363029241562}
+{"event": "box_result", "hash": "d5b6d6cbc2bd09ec", "verdict": "feas", "wall_s": 173.47975134849548, "peak_rss_gb": 6.86, "lambda_star": -5.178671908731417e-06, "wall_t": 1259.942878484726}
+{"event": "box_result", "hash": "3a4e4b102cc9d6fc", "verdict": "feas", "wall_s": 154.8960461616516, "peak_rss_gb": 6.86, "lambda_star": -5.249790043278181e-06, "wall_t": 1262.1417770385742}
+{"event": "box_result", "hash": "dedf7b5844190b66", "verdict": "feas", "wall_s": 136.89657378196716, "peak_rss_gb": 6.86, "lambda_star": -9.716133514753286e-06, "wall_t": 1262.501308441162}
+{"event": "box_result", "hash": "0e3c93e96ec35f35", "verdict": "feas", "wall_s": 171.0726020336151, "peak_rss_gb": 6.85, "lambda_star": -1.2588755641642051e-05, "wall_t": 1265.9905190467834}
+{"event": "box_result", "hash": "9e951e638a30ae09", "verdict": "feas", "wall_s": 154.4381263256073, "peak_rss_gb": 6.86, "lambda_star": -4.964722384210944e-06, "wall_t": 1269.254902124405}
+{"event": "box_result", "hash": "113d75b1e73ba8b5", "verdict": "feas", "wall_s": 167.5514554977417, "peak_rss_gb": 6.85, "lambda_star": -3.424545669734945e-06, "wall_t": 1282.1791973114014}
+{"event": "box_result", "hash": "d3ee2b58097a71e1", "verdict": "infeas", "wall_s": 224.57827854156494, "peak_rss_gb": 6.89, "lambda_star": 0.9999985627614835, "wall_t": 1284.990219116211}
+{"event": "box_result", "hash": "b871ef7cfcd39554", "verdict": "feas", "wall_s": 164.20498919487, "peak_rss_gb": 6.87, "lambda_star": -4.940613055855957e-06, "wall_t": 1290.5765125751495}
+{"event": "box_result", "hash": "ff0b31bbbceec02e", "verdict": "feas", "wall_s": 156.48494267463684, "peak_rss_gb": 6.85, "lambda_star": -1.0273875895872118e-05, "wall_t": 1294.0364458560944}
+{"event": "box_result", "hash": "67df09bb9652e832", "verdict": "infeas", "wall_s": 288.8613040447235, "peak_rss_gb": 6.85, "lambda_star": 1.0000000000000062, "wall_t": 1300.6377441883087}
+{"event": "box_result", "hash": "2cde4ba4193de858", "verdict": "feas", "wall_s": 181.56066489219666, "peak_rss_gb": 6.85, "lambda_star": -1.0075961620763659e-05, "wall_t": 1308.9843378067017}
+{"event": "box_result", "hash": "499809fa9ca468e2", "verdict": "feas", "wall_s": 170.5209174156189, "peak_rss_gb": 6.84, "lambda_star": -4.4057412422726425e-06, "wall_t": 1318.3488805294037}
+{"event": "box_result", "hash": "2b258b8ff81296db", "verdict": "infeas", "wall_s": 244.57906937599182, "peak_rss_gb": 6.84, "lambda_star": 0.9999985850843877, "wall_t": 1326.5141010284424}
+{"event": "box_result", "hash": "64980608eb751d2e", "verdict": "feas", "wall_s": 156.1549518108368, "peak_rss_gb": 6.9, "lambda_star": -1.079495400468646e-05, "wall_t": 1328.2147390842438}
+{"event": "box_result", "hash": "a3168eed5c968a22", "verdict": "feas", "wall_s": 157.1807565689087, "peak_rss_gb": 6.85, "lambda_star": -1.2272481782481703e-05, "wall_t": 1330.8555467128754}
+{"event": "box_result", "hash": "22014f75d73cd5c3", "verdict": "feas", "wall_s": 172.0672070980072, "peak_rss_gb": 6.88, "lambda_star": -3.609973853149093e-06, "wall_t": 1332.533168554306}
+{"event": "box_result", "hash": "400d279a8a709215", "verdict": "feas", "wall_s": 154.03280234336853, "peak_rss_gb": 6.87, "lambda_star": -5.205237696744424e-06, "wall_t": 1332.8694689273834}
+{"event": "box_result", "hash": "08fbc5308f082c4b", "verdict": "feas", "wall_s": 171.75852584838867, "peak_rss_gb": 6.86, "lambda_star": -2.6958938356922077e-06, "wall_t": 1336.4440155029297}
+{"event": "box_result", "hash": "b61495762bc7b83c", "verdict": "feas", "wall_s": 170.50834488868713, "peak_rss_gb": 6.9, "lambda_star": -3.7986476958146914e-06, "wall_t": 1338.3545939922333}
+{"event": "box_result", "hash": "6db28c1b2780428c", "verdict": "feas", "wall_s": 154.41396164894104, "peak_rss_gb": 6.84, "lambda_star": -3.936217281663498e-06, "wall_t": 1340.4457054138184}
+{"event": "box_result", "hash": "bfea03f7b05fb4f4", "verdict": "feas", "wall_s": 156.40573930740356, "peak_rss_gb": 6.85, "lambda_star": -4.543039557204554e-06, "wall_t": 1340.75111079216}
+{"event": "box_result", "hash": "a2e1fb6133748c2f", "verdict": "feas", "wall_s": 159.60395455360413, "peak_rss_gb": 6.88, "lambda_star": -3.429957163710401e-06, "wall_t": 1344.2219626903534}
+{"event": "box_result", "hash": "79e9f7730caad6df", "verdict": "feas", "wall_s": 150.5025508403778, "peak_rss_gb": 6.9, "lambda_star": -5.0292203705150605e-06, "wall_t": 1351.13108420372}
+{"event": "box_result", "hash": "22fd1d533600a5be", "verdict": "feas", "wall_s": 135.952627658844, "peak_rss_gb": 6.85, "lambda_star": -8.005850321231171e-06, "wall_t": 1352.392460346222}
+{"event": "box_result", "hash": "47c2b36c5cc048c5", "verdict": "feas", "wall_s": 167.99749779701233, "peak_rss_gb": 6.87, "lambda_star": -5.039133489368929e-06, "wall_t": 1352.6222794055939}
+{"event": "box_result", "hash": "64b5963ea46349b5", "verdict": "feas", "wall_s": 170.50596237182617, "peak_rss_gb": 6.85, "lambda_star": -1.036209511714312e-05, "wall_t": 1354.5357103347778}
+{"event": "box_result", "hash": "f4256ccc10cc6394", "verdict": "feas", "wall_s": 141.68410229682922, "peak_rss_gb": 6.85, "lambda_star": -8.098326700247882e-06, "wall_t": 1357.7974512577057}
+{"event": "box_result", "hash": "65f99c2308235507", "verdict": "feas", "wall_s": 156.2806236743927, "peak_rss_gb": 6.84, "lambda_star": -5.227255684609385e-06, "wall_t": 1358.3559958934784}
+{"event": "box_result", "hash": "acdada2a55639566", "verdict": "feas", "wall_s": 166.2063126564026, "peak_rss_gb": 6.84, "lambda_star": -4.723368008887989e-06, "wall_t": 1365.1867780685425}
+{"event": "box_result", "hash": "fcb29abb5517eb95", "verdict": "infeas", "wall_s": 258.73392963409424, "peak_rss_gb": 6.9, "lambda_star": 0.9999952233920378, "wall_t": 1365.6216719150543}
+{"event": "box_result", "hash": "34270937007392b9", "verdict": "feas", "wall_s": 169.13599157333374, "peak_rss_gb": 6.86, "lambda_star": -1.0068194843398405e-05, "wall_t": 1366.069524049759}
+{"event": "box_result", "hash": "ddfda0ff3883dc6b", "verdict": "feas", "wall_s": 147.4447042942047, "peak_rss_gb": 6.88, "lambda_star": -1.2280584361755976e-05, "wall_t": 1367.6454617977142}
+{"event": "box_result", "hash": "bc87249f5fe8539c", "verdict": "feas", "wall_s": 166.96125626564026, "peak_rss_gb": 6.92, "lambda_star": -4.254735767276063e-06, "wall_t": 1370.253131389618}
+{"event": "box_result", "hash": "83e7bdec9c892f49", "verdict": "feas", "wall_s": 154.69466280937195, "peak_rss_gb": 6.92, "lambda_star": -7.765981093606852e-06, "wall_t": 1370.3170402050018}
+{"event": "box_result", "hash": "e39fda9d1bbf559e", "verdict": "feas", "wall_s": 150.84261798858643, "peak_rss_gb": 6.84, "lambda_star": -7.17635762970187e-06, "wall_t": 1372.240371465683}
+{"event": "box_result", "hash": "dbf0dc6337fd431b", "verdict": "feas", "wall_s": 146.1062626838684, "peak_rss_gb": 6.88, "lambda_star": -8.40209248109061e-06, "wall_t": 1372.648681640625}
+{"event": "box_result", "hash": "3b2cccab9dbd6633", "verdict": "infeas", "wall_s": 249.71180057525635, "peak_rss_gb": 6.84, "lambda_star": 0.9999911802429623, "wall_t": 1374.7019226551056}
+{"event": "box_result", "hash": "6b191b58f90dff74", "verdict": "feas", "wall_s": 158.03882026672363, "peak_rss_gb": 6.84, "lambda_star": -2.250823559478649e-06, "wall_t": 1374.9129452705383}
+{"event": "box_result", "hash": "d412931e81839082", "verdict": "feas", "wall_s": 141.39704394340515, "peak_rss_gb": 6.83, "lambda_star": -7.40912884625485e-06, "wall_t": 1376.3004105091095}
+{"event": "box_result", "hash": "0372d7a25a0f7f45", "verdict": "feas", "wall_s": 152.81470561027527, "peak_rss_gb": 6.88, "lambda_star": -7.3026068808299616e-06, "wall_t": 1381.198369026184}
+{"event": "box_result", "hash": "32c76c4cefb6cffa", "verdict": "feas", "wall_s": 153.99068760871887, "peak_rss_gb": 6.89, "lambda_star": -1.0288050162211169e-05, "wall_t": 1382.2751471996307}
+{"event": "box_result", "hash": "d70a85231ad37385", "verdict": "feas", "wall_s": 145.58825302124023, "peak_rss_gb": 6.86, "lambda_star": -1.2299231541154846e-05, "wall_t": 1388.620819568634}
+{"event": "box_result", "hash": "08ad2aa712908961", "verdict": "feas", "wall_s": 139.80909323692322, "peak_rss_gb": 6.84, "lambda_star": -6.567449347665173e-06, "wall_t": 1390.2136917114258}
+{"event": "box_result", "hash": "63efdf58205c3283", "verdict": "feas", "wall_s": 162.84941053390503, "peak_rss_gb": 6.84, "lambda_star": -3.955712597699998e-06, "wall_t": 1392.7222483158112}
+{"event": "box_result", "hash": "08c6bafc8be01a7f", "verdict": "feas", "wall_s": 127.5925076007843, "peak_rss_gb": 6.85, "lambda_star": -6.665596331490068e-06, "wall_t": 1393.5827097892761}
+{"event": "box_result", "hash": "a14c26da47ebac58", "verdict": "feas", "wall_s": 134.51038718223572, "peak_rss_gb": 6.87, "lambda_star": -6.6580317450484485e-06, "wall_t": 1394.4546101093292}
+{"event": "box_result", "hash": "79be17914c709f38", "verdict": "feas", "wall_s": 144.3491575717926, "peak_rss_gb": 6.93, "lambda_star": -7.854264653147795e-06, "wall_t": 1396.2432911396027}
+{"event": "box_result", "hash": "12f1b5a98dcfe520", "verdict": "feas", "wall_s": 136.64790678024292, "peak_rss_gb": 6.86, "lambda_star": -9.249011639581466e-06, "wall_t": 1405.9018993377686}
+{"event": "box_result", "hash": "3aee9f29f93cdfad", "verdict": "feas", "wall_s": 150.3111982345581, "peak_rss_gb": 6.85, "lambda_star": -4.26945122524922e-06, "wall_t": 1409.674246788025}
+{"event": "box_result", "hash": "d96958252141c694", "verdict": "feas", "wall_s": 148.80989146232605, "peak_rss_gb": 6.86, "lambda_star": -4.7170246735815524e-06, "wall_t": 1411.3106577396393}
+{"event": "box_result", "hash": "c5e4d3e8537ffb18", "verdict": "feas", "wall_s": 151.70632004737854, "peak_rss_gb": 6.87, "lambda_star": -9.421496659971916e-06, "wall_t": 1413.8489644527435}
+{"event": "box_result", "hash": "336a5c551af04185", "verdict": "feas", "wall_s": 129.53028631210327, "peak_rss_gb": 6.89, "lambda_star": -3.735345656012013e-06, "wall_t": 1414.5210406780243}
+{"event": "box_result", "hash": "962011dc81f43868", "verdict": "feas", "wall_s": 140.45781636238098, "peak_rss_gb": 6.86, "lambda_star": -1.337308372630275e-05, "wall_t": 1422.6374027729034}
+{"event": "box_result", "hash": "32f7199619e4a89b", "verdict": "infeas", "wall_s": 218.4368441104889, "peak_rss_gb": 6.84, "lambda_star": 1.0000000000002816, "wall_t": 1422.6865026950836}
+{"event": "box_result", "hash": "e2b43774cf29ef84", "verdict": "feas", "wall_s": 123.4454197883606, "peak_rss_gb": 6.86, "lambda_star": -2.7718248891462198e-06, "wall_t": 1424.0828948020935}
+{"event": "box_result", "hash": "b2c04552a0baa8ed", "verdict": "feas", "wall_s": 130.84041595458984, "peak_rss_gb": 6.85, "lambda_star": -1.3203405009988318e-05, "wall_t": 1424.8757853507996}
+{"event": "box_result", "hash": "4e8581fea457c1a2", "verdict": "infeas", "wall_s": 218.4131019115448, "peak_rss_gb": 6.88, "lambda_star": 0.9999978090335351, "wall_t": 1426.9442386627197}
+{"event": "box_result", "hash": "7be2984719a415b7", "verdict": "feas", "wall_s": 118.9290418624878, "peak_rss_gb": 6.85, "lambda_star": -7.153988054052654e-06, "wall_t": 1427.9146373271942}
+{"event": "box_result", "hash": "5984893a8a445ed2", "verdict": "feas", "wall_s": 137.65910863876343, "peak_rss_gb": 6.88, "lambda_star": -8.822907728215372e-06, "wall_t": 1428.2359554767609}
+{"event": "box_result", "hash": "3a2aacde97620aa1", "verdict": "feas", "wall_s": 112.99554419517517, "peak_rss_gb": 6.84, "lambda_star": -6.640571885854135e-06, "wall_t": 1431.345191001892}
+{"event": "box_result", "hash": "7c2023bfa31c7428", "verdict": "feas", "wall_s": 106.25280475616455, "peak_rss_gb": 6.84, "lambda_star": -3.049999637978183e-06, "wall_t": 1432.7659857273102}
+{"event": "box_result", "hash": "e9655b06f65a3b46", "verdict": "feas", "wall_s": 115.2181749343872, "peak_rss_gb": 6.9, "lambda_star": -7.3209257420699955e-06, "wall_t": 1443.4328956604004}
+{"event": "box_result", "hash": "f5acdcdeaae44f29", "verdict": "feas", "wall_s": 104.65329217910767, "peak_rss_gb": 6.84, "lambda_star": -6.527128271111219e-06, "wall_t": 1445.0985114574432}
+{"event": "box_result", "hash": "258791969581549d", "verdict": "feas", "wall_s": 115.67199206352234, "peak_rss_gb": 6.85, "lambda_star": -6.731251109706785e-06, "wall_t": 1446.5268454551697}
+{"event": "box_result", "hash": "7753b97008e4b885", "verdict": "feas", "wall_s": 112.87314748764038, "peak_rss_gb": 6.89, "lambda_star": -3.6558932718369717e-06, "wall_t": 1449.3164563179016}
+{"event": "box_result", "hash": "0efe66ad18be1d44", "verdict": "feas", "wall_s": 117.17631125450134, "peak_rss_gb": 6.87, "lambda_star": -2.019495788489461e-06, "wall_t": 1450.045529127121}
+{"event": "box_result", "hash": "0f2d1e7437b165f9", "verdict": "feas", "wall_s": 121.04115557670593, "peak_rss_gb": 6.88, "lambda_star": -4.372285501412866e-06, "wall_t": 1453.5737538337708}
+{"event": "box_result", "hash": "1609f4b02fb46981", "verdict": "feas", "wall_s": 117.36741876602173, "peak_rss_gb": 6.91, "lambda_star": -8.127353615678606e-06, "wall_t": 1455.7217211723328}
+{"event": "box_result", "hash": "f86a48ce31d0f80b", "verdict": "infeas", "wall_s": 150.9446439743042, "peak_rss_gb": 6.88, "lambda_star": 0.9999999999999999, "wall_t": 1495.166718006134}
+{"event": "box_result", "hash": "ac238be191d9eda8", "verdict": "infeas", "wall_s": 155.0379343032837, "peak_rss_gb": 6.85, "lambda_star": 0.9999999999893302, "wall_t": 1495.7883105278015}

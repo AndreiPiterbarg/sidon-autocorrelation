@@ -27,5 +27,13 @@ import Sidon.Proof.TestValueBounds
 import Sidon.Proof.DiscretizationError
 import Sidon.Proof.RefinementBridge
 import Sidon.Proof.FinalResult
+import Sidon.Proof.WRefinedDefs
+import Sidon.Proof.TightDiscretizationBound
 import Sidon.Proof.WRefinedBound
+import Sidon.Proof.SpectralDiscretizationBound
+import Sidon.Proof.TightContinuousBridge
 import Sidon.Proof.CoarseCascade
+import Sidon.Proof.PostFilterF
+import Sidon.Proof.PostFilterQ
+import Sidon.Proof.PostFilterL
+import Sidon.Proof.PostFilterChain

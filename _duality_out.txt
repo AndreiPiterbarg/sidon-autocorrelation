@@ -1,0 +1,32 @@
+=== LP Duality: Q-Prune Correctness (Lines 44-56) ===
+
+
+DERIVATION (lines 32-47):
+  sum_W lambda_W TV_W(a) >= sum_W lambda_W TV_W(b)
+                             - sup_{delta in cell} sum_W lambda_W [TV_W(b)-TV_W(a)]
+
+  Cell: |delta|_oo <= 1/m, sum delta = 0
+  The sup uses a SINGLE delta shared across windows (key Q tightening)
+  
+Q-PRUNING CONDITION (line 44-46):
+  Q prunes iff exists lambda in simplex with
+    sum_W lambda_W [m^2*TV_W(b) - ell_int_sum/(4n*ell_W)]
+    - Delta_T(lambda)/(2n) > c_target*m^2
+
+LP FORMULATION (lines 54-55):
+  max t  s.t.
+    A[sigma,w]*lambda >= t  for all sigma
+    sum(lambda) = 1
+    lambda >= 0
+
+CORRECTNESS (line 300-312):
+  t_opt > margin*m^2  =>  Q-prunes
+
+VERIFICATION:
+  1. Constraint "for all sigma" enforces min over sigma
+  2. max over lambda gives max_lambda min_sigma g_sigma(lambda)
+  3. This IS the Q-prune condition (lines 44-56)
+  4. Solver success required (line 298: returns -inf if not)
+  5. No unbounded risk (simplex is compact, finite constraints)
+
+VERDICT: CORRECT

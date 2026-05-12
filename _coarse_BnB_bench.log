@@ -1,0 +1,71 @@
+
+=== d=4, S=20, c=1.2, max_depth=4 ===
+  total comps: 1,771
+  BL survivors: 117  (0.005s)
+  NO survivors: 117  (0.004s)
+  n_windows = 28; running BnB on 117 survivors
+  BnB: cert rate at depth (cumulative):
+     depth<=0:     0/117 (0.0%)
+     depth<=1:     0/117 (0.0%)
+     depth<=2:     0/117 (0.0%)
+     depth<=3:     0/117 (0.0%)
+     depth<=4:     8/117 (6.8%)
+  BnB per-cell time: avg 12.6ms, median 10.4ms; avg leaves=5.6, splits=4.1
+  BnB total elapsed: 1.48s; final uncert: 109
+  Running Shor SDP on first 100 survivors...
+(CVXPY) May 09 01:23:52 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 01:23:52 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+  Shor: 11/100 cert (11.0%); avg 110ms/cell; total 11.0s
+  Comparison (Shor vs BnB up to depth 4):
+    Both cert: 7, Shor-only: 4, BnB-only: 0, neither: 89
+
+=== d=6, S=15, c=1.2, max_depth=4 ===
+  total comps: 15,504
+  BL survivors: 536  (0.001s)
+  NO survivors: 506  (0.004s)
+  (capping BnB to first 300 of 506 NO-survivors)
+  n_windows = 66; running BnB on 300 survivors
+  BnB: cert rate at depth (cumulative):
+     depth<=0:     1/300 (0.3%)
+     depth<=1:    37/300 (12.3%)
+     depth<=2:    45/300 (15.0%)
+     depth<=3:    58/300 (19.3%)
+     depth<=4:    80/300 (26.7%)
+  BnB per-cell time: avg 24.2ms, median 21.6ms; avg leaves=5.5, splits=3.7
+  BnB total elapsed: 7.26s; final uncert: 220
+  Running Shor SDP on first 100 survivors...
+  Shor: 86/100 cert (86.0%); avg 180ms/cell; total 18.0s
+  Comparison (Shor vs BnB up to depth 4):
+    Both cert: 28, Shor-only: 58, BnB-only: 0, neither: 14
+
+=== d=8, S=12, c=1.2, max_depth=4 ===
+  total comps: 50,388
+  BL survivors: 4,635  (0.011s)
+  NO survivors: 3,956  (0.041s)
+  (capping BnB to first 150 of 3956 NO-survivors)
+  n_windows = 120; running BnB on 150 survivors
+  BnB: cert rate at depth (cumulative):
+     depth<=0:     1/150 (0.7%)
+     depth<=1:    25/150 (16.7%)
+     depth<=2:    45/150 (30.0%)
+     depth<=3:    55/150 (36.7%)
+     depth<=4:    62/150 (41.3%)
+  BnB per-cell time: avg 55.9ms, median 48.6ms; avg leaves=5.7, splits=3.4
+  BnB total elapsed: 8.38s; final uncert: 88
+  Running Shor SDP on first 50 survivors...
+  Shor: 49/50 cert (98.0%); avg 337ms/cell; total 16.8s
+  Comparison (Shor vs BnB up to depth 4):
+    Both cert: 25, Shor-only: 24, BnB-only: 0, neither: 1
+
+======================================================================
+SUMMARY:
+  d=4, S=20: NO-survivors=117; BnB cum cert at depth 0: 0 (0%); 1: 0 (0%); 2: 0 (0%); 3: 0 (0%); 4: 8 (7%); 
+    Shor: 11/100 (avg 110ms); both=7, Shor-only=4, BnB-only=0, neither=89
+  d=6, S=15: NO-survivors=300; BnB cum cert at depth 0: 1 (0%); 1: 37 (12%); 2: 45 (15%); 3: 58 (19%); 4: 80 (27%); 
+    Shor: 86/100 (avg 180ms); both=28, Shor-only=58, BnB-only=0, neither=14
+  d=8, S=12: NO-survivors=150; BnB cum cert at depth 0: 1 (1%); 1: 25 (17%); 2: 45 (30%); 3: 55 (37%); 4: 62 (41%); 
+    Shor: 49/50 (avg 337ms); both=25, Shor-only=24, BnB-only=0, neither=1
+
+Results written to C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_BnB_bench_results.json

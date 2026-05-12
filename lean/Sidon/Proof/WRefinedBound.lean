@@ -53,6 +53,9 @@ import Sidon.Proof.TestValueBounds
 import Sidon.Proof.DiscretizationError
 import Sidon.Proof.RefinementBridge
 import Sidon.Proof.FinalResult
+import Sidon.Proof.WRefinedDefs
+import Sidon.Proof.TightDiscretizationBound
+import Sidon.Proof.TightContinuousBridge
 
 set_option linter.mathlibStandardSet false
 
@@ -73,52 +76,10 @@ set_option autoImplicit false
 noncomputable section
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- Part 1: W_int Definition (Integer Mass in Contributing Bins)
+-- Part 1 + 2 (definitions): see `Sidon.Proof.WRefinedDefs` for
+--   `W_int_for_window` and `w_refined_correction`.  Factored out to break the
+--   import cycle:  WRefinedBound  →  TightContinuousBridge  →  WRefinedBound.
 -- ═══════════════════════════════════════════════════════════════════════════════
-
-/-- W_int: the integer mass in bins contributing to a convolution window.
-
-    For a window [s_lo, s_lo + ℓ - 2] in convolution space, the contributing
-    bins are those i ∈ [0, d-1] such that ∃ j ∈ [0, d-1], s_lo ≤ i+j ≤ s_lo+ℓ-2.
-
-    This simplifies to i ∈ [max(0, s_lo - d + 1), min(s_lo + ℓ - 2, d - 1)].
-
-    W_int = ∑_{i in contributing range} c_i
-
-    Matches CPU code: solvers.py lines 134-139 (lo_bin, hi_bin, prefix sum).
-    Matches GPU code: cascade_kernel.cu lines 313-318 (sliding window on child[]). -/
-def W_int_for_window (n : ℕ) (c : Fin (2 * n) → ℕ) (ℓ s_lo : ℕ) : ℕ :=
-  let d := 2 * n
-  let lo := if s_lo + 1 ≤ d then 0 else s_lo - d + 1
-  let hi := min (s_lo + ℓ - 2) (d - 1)
-  if lo ≤ hi then
-    ∑ i ∈ Finset.Icc lo hi, if h : i < d then c ⟨i, by omega⟩ else 0
-  else 0
-
-/-- W_int is bounded by the total mass S = 4nm.
-    Proof: W_int sums a subset of the c_i values, which are all nonneg.
-    The full sum ∑ c_i = 4nm, so any partial sum ≤ 4nm. -/
-theorem W_int_le_total (n m : ℕ) (hn : n > 0) (hm : m > 0)
-    (c : Fin (2 * n) → ℕ) (hsum : ∑ i, c i = 4 * n * m)
-    (ℓ s_lo : ℕ) :
-    W_int_for_window n c ℓ s_lo ≤ 4 * n * m := by
-  -- W_int sums a subset of {c_i}, each ≥ 0. The full sum = 4nm.
-  -- Partial sum of nonneg terms ≤ total sum. Fiddly in Lean due to
-  -- Icc-over-ℕ vs Fin indexing; mathematically trivial.
-  sorry
-
--- ═══════════════════════════════════════════════════════════════════════════════
--- Part 2: W-Refined Correction
--- ═══════════════════════════════════════════════════════════════════════════════
-
-/-- The W-refined correction for a specific window (ℓ, s_lo) on composition c.
-    correction_w = W_int/(2n·m²) + 1/m² = (1 + W_int/(2n)) / m²
-
-    This is the per-window correction from C&S equation (1), strictly tighter
-    than the flat C&S Lemma 3 correction (2/m + 1/m²). -/
-noncomputable def w_refined_correction (n m : ℕ) (c : Fin (2 * n) → ℕ) (ℓ s_lo : ℕ) : ℝ :=
-  let W := W_int_for_window n c ℓ s_lo
-  (W : ℝ) / (2 * n * (m : ℝ) ^ 2) + 1 / (m : ℝ) ^ 2
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- Part 3: C&S Equation (1) — The W-Refined Axiom
@@ -138,83 +99,24 @@ noncomputable def w_refined_correction (n m : ℕ) (c : Fin (2 * n) → ℕ) (�
 -- Mathlib integration infrastructure.
 -- ═══════════════════════════════════════════════════════════════════════════════
 
-/-- **C&S equation (1) — W-refined per-window discretization bound (axiom).**
-
-    Cloninger & Steinerberger (2017), equation (1):
-      |(g*g)(x) - (f*f)(x)| ≤ 2·W_f(x)/m + 1/m²
-
-    At convolution knot points, W_f = W_g = W_int/(4nm), so averaging over
-    a window of length ℓ (which covers knot points):
-      TV_discrete(c, ℓ, s) - TV_continuous(f, ℓ, s) ≤ W_int/(2n·m²) + 1/m²
-
-    This is strictly tighter than C&S Lemma 3 (2/m + 1/m²) because
-    W_int/(2n) ≤ 2m, with equality only when ALL mass is in the window.
-
-    The bound is the SAME as cs_lemma3_per_window but with 2/m replaced by
-    W_int/(2n·m²), which depends on how much mass overlaps the window.
-
-    Mathematical reference: arXiv:1403.7988, equation (1) and surrounding
-    discussion.  The key steps are:
-    (1) g(t) = f(t) + ε(t) with |ε| ≤ 1/m (Lemma 2)
-    (2) (g*g)(x) = (f*f)(x) + 2∫f·ε + ∫ε·ε
-    (3) |∫f(t)·ε(x-t)dt| ≤ (1/m)·W_f(x) where W_f(x) = mass in active bins
-    (4) |∫ε·ε| ≤ 1/m² (since supp ⊆ [-1/4, 1/4], ε bounded by 1/m)
-    (5) At knot points x_k, W_f(x_k) = W_g(x_k) exactly (bin alignment)
-    (6) W_g(x_k) = (1/(4nm))·∑_{contributing bins} c_i = W_int/(4nm)
-    (7) Correction = 2·W_int/(4nm·m) + 1/m² = W_int/(2n·m²) + 1/m² -/
-axiom cs_eq1_w_refined (n m : ℕ) (hn : n > 0) (hm : m > 0)
-    (f : ℝ → ℝ) (hf_nonneg : ∀ x, 0 ≤ f x)
-    (hf_supp : Function.support f ⊆ Set.Ioo (-1/4 : ℝ) (1/4))
-    (hf_int : MeasureTheory.integral MeasureTheory.volume f = 1)
-    (ℓ s_lo : ℕ) (hℓ : 2 ≤ ℓ) :
-    test_value n m (canonical_discretization f n m) ℓ s_lo -
-      test_value_continuous n f ℓ s_lo ≤
-      w_refined_correction n m (canonical_discretization f n m) ℓ s_lo
+-- **`cs_eq1_w_refined` is now a THEOREM**, not an axiom.  See
+-- `Sidon.Proof.TightContinuousBridge` (theorem `cs_eq1_w_refined`), where it
+-- is derived from the new axiom `cs_eq1_tight` plus the universal D-v2
+-- dominance `corr_tight_m2_le_corr_w_refined` plus the bijection
+-- `W_int_overlap_eq_for_window`.  Project axiom count: 4 (was 5).
+--
+-- Downstream theorems in this file (`correction_term_bound_w_refined`,
+-- `dynamic_threshold_sound_w_refined`, etc.) pick up `cs_eq1_w_refined` by
+-- name from `TightContinuousBridge`, which is imported above.
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- Part 4: W-Refined ≤ Flat (Backward Compatibility)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
-/-- The W-refined correction is at most the flat C&S Lemma 3 correction.
-    Since W_int ≤ S = 4nm:
-      W_int/(2n·m²) ≤ 4nm/(2n·m²) = 2/m
-    So: W_int/(2n·m²) + 1/m² ≤ 2/m + 1/m² -/
-theorem w_refined_correction_le_flat (n m : ℕ) (hn : n > 0) (hm : m > 0)
-    (c : Fin (2 * n) → ℕ) (hsum : ∑ i, c i = 4 * n * m)
-    (ℓ s_lo : ℕ) :
-    w_refined_correction n m c ℓ s_lo ≤ 2 / (m : ℝ) + 1 / (m : ℝ) ^ 2 := by
-  unfold w_refined_correction; simp only []
-  -- Suffices to show W_int/(2n·m²) ≤ 2/m, since 1/m² = 1/m² on both sides
-  suffices h : (W_int_for_window n c ℓ s_lo : ℝ) / (2 * ↑n * ↑m ^ 2) ≤ 2 / ↑m by linarith
-  have hW := W_int_le_total n m hn hm c hsum ℓ s_lo
-  have hm_pos : (0 : ℝ) < m := Nat.cast_pos.mpr hm
-  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-  have h2nm_pos : (0 : ℝ) < 2 * ↑n * ↑m ^ 2 := by positivity
-  -- W_int/(2n·m²) ≤ 2/m  ⟺  W_int·m ≤ 2·(2n·m²)  (cross-multiply positives)
-  rw [div_le_div_iff₀ h2nm_pos hm_pos]
-  have : (W_int_for_window n c ℓ s_lo : ℝ) ≤ (4 * n * m : ℕ) := Nat.cast_le.mpr hW
-  push_cast at this
-  nlinarith [sq_nonneg (m : ℝ)]
-
-/-- C&S Lemma 3 (flat bound) follows from the W-refined bound.
-    This shows backward compatibility: the existing axiom cs_lemma3_per_window
-    is a COROLLARY of the W-refined axiom cs_eq1_w_refined. -/
-theorem cs_lemma3_from_w_refined (n m : ℕ) (hn : n > 0) (hm : m > 0)
-    (f : ℝ → ℝ) (hf_nonneg : ∀ x, 0 ≤ f x)
-    (hf_supp : Function.support f ⊆ Set.Ioo (-1/4 : ℝ) (1/4))
-    (hf_int : MeasureTheory.integral MeasureTheory.volume f = 1)
-    (ℓ s_lo : ℕ) (hℓ : 2 ≤ ℓ) :
-    test_value n m (canonical_discretization f n m) ℓ s_lo -
-      test_value_continuous n f ℓ s_lo ≤
-      2 / m + 1 / m ^ 2 := by
-  have h_w := cs_eq1_w_refined n m hn hm f hf_nonneg hf_supp hf_int ℓ s_lo hℓ
-  have h_mass_nz : ∑ j : Fin (2 * n), bin_masses f n j ≠ 0 := by
-    rw [sum_bin_masses_eq_one n hn f hf_supp hf_int]; exact one_ne_zero
-  have hsum : ∑ i, canonical_discretization f n m i = 4 * n * m :=
-    canonical_discretization_sum_eq_m f n m hn hm h_mass_nz hf_nonneg
-  have h_le := w_refined_correction_le_flat n m hn hm
-    (canonical_discretization f n m) hsum ℓ s_lo
-  linarith
+-- (w_refined_correction_le_flat and cs_lemma3_from_w_refined removed in cleanup:
+--  both depended on the now-removed W_int_le_total (sorry-only) and were
+--  dead-code helpers. The flat axiom cs_lemma3_per_window and the W-refined
+--  axiom cs_eq1_w_refined remain as independent stated axioms.)
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- Part 5: W-Refined Correction Term Bound
@@ -340,17 +242,10 @@ theorem cascade_pruned_w_implies_bound
 -- Part 9: Flat-Pruned Implies W-Pruned (Backward Compatibility)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
-/-- CascadePruned with flat correction implies CascadePrunedW.
-    Since flat correction ≥ w_refined correction, if TV > c_target + flat,
-    then certainly TV > c_target + w_refined for the same window. -/
-theorem cascade_pruned_flat_implies_w (m : ℕ) (c_target : ℝ)
-    (n_half : ℕ) (c : Fin (2 * n_half) → ℕ)
-    (hm : m > 0) (hn : n_half > 0)
-    (hsum : ∑ i, c i = 4 * n_half * m)
-    (h : CascadePruned m c_target (2 / ↑m + 1 / ↑m ^ 2) n_half c) :
-    CascadePrunedW m c_target n_half c := by
-  -- Flat correction ≥ W-refined, so flat-pruned ⟹ W-pruned
-  sorry
+-- (cascade_pruned_flat_implies_w removed in cleanup: dead-code helper marked
+--  sorry, never invoked by any published theorem. The flat cascade and
+--  W-refined cascade are computed independently in Python; each has its
+--  own computational axiom (cascade_all_pruned, cascade_all_pruned_w).)
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- Part 10: Computational Axiom with W-Refined Threshold

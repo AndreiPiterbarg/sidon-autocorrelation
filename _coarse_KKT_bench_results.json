@@ -1,0 +1,70 @@
+{
+  "soundness": {
+    "n_trials": 100,
+    "n_grid": 12,
+    "kkt_violations": 0,
+    "kkt_max_excess": 0.0,
+    "vertex_violations": 3,
+    "vertex_max_excess": 0.004098080732190423,
+    "examples": []
+  },
+  "closure": [
+    {
+      "d": 4,
+      "S": 20,
+      "c_target": 1.2,
+      "n_cells_tested": 5003,
+      "n_close_tri": 4282,
+      "n_close_vertex": 4322,
+      "n_close_kkt": 4322,
+      "n_kkt_strict_over_tri": 40,
+      "n_kkt_strict_over_vertex": 0,
+      "pct_close_tri": 85.58864681191285,
+      "pct_close_vertex": 86.38816709974016,
+      "pct_close_kkt": 86.38816709974016,
+      "pct_kkt_gain_over_tri": 0.7995202878273037,
+      "pct_kkt_gain_over_vertex": 0.0,
+      "time_kkt_median_us": 1259.699999991426,
+      "time_tri_median_us": 26.599999955578824,
+      "time_vertex_median_us": 2.1999999262334313
+    },
+    {
+      "d": 6,
+      "S": 15,
+      "c_target": 1.2,
+      "n_cells_tested": 5006,
+      "n_close_tri": 2873,
+      "n_close_vertex": 3152,
+      "n_close_kkt": 3152,
+      "n_kkt_strict_over_tri": 279,
+      "n_kkt_strict_over_vertex": 0,
+      "pct_close_tri": 57.391130643228124,
+      "pct_close_vertex": 62.964442668797446,
+      "pct_close_kkt": 62.964442668797446,
+      "pct_kkt_gain_over_tri": 5.573312025569317,
+      "pct_kkt_gain_over_vertex": 0.0,
+      "time_kkt_median_us": 14484.799999991083,
+      "time_tri_median_us": 60.89999988034833,
+      "time_vertex_median_us": 9.099999942918657
+    },
+    {
+      "d": 8,
+      "S": 12,
+      "c_target": 1.2,
+      "n_cells_tested": 810,
+      "n_close_tri": 253,
+      "n_close_vertex": 342,
+      "n_close_kkt": 342,
+      "n_kkt_strict_over_tri": 89,
+      "n_kkt_strict_over_vertex": 0,
+      "pct_close_tri": 31.234567901234566,
+      "pct_close_vertex": 42.22222222222222,
+      "pct_close_kkt": 42.22222222222222,
+      "pct_kkt_gain_over_tri": 10.987654320987655,
+      "pct_kkt_gain_over_vertex": 0.0,
+      "time_kkt_median_us": 168879.10000014017,
+      "time_tri_median_us": 87.84999977251573,
+      "time_vertex_median_us": 34.700000014709076
+    }
+  ]
+}

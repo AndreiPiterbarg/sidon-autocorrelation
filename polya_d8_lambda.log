@@ -1,0 +1,12 @@
+d=8: variable vs uniform lambda
+  R       mode      alpha        gap  solve_s
+  6   variable   1.103118   0.101882     0.02
+  6    uniform   0.772070   0.432930     0.00
+  8   variable   1.130952   0.074048     0.08
+  8    uniform   0.772070   0.432930     0.06
+ 10   variable   1.147885   0.057115     0.47
+ 10    uniform   0.772070   0.432930     0.29
+ 12   variable   1.158661   0.046339     2.98
+ 12    uniform   0.772070   0.432930     6.22
+ 14   variable   1.166959   0.038041    33.20
+ 14    uniform   0.772070   0.432930    38.15

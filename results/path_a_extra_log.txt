@@ -1,0 +1,49 @@
+
+=== alpha_at_edge_1D ===
+  random 200/200 finite, best ratio = 0.395980
+    refine 0: 0.395980 -> 0.395536
+    refine 1: 0.407600 -> 0.395535
+    refine 2: 0.411596 -> 0.395536
+    refine 3: 0.415565 -> 0.395536
+  best after refine: 0.395535, time=48.9s
+
+=== perturb_lin ===
+  random search timed out after 177 iters
+  random 177/200 finite, best ratio = 0.392863
+  local refine timed out at k=0
+  best after refine: 0.392863, time=60.5s
+
+=== perturb_quad ===
+  random search timed out after 93 iters
+  random 93/200 finite, best ratio = 0.393910
+  local refine timed out at k=0
+  best after refine: 0.393910, time=60.1s
+
+=== perturb_sin ===
+  random search timed out after 97 iters
+  random 97/350 finite, best ratio = 0.396196
+  local refine timed out at k=0
+  best after refine: 0.396196, time=80.3s
+
+=== SSplus_unif_w ===
+  random search timed out after 75 iters
+  random 75/200 finite, best ratio = 0.402374
+  local refine timed out at k=0
+  best after refine: 0.402374, time=50.5s
+
+=== SS_doublebump ===
+  random search timed out after 38 iters
+  random 38/600 finite, best ratio = 0.432868
+  local refine timed out at k=0
+  best after refine: 0.432868, time=172.7s
+
+=== two_endpoints_v2 ===
+  random search timed out after 50 iters
+  random 50/350 finite, best ratio = 0.456863
+  local refine timed out at k=0
+  best after refine: 0.456863, time=81.0s
+
+=== EXTRA OVERALL MIN: 0.392863, c0=pi/8=0.392699, margin=1.64e-04 ===
+  {'family': 'perturb_lin', 'x': [-0.004688780085591482], 'ratio': 0.3928633531640981}
+
+Wrote path_a_extra_adversarial.json  elapsed=554.0s

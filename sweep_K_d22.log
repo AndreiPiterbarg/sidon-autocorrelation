@@ -1,0 +1,10 @@
+loaded 416 d=22 LP-residual boxes from runs_local/d22_t1p2805_split_K9/iter_006/children_after_lp.npz
+  depth: 54–54
+  lp_val: 1.0000–1.2778
+|W_22| = 946
+building SDP cache (~2-5 s)...
+  cache built in 0.1s
+
+K-sweep on 25 d=22 boxes, K∈[32, 80, 120, 160, 240]
+target=1.2805
+========================================================================

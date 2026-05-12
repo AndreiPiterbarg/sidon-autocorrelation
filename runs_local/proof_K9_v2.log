@@ -1,0 +1,93 @@
+
+#### RESUMING from runs/d22_t1p2805_split_K9 ####
+
+[resume] loaded 1 pending from runs/d22_t1p2805_split_K9/pending_survivors.npz
+
+[resume] iter 1 already done → 1 survivors
+
+[resume] iter 2 already done → 1 survivors
+
+[resume] iter 3 already done → 1 survivors
+
+=== ITER 4 === (1 pending, split_depth=9)
+  [split] 1 → 256 children
+  [lp]    255 LP-cert  →  1 need SDP
+
+======================================================================
+K=0 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['7.28e-12'])...
+    calib 1/1: hash=8d60cce87ab6b1c1 verdict=feas t=39.6s rss=4.56 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=4.56 GB
+              usable_ram=562.3 GB  rss_with_safety=5.93 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=0 boxes
+  [stage K=0] cert=0 fail=1 exc=0  max_rss=4.56 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=16 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['7.28e-12'])...
+    calib 1/1: hash=8d60cce87ab6b1c1 verdict=feas t=52.7s rss=28.44 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=28.44 GB
+              usable_ram=562.3 GB  rss_with_safety=36.97 GB
+              n_par by_ram=15 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=15, threads/proc=12
+  [sweep] launching pool: 15 procs × 12 threads, sweep_size=0 boxes
+  [stage K=16] cert=0 fail=1 exc=0  max_rss=28.44 GB  sweep_wall=0s (0.0 min)
+
+======================================================================
+K=32 STAGE — 1 input survivors
+======================================================================
+  [calib] running 1 largest-volume boxes serially (16 threads each, vols=['7.28e-12'])...
+    calib 1/1: hash=8d60cce87ab6b1c1 verdict=feas t=106.1s rss=43.42 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=43.42 GB
+              usable_ram=562.3 GB  rss_with_safety=56.45 GB
+              n_par by_ram=9 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=9, threads/proc=21
+  [sweep] launching pool: 9 procs × 21 threads, sweep_size=0 boxes
+  [stage K=32] cert=0 fail=1 exc=0  max_rss=43.42 GB  sweep_wall=0s (0.0 min)
+
+######################################################################
+# K-LADDER COMPLETE  total=1  cert=0  survivors=1  wall=199s (3.3 min)
+######################################################################
+  [iter 4] DONE  in=1 children=256 lp_cert=255 sdp_cert=0 survivors=1 wall=221s
+
+=== ITER 5 === (1 pending, split_depth=9)
+  [split] 1 → 291 children
+  [lp]    287 LP-cert  →  4 need SDP
+
+======================================================================
+K=0 STAGE — 4 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['1.42e-14', '1.42e-14'])...
+    calib 1/2: hash=ad4d8f586b6dbd0b verdict=feas t=40.1s rss=4.57 GB
+    calib 2/2: hash=12fcabc1c81348e3 verdict=feas t=40.5s rss=4.57 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=4.57 GB
+              usable_ram=562.3 GB  rss_with_safety=5.94 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=2 boxes
+    [sweep K=0] 1/2 done  cert=0 fail=1 exc=0  max_rss_obs=4.56GB  elapsed=72s eta=72s
+  [stage K=0] cert=0 fail=4 exc=0  max_rss=4.57 GB  sweep_wall=76s (1.3 min)
+
+======================================================================
+K=16 STAGE — 4 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['1.42e-14', '1.42e-14'])...
+    calib 1/2: hash=ad4d8f586b6dbd0b verdict=feas t=67.9s rss=30.49 GB
+    calib 2/2: hash=12fcabc1c81348e3 verdict=feas t=83.2s rss=30.66 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=30.66 GB
+              usable_ram=562.3 GB  rss_with_safety=39.86 GB
+              n_par by_ram=14 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=14, threads/proc=13
+  [sweep] launching pool: 14 procs × 13 threads, sweep_size=2 boxes
+    [sweep K=16] 1/2 done  cert=0 fail=1 exc=0  max_rss_obs=24.51GB  elapsed=72s eta=72s
+  [stage K=16] cert=0 fail=4 exc=0  max_rss=30.66 GB  sweep_wall=83s (1.4 min)
+
+======================================================================
+K=32 STAGE — 4 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['1.42e-14', '1.42e-14'])...
+    calib 1/2: hash=ad4d8f586b6dbd0b verdict=feas t=103.5s rss=44.41 GB
+    calib 2/2: hash=12fcabc1c81348e3 verdict=feas t=120.9s rss=47.02 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=47.02 GB
+              usable_ram=562.3 GB  rss_with_safety=61.13 GB
+              n_par by_ram=9 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=9, threads/proc=21
+  [sweep] launching pool: 9 procs × 21 threads, sweep_size=2 boxes

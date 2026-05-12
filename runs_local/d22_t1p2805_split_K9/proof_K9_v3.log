@@ -1,0 +1,366 @@
+
+#### RESUMING from runs/d22_t1p2805_split_K9 ####
+
+[resume] loaded 1 pending from runs/d22_t1p2805_split_K9/pending_survivors.npz
+
+[resume] iter 1 already done → 1 survivors
+
+[resume] iter 2 already done → 1 survivors
+
+[resume] iter 3 already done → 1 survivors
+
+[resume] iter 4 already done → 1 survivors
+
+=== ITER 5 === (1 pending, split_depth=9)
+  [split] 1 → 291 children
+  [lp]    287 LP-cert  →  4 need SDP
+
+======================================================================
+K=0 STAGE — 4 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['1.42e-14', '1.42e-14'])...
+    calib 1/2: hash=ad4d8f586b6dbd0b verdict=feas t=40.5s rss=4.56 GB
+    calib 2/2: hash=12fcabc1c81348e3 verdict=feas t=40.1s rss=4.56 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=4.56 GB
+              usable_ram=562.3 GB  rss_with_safety=5.93 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=2 boxes
+    [sweep K=0] 1/2 done  cert=0 fail=1 exc=0  max_rss_obs=4.56GB  elapsed=71s eta=71s
+  [stage K=0] cert=0 fail=4 exc=0  max_rss=4.56 GB  sweep_wall=76s (1.3 min)
+
+======================================================================
+K=16 STAGE — 4 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['1.42e-14', '1.42e-14'])...
+    calib 1/2: hash=ad4d8f586b6dbd0b verdict=feas t=67.3s rss=30.48 GB
+    calib 2/2: hash=12fcabc1c81348e3 verdict=feas t=85.4s rss=30.28 GB
+  [auto-tune] avail_ram=749.8 GB  cores=192  max_rss=30.48 GB
+              usable_ram=562.3 GB  rss_with_safety=39.62 GB
+              n_par by_ram=14 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=14, threads/proc=13
+  [sweep] launching pool: 14 procs × 13 threads, sweep_size=2 boxes
+    [sweep K=16] 1/2 done  cert=0 fail=1 exc=0  max_rss_obs=24.35GB  elapsed=71s eta=71s
+  [stage K=16] cert=0 fail=4 exc=0  max_rss=30.48 GB  sweep_wall=84s (1.4 min)
+
+======================================================================
+K=32 STAGE — 4 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['1.42e-14', '1.42e-14'])...
+    calib 1/2: hash=ad4d8f586b6dbd0b verdict=feas t=100.4s rss=45.18 GB
+    calib 2/2: hash=12fcabc1c81348e3 verdict=feas t=116.6s rss=45.8 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=45.80 GB
+              usable_ram=562.3 GB  rss_with_safety=59.54 GB
+              n_par by_ram=9 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=9, threads/proc=21
+  [sweep] launching pool: 9 procs × 21 threads, sweep_size=2 boxes
+    [sweep K=32] 1/2 done  cert=0 fail=1 exc=0  max_rss_obs=48.03GB  elapsed=89s eta=89s
+    [sweep K=32] 2/2 done  cert=0 fail=2 exc=0  max_rss_obs=53.34GB  elapsed=126s eta=0s
+  [stage K=32] cert=0 fail=4 exc=0  max_rss=53.34 GB  sweep_wall=128s (2.1 min)
+
+######################################################################
+# K-LADDER COMPLETE  total=4  cert=0  survivors=4  wall=739s (12.3 min)
+######################################################################
+  [iter 5] DONE  in=1 children=291 lp_cert=287 sdp_cert=0 survivors=4 wall=770s
+
+=== ITER 6 === (4 pending, split_depth=9)
+  [split] 4 → 1981 children
+  [lp]    1565 LP-cert  →  416 need SDP
+
+======================================================================
+K=0 STAGE — 416 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['2.78e-17', '2.78e-17'])...
+    calib 1/2: hash=331804c3667c20d1 verdict=feas t=39.4s rss=4.57 GB
+    calib 2/2: hash=f9149b78b276d93b verdict=feas t=38.1s rss=4.57 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=4.57 GB
+              usable_ram=562.3 GB  rss_with_safety=5.94 GB
+              n_par by_ram=94 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=48, threads/proc=4
+  [sweep] launching pool: 48 procs × 4 threads, sweep_size=414 boxes
+    [sweep K=0] 1/414 done  cert=0 fail=1 exc=0  max_rss_obs=4.56GB  elapsed=142s eta=58687s
+    [sweep K=0] 10/414 done  cert=0 fail=10 exc=0  max_rss_obs=4.57GB  elapsed=150s eta=6054s
+    [sweep K=0] 20/414 done  cert=0 fail=20 exc=0  max_rss_obs=4.57GB  elapsed=152s eta=2993s
+    [sweep K=0] 30/414 done  cert=0 fail=30 exc=0  max_rss_obs=4.57GB  elapsed=153s eta=1959s
+    [sweep K=0] 40/414 done  cert=0 fail=40 exc=0  max_rss_obs=4.57GB  elapsed=160s eta=1497s
+    [sweep K=0] 49/414 done  cert=0 fail=49 exc=0  max_rss_obs=6.81GB  elapsed=282s eta=2101s
+    [sweep K=0] 50/414 done  cert=0 fail=50 exc=0  max_rss_obs=6.82GB  elapsed=284s eta=2064s
+    [sweep K=0] 60/414 done  cert=0 fail=60 exc=0  max_rss_obs=6.86GB  elapsed=295s eta=1740s
+    [sweep K=0] 70/414 done  cert=0 fail=70 exc=0  max_rss_obs=6.88GB  elapsed=301s eta=1478s
+    [sweep K=0] 80/414 done  cert=0 fail=80 exc=0  max_rss_obs=6.88GB  elapsed=308s eta=1288s
+    [sweep K=0] 90/414 done  cert=0 fail=90 exc=0  max_rss_obs=6.88GB  elapsed=325s eta=1170s
+    [sweep K=0] 94/414 done  cert=1 fail=93 exc=0  max_rss_obs=6.88GB  elapsed=403s eta=1370s
+    [sweep K=0] 100/414 done  cert=3 fail=97 exc=0  max_rss_obs=6.88GB  elapsed=432s eta=1357s
+    [sweep K=0] 110/414 done  cert=3 fail=107 exc=0  max_rss_obs=6.88GB  elapsed=446s eta=1231s
+    [sweep K=0] 120/414 done  cert=3 fail=117 exc=0  max_rss_obs=6.88GB  elapsed=460s eta=1128s
+    [sweep K=0] 130/414 done  cert=3 fail=127 exc=0  max_rss_obs=6.90GB  elapsed=483s eta=1055s
+    [sweep K=0] 136/414 done  cert=4 fail=132 exc=0  max_rss_obs=6.90GB  elapsed=537s eta=1098s
+    [sweep K=0] 139/414 done  cert=6 fail=133 exc=0  max_rss_obs=6.90GB  elapsed=569s eta=1125s
+    [sweep K=0] 140/414 done  cert=6 fail=134 exc=0  max_rss_obs=6.90GB  elapsed=569s eta=1113s
+    [sweep K=0] 150/414 done  cert=8 fail=142 exc=0  max_rss_obs=6.90GB  elapsed=591s eta=1040s
+    [sweep K=0] 160/414 done  cert=9 fail=151 exc=0  max_rss_obs=6.91GB  elapsed=615s eta=976s
+    [sweep K=0] 170/414 done  cert=9 fail=161 exc=0  max_rss_obs=6.91GB  elapsed=629s eta=903s
+    [sweep K=0] 180/414 done  cert=10 fail=170 exc=0  max_rss_obs=6.91GB  elapsed=671s eta=872s
+    [sweep K=0] 184/414 done  cert=12 fail=172 exc=0  max_rss_obs=6.91GB  elapsed=702s eta=878s
+    [sweep K=0] 189/414 done  cert=13 fail=176 exc=0  max_rss_obs=6.91GB  elapsed=735s eta=874s
+    [sweep K=0] 190/414 done  cert=13 fail=177 exc=0  max_rss_obs=6.91GB  elapsed=737s eta=868s
+    [sweep K=0] 200/414 done  cert=13 fail=187 exc=0  max_rss_obs=6.91GB  elapsed=757s eta=810s
+    [sweep K=0] 210/414 done  cert=13 fail=197 exc=0  max_rss_obs=6.91GB  elapsed=773s eta=751s
+    [sweep K=0] 220/414 done  cert=13 fail=207 exc=0  max_rss_obs=6.91GB  elapsed=797s eta=702s
+    [sweep K=0] 223/414 done  cert=13 fail=210 exc=0  max_rss_obs=6.91GB  elapsed=843s eta=722s
+    [sweep K=0] 230/414 done  cert=15 fail=215 exc=0  max_rss_obs=6.91GB  elapsed=874s eta=699s
+    [sweep K=0] 240/414 done  cert=18 fail=222 exc=0  max_rss_obs=6.91GB  elapsed=898s eta=651s
+    [sweep K=0] 248/414 done  cert=19 fail=229 exc=0  max_rss_obs=6.91GB  elapsed=930s eta=623s
+    [sweep K=0] 250/414 done  cert=19 fail=231 exc=0  max_rss_obs=6.91GB  elapsed=934s eta=613s
+    [sweep K=0] 260/414 done  cert=20 fail=240 exc=0  max_rss_obs=6.91GB  elapsed=963s eta=571s
+    [sweep K=0] 265/414 done  cert=21 fail=244 exc=0  max_rss_obs=6.91GB  elapsed=1000s eta=562s
+    [sweep K=0] 270/414 done  cert=24 fail=246 exc=0  max_rss_obs=6.91GB  elapsed=1021s eta=544s
+    [sweep K=0] 280/414 done  cert=28 fail=252 exc=0  max_rss_obs=6.91GB  elapsed=1045s eta=500s
+    [sweep K=0] 290/414 done  cert=29 fail=261 exc=0  max_rss_obs=6.91GB  elapsed=1060s eta=453s
+    [sweep K=0] 299/414 done  cert=30 fail=269 exc=0  max_rss_obs=6.91GB  elapsed=1095s eta=421s
+    [sweep K=0] 300/414 done  cert=30 fail=270 exc=0  max_rss_obs=6.91GB  elapsed=1107s eta=421s
+    [sweep K=0] 310/414 done  cert=30 fail=280 exc=0  max_rss_obs=6.91GB  elapsed=1138s eta=382s
+    [sweep K=0] 314/414 done  cert=30 fail=284 exc=0  max_rss_obs=6.91GB  elapsed=1168s eta=372s
+    [sweep K=0] 320/414 done  cert=30 fail=290 exc=0  max_rss_obs=6.91GB  elapsed=1185s eta=348s
+    [sweep K=0] 330/414 done  cert=30 fail=300 exc=0  max_rss_obs=6.92GB  elapsed=1216s eta=309s
+    [sweep K=0] 340/414 done  cert=30 fail=310 exc=0  max_rss_obs=6.92GB  elapsed=1235s eta=269s
+    [sweep K=0] 348/414 done  cert=30 fail=318 exc=0  max_rss_obs=6.92GB  elapsed=1266s eta=240s
+    [sweep K=0] 350/414 done  cert=30 fail=320 exc=0  max_rss_obs=6.92GB  elapsed=1282s eta=234s
+    [sweep K=0] 356/414 done  cert=32 fail=324 exc=0  max_rss_obs=6.92GB  elapsed=1318s eta=215s
+    [sweep K=0] 360/414 done  cert=33 fail=327 exc=0  max_rss_obs=6.92GB  elapsed=1333s eta=200s
+    [sweep K=0] 370/414 done  cert=33 fail=337 exc=0  max_rss_obs=6.92GB  elapsed=1355s eta=161s
+    [sweep K=0] 380/414 done  cert=34 fail=346 exc=0  max_rss_obs=6.92GB  elapsed=1373s eta=123s
+    [sweep K=0] 390/414 done  cert=35 fail=355 exc=0  max_rss_obs=6.92GB  elapsed=1394s eta=86s
+    [sweep K=0] 400/414 done  cert=36 fail=364 exc=0  max_rss_obs=6.93GB  elapsed=1425s eta=50s
+    [sweep K=0] 410/414 done  cert=37 fail=373 exc=0  max_rss_obs=6.93GB  elapsed=1450s eta=14s
+    [sweep K=0] 413/414 done  cert=38 fail=375 exc=0  max_rss_obs=6.93GB  elapsed=1495s eta=4s
+  [stage K=0] cert=39 fail=377 exc=0  max_rss=6.93 GB  sweep_wall=1498s (25.0 min)
+
+======================================================================
+K=16 STAGE — 377 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['2.78e-17', '2.78e-17'])...
+    calib 1/2: hash=331804c3667c20d1 verdict=feas t=62.8s rss=29.09 GB
+    calib 2/2: hash=f9149b78b276d93b verdict=feas t=80.7s rss=31.56 GB
+  [auto-tune] avail_ram=749.7 GB  cores=192  max_rss=31.56 GB
+              usable_ram=562.3 GB  rss_with_safety=41.03 GB
+              n_par by_ram=13 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=13, threads/proc=14
+  [sweep] launching pool: 13 procs × 14 threads, sweep_size=375 boxes
+    [sweep K=16] 1/375 done  cert=0 fail=1 exc=0  max_rss_obs=33.19GB  elapsed=99s eta=37201s
+    [sweep K=16] 10/375 done  cert=0 fail=10 exc=0  max_rss_obs=39.72GB  elapsed=127s eta=4649s
+    [sweep K=16] 14/375 done  cert=1 fail=13 exc=0  max_rss_obs=40.31GB  elapsed=193s eta=4973s
+    [sweep K=16] 18/375 done  cert=2 fail=16 exc=0  max_rss_obs=42.90GB  elapsed=228s eta=4513s
+    [sweep K=16] 20/375 done  cert=2 fail=18 exc=0  max_rss_obs=42.90GB  elapsed=229s eta=4072s
+    [sweep K=16] 26/375 done  cert=3 fail=23 exc=0  max_rss_obs=49.22GB  elapsed=275s eta=3686s
+    [sweep K=16] 29/375 done  cert=3 fail=26 exc=0  max_rss_obs=49.22GB  elapsed=315s eta=3758s
+    [sweep K=16] 30/375 done  cert=3 fail=27 exc=0  max_rss_obs=51.04GB  elapsed=334s eta=3838s
+    [sweep K=16] 37/375 done  cert=6 fail=31 exc=0  max_rss_obs=52.41GB  elapsed=367s eta=3352s
+    [sweep K=16] 40/375 done  cert=7 fail=33 exc=0  max_rss_obs=57.96GB  elapsed=411s eta=3444s
+    [sweep K=16] 47/375 done  cert=8 fail=39 exc=0  max_rss_obs=57.96GB  elapsed=442s eta=3083s
+    [sweep K=16] 50/375 done  cert=9 fail=41 exc=0  max_rss_obs=57.96GB  elapsed=468s eta=3041s
+    [sweep K=16] 54/375 done  cert=9 fail=45 exc=0  max_rss_obs=57.96GB  elapsed=523s eta=3109s
+    [sweep K=16] 60/375 done  cert=10 fail=50 exc=0  max_rss_obs=61.56GB  elapsed=553s eta=2904s
+    [sweep K=16] 66/375 done  cert=10 fail=56 exc=0  max_rss_obs=61.56GB  elapsed=585s eta=2738s
+    [sweep K=16] 67/375 done  cert=10 fail=57 exc=0  max_rss_obs=61.56GB  elapsed=617s eta=2836s
+    [sweep K=16] 70/375 done  cert=10 fail=60 exc=0  max_rss_obs=61.56GB  elapsed=640s eta=2787s
+    [sweep K=16] 75/375 done  cert=10 fail=65 exc=0  max_rss_obs=61.56GB  elapsed=682s eta=2728s
+    [sweep K=16] 79/375 done  cert=12 fail=67 exc=0  max_rss_obs=61.63GB  elapsed=717s eta=2685s
+    [sweep K=16] 80/375 done  cert=12 fail=68 exc=0  max_rss_obs=61.63GB  elapsed=718s eta=2647s
+    [sweep K=16] 85/375 done  cert=14 fail=71 exc=0  max_rss_obs=64.86GB  elapsed=764s eta=2606s
+    [sweep K=16] 89/375 done  cert=17 fail=72 exc=0  max_rss_obs=64.86GB  elapsed=797s eta=2560s
+    [sweep K=16] 90/375 done  cert=17 fail=73 exc=0  max_rss_obs=64.86GB  elapsed=801s eta=2538s
+    [sweep K=16] 93/375 done  cert=19 fail=74 exc=0  max_rss_obs=64.86GB  elapsed=833s eta=2525s
+    [sweep K=16] 100/375 done  cert=20 fail=80 exc=0  max_rss_obs=64.86GB  elapsed=873s eta=2401s
+    [sweep K=16] 102/375 done  cert=20 fail=82 exc=0  max_rss_obs=64.86GB  elapsed=906s eta=2426s
+    [sweep K=16] 106/375 done  cert=20 fail=86 exc=0  max_rss_obs=66.06GB  elapsed=941s eta=2388s
+    [sweep K=16] 110/375 done  cert=22 fail=88 exc=0  max_rss_obs=66.06GB  elapsed=962s eta=2317s
+    [sweep K=16] 115/375 done  cert=22 fail=93 exc=0  max_rss_obs=66.06GB  elapsed=1003s eta=2268s
+    [sweep K=16] 118/375 done  cert=23 fail=95 exc=0  max_rss_obs=66.89GB  elapsed=1037s eta=2259s
+    [sweep K=16] 120/375 done  cert=24 fail=96 exc=0  max_rss_obs=66.89GB  elapsed=1041s eta=2213s
+    [sweep K=16] 124/375 done  cert=27 fail=97 exc=0  max_rss_obs=66.89GB  elapsed=1081s eta=2189s
+    [sweep K=16] 130/375 done  cert=31 fail=99 exc=0  max_rss_obs=66.96GB  elapsed=1139s eta=2146s
+    [sweep K=16] 136/375 done  cert=32 fail=104 exc=0  max_rss_obs=66.96GB  elapsed=1190s eta=2092s
+    [sweep K=16] 140/375 done  cert=35 fail=105 exc=0  max_rss_obs=66.96GB  elapsed=1212s eta=2035s
+    [sweep K=16] 144/375 done  cert=35 fail=109 exc=0  max_rss_obs=66.96GB  elapsed=1246s eta=1998s
+    [sweep K=16] 146/375 done  cert=35 fail=111 exc=0  max_rss_obs=66.96GB  elapsed=1278s eta=2005s
+    [sweep K=16] 150/375 done  cert=37 fail=113 exc=0  max_rss_obs=66.96GB  elapsed=1292s eta=1938s
+    [sweep K=16] 154/375 done  cert=38 fail=116 exc=0  max_rss_obs=66.96GB  elapsed=1323s eta=1898s
+    [sweep K=16] 156/375 done  cert=40 fail=116 exc=0  max_rss_obs=66.96GB  elapsed=1356s eta=1903s
+    [sweep K=16] 160/375 done  cert=41 fail=119 exc=0  max_rss_obs=66.96GB  elapsed=1397s eta=1877s
+    [sweep K=16] 165/375 done  cert=42 fail=123 exc=0  max_rss_obs=66.96GB  elapsed=1429s eta=1818s
+    [sweep K=16] 169/375 done  cert=45 fail=124 exc=0  max_rss_obs=66.96GB  elapsed=1459s eta=1779s
+    [sweep K=16] 170/375 done  cert=45 fail=125 exc=0  max_rss_obs=66.96GB  elapsed=1468s eta=1770s
+    [sweep K=16] 173/375 done  cert=46 fail=127 exc=0  max_rss_obs=66.96GB  elapsed=1502s eta=1754s
+    [sweep K=16] 177/375 done  cert=47 fail=130 exc=0  max_rss_obs=66.96GB  elapsed=1544s eta=1727s
+    [sweep K=16] 180/375 done  cert=48 fail=132 exc=0  max_rss_obs=66.96GB  elapsed=1564s eta=1694s
+    [sweep K=16] 186/375 done  cert=51 fail=135 exc=0  max_rss_obs=66.96GB  elapsed=1617s eta=1643s
+    [sweep K=16] 190/375 done  cert=54 fail=136 exc=0  max_rss_obs=66.96GB  elapsed=1642s eta=1598s
+    [sweep K=16] 194/375 done  cert=56 fail=138 exc=0  max_rss_obs=66.96GB  elapsed=1685s eta=1572s
+    [sweep K=16] 199/375 done  cert=59 fail=140 exc=0  max_rss_obs=66.96GB  elapsed=1723s eta=1524s
+    [sweep K=16] 200/375 done  cert=59 fail=141 exc=0  max_rss_obs=66.96GB  elapsed=1740s eta=1522s
+    [sweep K=16] 205/375 done  cert=62 fail=143 exc=0  max_rss_obs=66.96GB  elapsed=1776s eta=1473s
+    [sweep K=16] 208/375 done  cert=63 fail=145 exc=0  max_rss_obs=66.96GB  elapsed=1809s eta=1452s
+    [sweep K=16] 210/375 done  cert=64 fail=146 exc=0  max_rss_obs=66.96GB  elapsed=1825s eta=1434s
+    [sweep K=16] 212/375 done  cert=64 fail=148 exc=0  max_rss_obs=66.96GB  elapsed=1876s eta=1442s
+    [sweep K=16] 220/375 done  cert=68 fail=152 exc=0  max_rss_obs=66.96GB  elapsed=1900s eta=1339s
+    [sweep K=16] 223/375 done  cert=69 fail=154 exc=0  max_rss_obs=66.96GB  elapsed=1941s eta=1323s
+    [sweep K=16] 225/375 done  cert=70 fail=155 exc=0  max_rss_obs=66.96GB  elapsed=1984s eta=1322s
+    [sweep K=16] 230/375 done  cert=73 fail=157 exc=0  max_rss_obs=66.96GB  elapsed=2010s eta=1267s
+    [sweep K=16] 236/375 done  cert=76 fail=160 exc=0  max_rss_obs=66.96GB  elapsed=2083s eta=1227s
+    [sweep K=16] 240/375 done  cert=76 fail=164 exc=0  max_rss_obs=66.96GB  elapsed=2097s eta=1180s
+    [sweep K=16] 245/375 done  cert=78 fail=167 exc=0  max_rss_obs=66.96GB  elapsed=2135s eta=1133s
+    [sweep K=16] 249/375 done  cert=79 fail=170 exc=0  max_rss_obs=66.96GB  elapsed=2182s eta=1104s
+    [sweep K=16] 250/375 done  cert=80 fail=170 exc=0  max_rss_obs=66.96GB  elapsed=2188s eta=1094s
+    [sweep K=16] 254/375 done  cert=83 fail=171 exc=0  max_rss_obs=66.96GB  elapsed=2222s eta=1058s
+    [sweep K=16] 260/375 done  cert=84 fail=176 exc=0  max_rss_obs=66.96GB  elapsed=2254s eta=997s
+    [sweep K=16] 263/375 done  cert=85 fail=178 exc=0  max_rss_obs=66.96GB  elapsed=2300s eta=979s
+    [sweep K=16] 266/375 done  cert=86 fail=180 exc=0  max_rss_obs=66.96GB  elapsed=2335s eta=957s
+    [sweep K=16] 270/375 done  cert=88 fail=182 exc=0  max_rss_obs=66.96GB  elapsed=2370s eta=922s
+    [sweep K=16] 277/375 done  cert=92 fail=185 exc=0  max_rss_obs=66.96GB  elapsed=2404s eta=851s
+    [sweep K=16] 279/375 done  cert=92 fail=187 exc=0  max_rss_obs=66.96GB  elapsed=2448s eta=842s
+    [sweep K=16] 280/375 done  cert=93 fail=187 exc=0  max_rss_obs=66.96GB  elapsed=2479s eta=841s
+    [sweep K=16] 289/375 done  cert=95 fail=194 exc=0  max_rss_obs=66.96GB  elapsed=2509s eta=747s
+    [sweep K=16] 290/375 done  cert=95 fail=195 exc=0  max_rss_obs=66.96GB  elapsed=2518s eta=738s
+    [sweep K=16] 292/375 done  cert=96 fail=196 exc=0  max_rss_obs=66.96GB  elapsed=2564s eta=729s
+    [sweep K=16] 296/375 done  cert=97 fail=199 exc=0  max_rss_obs=66.96GB  elapsed=2595s eta=693s
+    [sweep K=16] 300/375 done  cert=100 fail=200 exc=0  max_rss_obs=66.96GB  elapsed=2626s eta=656s
+    [sweep K=16] 303/375 done  cert=102 fail=201 exc=0  max_rss_obs=66.96GB  elapsed=2661s eta=632s
+    [sweep K=16] 307/375 done  cert=104 fail=203 exc=0  max_rss_obs=66.96GB  elapsed=2698s eta=598s
+    [sweep K=16] 310/375 done  cert=105 fail=205 exc=0  max_rss_obs=66.96GB  elapsed=2720s eta=570s
+    [sweep K=16] 314/375 done  cert=106 fail=208 exc=0  max_rss_obs=66.96GB  elapsed=2759s eta=536s
+    [sweep K=16] 316/375 done  cert=107 fail=209 exc=0  max_rss_obs=66.96GB  elapsed=2790s eta=521s
+    [sweep K=16] 320/375 done  cert=108 fail=212 exc=0  max_rss_obs=66.96GB  elapsed=2816s eta=484s
+    [sweep K=16] 324/375 done  cert=110 fail=214 exc=0  max_rss_obs=66.96GB  elapsed=2849s eta=448s
+    [sweep K=16] 330/375 done  cert=112 fail=218 exc=0  max_rss_obs=66.96GB  elapsed=2902s eta=396s
+    [sweep K=16] 332/375 done  cert=112 fail=220 exc=0  max_rss_obs=66.96GB  elapsed=2932s eta=380s
+    [sweep K=16] 338/375 done  cert=113 fail=225 exc=0  max_rss_obs=66.96GB  elapsed=2978s eta=326s
+    [sweep K=16] 340/375 done  cert=113 fail=227 exc=0  max_rss_obs=66.96GB  elapsed=2999s eta=309s
+    [sweep K=16] 344/375 done  cert=115 fail=229 exc=0  max_rss_obs=67.26GB  elapsed=3038s eta=274s
+    [sweep K=16] 350/375 done  cert=116 fail=234 exc=0  max_rss_obs=67.26GB  elapsed=3089s eta=221s
+    [sweep K=16] 354/375 done  cert=117 fail=237 exc=0  max_rss_obs=67.26GB  elapsed=3119s eta=185s
+    [sweep K=16] 358/375 done  cert=117 fail=241 exc=0  max_rss_obs=67.26GB  elapsed=3160s eta=150s
+    [sweep K=16] 360/375 done  cert=118 fail=242 exc=0  max_rss_obs=67.26GB  elapsed=3175s eta=132s
+    [sweep K=16] 364/375 done  cert=118 fail=246 exc=0  max_rss_obs=67.26GB  elapsed=3217s eta=97s
+    [sweep K=16] 367/375 done  cert=118 fail=249 exc=0  max_rss_obs=67.26GB  elapsed=3248s eta=71s
+    [sweep K=16] 369/375 done  cert=120 fail=249 exc=0  max_rss_obs=67.26GB  elapsed=3282s eta=53s
+    [sweep K=16] 370/375 done  cert=120 fail=250 exc=0  max_rss_obs=67.26GB  elapsed=3296s eta=45s
+    [sweep K=16] 375/375 done  cert=123 fail=252 exc=0  max_rss_obs=67.26GB  elapsed=3330s eta=0s
+  [stage K=16] cert=123 fail=254 exc=0  max_rss=67.26 GB  sweep_wall=3334s (55.6 min)
+
+======================================================================
+K=32 STAGE — 254 input survivors
+======================================================================
+  [calib] running 2 largest-volume boxes serially (16 threads each, vols=['2.78e-17', '2.78e-17'])...
+    calib 1/2: hash=331804c3667c20d1 verdict=feas t=94.0s rss=41.13 GB
+    calib 2/2: hash=f9149b78b276d93b verdict=feas t=121.8s rss=46.18 GB
+  [auto-tune] avail_ram=749.9 GB  cores=192  max_rss=46.18 GB
+              usable_ram=562.4 GB  rss_with_safety=60.03 GB
+              n_par by_ram=9 by_cores=48 (MIN_THREADS_PER_PROC=4) → n_parallel=9, threads/proc=21
+  [sweep] launching pool: 9 procs × 21 threads, sweep_size=252 boxes
+    [sweep K=32] 1/252 done  cert=0 fail=1 exc=0  max_rss_obs=60.67GB  elapsed=123s eta=30896s
+    [sweep K=32] 9/252 done  cert=1 fail=8 exc=0  max_rss_obs=62.57GB  elapsed=155s eta=4188s
+    [sweep K=32] 10/252 done  cert=1 fail=9 exc=0  max_rss_obs=68.99GB  elapsed=262s eta=6337s
+    [sweep K=32] 18/252 done  cert=3 fail=15 exc=0  max_rss_obs=77.21GB  elapsed=303s eta=3937s
+    [sweep K=32] 19/252 done  cert=3 fail=16 exc=0  max_rss_obs=77.21GB  elapsed=384s eta=4714s
+    [sweep K=32] 20/252 done  cert=3 fail=17 exc=0  max_rss_obs=88.06GB  elapsed=400s eta=4638s
+    [sweep K=32] 25/252 done  cert=7 fail=18 exc=0  max_rss_obs=88.06GB  elapsed=440s eta=3991s
+    [sweep K=32] 28/252 done  cert=8 fail=20 exc=0  max_rss_obs=88.06GB  elapsed=515s eta=4121s
+    [sweep K=32] 30/252 done  cert=8 fail=22 exc=0  max_rss_obs=88.06GB  elapsed=536s eta=3967s
+    [sweep K=32] 34/252 done  cert=9 fail=25 exc=0  max_rss_obs=91.74GB  elapsed=574s eta=3680s
+    [sweep K=32] 35/252 done  cert=10 fail=25 exc=0  max_rss_obs=91.74GB  elapsed=610s eta=3781s
+    [sweep K=32] 37/252 done  cert=10 fail=27 exc=0  max_rss_obs=97.87GB  elapsed=640s eta=3718s
+    [sweep K=32] 39/252 done  cert=11 fail=28 exc=0  max_rss_obs=97.87GB  elapsed=699s eta=3817s
+    [sweep K=32] 40/252 done  cert=12 fail=28 exc=0  max_rss_obs=97.87GB  elapsed=700s eta=3708s
+    [sweep K=32] 44/252 done  cert=13 fail=31 exc=0  max_rss_obs=97.87GB  elapsed=730s eta=3451s
+    [sweep K=32] 45/252 done  cert=13 fail=32 exc=0  max_rss_obs=97.87GB  elapsed=762s eta=3507s
+    [sweep K=32] 48/252 done  cert=15 fail=33 exc=0  max_rss_obs=97.87GB  elapsed=829s eta=3523s
+    [sweep K=32] 50/252 done  cert=15 fail=35 exc=0  max_rss_obs=97.87GB  elapsed=850s eta=3435s
+    [sweep K=32] 51/252 done  cert=15 fail=36 exc=0  max_rss_obs=97.87GB  elapsed=888s eta=3498s
+    [sweep K=32] 55/252 done  cert=16 fail=39 exc=0  max_rss_obs=97.87GB  elapsed=924s eta=3309s
+    [sweep K=32] 57/252 done  cert=16 fail=41 exc=0  max_rss_obs=98.54GB  elapsed=955s eta=3266s
+    [sweep K=32] 59/252 done  cert=16 fail=43 exc=0  max_rss_obs=98.54GB  elapsed=989s eta=3235s
+    [sweep K=32] 60/252 done  cert=16 fail=44 exc=0  max_rss_obs=98.54GB  elapsed=1029s eta=3293s
+    [sweep K=32] 61/252 done  cert=17 fail=44 exc=0  max_rss_obs=98.54GB  elapsed=1074s eta=3363s
+    [sweep K=32] 66/252 done  cert=19 fail=47 exc=0  max_rss_obs=98.75GB  elapsed=1107s eta=3118s
+    [sweep K=32] 69/252 done  cert=20 fail=49 exc=0  max_rss_obs=98.75GB  elapsed=1144s eta=3035s
+    [sweep K=32] 70/252 done  cert=20 fail=50 exc=0  max_rss_obs=98.75GB  elapsed=1194s eta=3105s
+    [sweep K=32] 73/252 done  cert=21 fail=52 exc=0  max_rss_obs=98.75GB  elapsed=1257s eta=3083s
+    [sweep K=32] 78/252 done  cert=23 fail=55 exc=0  max_rss_obs=98.75GB  elapsed=1288s eta=2874s
+    [sweep K=32] 80/252 done  cert=23 fail=57 exc=0  max_rss_obs=98.75GB  elapsed=1341s eta=2883s
+    [sweep K=32] 81/252 done  cert=23 fail=58 exc=0  max_rss_obs=98.75GB  elapsed=1374s eta=2901s
+    [sweep K=32] 84/252 done  cert=23 fail=61 exc=0  max_rss_obs=98.75GB  elapsed=1408s eta=2816s
+    [sweep K=32] 88/252 done  cert=23 fail=65 exc=0  max_rss_obs=98.75GB  elapsed=1446s eta=2695s
+    [sweep K=32] 89/252 done  cert=23 fail=66 exc=0  max_rss_obs=98.75GB  elapsed=1493s eta=2734s
+    [sweep K=32] 90/252 done  cert=23 fail=67 exc=0  max_rss_obs=98.75GB  elapsed=1519s eta=2734s
+    [sweep K=32] 94/252 done  cert=23 fail=71 exc=0  max_rss_obs=98.75GB  elapsed=1556s eta=2615s
+    [sweep K=32] 98/252 done  cert=23 fail=75 exc=0  max_rss_obs=100.62GB  elapsed=1636s eta=2570s
+    [sweep K=32] 100/252 done  cert=23 fail=77 exc=0  max_rss_obs=100.62GB  elapsed=1656s eta=2517s
+    [sweep K=32] 103/252 done  cert=23 fail=80 exc=0  max_rss_obs=101.50GB  elapsed=1690s eta=2445s
+    [sweep K=32] 106/252 done  cert=23 fail=83 exc=0  max_rss_obs=101.50GB  elapsed=1724s eta=2375s
+    [sweep K=32] 107/252 done  cert=23 fail=84 exc=0  max_rss_obs=101.50GB  elapsed=1776s eta=2407s
+    [sweep K=32] 110/252 done  cert=23 fail=87 exc=0  max_rss_obs=101.50GB  elapsed=1791s eta=2313s
+    [sweep K=32] 113/252 done  cert=23 fail=90 exc=0  max_rss_obs=101.50GB  elapsed=1824s eta=2244s
+    [sweep K=32] 114/252 done  cert=23 fail=91 exc=0  max_rss_obs=101.50GB  elapsed=1864s eta=2256s
+    [sweep K=32] 116/252 done  cert=23 fail=93 exc=0  max_rss_obs=101.50GB  elapsed=1907s eta=2236s
+    [sweep K=32] 119/252 done  cert=23 fail=96 exc=0  max_rss_obs=101.50GB  elapsed=1959s eta=2189s
+    [sweep K=32] 120/252 done  cert=23 fail=97 exc=0  max_rss_obs=101.50GB  elapsed=1962s eta=2159s
+    [sweep K=32] 123/252 done  cert=23 fail=100 exc=0  max_rss_obs=101.50GB  elapsed=1994s eta=2091s
+    [sweep K=32] 124/252 done  cert=24 fail=100 exc=0  max_rss_obs=101.50GB  elapsed=2045s eta=2111s
+    [sweep K=32] 128/252 done  cert=25 fail=103 exc=0  max_rss_obs=101.50GB  elapsed=2101s eta=2035s
+    [sweep K=32] 130/252 done  cert=25 fail=105 exc=0  max_rss_obs=101.50GB  elapsed=2119s eta=1989s
+    [sweep K=32] 133/252 done  cert=25 fail=108 exc=0  max_rss_obs=101.50GB  elapsed=2162s eta=1934s
+    [sweep K=32] 136/252 done  cert=25 fail=111 exc=0  max_rss_obs=102.45GB  elapsed=2193s eta=1871s
+    [sweep K=32] 137/252 done  cert=25 fail=112 exc=0  max_rss_obs=102.45GB  elapsed=2260s eta=1897s
+    [sweep K=32] 140/252 done  cert=25 fail=115 exc=0  max_rss_obs=102.45GB  elapsed=2283s eta=1826s
+    [sweep K=32] 143/252 done  cert=25 fail=118 exc=0  max_rss_obs=102.45GB  elapsed=2329s eta=1775s
+    [sweep K=32] 146/252 done  cert=25 fail=121 exc=0  max_rss_obs=109.09GB  elapsed=2408s eta=1749s
+    [sweep K=32] 150/252 done  cert=25 fail=125 exc=0  max_rss_obs=109.09GB  elapsed=2440s eta=1659s
+    [sweep K=32] 153/252 done  cert=25 fail=128 exc=0  max_rss_obs=109.09GB  elapsed=2496s eta=1615s
+    [sweep K=32] 156/252 done  cert=25 fail=131 exc=0  max_rss_obs=109.09GB  elapsed=2529s eta=1556s
+    [sweep K=32] 158/252 done  cert=25 fail=133 exc=0  max_rss_obs=109.09GB  elapsed=2567s eta=1527s
+    [sweep K=32] 160/252 done  cert=25 fail=135 exc=0  max_rss_obs=109.09GB  elapsed=2589s eta=1488s
+    [sweep K=32] 162/252 done  cert=26 fail=136 exc=0  max_rss_obs=109.09GB  elapsed=2621s eta=1456s
+    [sweep K=32] 165/252 done  cert=26 fail=139 exc=0  max_rss_obs=109.09GB  elapsed=2683s eta=1415s
+    [sweep K=32] 167/252 done  cert=26 fail=141 exc=0  max_rss_obs=109.09GB  elapsed=2716s eta=1382s
+    [sweep K=32] 169/252 done  cert=26 fail=143 exc=0  max_rss_obs=109.09GB  elapsed=2748s eta=1350s
+    [sweep K=32] 170/252 done  cert=26 fail=144 exc=0  max_rss_obs=109.09GB  elapsed=2750s eta=1326s
+    [sweep K=32] 171/252 done  cert=27 fail=144 exc=0  max_rss_obs=109.09GB  elapsed=2780s eta=1317s
+    [sweep K=32] 174/252 done  cert=27 fail=147 exc=0  max_rss_obs=109.09GB  elapsed=2823s eta=1266s
+    [sweep K=32] 177/252 done  cert=27 fail=150 exc=0  max_rss_obs=109.09GB  elapsed=2860s eta=1212s
+    [sweep K=32] 179/252 done  cert=28 fail=151 exc=0  max_rss_obs=109.09GB  elapsed=2892s eta=1179s
+    [sweep K=32] 180/252 done  cert=28 fail=152 exc=0  max_rss_obs=109.09GB  elapsed=2925s eta=1170s
+    [sweep K=32] 182/252 done  cert=28 fail=154 exc=0  max_rss_obs=109.09GB  elapsed=2958s eta=1138s
+    [sweep K=32] 186/252 done  cert=29 fail=157 exc=0  max_rss_obs=109.09GB  elapsed=3028s eta=1074s
+    [sweep K=32] 190/252 done  cert=30 fail=160 exc=0  max_rss_obs=109.09GB  elapsed=3076s eta=1004s
+    [sweep K=32] 192/252 done  cert=30 fail=162 exc=0  max_rss_obs=109.09GB  elapsed=3117s eta=974s
+    [sweep K=32] 194/252 done  cert=31 fail=163 exc=0  max_rss_obs=109.09GB  elapsed=3157s eta=944s
+    [sweep K=32] 196/252 done  cert=32 fail=164 exc=0  max_rss_obs=109.09GB  elapsed=3187s eta=911s
+    [sweep K=32] 198/252 done  cert=32 fail=166 exc=0  max_rss_obs=109.09GB  elapsed=3218s eta=878s
+    [sweep K=32] 200/252 done  cert=33 fail=167 exc=0  max_rss_obs=109.09GB  elapsed=3249s eta=845s
+    [sweep K=32] 202/252 done  cert=34 fail=168 exc=0  max_rss_obs=109.09GB  elapsed=3287s eta=814s
+    [sweep K=32] 204/252 done  cert=36 fail=168 exc=0  max_rss_obs=109.09GB  elapsed=3347s eta=787s
+    [sweep K=32] 209/252 done  cert=36 fail=173 exc=0  max_rss_obs=109.09GB  elapsed=3389s eta=697s
+    [sweep K=32] 210/252 done  cert=36 fail=174 exc=0  max_rss_obs=109.09GB  elapsed=3427s eta=685s
+    [sweep K=32] 211/252 done  cert=36 fail=175 exc=0  max_rss_obs=109.09GB  elapsed=3468s eta=674s
+    [sweep K=32] 214/252 done  cert=37 fail=177 exc=0  max_rss_obs=109.09GB  elapsed=3519s eta=625s
+    [sweep K=32] 218/252 done  cert=40 fail=178 exc=0  max_rss_obs=109.09GB  elapsed=3577s eta=558s
+    [sweep K=32] 220/252 done  cert=42 fail=178 exc=0  max_rss_obs=109.09GB  elapsed=3626s eta=527s
+    [sweep K=32] 222/252 done  cert=42 fail=180 exc=0  max_rss_obs=109.09GB  elapsed=3665s eta=495s
+    [sweep K=32] 225/252 done  cert=44 fail=181 exc=0  max_rss_obs=109.09GB  elapsed=3697s eta=444s
+    [sweep K=32] 227/252 done  cert=44 fail=183 exc=0  max_rss_obs=109.09GB  elapsed=3739s eta=412s
+    [sweep K=32] 230/252 done  cert=45 fail=185 exc=0  max_rss_obs=109.09GB  elapsed=3819s eta=365s
+    [sweep K=32] 234/252 done  cert=47 fail=187 exc=0  max_rss_obs=109.09GB  elapsed=3855s eta=297s
+    [sweep K=32] 237/252 done  cert=48 fail=189 exc=0  max_rss_obs=109.09GB  elapsed=3886s eta=246s
+    [sweep K=32] 238/252 done  cert=49 fail=189 exc=0  max_rss_obs=109.09GB  elapsed=3946s eta=232s
+    [sweep K=32] 239/252 done  cert=49 fail=190 exc=0  max_rss_obs=109.09GB  elapsed=3982s eta=217s
+    [sweep K=32] 240/252 done  cert=49 fail=191 exc=0  max_rss_obs=109.09GB  elapsed=3985s eta=199s
+    [sweep K=32] 243/252 done  cert=51 fail=192 exc=0  max_rss_obs=109.09GB  elapsed=4024s eta=149s
+    [sweep K=32] 246/252 done  cert=53 fail=193 exc=0  max_rss_obs=109.09GB  elapsed=4070s eta=99s
+    [sweep K=32] 248/252 done  cert=54 fail=194 exc=0  max_rss_obs=109.09GB  elapsed=4134s eta=67s
+    [sweep K=32] 250/252 done  cert=55 fail=195 exc=0  max_rss_obs=109.09GB  elapsed=4152s eta=33s
+    [sweep K=32] 252/252 done  cert=55 fail=197 exc=0  max_rss_obs=109.09GB  elapsed=4200s eta=0s
+  [stage K=32] cert=55 fail=199 exc=0  max_rss=109.09 GB  sweep_wall=4207s (70.1 min)
+
+######################################################################
+# K-LADDER COMPLETE  total=416  cert=217  survivors=199  wall=9478s (158.0 min)
+######################################################################
+  [iter 6] DONE  in=4 children=1981 lp_cert=1565 sdp_cert=217 survivors=199 wall=9737s
+
+=== ITER 7 === (199 pending, split_depth=9)
+  [split] 199 → 80743 children

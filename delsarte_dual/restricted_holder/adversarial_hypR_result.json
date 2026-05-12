@@ -1,0 +1,19 @@
+{
+  "verdict": "SURVIVED",
+  "M_min_observed": 1.652000935508217,
+  "M_min_label": "BL",
+  "best_c_at_M_min": 0.9015993356034079,
+  "n_samples_in_regime_M_le_1.378": 0,
+  "n_samples_total": 30238,
+  "global_best_c_emp": 0.9015993356034079,
+  "global_best_M_at_max_c_emp": 1.652000935508217,
+  "c_star_log16_over_pi": 0.8825424006106064,
+  "BL_witness": {
+    "M": 1.65200094,
+    "c_emp": 0.90159927
+  },
+  "frac_with_M_le_1.378": 0.0,
+  "frac_with_M_le_1.50": 0.0,
+  "frac_with_M_le_1.70": 0.0019511872478338514,
+  "reason": "No shape with M <= 1.378 found across 30k+ random + BL-family morphs."
+}

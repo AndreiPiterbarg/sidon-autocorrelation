@@ -1,0 +1,30 @@
+
+=== n_half=3, m=10, c=1.28, d_parent=6 ===
+L0 survivors: 774
+  examined: 60  T1 cleared: 0
+  LP original True: 60   LP active True: 60
+  match: 60   orig=T/act=F: 0   orig=F/act=T (UNSOUND CANDIDATES): 0
+  avg ms: orig=38.4   active=91.9   speedup=0.42x
+
+=== n_half=4, m=10, c=1.28, d_parent=8 ===
+L0 survivors: 21,545
+  examined: 60  T1 cleared: 0
+  LP original True: 60   LP active True: 60
+  match: 60   orig=T/act=F: 0   orig=F/act=T (UNSOUND CANDIDATES): 0
+  avg ms: orig=269.4   active=145.9   speedup=1.85x
+
+=== n_half=4, m=10, c=2.5, d_parent=8 ===
+L0 survivors: 88,111
+  examined: 60  T1 cleared: 0
+  LP original True: 12   LP active True: 11
+  match: 59   orig=T/act=F: 1   orig=F/act=T (UNSOUND CANDIDATES): 0
+  avg ms: orig=301.4   active=92.3   speedup=3.26x
+
+=== n_half=5, m=8, c=1.2, d_parent=10 ===
+L0 survivors: 185,065
+  examined: 30  T1 cleared: 0
+  LP original True: 30   LP active True: 30
+  match: 30   orig=T/act=F: 0   orig=F/act=T (UNSOUND CANDIDATES): 0
+  avg ms: orig=1921.1   active=154.2   speedup=12.46x
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_S3_results.json

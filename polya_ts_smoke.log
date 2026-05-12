@@ -1,0 +1,11 @@
+Soundness test: restricted LP must equal full LP
+  d   R   full_alpha     ts_alpha       diff  full_n_eq    ts_n_eq  reduction   ok
+  4   4     1.000000          nan        nan         16         14       1.14    N
+  4   6     1.047619          nan        nan         29         27       1.07    N
+  4   8     1.062500          nan        nan         46         44       1.05    N
+  6   4     1.050000          nan        nan         36         33       1.09    N
+  6   6     1.088571          nan        nan         85         82       1.04    N
+  6   8     1.107143          nan        nan        166        163       1.02    N
+  8   4     1.066667          nan        nan         71         67       1.06    N
+  8   6     1.103118          nan        nan        211        207       1.02    N
+  8   8     1.130952          nan        nan        496        492       1.01    N

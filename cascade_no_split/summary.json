@@ -1,0 +1,18 @@
+{
+  "started_utc": "20260509_115413",
+  "c_target": 1.281,
+  "sample_n": 4,
+  "level_time_sec": 240,
+  "compute_budget": 1000000000000000.0,
+  "use_split_cell_max_d": 0,
+  "max_l_for_split": 200,
+  "n_workers": 4,
+  "configs": [
+    [
+      1,
+      20
+    ]
+  ],
+  "host": "LAPTOP-7485DMFR",
+  "results": []
+}

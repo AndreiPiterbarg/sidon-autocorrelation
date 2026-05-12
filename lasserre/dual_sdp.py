@@ -867,6 +867,10 @@ def solve_dual_task(
     info: Dict[str, Any], *,
     feas_threshold: float = 0.25,
     infeas_threshold: float = 0.75,
+    early_stop_on_clear_verdict: bool = False,
+    early_stop_gap_tol: float = 1e-2,
+    early_stop_feas_frac: float = 0.15,
+    early_stop_infeas_frac: float = 0.85,
     verbose: bool = True,
 ) -> Dict[str, Any]:
     """Run ``task.optimize()`` and classify the primal (moment) feasibility
@@ -885,6 +889,49 @@ def solve_dual_task(
     finite solver tolerance.
     """
     lam_ub = float(info['lambda_upper_bound'])
+
+    # B1 sacrifice: info-callback-based early termination once λ* is clearly
+    # in the FEAS or INFEAS zone.  Returning non-zero from the info callback
+    # tells MOSEK to halt the current optimization.  The returned solution
+    # is still the last interior iterate — good enough for the Farkas
+    # verdict (feas_threshold=0.25, infeas_threshold=0.75 leaves a large
+    # margin, and we only stop inside 0.15/0.85).
+    _early_stop_state = {'triggered': False, 'iter': -1,
+                          'primal_obj': float('nan'),
+                          'gap': float('nan')}
+    if early_stop_on_clear_verdict:
+        fthr = float(early_stop_feas_frac) * lam_ub
+        ithr = float(early_stop_infeas_frac) * lam_ub
+        gtol = float(early_stop_gap_tol)
+
+        def _info_cb(caller, dinfo, iinfo, liinfo):
+            try:
+                if caller != mosek.callbackcode.intpnt:
+                    return 0
+                primal = dinfo[mosek.dinfitem.intpnt_primal_obj]
+                dual = dinfo[mosek.dinfitem.intpnt_dual_obj]
+                it = iinfo[mosek.iinfitem.intpnt_iter]
+                denom = max(1.0, abs(primal), abs(dual))
+                gap = abs(primal - dual) / denom
+                clear_feas = (abs(primal) < fthr) and (gap < gtol)
+                clear_infeas = (primal > ithr) and (gap < gtol)
+                if (clear_feas or clear_infeas) and it >= 3:
+                    _early_stop_state['triggered'] = True
+                    _early_stop_state['iter'] = int(it)
+                    _early_stop_state['primal_obj'] = float(primal)
+                    _early_stop_state['gap'] = float(gap)
+                    return 1  # non-zero => MOSEK halts optimization
+            except Exception:
+                return 0
+            return 0
+
+        try:
+            task.set_InfoCallback(_info_cb)
+        except Exception as exc:
+            if verbose:
+                print(f"  [early-stop] set_InfoCallback failed: {exc}; "
+                      f"running without callback.", flush=True)
+
     ts = time.time()
     try:
         task.optimize()
@@ -917,6 +964,16 @@ def solve_dual_task(
         verdict = 'infeas'
     elif solsta == mosek.solsta.prim_infeas_cer:
         verdict = 'uncertain'
+    elif (early_stop_on_clear_verdict
+          and _early_stop_state['triggered']
+          and not (lam_star != lam_star)):  # lam_star is finite
+        # B1: callback halted optimization.  Classify from current λ*.
+        if lam_star >= infeas_threshold * lam_ub:
+            verdict = 'infeas'
+        elif lam_star <= feas_threshold * lam_ub:
+            verdict = 'feas'
+        else:
+            verdict = 'uncertain'
     else:
         verdict = 'uncertain'
 
@@ -928,7 +985,7 @@ def solve_dual_task(
         print(f"  [dual-task] {status}  verdict={verdict}  "
               f"solve={wall:.2f}s", flush=True)
 
-    return {
+    out = {
         'verdict': verdict,
         'status': status,
         'lambda_star': lam_star,
@@ -936,6 +993,19 @@ def solve_dual_task(
         'prosta': str(prosta),
         'wall_s': wall,
     }
+    if early_stop_on_clear_verdict and _early_stop_state['triggered']:
+        out['early_stop'] = {
+            'triggered': True,
+            'iter': _early_stop_state['iter'],
+            'primal_obj_at_halt': _early_stop_state['primal_obj'],
+            'gap_at_halt': _early_stop_state['gap'],
+        }
+        if verbose:
+            print(f"  [early-stop] halted at IPM iter "
+                  f"{_early_stop_state['iter']}  "
+                  f"primal={_early_stop_state['primal_obj']:.3e}  "
+                  f"gap={_early_stop_state['gap']:.3e}", flush=True)
+    return out
 
 
 # =====================================================================

@@ -1,0 +1,38 @@
+
+[exp] E1_d6  d=6  target=1159/1000  (~1.159000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E1_d6  -> success=True  coverage=99.9996%  nodes=9756  elapsed=1.9s
+
+[exp] E1_d7  d=7  target=147/125  (~1.176000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E1_d7  -> success=True  coverage=99.9997%  nodes=40732  elapsed=2.5s
+
+[exp] E1_d8  d=8  target=148/125  (~1.184000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E1_d8  -> success=True  coverage=99.9994%  nodes=121094  elapsed=5.2s
+
+[exp] E1_d9  d=9  target=601/500  (~1.202000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E1_d9  -> success=True  coverage=99.9997%  nodes=826568  elapsed=45.8s
+
+[exp] E1_d10  d=10  target=151/125  (~1.208000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E1_d10  -> success=False  coverage=99.0695%  nodes=2043034  elapsed=120.6s
+
+[exp] E2_d12  d=12  target=627/500  (~1.254000)  budget=180s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E2_d12  -> success=False  coverage=97.4684%  nodes=2091246  elapsed=181.1s
+
+[exp] E2_d14  d=14  target=1267/1000  (~1.267000)  budget=180s  joint_depth=None  min_w=1e-10  init_depth=14
+[exp] resuming; already-done: ['E1_d10', 'E1_d6', 'E1_d7', 'E1_d8', 'E1_d9', 'E2_d12']
+
+[exp] E2_d14  d=14  target=1267/1000  (~1.267000)  budget=180s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E2_d14  -> success=False  coverage=98.7342%  nodes=1296248  elapsed=181.1s
+
+[exp] E2_d16  d=16  target=639/500  (~1.278000)  budget=180s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E2_d16  -> success=False  coverage=98.7342%  nodes=3172155  elapsed=181.2s
+
+[exp] E3_d10_t1.200  d=10  target=6/5  (~1.200000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E3_d10_t1.200  -> success=False  coverage=99.0831%  nodes=1895764  elapsed=120.7s
+
+[exp] E3_d10_t1.210  d=10  target=121/100  (~1.210000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E3_d10_t1.210  -> success=False  coverage=99.0695%  nodes=2234779  elapsed=120.6s
+
+[exp] E3_d10_t1.215  d=10  target=243/200  (~1.215000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12
+[exp] E3_d10_t1.215  -> success=False  coverage=98.1357%  nodes=2628601  elapsed=120.7s
+
+[exp] E3_d10_t1.220  d=10  target=61/50  (~1.220000)  budget=120s  joint_depth=None  min_w=1e-10  init_depth=12

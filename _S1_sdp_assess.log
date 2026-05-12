@@ -1,0 +1,85 @@
+
+=== n_half=2, m=30, c_target=1.2 ===
+d=4, S_full=4nm=240
+L0: 121 processed, 34 survivors  [0.05s]
+(CVXPY) May 05 10:37:55 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 05 10:37:55 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+/usr/local/lib/python3.10/dist-packages/cvxpy/atoms/affine/reshape.py:68: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  warnings.warn(reshape_order_warning, FutureWarning)
+/usr/local/lib/python3.10/dist-packages/cvxpy/problems/problem.py:1539: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  warnings.warn(
+
+--- S1 cert assessment on 34 L0-survivor parents (sample of 34) ---
+  Theorem 1 cleared:        0  (  0.0%)  [0.004s]
+  LP dual cleared:         17  ( 50.0%)  [0.154s, skipped=0]
+  SDP CVXPY cleared:        0  (  0.0%)  [2.626s]
+  SDP MOSEK cleared:        0  (  0.0%)  [1.293s, skipped=0]
+  REQUIRES enumeration:    17  ( 50.0%)
+  CVXPY per-call: avg=154.5 ms  max=310.8 ms
+  MOSEK per-call: avg=76.0 ms  max=85.2 ms
+  Soundness probe: 0 violations (out of 0 checked)
+
+=== n_half=3, m=10, c_target=1.2 ===
+d=6, S_full=4nm=120
+L0: 1,891 processed, 496 survivors  [0.04s]
+
+--- S1 cert assessment on 100 L0-survivor parents (sample of 100) ---
+  Theorem 1 cleared:        0  (  0.0%)  [0.000s]
+  LP dual cleared:        100  (100.0%)  [1.950s, skipped=0]
+  SDP CVXPY cleared:        0  (  0.0%)  [0.000s]
+  SDP MOSEK cleared:        0  (  0.0%)  [0.000s, skipped=0]
+  REQUIRES enumeration:     0  (  0.0%)
+  CVXPY per-call: avg=0.0 ms  max=0.0 ms
+  MOSEK per-call: avg=0.0 ms  max=0.0 ms
+  Soundness probe: 0 violations (out of 0 checked)
+
+=== n_half=3, m=10, c_target=1.28 ===
+d=6, S_full=4nm=120
+L0: 1,891 processed, 774 survivors  [0.04s]
+
+--- S1 cert assessment on 100 L0-survivor parents (sample of 100) ---
+  Theorem 1 cleared:        0  (  0.0%)  [0.000s]
+  LP dual cleared:        100  (100.0%)  [1.957s, skipped=0]
+  SDP CVXPY cleared:        0  (  0.0%)  [0.000s]
+  SDP MOSEK cleared:        0  (  0.0%)  [0.000s, skipped=0]
+  REQUIRES enumeration:     0  (  0.0%)
+  CVXPY per-call: avg=0.0 ms  max=0.0 ms
+  MOSEK per-call: avg=0.0 ms  max=0.0 ms
+  Soundness probe: 0 violations (out of 0 checked)
+
+=== n_half=3, m=20, c_target=1.28 ===
+d=6, S_full=4nm=240
+L0: 7,381 processed, 1,574 survivors  [0.04s]
+
+--- S1 cert assessment on 100 L0-survivor parents (sample of 100) ---
+  Theorem 1 cleared:        0  (  0.0%)  [0.000s]
+  LP dual cleared:        100  (100.0%)  [1.960s, skipped=0]
+  SDP CVXPY cleared:        0  (  0.0%)  [0.000s]
+  SDP MOSEK cleared:        0  (  0.0%)  [0.000s, skipped=0]
+  REQUIRES enumeration:     0  (  0.0%)
+  CVXPY per-call: avg=0.0 ms  max=0.0 ms
+  MOSEK per-call: avg=0.0 ms  max=0.0 ms
+  Soundness probe: 0 violations (out of 0 checked)
+
+=== n_half=4, m=10, c_target=1.28 ===
+d=8, S_full=4nm=160
+L0: 91,881 processed, 21,545 survivors  [0.06s]
+
+--- S1 cert assessment on 100 L0-survivor parents (sample of 100) ---
+  Theorem 1 cleared:        0  (  0.0%)  [0.001s]
+  LP dual cleared:        100  (100.0%)  [15.367s, skipped=0]
+  SDP CVXPY cleared:        0  (  0.0%)  [0.000s]
+  SDP MOSEK cleared:        0  (  0.0%)  [0.000s, skipped=0]
+  REQUIRES enumeration:     0  (  0.0%)
+  CVXPY per-call: avg=0.0 ms  max=0.0 ms
+  MOSEK per-call: avg=0.0 ms  max=0.0 ms
+  Soundness probe: 0 violations (out of 0 checked)
+
+Wrote /root/_S1_results.json

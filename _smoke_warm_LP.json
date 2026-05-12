@@ -1,0 +1,35 @@
+{
+  "config": {
+    "n_half": 3,
+    "m": 10,
+    "d": 6,
+    "c_target": 1.28,
+    "n_lps": 172,
+    "n_win": 66,
+    "n_sigma": 20,
+    "nvar": 67
+  },
+  "time_s": {
+    "scipy_cold": 1.405372142791748,
+    "highspy_cold": 0.8841323852539062,
+    "highspy_warm": 0.5632970333099365
+  },
+  "ms_per_lp": {
+    "scipy_cold": 8.170768272045047,
+    "highspy_cold": 5.1403045654296875,
+    "highspy_warm": 3.2749827518019567
+  },
+  "speedup_warm_vs_scipy": 2.4949042151594045,
+  "speedup_warm_vs_highspy_cold": 1.5695669122536282,
+  "soundness": {
+    "max_diff_t_scipy_vs_highs_cold": 0.0,
+    "max_diff_t_scipy_vs_highs_warm": 1.580957587066223e-13,
+    "tolerance_1e-9_passed": true
+  },
+  "ordering_probe_warm_time_s": {
+    "natural_enum_order": 0.358,
+    "random_shuffle":     0.313,
+    "lex_sort":           0.309,
+    "comment": "ordering effect is small at d=6 because LP is tiny (nvar=67, n_constr=21); expected to grow with d. lex_sort marginally best."
+  }
+}

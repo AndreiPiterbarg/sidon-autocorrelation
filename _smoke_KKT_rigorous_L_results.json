@@ -1,0 +1,37 @@
+{
+  "n_half": 3,
+  "m": 10,
+  "d": 6,
+  "c_target": 1.28,
+  "n_total": 1891,
+  "n_F": 172,
+  "n_Q": 172,
+  "n_mosek_pruned": 10,
+  "n_cla_status_pruned": 10,
+  "n_cla_rigorous_pruned": 10,
+  "mosek_status_hist": {
+    "optimal": 162,
+    "infeasible": 10
+  },
+  "cla_status_hist": {
+    "Solved": 162,
+    "PrimalInfeasible": 10
+  },
+  "r_dual_distrib": {
+    "min": 6.928973614171097e-16,
+    "med": 1.0200407084787482e-15,
+    "max": 1.6573612287022653e-14,
+    "n": 10
+  },
+  "t_mosek_s": 44.44963788986206,
+  "t_cla_s": 43.97942757606506,
+  "agreement": {
+    "both_prune": 10,
+    "mosek_only": 0,
+    "cla_only": 0,
+    "rigorous_subset_status": true,
+    "status_but_not_rigorous": 0
+  },
+  "rigour_eps": 1e-06,
+  "wall_total_s": 90.954669713974
+}

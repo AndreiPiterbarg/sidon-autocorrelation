@@ -1,0 +1,46 @@
+Loaded 100 F+Q survivors from C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_L_order2_survivors.npy
+Config: n_half=4, m=10, d=8, c_target=1.281, N_WORKERS=12
+
+=== Baseline: L order-1 Shor (single-box, no BnB) ===
+  kills: 25/100  wall: 85.08s  per-comp: 850.8ms
+  statuses: {'infeasible': 25, 'optimal': 75}
+
+=== Proto 1: M2 (exact per-window N_i*c_i) ===
+  kills: 0/100  wall: 0.298s  per-comp: 2977.0us
+
+=== Proto 2a: Q-LP with positivity (vertex filter) ===
+  kills: 0/100  wall: 38.05s  per-comp: 380.5ms
+
+=== Proto 2b: L-Shor with positivity ===
+  L-Shor's box uses lo=max(0,c-1) >= 0; positivity built-in => same as baseline_L: 25/100.
+
+=== Proto 3: Inner BnB on delta-cell ===
+  Running BnB on 75 L-survivors.
+  per-solve baseline 850.8ms; worst-case tree size 63; est parallel wall 335.0s
+  BnB wall: 4287.32s  per-Lsurv: 57.16s
+  BnB extra kills (over baseline L), by max-depth allowed:
+    depth<=0: extra=  0  total=25/100 (25.0%)
+    depth<=1: extra=  0  total=25/100 (25.0%)
+    depth<=2: extra=  0  total=25/100 (25.0%)
+    depth<=3: extra=  1  total=26/100 (26.0%)
+    depth<=4: extra=  1  total=26/100 (26.0%)
+    depth<=5: extra=  1  total=26/100 (26.0%)
+  Total SDP solves: 504
+
+=== Combined: F+Q (given) + M2 + L-pos + InnerBnB ===
+  Combined kills: 26/100 (26.0%)
+    by M2:           0
+    by L (baseline): 25
+    by BnB (extra over L): 1
+
+=== TABLE ===
+method                    kills/100    wall(s)     /comp(s)
+-----------------------------------------------------------
+baseline F+Q+L                   25      85.08       0.8508
+Proto1 M2                         0       0.30       0.0030
+Proto2a Q-pos                     0      38.05       0.3805
+Proto2b L-pos (=L)               25          -            -
+Proto3 BnB(d<=5)                 26    4287.32      42.8732
+Combined                         26          -            -
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_pruning_proto.json

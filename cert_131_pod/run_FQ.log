@@ -1,0 +1,16 @@
+
+=== L-bench: n_half=6, m=15, c_target=1.31, order=1, solver=MOSEK ===
+d=12, S_full=4nm=360, palindromic half_sum=2nm=180, total palindromic comps=1,710,052,162
+  n_win = 276, n_sigma = 924
+
+--- L vs Q vs F ---
+  total processed:      1,710,052,162
+  F survivors:          10  (0.00%)
+  Q survivors:          0  (0.00%)
+  L survivors:          0  (0.00%)
+  Q extra over F:       10 (100.00% of F)
+  L solve t  med/p95/max: 0.0/0.0/0.0 ms  on 0 SDPs
+  L statuses: {}
+  Wall: F 246.75s + Q 0.78s + L 0.01s = 308.45s
+
+Wrote /home/ubuntu/cert_131/bench_FQ.json

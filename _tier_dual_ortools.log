@@ -1,0 +1,317 @@
+
+=== d=8 R=4  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.0666666667  wall=19.6ms
+  Epi-Dual LP at d=4 R=4: n_vars=71 (ALL bounded, 0 free), n_eq=36 (1 + 35 recursion), n_ub=64, nnz_eq=176, nnz_ub=559, build=2.0ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 71 variables, 100 constraints, and 735 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=5.333333, smallest=0.500000, avg=1.706803
+Constraint matrix, infinity norm: max(row & col)=5.333333, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.010000, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.014085, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=71 of 71, largest=10.000000, smallest=1.000000, avg=1.126761
+Problem stats after rescaling:
+There are 71 variables, 100 constraints, and 735 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.072453, avg=0.270002
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.322130, min_row=0.247002
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.010000, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.448202, smallest=0.448202, avg=0.006313, l2_norm=0.448202
+Gaps between variable upper and lower bounds: #finite=71 of 71, largest=22.311346, smallest=1.000000, avg=2.012205
+Termination reason: TERMINATION_REASON_OPTIMAL
+Solution point type: POINT_TYPE_AVERAGE_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t   1856    0.0 |  8.436e-08      0.000  7.323e-07 |      1.067      1.067
+Dual objective after infeasibility correction: 1.06666
+  ortools PDLP : alpha=1.0666669110  diff=2.44e-07  status=TERMINATION_REASON_OPTIMAL  conv=True
+               primal_res=7.80e-08 dual_res=0.00e+00  wall=23.5ms  speedup=0.84x
+
+=== d=8 R=8  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.1309523809  wall=29.6ms
+  Epi-Dual LP at d=4 R=8: n_vars=496 (ALL bounded, 0 free), n_eq=331 (1 + 330 recursion), n_ub=64, nnz_eq=1651, nnz_ub=559, build=2.0ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 496 variables, 395 constraints, and 2210 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=5.333333, smallest=0.500000, avg=1.235068
+Constraint matrix, infinity norm: max(row & col)=5.333333, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.002532, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.002016, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=496 of 496, largest=10.000000, smallest=1.000000, avg=1.018145
+Problem stats after rescaling:
+There are 496 variables, 395 constraints, and 2210 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.072453, avg=0.415224
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.322130, min_row=0.247002
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.002532, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.448202, smallest=0.448202, avg=0.000904, l2_norm=0.448202
+Gaps between variable upper and lower bounds: #finite=496 of 496, largest=22.311346, smallest=1.000000, avg=1.451778
+Termination reason: TERMINATION_REASON_OPTIMAL
+Solution point type: POINT_TYPE_AVERAGE_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t  16064    0.2 |  9.304e-10      0.000  7.875e-07 |      1.131      1.131
+Dual objective after infeasibility correction: 1.13095
+  ortools PDLP : alpha=1.1309524000  diff=1.90e-08  status=TERMINATION_REASON_OPTIMAL  conv=True
+               primal_res=1.49e-09 dual_res=0.00e+00  wall=246.8ms  speedup=0.12x
+
+=== d=10 R=6  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.1189488243  wall=27.9ms
+  Epi-Dual LP at d=5 R=6: n_vars=463 (ALL bounded, 0 free), n_eq=253 (1 + 252 recursion), n_ub=100, nnz_eq=1513, nnz_ub=1245, build=5.7ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 463 variables, 353 constraints, and 2758 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=6.666667, smallest=0.500000, avg=1.504498
+Constraint matrix, infinity norm: max(row & col)=6.666667, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.002833, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.002160, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=463 of 463, largest=10.000000, smallest=1.000000, avg=1.019438
+Problem stats after rescaling:
+There are 463 variables, 353 constraints, and 2758 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.056443, avg=0.329623
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.280201, min_row=0.202520
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.002833, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.402822, smallest=0.402822, avg=0.000870, l2_norm=0.402822
+Gaps between variable upper and lower bounds: #finite=463 of 463, largest=24.824844, smallest=1.000000, avg=1.525994
+Termination reason: TERMINATION_REASON_OPTIMAL
+Solution point type: POINT_TYPE_AVERAGE_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t  11968    0.2 |  1.047e-08      0.000  7.836e-07 |      1.119      1.119
+Dual objective after infeasibility correction: 1.11895
+  ortools PDLP : alpha=1.1189488730  diff=4.87e-08  status=TERMINATION_REASON_OPTIMAL  conv=True
+               primal_res=1.78e-07 dual_res=0.00e+00  wall=178.0ms  speedup=0.16x
+
+=== d=12 R=6  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.1331828442  wall=55.5ms
+  Epi-Dual LP at d=6 R=6: n_vars=925 (ALL bounded, 0 free), n_eq=463 (1 + 462 recursion), n_ub=144, nnz_eq=3235, nnz_ub=2433, build=7.1ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 925 variables, 607 constraints, and 5668 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=8.000000, smallest=0.500000, avg=1.540996
+Constraint matrix, infinity norm: max(row & col)=8.000000, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.001647, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.001081, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=925 of 925, largest=10.000000, smallest=1.000000, avg=1.009730
+Problem stats after rescaling:
+There are 925 variables, 607 constraints, and 5668 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.046012, avg=0.312472
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.244257, min_row=0.172007
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.001647, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.368239, smallest=0.368239, avg=0.000398, l2_norm=0.368239
+Gaps between variable upper and lower bounds: #finite=925 of 925, largest=27.156268, smallest=1.000000, avg=1.506536
+Termination reason: TERMINATION_REASON_OPTIMAL
+Solution point type: POINT_TYPE_AVERAGE_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t  21312    0.6 |  1.073e-09      0.000  9.341e-07 |      1.133      1.133
+Dual objective after infeasibility correction: 1.13318
+  ortools PDLP : alpha=1.1331828474  diff=3.17e-09  status=TERMINATION_REASON_OPTIMAL  conv=True
+               primal_res=6.34e-09 dual_res=0.00e+00  wall=620.1ms  speedup=0.09x
+
+=== d=12 R=8  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.1641656663  wall=274.4ms
+  Epi-Dual LP at d=6 R=8: n_vars=3004 (ALL bounded, 0 free), n_eq=1717 (1 + 1716 recursion), n_ub=144, nnz_eq=12013, nnz_ub=2433, build=17.6ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 3004 variables, 1861 constraints, and 14446 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=8.000000, smallest=0.500000, avg=1.212264
+Constraint matrix, infinity norm: max(row & col)=8.000000, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.000537, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.000333, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=3004 of 3004, largest=10.000000, smallest=1.000000, avg=1.002996
+Problem stats after rescaling:
+There are 3004 variables, 1861 constraints, and 14446 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.046012, avg=0.382053
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.244257, min_row=0.172007
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.000537, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.368239, smallest=0.368239, avg=0.000123, l2_norm=0.368239
+Gaps between variable upper and lower bounds: #finite=3004 of 3004, largest=27.156268, smallest=1.000000, avg=1.451460
+Termination reason: TERMINATION_REASON_ITERATION_LIMIT
+Solution point type: POINT_TYPE_AVERAGE_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t 100000    6.4 |  2.127e-08      0.000  0.0002762 |      1.164      1.163
+Dual objective after infeasibility correction: 1.16325
+  ortools PDLP : alpha=1.1641643844  diff=1.28e-06  status=TERMINATION_REASON_ITERATION_LIMIT  conv=False
+               primal_res=2.64e-08 dual_res=0.00e+00  wall=6394.3ms  speedup=0.04x
+
+=== d=14 R=6  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.1448412698  wall=85.4ms
+  Epi-Dual LP at d=7 R=6: n_vars=1717 (ALL bounded, 0 free), n_eq=793 (1 + 792 recursion), n_ub=196, nnz_eq=6337, nnz_ub=4326, build=10.0ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 1717 variables, 989 constraints, and 10663 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=9.333333, smallest=0.500000, avg=1.556467
+Constraint matrix, infinity norm: max(row & col)=9.333333, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.001011, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.000582, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=1717 of 1717, largest=10.000000, smallest=1.000000, avg=1.005242
+Problem stats after rescaling:
+There are 1717 variables, 989 constraints, and 10663 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.038723, avg=0.300938
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.216331, min_row=0.149973
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.001011, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.340676, smallest=0.340676, avg=0.000198, l2_norm=0.340676
+Gaps between variable upper and lower bounds: #finite=1717 of 1717, largest=29.353428, smallest=1.000000, avg=1.495522
+Termination reason: TERMINATION_REASON_OPTIMAL
+Solution point type: POINT_TYPE_CURRENT_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t  42880    1.7 |  1.088e-08      0.000  8.977e-07 |      1.145      1.145
+Dual objective after infeasibility correction: 1.14484
+  ortools PDLP : alpha=1.1448412231  diff=4.67e-08  status=TERMINATION_REASON_OPTIMAL  conv=True
+               primal_res=8.90e-09 dual_res=0.00e+00  wall=1723.1ms  speedup=0.05x
+
+=== d=16 R=4  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.0994152047  wall=36.1ms
+  Epi-Dual LP at d=8 R=4: n_vars=496 (ALL bounded, 0 free), n_eq=166 (1 + 165 recursion), n_ub=256, nnz_eq=1486, nnz_ub=7162, build=10.0ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 496 variables, 422 constraints, and 8648 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=10.666667, smallest=0.500000, avg=2.209644
+Constraint matrix, infinity norm: max(row & col)=10.666667, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.002370, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.002016, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=496 of 496, largest=10.000000, smallest=1.000000, avg=1.018145
+Problem stats after rescaling:
+There are 496 variables, 422 constraints, and 8648 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.033362, avg=0.161073
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.195601, min_row=0.133176
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.002370, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.318205, smallest=0.318205, avg=0.000642, l2_norm=0.318205
+Gaps between variable upper and lower bounds: #finite=496 of 496, largest=31.426270, smallest=1.000000, avg=1.888085
+Termination reason: TERMINATION_REASON_OPTIMAL
+Solution point type: POINT_TYPE_CURRENT_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t  13568    0.3 |  1.481e-09      0.000  8.810e-07 |      1.099      1.099
+Dual objective after infeasibility correction: 1.09941
+  ortools PDLP : alpha=1.0994152004  diff=4.29e-09  status=TERMINATION_REASON_OPTIMAL  conv=True
+               primal_res=1.15e-09 dual_res=0.00e+00  wall=342.2ms  speedup=0.11x
+
+=== d=16 R=6  PDLP tol=1e-06 ===
+  PRIMAL MOSEK : alpha=1.1529782615  wall=210.8ms
+  Epi-Dual LP at d=8 R=6: n_vars=3004 (ALL bounded, 0 free), n_eq=1288 (1 + 1287 recursion), n_ub=256, nnz_eq=11584, nnz_ub=7162, build=18.1ms
+  --- Google PDLP on epi dual ---
+Solving with PDLP parameters: goo.gle/debugonly   
+termination_criteria {
+  eps_optimal_absolute: 1e-06
+  eps_optimal_relative: 1e-06
+  time_sec_limit: 180
+  iteration_limit: 100000
+}
+verbosity_level: 1
+handle_some_primal_gradients_on_finite_bounds_as_residuals: false
+use_feasibility_polishing: true
+
+Problem stats before rescaling:
+There are 3004 variables, 1544 constraints, and 18746 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=10.666667, smallest=0.500000, avg=1.558039
+Constraint matrix, infinity norm: max(row & col)=10.666667, min_col=1.000000, min_row=1.000000
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.000648, l2_norm=1.000000
+Absolute values of objective vector elements: largest=1.000000, smallest=1.000000, avg=0.000333, l2_norm=1.000000
+Gaps between variable upper and lower bounds: #finite=3004 of 3004, largest=10.000000, smallest=1.000000, avg=1.002996
+Problem stats after rescaling:
+There are 3004 variables, 1544 constraints, and 18746 constraint matrix nonzeros.
+Absolute values of nonzero constraint matrix elements: largest=0.840896, smallest=0.033362, avg=0.292898
+Constraint matrix, infinity norm: max(row & col)=0.840896, min_col=0.195601, min_row=0.133176
+Constraint bounds statistics (max absolute value per row): largest=1.000000, smallest=1.000000, avg=0.000648, l2_norm=1.000000
+Absolute values of objective vector elements: largest=0.318205, smallest=0.318205, avg=0.000106, l2_norm=0.318205
+Gaps between variable upper and lower bounds: #finite=3004 of 3004, largest=31.426270, smallest=1.000000, avg=1.489088
+Termination reason: TERMINATION_REASON_ITERATION_LIMIT
+Solution point type: POINT_TYPE_AVERAGE_ITERATE
+Final solution stats:
+f  iter#   time |  rel_p_res  rel_d_res    rel_gap |   prim_obj   dual_obj
+t 100000    6.9 |  5.811e-05      0.000  0.0005238 |      1.153      1.151
+Dual objective after infeasibility correction: 1.15137
+  ortools PDLP : alpha=1.1531008564  diff=1.23e-04  status=TERMINATION_REASON_ITERATION_LIMIT  conv=False
+               primal_res=2.37e-05 dual_res=0.00e+00  wall=6855.6ms  speedup=0.03x
+
+--- SUMMARY ---
+  d   R      a_truth       a_pdlp       diff   w_truth    w_pdlp    spd  conv
+  8   4   1.06666667   1.06666691   2.44e-07     19.6ms     23.5ms  0.84x  True
+  8   8   1.13095238   1.13095240   1.90e-08     29.6ms    246.8ms  0.12x  True
+ 10   6   1.11894882   1.11894887   4.87e-08     27.9ms    178.0ms  0.16x  True
+ 12   6   1.13318284   1.13318285   3.17e-09     55.5ms    620.1ms  0.09x  True
+ 12   8   1.16416567   1.16416438   1.28e-06    274.4ms   6394.3ms  0.04x False
+ 14   6   1.14484127   1.14484122   4.67e-08     85.4ms   1723.1ms  0.05x  True
+ 16   4   1.09941520   1.09941520   4.29e-09     36.1ms    342.2ms  0.11x  True
+ 16   6   1.15297826   1.15310086   1.23e-04    210.8ms   6855.6ms  0.03x False
+
+Wrote _tier_dual_ortools_results.json

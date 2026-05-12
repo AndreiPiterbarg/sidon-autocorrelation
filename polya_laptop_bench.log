@@ -1,0 +1,35 @@
+
+=== d=8, R=4 ===
+  build: n_eq=71, n_vars=170, nnz=805, 0.00s
+  MPS: polya_lp_mps\polya_d8_R4.mps (0.0 MB, 0.0s)
+  Solving with HiGHS (n_vars=170)...
+  alpha=1.0666666666666667, wall=0.0s
+
+=== d=8, R=8 ===
+  build: n_eq=496, n_vars=890, nnz=2,705, 0.00s
+  MPS: polya_lp_mps\polya_d8_R8.mps (0.1 MB, 0.0s)
+  Solving with HiGHS (n_vars=890)...
+  alpha=1.130952380952381, wall=0.1s
+
+=== d=8, R=12 ===
+  build: n_eq=1,821, n_vars=3,250, nnz=9,205, 0.01s
+  MPS: polya_lp_mps\polya_d8_R12.mps (0.3 MB, 0.0s)
+  Solving with HiGHS (n_vars=3,250)...
+  alpha=1.1586612072065834, wall=3.2s
+
+=== d=16, R=4 ===
+  build: n_eq=496, n_vars=917, nnz=9,143, 0.02s
+  MPS: polya_lp_mps\polya_d16_R4.mps (0.4 MB, 0.0s)
+  Solving with HiGHS (n_vars=917)...
+  alpha=1.0994152046783627, wall=0.0s
+
+=== d=16, R=6 ===
+  build: n_eq=3,004, n_vars=4,547, nnz=21,749, 0.03s
+  MPS: polya_lp_mps\polya_d16_R6.mps (0.8 MB, 0.0s)
+  Solving with HiGHS (n_vars=4,547)...
+  alpha=1.1529782615160438, wall=6.0s
+
+=== d=16, R=8 ===
+  build: n_eq=12,871, n_vars=19,562, nnz=77,948, 0.08s
+  MPS: polya_lp_mps\polya_d16_R8.mps (2.8 MB, 0.2s)
+  Solving with HiGHS (n_vars=19,562)...

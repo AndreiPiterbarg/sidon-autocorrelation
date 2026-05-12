@@ -1,0 +1,100 @@
+
+=== alpha ===
+  random 250/250 finite, best ratio = 0.704395
+    refine 0: 0.704395 -> 0.399040
+    refine 1: 0.719457 -> 0.400062
+    refine 2: 0.748337 -> 0.408687
+  local refine timed out at k=3
+  best after refine: 0.399040, time=77.0s
+
+=== alpha_left ===
+  random 250/250 finite, best ratio = 0.705428
+    refine 0: 0.705428 -> 0.422503
+    refine 1: 0.735721 -> 0.444366
+    refine 2: 0.744657 -> 0.419073
+  local refine timed out at k=3
+  best after refine: 0.419073, time=64.9s
+
+=== two_endpoints ===
+  random search timed out after 93 iters
+  random 93/350 finite, best ratio = 0.526924
+  local refine timed out at k=0
+  best after refine: 0.526924, time=90.6s
+
+=== ss_perturb ===
+  random search timed out after 64 iters
+  random 64/400 finite, best ratio = 0.395961
+  local refine timed out at k=0
+  best after refine: 0.395961, time=100.4s
+
+=== alpha_plus_unif ===
+  random search timed out after 180 iters
+  random 180/250 finite, best ratio = 0.489502
+  local refine timed out at k=0
+  best after refine: 0.489502, time=60.2s
+
+=== alpha_plus_lin ===
+  random search timed out after 205 iters
+  random 204/350 finite, best ratio = 0.504620
+  local refine timed out at k=0
+  best after refine: 0.504620, time=80.1s
+
+=== double_power ===
+  random search timed out after 226 iters
+  random 226/350 finite, best ratio = 0.457986
+  local refine timed out at k=0
+  best after refine: 0.457986, time=80.3s
+
+=== beta ===
+  random 250/250 finite, best ratio = 0.437088
+    refine 0: 0.437088 -> 0.392841
+  local refine timed out at k=1
+  best after refine: 0.392841, time=69.2s
+
+=== smooth ===
+  random 250/250 finite, best ratio = 0.898542
+    refine 0: 0.898542 -> 0.896612
+    refine 1: 0.901029 -> 0.896616
+    refine 2: 0.902357 -> 0.897469
+    refine 3: 0.903018 -> 0.896617
+  best after refine: 0.896612, time=16.7s
+
+=== combo ===
+  random search timed out after 68 iters
+  random 68/350 finite, best ratio = 0.490120
+  local refine timed out at k=0
+  best after refine: 0.490120, time=80.3s
+
+=== mv_style ===
+  random search timed out after 69 iters
+  random 69/350 finite, best ratio = 0.456485
+  local refine timed out at k=0
+  best after refine: 0.456485, time=91.3s
+
+=== piecewise8 ===
+  random search timed out after 8 iters
+  random 8/400 finite, best ratio = 0.869592
+  local refine timed out at k=0
+  best after refine: 0.869592, time=81.7s
+
+=== piecewise16 ===
+  random search timed out after 6 iters
+  random 6/400 finite, best ratio = 0.802726
+  local refine timed out at k=0
+  best after refine: 0.802726, time=110.4s
+
+=== piecewise32 ===
+  random search timed out after 7 iters
+  random 7/400 finite, best ratio = 0.816371
+  local refine timed out at k=0
+  best after refine: 0.816371, time=128.8s
+
+=== Mass random across families ===
+  mass random capped at 825 iters
+  mass: 825/1500 finite, best=0.392808
+
+
+=== OVERALL MIN: 0.392808, c0=pi/8=0.392699, margin=1.09e-04 ===
+  by: {'fn': 'fam_ss_perturb', 'x': [-0.00043387076524137314, 0.10359812691539905, 0.04243926298586839], 'ratio': 0.3928078743788782}
+
+Wrote path_a_stress_test.json. elapsed=1492.7s

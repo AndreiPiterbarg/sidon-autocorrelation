@@ -1,0 +1,40 @@
+{
+  "iter": 5,
+  "n_input": 1,
+  "n_after_split": 291,
+  "n_after_lp": 4,
+  "n_lp_cert": 287,
+  "n_sdp_input": 4,
+  "n_sdp_cert": 0,
+  "n_survivors": 4,
+  "wall_s": 770.4608042240143,
+  "sdp_stage_summaries": [
+    {
+      "K": 0,
+      "n_input": 4,
+      "n_cert": 0,
+      "n_fail": 4,
+      "max_rss_gb": 4.56,
+      "n_parallel": 48,
+      "sweep_wall_s": 75.55638027191162
+    },
+    {
+      "K": 16,
+      "n_input": 4,
+      "n_cert": 0,
+      "n_fail": 4,
+      "max_rss_gb": 30.48,
+      "n_parallel": 14,
+      "sweep_wall_s": 83.8255763053894
+    },
+    {
+      "K": 32,
+      "n_input": 4,
+      "n_cert": 0,
+      "n_fail": 4,
+      "max_rss_gb": 53.34,
+      "n_parallel": 9,
+      "sweep_wall_s": 127.78176689147949
+    }
+  ]
+}

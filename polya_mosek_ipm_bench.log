@@ -1,0 +1,63 @@
+
+=== d=8, R=4 ===
+  NO RESULT after 0s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=8, R=8 ===
+  NO RESULT after 0s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=8, R=12 ===
+  NO RESULT after 0s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=16, R=4 ===
+  NO RESULT after 0s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=16, R=6 ===
+  NO RESULT after 0s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=16, R=8 ===
+  NO RESULT after 1s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=32, R=4 ===
+  NO RESULT after 1s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=32, R=6 ===
+  NO RESULT after 1s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=64, R=4 ===
+  NO RESULT after 10s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+=== d=64, R=6 ===
+  NO RESULT after 36s. stderr: Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_mosek_ipm_probe.py", line 9, in <module>
+    rec, _, _ = run_one(d=d, R=R, use_z2=True, solver='mos
+
+
+=== SUMMARY ===
+  d=8 R=4: no_result after 0s
+  d=8 R=8: no_result after 0s
+  d=8 R=12: no_result after 0s
+  d=16 R=4: no_result after 0s
+  d=16 R=6: no_result after 0s
+  d=16 R=8: no_result after 1s
+  d=32 R=4: no_result after 1s
+  d=32 R=6: no_result after 1s
+  d=64 R=4: no_result after 10s
+  d=64 R=6: no_result after 36s

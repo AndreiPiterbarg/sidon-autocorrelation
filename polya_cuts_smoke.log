@@ -1,0 +1,25 @@
+Sidon Fourier cuts smoke test
+
+=== d = 4 (val_known = 1.102) ===
+  d_eff=2, baseline windows: 16, Fourier cuts: 130
+  validity check (cut[0]=krein_poisson(s=0.100,t0=-0.400)):
+    cut_max=0.9799, win_max_max=1.9994, excess_max=-0.1621, n_excess>0=0/2000
+  R=4: baseline=1.000000 (n_W=16, 0.0s); +cuts=6.592261 (n_W=146, 0.0s); improvement=+5.592261
+  R=6: baseline=1.047619 (n_W=16, 0.0s); +cuts=7.888146 (n_W=146, 0.0s); improvement=+6.840527
+  R=8: baseline=1.062500 (n_W=16, 0.0s); +cuts=8.443525 (n_W=146, 0.0s); improvement=+7.381025
+
+=== d = 6 (val_known = 1.171) ===
+  d_eff=3, baseline windows: 36, Fourier cuts: 130
+  validity check (cut[0]=krein_poisson(s=0.100,t0=-0.400)):
+    cut_max=0.9927, win_max_max=2.9470, excess_max=-0.2314, n_excess>0=0/2000
+  R=4: baseline=1.050000 (n_W=36, 0.0s); +cuts=3.386944 (n_W=166, 0.0s); improvement=+2.336944
+  R=6: baseline=1.088571 (n_W=36, 0.0s); +cuts=4.055102 (n_W=166, 0.0s); improvement=+2.966530
+  R=8: baseline=1.107143 (n_W=36, 0.0s); +cuts=5.018303 (n_W=166, 0.0s); improvement=+3.911160
+
+=== d = 8 (val_known = 1.205) ===
+  d_eff=4, baseline windows: 64, Fourier cuts: 130
+  validity check (cut[0]=krein_poisson(s=0.100,t0=-0.400)):
+    cut_max=0.9957, win_max_max=3.5571, excess_max=-0.3040, n_excess>0=0/2000
+  R=4: baseline=1.066667 (n_W=64, 0.0s); +cuts=1.920630 (n_W=194, 0.0s); improvement=+0.853963
+  R=6: baseline=1.103118 (n_W=64, 0.0s); +cuts=2.797915 (n_W=194, 0.0s); improvement=+1.694798
+  R=8: baseline=1.130952 (n_W=64, 0.1s); +cuts=3.003512 (n_W=194, 0.1s); improvement=+1.872559

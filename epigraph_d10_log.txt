@@ -1,0 +1,43 @@
+======================================================================
+d=10 t=1.208 BnB — EPIGRAPH FIX TEST
+Goal: break the 99.06% bound stall.
+======================================================================
+[par] d=10  target=1.208  init_boxes=211  workers=8  init_split_depth=14
+[par] t=    5.1s  nodes=         0  cert=         0  in_flight=    58  queue=   0  active= 3/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   10.2s  nodes=         0  cert=         0  in_flight=    61  queue=   0  active= 3/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   15.2s  nodes=         0  cert=         0  in_flight=    59  queue=   0  active= 3/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   20.2s  nodes=         0  cert=         0  in_flight=    50  queue=   0  active= 3/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   25.3s  nodes=         0  cert=         0  in_flight=    32  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   30.3s  nodes=         0  cert=         0  in_flight=    36  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   35.4s  nodes=         0  cert=         0  in_flight=    37  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   40.4s  nodes=         0  cert=         0  in_flight=    37  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   45.5s  nodes=         0  cert=         0  in_flight=    40  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   50.5s  nodes=         0  cert=         0  in_flight=    31  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   55.6s  nodes=         0  cert=         0  in_flight=    39  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   60.6s  nodes=         0  cert=         0  in_flight=    39  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   65.7s  nodes=         0  cert=         0  in_flight=    40  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   70.8s  nodes=         0  cert=         0  in_flight=    39  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   75.8s  nodes=         0  cert=         0  in_flight=    37  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   80.9s  nodes=         0  cert=         0  in_flight=    35  queue=   0  active= 3/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   85.9s  nodes=         0  cert=         0  in_flight=    34  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   91.0s  nodes=         0  cert=         0  in_flight=    37  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   96.0s  nodes=         0  cert=         0  in_flight=    42  queue=   0  active= 4/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  101.1s  nodes=         0  cert=         0  in_flight=    37  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  106.1s  nodes=         0  cert=         0  in_flight=    38  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  111.2s  nodes=         0  cert=         0  in_flight=    40  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  116.2s  nodes=         0  cert=         0  in_flight=    35  queue=   0  active= 2/8  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  121.3s  nodes=      5000  cert=      2495  in_flight=    31  queue=   0  active= 2/8  rate=    992/s  progress=  2.84455%  eta=   4142s
+[par] t=  126.3s  nodes=      5000  cert=      2495  in_flight=    35  queue=   0  active= 6/8  rate=      0/s  progress=  2.84455%  eta=   4315s
+[par] t=  131.4s  nodes=     10000  cert=      4986  in_flight=    38  queue=   0  active= 2/8  rate=    988/s  progress=  4.74308%  eta=   2639s
+[par] t=  136.4s  nodes=     10000  cert=      4986  in_flight=    37  queue=   0  active= 2/8  rate=      0/s  progress=  4.74308%  eta=   2740s
+[par] t=  141.5s  nodes=     10000  cert=      4986  in_flight=    31  queue=   0  active= 2/8  rate=      0/s  progress=  4.74308%  eta=   2841s
+[par] t=  146.5s  nodes=     10000  cert=      4986  in_flight=    17  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   2942s
+[par] t=  151.6s  nodes=     10000  cert=      4986  in_flight=    16  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3044s
+[par] t=  156.6s  nodes=     10000  cert=      4986  in_flight=    17  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3145s
+[par] t=  161.6s  nodes=     10000  cert=      4986  in_flight=    14  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3246s
+[par] t=  166.7s  nodes=     10000  cert=      4986  in_flight=    15  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3347s
+[par] t=  171.7s  nodes=     10000  cert=      4986  in_flight=    13  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3448s
+[par] t=  176.7s  nodes=     10000  cert=      4986  in_flight=    15  queue=   0  active= 2/8  rate=      0/s  progress=  4.74308%  eta=   3549s
+[par] t=  181.7s  nodes=     10000  cert=      4986  in_flight=    16  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3650s
+[par] t=  186.8s  nodes=     10000  cert=      4986  in_flight=    14  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3751s
+[par] t=  191.8s  nodes=     10000  cert=      4986  in_flight=    15  queue=   0  active= 1/8  rate=      0/s  progress=  4.74308%  eta=   3852s

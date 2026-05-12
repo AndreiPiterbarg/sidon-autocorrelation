@@ -1,0 +1,30 @@
+[
+  {
+    "n_half": 6,
+    "m": 5,
+    "c_target": 1.28,
+    "d": 12,
+    "order": 1,
+    "solver": "MOSEK",
+    "n_win": 276,
+    "n_processed": 8259888,
+    "surv_F": 7,
+    "surv_Q": 0,
+    "surv_L": 0,
+    "pruned_F": 8259881,
+    "pruned_Q": 8259888,
+    "pruned_L": 8259888,
+    "extra_Q_over_F": 7,
+    "extra_L_over_Q": 0,
+    "bug_L_unsound": 0,
+    "t_F": 40.68672490119934,
+    "t_Q": 2.2727363109588623,
+    "t_L": 0.0,
+    "l_solve_t_med_ms": 0.0,
+    "l_solve_t_p95_ms": 0.0,
+    "l_solve_t_max_ms": 0.0,
+    "l_n_solves": 0,
+    "l_status_counter": {},
+    "elapsed": 43.55570387840271
+  }
+]

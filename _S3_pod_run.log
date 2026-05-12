@@ -1,0 +1,37 @@
+
+=== n_half=3, m=10, c_target=1.28, d_parent=6 ===
+  L0: 1,891 processed, 774 survivors  [0.05s]
+  examined=20  T1 cleared=0
+  LP_orig_True=20   LP_act_True=20
+  match=20   orig=T/act=F=0   orig=F/act=T (UNSOUND)=0
+  avg ms: orig=22.1   active=63.7   speedup=0.35x
+
+=== n_half=4, m=10, c_target=1.28, d_parent=8 ===
+  L0: 91,881 processed, 21,545 survivors  [0.05s]
+  examined=20  T1 cleared=0
+  LP_orig_True=20   LP_act_True=20
+  match=20   orig=T/act=F=0   orig=F/act=T (UNSOUND)=0
+  avg ms: orig=153.2   active=79.0   speedup=1.94x
+
+=== n_half=4, m=10, c_target=2.5, d_parent=8 ===
+  L0: 91,881 processed, 88,111 survivors  [0.05s]
+  examined=20  T1 cleared=0
+  LP_orig_True=4   LP_act_True=4
+  match=20   orig=T/act=F=0   orig=F/act=T (UNSOUND)=0
+  avg ms: orig=149.0   active=33.6   speedup=4.43x
+
+=== n_half=5, m=8, c_target=1.2, d_parent=10 ===
+  L0: 1,929,501 processed, 185,065 survivors  [0.53s]
+  examined=20  T1 cleared=0
+  LP_orig_True=20   LP_act_True=20
+  match=20   orig=T/act=F=0   orig=F/act=T (UNSOUND)=0
+  avg ms: orig=1108.7   active=91.3   speedup=12.15x
+
+=== n_half=6, m=6, c_target=1.2, d_parent=12 ===
+  L0: 6,600,000 processed, 30,512 survivors  [1.06s]
+  examined=20  T1 cleared=0
+  LP_orig_True=20   LP_act_True=20
+  match=20   orig=T/act=F=0   orig=F/act=T (UNSOUND)=0
+  avg ms: orig=7433.9   active=202.9   speedup=36.63x
+
+Wrote _S3_results.json

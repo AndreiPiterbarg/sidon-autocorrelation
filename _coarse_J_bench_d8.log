@@ -1,0 +1,11 @@
+
+=== d=8, S=12, c_target=1.2 ===
+  total compositions: 50388 (0.04s)
+  pruned (TV>=c at grid): 50388
+  triangle baseline certs: 45804
+  joint K=2: NEW certs =    309 (over baseline)  total =  46113
+  joint K=4: NEW certs =    819 (over baseline)  total =  46623
+  joint K=8: NEW certs =   1428 (over baseline)  total =  47232
+  cert phase time: 144.87s
+  soundness check: 0 violations, max excess = 0.000e+00
+done: {'d': 8, 'S': 12, 'c_target': 1.2, 'n_compositions': 50388, 'n_pruned': 50388, 'baseline_cert': 45804, 'new_cert': {2: 309, 4: 819, 8: 1428}, 'soundness_violations': 0, 'soundness_max_excess': 0.0}

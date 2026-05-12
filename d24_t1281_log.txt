@@ -1,0 +1,392 @@
+########################################################################
+# d=24 t=1.281 BnB on 16-core local machine
+# Cascade: cheap -> tighten(>=4) -> standard -> P1-LITE(>=14)
+#          -> multi-anchor + centroid (>=24)
+#          -> CCTR -> epigraph LP+RLT (>=24, pub cushion)
+#          -> H_d cut on every box pop
+#          -> LP-binding(>=26) + variance split(>=25)
+# init_split_depth=24, workers=16, budget=21600s (6.0h)
+########################################################################
+[par] d=24  target=1.281  init_boxes=301  workers=16  init_split_depth=24
+[par] t=    5.2s  nodes=         0  cert=         0  in_flight=    30  queue=   0  active= 5/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   10.2s  nodes=         0  cert=         0  in_flight=    42  queue=   0  active=12/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   15.3s  nodes=         0  cert=         0  in_flight=    53  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   20.3s  nodes=         0  cert=         0  in_flight=    63  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   25.3s  nodes=         0  cert=         0  in_flight=    64  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   30.3s  nodes=         0  cert=         0  in_flight=    63  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   35.4s  nodes=         0  cert=         0  in_flight=    64  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   40.4s  nodes=         0  cert=         0  in_flight=    65  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   45.5s  nodes=         0  cert=         0  in_flight=    66  queue=   0  active=11/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   50.5s  nodes=         0  cert=         0  in_flight=    63  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   55.6s  nodes=         0  cert=         0  in_flight=    63  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   60.6s  nodes=         0  cert=         0  in_flight=    61  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   65.7s  nodes=         0  cert=         0  in_flight=    63  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   70.7s  nodes=         0  cert=         0  in_flight=    64  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   75.8s  nodes=         0  cert=         0  in_flight=    63  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   80.8s  nodes=         0  cert=         0  in_flight=    60  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   85.9s  nodes=         0  cert=         0  in_flight=    59  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   90.9s  nodes=         0  cert=         0  in_flight=    59  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=   95.9s  nodes=         0  cert=         0  in_flight=    54  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  101.0s  nodes=         0  cert=         0  in_flight=    53  queue=   0  active=14/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  106.1s  nodes=         0  cert=         0  in_flight=    56  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  111.1s  nodes=         0  cert=         0  in_flight=    50  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  116.2s  nodes=         0  cert=         0  in_flight=    47  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  121.2s  nodes=         0  cert=         0  in_flight=    45  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  126.2s  nodes=         0  cert=         0  in_flight=    47  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  131.2s  nodes=         0  cert=         0  in_flight=    49  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  136.3s  nodes=         0  cert=         0  in_flight=    50  queue=   0  active= 2/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  141.3s  nodes=         0  cert=         0  in_flight=    46  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  146.4s  nodes=         0  cert=         0  in_flight=    45  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  151.4s  nodes=         0  cert=         0  in_flight=    42  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  156.4s  nodes=         0  cert=         0  in_flight=    44  queue=   0  active= 3/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  161.5s  nodes=         0  cert=         0  in_flight=    41  queue=   0  active= 4/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  166.5s  nodes=         0  cert=         0  in_flight=    39  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  171.6s  nodes=         0  cert=         0  in_flight=    39  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  176.6s  nodes=         0  cert=         0  in_flight=    40  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  181.6s  nodes=         0  cert=         0  in_flight=    41  queue=   0  active= 1/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  186.7s  nodes=         0  cert=         0  in_flight=    46  queue=   0  active= 6/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  191.7s  nodes=         0  cert=         0  in_flight=    58  queue=   0  active= 2/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  196.8s  nodes=         0  cert=         0  in_flight=    67  queue=   0  active= 2/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  201.8s  nodes=         0  cert=         0  in_flight=    78  queue=   0  active= 2/16  rate=      0/s  progress=  0.00000%  eta=  --
+[par] t=  206.8s  nodes=       500  cert=       221  in_flight=    84  queue=   0  active=13/16  rate=    100/s  progress=  1.32890%  eta=  15356s
+[par] t=  211.9s  nodes=       500  cert=       221  in_flight=    98  queue=   0  active= 3/16  rate=      0/s  progress=  1.32890%  eta=  15731s
+[par] t=  216.9s  nodes=       500  cert=       221  in_flight=   108  queue=   0  active= 6/16  rate=      0/s  progress=  1.32890%  eta=  16104s
+[par] t=  221.9s  nodes=       500  cert=       221  in_flight=   121  queue=   0  active= 3/16  rate=      0/s  progress=  1.32890%  eta=  16477s
+[par] t=  227.0s  nodes=       500  cert=       221  in_flight=   120  queue=   0  active= 3/16  rate=      0/s  progress=  1.32890%  eta=  16851s
+[par] t=  232.0s  nodes=       500  cert=       221  in_flight=   118  queue=   0  active= 3/16  rate=      0/s  progress=  1.32890%  eta=  17225s
+[par] t=  237.0s  nodes=       500  cert=       221  in_flight=   126  queue=   0  active= 4/16  rate=      0/s  progress=  1.32890%  eta=  17598s
+[par] t=  242.1s  nodes=       500  cert=       221  in_flight=   126  queue=   0  active=11/16  rate=      0/s  progress=  1.32890%  eta=  17973s
+[par] t=  247.1s  nodes=       500  cert=       221  in_flight=   143  queue=   0  active= 4/16  rate=      0/s  progress=  1.32890%  eta=  18347s
+[par] t=  252.2s  nodes=       500  cert=       221  in_flight=   151  queue=   0  active= 4/16  rate=      0/s  progress=  1.32890%  eta=  18723s
+[par] t=  257.2s  nodes=       500  cert=       221  in_flight=   154  queue=   0  active= 4/16  rate=      0/s  progress=  1.32890%  eta=  19098s
+[par] t=  262.3s  nodes=       500  cert=       221  in_flight=   161  queue=   0  active= 7/16  rate=      0/s  progress=  1.32890%  eta=  19473s
+[par] t=  267.3s  nodes=       500  cert=       221  in_flight=   165  queue=   0  active= 5/16  rate=      0/s  progress=  1.32890%  eta=  19848s
+[par] t=  272.4s  nodes=       500  cert=       221  in_flight=   177  queue=   0  active= 6/16  rate=      0/s  progress=  1.32890%  eta=  20222s
+[par] t=  277.4s  nodes=       500  cert=       221  in_flight=   200  queue=   0  active= 7/16  rate=      0/s  progress=  1.32890%  eta=  20597s
+[par] t=  282.4s  nodes=       500  cert=       221  in_flight=   209  queue=   0  active= 9/16  rate=      0/s  progress=  1.32890%  eta=  20972s
+[par] t=  287.5s  nodes=       500  cert=       221  in_flight=   214  queue=   0  active= 7/16  rate=      0/s  progress=  1.32890%  eta=  21347s
+[par] t=  292.5s  nodes=       500  cert=       221  in_flight=   225  queue=   0  active= 7/16  rate=      0/s  progress=  1.32890%  eta=  21721s
+[par] t=  297.6s  nodes=       500  cert=       221  in_flight=   230  queue=   0  active= 7/16  rate=      0/s  progress=  1.32890%  eta=  22095s
+[par] t=  302.6s  nodes=       500  cert=       221  in_flight=   232  queue=   0  active=11/16  rate=      0/s  progress=  1.32890%  eta=  22467s
+[par] t=  307.6s  nodes=       500  cert=       221  in_flight=   241  queue=   0  active= 8/16  rate=      0/s  progress=  1.32890%  eta=  22843s
+[par] t=  312.7s  nodes=       500  cert=       221  in_flight=   254  queue=   0  active= 9/16  rate=      0/s  progress=  1.32890%  eta=  23218s
+[par] t=  317.7s  nodes=       500  cert=       221  in_flight=   264  queue=   0  active=10/16  rate=      0/s  progress=  1.32890%  eta=  23592s
+[par] t=  322.8s  nodes=       500  cert=       221  in_flight=   284  queue=   0  active=10/16  rate=      0/s  progress=  1.32890%  eta=  23968s
+[par] t=  327.8s  nodes=       500  cert=       221  in_flight=   308  queue=   0  active=10/16  rate=      0/s  progress=  1.32890%  eta=  24343s
+[par] t=  332.9s  nodes=       500  cert=       221  in_flight=   316  queue=   0  active=12/16  rate=      0/s  progress=  1.32890%  eta=  24719s
+[par] t=  338.0s  nodes=       500  cert=       221  in_flight=   343  queue=   0  active=12/16  rate=      0/s  progress=  1.32890%  eta=  25094s
+[par] t=  343.0s  nodes=       500  cert=       221  in_flight=   344  queue=   0  active=13/16  rate=      0/s  progress=  1.32890%  eta=  25467s
+[par] t=  348.0s  nodes=       500  cert=       221  in_flight=   355  queue=   0  active=12/16  rate=      0/s  progress=  1.32890%  eta=  25840s
+[par] t=  353.1s  nodes=       500  cert=       221  in_flight=   368  queue=   0  active=13/16  rate=      0/s  progress=  1.32890%  eta=  26214s
+[par] t=  358.1s  nodes=       500  cert=       221  in_flight=   385  queue=   0  active=13/16  rate=      0/s  progress=  1.32890%  eta=  26589s
+[par] t=  363.2s  nodes=       500  cert=       221  in_flight=   385  queue=   0  active=13/16  rate=      0/s  progress=  1.32890%  eta=  26964s
+[par] t=  368.2s  nodes=       500  cert=       221  in_flight=   407  queue=   0  active=13/16  rate=      0/s  progress=  1.32890%  eta=  27338s
+[par] t=  373.3s  nodes=       500  cert=       221  in_flight=   421  queue=   0  active=15/16  rate=      0/s  progress=  1.32890%  eta=  27716s
+[par] t=  378.3s  nodes=       500  cert=       221  in_flight=   436  queue=   0  active=15/16  rate=      0/s  progress=  1.32890%  eta=  28092s
+[par] t=  383.4s  nodes=       500  cert=       221  in_flight=   442  queue=   0  active=15/16  rate=      0/s  progress=  1.32890%  eta=  28466s
+[par] t=  388.5s  nodes=       500  cert=       221  in_flight=   455  queue=   0  active=16/16  rate=      0/s  progress=  1.32890%  eta=  28843s
+[par] t=  393.5s  nodes=       500  cert=       221  in_flight=   468  queue=   0  active=16/16  rate=      0/s  progress=  1.32890%  eta=  29220s
+[par] t=  398.6s  nodes=       500  cert=       221  in_flight=   461  queue=   1  active=16/16  rate=      0/s  progress=  1.32890%  eta=  29596s
+[par] t=  403.7s  nodes=       500  cert=       221  in_flight=   482  queue=   1  active=16/16  rate=      0/s  progress=  1.32890%  eta=  29972s
+[par] t=  408.7s  nodes=       500  cert=       221  in_flight=   493  queue=   1  active=16/16  rate=      0/s  progress=  1.32890%  eta=  30348s
+[par] t=  413.8s  nodes=       500  cert=       221  in_flight=   505  queue=   2  active=16/16  rate=      0/s  progress=  1.32890%  eta=  30727s
+[par] t=  418.9s  nodes=       500  cert=       221  in_flight=   516  queue=   4  active=16/16  rate=      0/s  progress=  1.32890%  eta=  31106s
+[par] t=  424.0s  nodes=       500  cert=       221  in_flight=   525  queue=   4  active=16/16  rate=      0/s  progress=  1.32890%  eta=  31482s
+[par] t=  429.1s  nodes=       500  cert=       221  in_flight=   522  queue=   4  active=16/16  rate=      0/s  progress=  1.32890%  eta=  31860s
+[par] t=  434.2s  nodes=       500  cert=       221  in_flight=   523  queue=   4  active=16/16  rate=      0/s  progress=  1.32890%  eta=  32237s
+[par] t=  439.2s  nodes=       500  cert=       221  in_flight=   517  queue=   5  active=16/16  rate=      0/s  progress=  1.32890%  eta=  32613s
+[par] t=  444.3s  nodes=       500  cert=       221  in_flight=   517  queue=   6  active=16/16  rate=      0/s  progress=  1.32890%  eta=  32992s
+[par] t=  449.4s  nodes=       500  cert=       221  in_flight=   530  queue=   7  active=16/16  rate=      0/s  progress=  1.32890%  eta=  33371s
+[par] t=  454.5s  nodes=       500  cert=       221  in_flight=   529  queue=   8  active=16/16  rate=      0/s  progress=  1.32890%  eta=  33750s
+[par] t=  459.6s  nodes=       500  cert=       221  in_flight=   522  queue=   8  active=16/16  rate=      0/s  progress=  1.32890%  eta=  34127s
+[par] t=  464.7s  nodes=       500  cert=       221  in_flight=   527  queue=   8  active=16/16  rate=      0/s  progress=  1.32890%  eta=  34506s
+[par] t=  469.8s  nodes=       500  cert=       221  in_flight=   538  queue=   9  active=16/16  rate=      0/s  progress=  1.32890%  eta=  34886s
+[par] t=  475.0s  nodes=       500  cert=       221  in_flight=   525  queue=   9  active=16/16  rate=      0/s  progress=  1.32890%  eta=  35265s
+[par] t=  480.1s  nodes=       500  cert=       221  in_flight=   523  queue=  10  active=16/16  rate=      0/s  progress=  1.32890%  eta=  35645s
+[par] t=  485.1s  nodes=       500  cert=       221  in_flight=   535  queue=  12  active=16/16  rate=      0/s  progress=  1.32890%  eta=  36021s
+[par] t=  490.2s  nodes=       500  cert=       221  in_flight=   535  queue=  12  active=16/16  rate=      0/s  progress=  1.32890%  eta=  36397s
+[par] t=  495.3s  nodes=       500  cert=       221  in_flight=   535  queue=  12  active=16/16  rate=      0/s  progress=  1.32890%  eta=  36775s
+[par] t=  500.4s  nodes=       500  cert=       221  in_flight=   535  queue=  12  active=16/16  rate=      0/s  progress=  1.32890%  eta=  37153s
+[par] t=  505.5s  nodes=       500  cert=       221  in_flight=   522  queue=  12  active=16/16  rate=      0/s  progress=  1.32890%  eta=  37532s
+[par] t=  510.6s  nodes=       500  cert=       221  in_flight=   515  queue=  13  active=16/16  rate=      0/s  progress=  1.32890%  eta=  37913s
+[par] t=  515.7s  nodes=       500  cert=       221  in_flight=   535  queue=  14  active=16/16  rate=      0/s  progress=  1.32890%  eta=  38290s
+[par] t=  520.8s  nodes=       500  cert=       221  in_flight=   537  queue=  15  active=16/16  rate=      0/s  progress=  1.32890%  eta=  38668s
+[par] t=  525.9s  nodes=       500  cert=       221  in_flight=   541  queue=  15  active=16/16  rate=      0/s  progress=  1.32890%  eta=  39047s
+[par] t=  531.0s  nodes=       500  cert=       221  in_flight=   526  queue=  16  active=16/16  rate=      0/s  progress=  1.32890%  eta=  39428s
+[par] t=  536.1s  nodes=       500  cert=       221  in_flight=   530  queue=  16  active=16/16  rate=      0/s  progress=  1.32890%  eta=  39807s
+[par] t=  541.2s  nodes=       500  cert=       221  in_flight=   526  queue=  18  active=16/16  rate=      0/s  progress=  1.32890%  eta=  40185s
+[par] t=  546.3s  nodes=       500  cert=       221  in_flight=   526  queue=  19  active=16/16  rate=      0/s  progress=  1.32890%  eta=  40566s
+[par] t=  551.4s  nodes=       500  cert=       221  in_flight=   512  queue=  20  active=16/16  rate=      0/s  progress=  1.32890%  eta=  40942s
+[par] t=  556.4s  nodes=       500  cert=       221  in_flight=   514  queue=  22  active=16/16  rate=      0/s  progress=  1.32890%  eta=  41315s
+[par] t=  561.5s  nodes=       500  cert=       221  in_flight=   516  queue=  23  active=16/16  rate=      0/s  progress=  1.32890%  eta=  41694s
+[par] t=  566.6s  nodes=       500  cert=       221  in_flight=   521  queue=  25  active=16/16  rate=      0/s  progress=  1.32890%  eta=  42071s
+[par] t=  571.7s  nodes=       500  cert=       221  in_flight=   521  queue=  25  active=16/16  rate=      0/s  progress=  1.32890%  eta=  42450s
+[par] t=  576.8s  nodes=       500  cert=       221  in_flight=   526  queue=  26  active=16/16  rate=      0/s  progress=  1.32890%  eta=  42826s
+[par] t=  581.8s  nodes=       500  cert=       221  in_flight=   530  queue=  27  active=16/16  rate=      0/s  progress=  1.32890%  eta=  43202s
+[par] t=  586.9s  nodes=       500  cert=       221  in_flight=   538  queue=  27  active=16/16  rate=      0/s  progress=  1.32890%  eta=  43577s
+[par] t=  592.0s  nodes=       500  cert=       221  in_flight=   523  queue=  27  active=16/16  rate=      0/s  progress=  1.32890%  eta=  43956s
+[par] t=  597.1s  nodes=       500  cert=       221  in_flight=   527  queue=  27  active=16/16  rate=      0/s  progress=  1.32890%  eta=  44334s
+[par] t=  602.2s  nodes=       500  cert=       221  in_flight=   538  queue=  28  active=16/16  rate=      0/s  progress=  1.32890%  eta=  44711s
+[par] t=  607.3s  nodes=       500  cert=       221  in_flight=   522  queue=  28  active=16/16  rate=      0/s  progress=  1.32890%  eta=  45089s
+[par] t=  612.3s  nodes=       500  cert=       221  in_flight=   521  queue=  28  active=16/16  rate=      0/s  progress=  1.32890%  eta=  45463s
+[par] t=  617.3s  nodes=       500  cert=       221  in_flight=   519  queue=  30  active=16/16  rate=      0/s  progress=  1.32890%  eta=  45837s
+[par] t=  622.4s  nodes=       500  cert=       221  in_flight=   518  queue=  31  active=16/16  rate=      0/s  progress=  1.32890%  eta=  46210s
+[par] t=  627.4s  nodes=       500  cert=       221  in_flight=   513  queue=  31  active=16/16  rate=      0/s  progress=  1.32890%  eta=  46587s
+[par] t=  632.5s  nodes=       500  cert=       221  in_flight=   512  queue=  31  active=16/16  rate=      0/s  progress=  1.32890%  eta=  46963s
+[par] t=  637.6s  nodes=       500  cert=       221  in_flight=   521  queue=  33  active=16/16  rate=      0/s  progress=  1.32890%  eta=  47340s
+[par] t=  642.6s  nodes=       500  cert=       221  in_flight=   528  queue=  35  active=16/16  rate=      0/s  progress=  1.32890%  eta=  47716s
+[par] t=  647.8s  nodes=       500  cert=       221  in_flight=   512  queue=  37  active=16/16  rate=      0/s  progress=  1.32890%  eta=  48095s
+[par] t=  652.8s  nodes=       500  cert=       221  in_flight=   512  queue=  38  active=16/16  rate=      0/s  progress=  1.32890%  eta=  48472s
+[par] t=  657.9s  nodes=       500  cert=       221  in_flight=   525  queue=  39  active=16/16  rate=      0/s  progress=  1.32890%  eta=  48851s
+[par] t=  663.0s  nodes=       500  cert=       221  in_flight=   516  queue=  41  active=16/16  rate=      0/s  progress=  1.32890%  eta=  49230s
+[par] t=  668.1s  nodes=       500  cert=       221  in_flight=   522  queue=  41  active=16/16  rate=      0/s  progress=  1.32890%  eta=  49610s
+[par] t=  673.2s  nodes=       500  cert=       221  in_flight=   513  queue=  41  active=16/16  rate=      0/s  progress=  1.32890%  eta=  49986s
+[par] t=  678.3s  nodes=      1000  cert=       453  in_flight=   510  queue=  41  active=16/16  rate=     99/s  progress=  3.32226%  eta=  19738s
+[par] t=  683.4s  nodes=      1500  cert=       689  in_flight=   525  queue=  41  active=16/16  rate=     98/s  progress=  4.98339%  eta=  13030s
+[par] t=  688.4s  nodes=      1500  cert=       689  in_flight=   523  queue=  42  active=16/16  rate=      0/s  progress=  4.98339%  eta=  13126s
+[par] t=  693.5s  nodes=      1500  cert=       689  in_flight=   515  queue=  42  active=16/16  rate=      0/s  progress=  4.98339%  eta=  13223s
+[par] t=  698.6s  nodes=      1500  cert=       689  in_flight=   502  queue=  42  active=16/16  rate=      0/s  progress=  4.98339%  eta=  13320s
+[par] t=  703.7s  nodes=      1500  cert=       689  in_flight=   507  queue=  43  active=16/16  rate=      0/s  progress=  4.98339%  eta=  13417s
+[par] t=  708.8s  nodes=      1500  cert=       689  in_flight=   521  queue=  43  active=16/16  rate=      0/s  progress=  4.98339%  eta=  13514s
+[par] t=  713.9s  nodes=      1500  cert=       689  in_flight=   525  queue=  46  active=16/16  rate=      0/s  progress=  4.98339%  eta=  13611s
+[par] t=  719.0s  nodes=      2000  cert=       943  in_flight=   530  queue=  47  active=16/16  rate=     98/s  progress= 16.61385%  eta=   3609s
+[par] t=  724.0s  nodes=      2000  cert=       943  in_flight=   513  queue=  50  active=16/16  rate=      0/s  progress= 16.61385%  eta=   3634s
+[par] t=  729.2s  nodes=      2500  cert=      1190  in_flight=   504  queue=  52  active=16/16  rate=     98/s  progress= 23.25837%  eta=   2406s
+[par] t=  734.2s  nodes=      2500  cert=      1190  in_flight=   513  queue=  55  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2423s
+[par] t=  739.3s  nodes=      3000  cert=      1440  in_flight=   526  queue=  56  active=16/16  rate=     99/s  progress= 23.25837%  eta=   2439s
+[par] t=  744.4s  nodes=      3000  cert=      1440  in_flight=   519  queue=  57  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2456s
+[par] t=  749.4s  nodes=      3000  cert=      1440  in_flight=   523  queue=  58  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2473s
+[par] t=  754.5s  nodes=      3000  cert=      1440  in_flight=   515  queue=  59  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2490s
+[par] t=  759.6s  nodes=      3000  cert=      1440  in_flight=   510  queue=  59  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2506s
+[par] t=  764.7s  nodes=      3000  cert=      1440  in_flight=   513  queue=  59  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2523s
+[par] t=  769.8s  nodes=      3000  cert=      1440  in_flight=   513  queue=  60  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2540s
+[par] t=  774.9s  nodes=      3000  cert=      1440  in_flight=   509  queue=  60  active=16/16  rate=      0/s  progress= 23.25837%  eta=   2557s
+[par] t=  780.0s  nodes=      3500  cert=      1687  in_flight=   499  queue=  61  active=16/16  rate=     99/s  progress= 28.24180%  eta=   1982s
+[par] t=  785.0s  nodes=      3500  cert=      1687  in_flight=   504  queue=  61  active=16/16  rate=      0/s  progress= 28.24180%  eta=   1995s
+[par] t=  790.1s  nodes=      3500  cert=      1687  in_flight=   525  queue=  62  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2007s
+[par] t=  795.1s  nodes=      3500  cert=      1687  in_flight=   523  queue=  64  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2020s
+[par] t=  800.2s  nodes=      3500  cert=      1687  in_flight=   513  queue=  65  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2033s
+[par] t=  805.3s  nodes=      3500  cert=      1687  in_flight=   514  queue=  66  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2046s
+[par] t=  810.4s  nodes=      3500  cert=      1687  in_flight=   513  queue=  68  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2059s
+[par] t=  815.5s  nodes=      3500  cert=      1687  in_flight=   514  queue=  69  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2072s
+[par] t=  820.5s  nodes=      3500  cert=      1687  in_flight=   511  queue=  69  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2085s
+[par] t=  825.6s  nodes=      3500  cert=      1687  in_flight=   515  queue=  70  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2098s
+[par] t=  830.6s  nodes=      3500  cert=      1687  in_flight=   512  queue=  71  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2111s
+[par] t=  835.7s  nodes=      3500  cert=      1687  in_flight=   516  queue=  72  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2123s
+[par] t=  840.8s  nodes=      3500  cert=      1687  in_flight=   525  queue=  74  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2136s
+[par] t=  845.9s  nodes=      3500  cert=      1687  in_flight=   521  queue=  75  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2149s
+[par] t=  850.9s  nodes=      3500  cert=      1687  in_flight=   514  queue=  75  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2162s
+[par] t=  856.0s  nodes=      3500  cert=      1687  in_flight=   522  queue=  75  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2175s
+[par] t=  861.1s  nodes=      3500  cert=      1687  in_flight=   505  queue=  77  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2188s
+[par] t=  866.2s  nodes=      3500  cert=      1687  in_flight=   514  queue=  77  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2201s
+[par] t=  871.3s  nodes=      3500  cert=      1687  in_flight=   514  queue=  77  active=16/16  rate=      0/s  progress= 28.24180%  eta=   2214s
+[par] t=  876.3s  nodes=      4000  cert=      1923  in_flight=   501  queue=  78  active=16/16  rate=     99/s  progress= 29.90293%  eta=   2054s
+[par] t=  881.4s  nodes=      4000  cert=      1923  in_flight=   505  queue=  79  active=16/16  rate=      0/s  progress= 29.90293%  eta=   2066s
+[par] t=  886.5s  nodes=      4500  cert=      2180  in_flight=   518  queue=  83  active=16/16  rate=     98/s  progress= 40.19933%  eta=   1319s
+[par] t=  891.6s  nodes=      4500  cert=      2180  in_flight=   503  queue=  84  active=16/16  rate=      0/s  progress= 40.19933%  eta=   1326s
+[par] t=  896.6s  nodes=      5000  cert=      2415  in_flight=   506  queue=  84  active=16/16  rate=     99/s  progress= 41.86046%  eta=   1245s
+[par] t=  901.7s  nodes=      5000  cert=      2415  in_flight=   500  queue=  84  active=16/16  rate=      0/s  progress= 41.86046%  eta=   1252s
+[par] t=  906.8s  nodes=      5000  cert=      2415  in_flight=   500  queue=  84  active=16/16  rate=      0/s  progress= 41.86046%  eta=   1259s
+[par] t=  911.9s  nodes=      5000  cert=      2415  in_flight=   502  queue=  84  active=16/16  rate=      0/s  progress= 41.86046%  eta=   1267s
+[par] t=  917.0s  nodes=      5000  cert=      2415  in_flight=   506  queue=  85  active=16/16  rate=      0/s  progress= 41.86046%  eta=   1274s
+[par] t=  922.1s  nodes=      5000  cert=      2415  in_flight=   517  queue=  87  active=16/16  rate=      0/s  progress= 41.86046%  eta=   1281s
+[par] t=  927.1s  nodes=      5500  cert=      2661  in_flight=   512  queue=  87  active=16/16  rate=     99/s  progress= 46.84385%  eta=   1052s
+[par] t=  932.2s  nodes=      6000  cert=      2898  in_flight=   505  queue=  88  active=16/16  rate=     98/s  progress= 51.82724%  eta=    867s
+[par] t=  937.4s  nodes=      6000  cert=      2898  in_flight=   501  queue=  89  active=16/16  rate=      0/s  progress= 51.82724%  eta=    871s
+[par] t=  942.4s  nodes=      6000  cert=      2898  in_flight=   506  queue=  90  active=16/16  rate=      0/s  progress= 51.82724%  eta=    876s
+[par] t=  947.5s  nodes=      6500  cert=      3147  in_flight=   519  queue=  91  active=16/16  rate=     99/s  progress= 61.79402%  eta=    586s
+[par] t=  952.6s  nodes=      6500  cert=      3147  in_flight=   527  queue=  91  active=16/16  rate=      0/s  progress= 61.79402%  eta=    589s
+[par] t=  957.7s  nodes=      6500  cert=      3147  in_flight=   509  queue=  94  active=16/16  rate=      0/s  progress= 61.79402%  eta=    592s
+[par] t=  962.7s  nodes=      6500  cert=      3147  in_flight=   511  queue=  94  active=16/16  rate=      0/s  progress= 61.79402%  eta=    595s
+[par] t=  967.8s  nodes=      7000  cert=      3385  in_flight=   509  queue=  96  active=16/16  rate=     98/s  progress= 66.77741%  eta=    481s
+[par] t=  972.9s  nodes=      7000  cert=      3385  in_flight=   510  queue=  97  active=16/16  rate=      0/s  progress= 66.77741%  eta=    484s
+[par] t=  978.0s  nodes=      7500  cert=      3641  in_flight=   514  queue=  97  active=16/16  rate=     98/s  progress= 76.74419%  eta=    296s
+[par] t=  983.2s  nodes=      7500  cert=      3641  in_flight=   503  queue=  98  active=16/16  rate=      0/s  progress= 76.74419%  eta=    298s
+[par] t=  988.3s  nodes=      7500  cert=      3641  in_flight=   517  queue=  99  active=16/16  rate=      0/s  progress= 76.74419%  eta=    299s
+[par] t=  993.4s  nodes=      7500  cert=      3641  in_flight=   514  queue= 100  active=16/16  rate=      0/s  progress= 76.74419%  eta=    301s
+[par] t=  998.6s  nodes=      7500  cert=      3641  in_flight=   522  queue= 100  active=16/16  rate=      0/s  progress= 76.74419%  eta=    303s
+[par] t= 1003.7s  nodes=      7500  cert=      3641  in_flight=   529  queue= 101  active=16/16  rate=      0/s  progress= 76.74419%  eta=    304s
+[par] t= 1008.8s  nodes=      7500  cert=      3641  in_flight=   529  queue= 101  active=16/16  rate=      0/s  progress= 76.74419%  eta=    306s
+[par] t= 1014.0s  nodes=      8000  cert=      3891  in_flight=   524  queue= 102  active=16/16  rate=     97/s  progress= 88.37209%  eta=    133s
+[par] t= 1019.1s  nodes=      8000  cert=      3891  in_flight=   517  queue= 102  active=16/16  rate=      0/s  progress= 88.37209%  eta=    134s
+[par] t= 1024.2s  nodes=      8000  cert=      3891  in_flight=   526  queue= 102  active=16/16  rate=      0/s  progress= 88.37209%  eta=    135s
+[par] t= 1029.3s  nodes=      8000  cert=      3891  in_flight=   532  queue= 104  active=16/16  rate=      0/s  progress= 88.37209%  eta=    135s
+[par] t= 1034.4s  nodes=      8000  cert=      3891  in_flight=   529  queue= 104  active=16/16  rate=      0/s  progress= 88.37209%  eta=    136s
+[par] t= 1039.5s  nodes=      8000  cert=      3891  in_flight=   517  queue= 105  active=16/16  rate=      0/s  progress= 88.37209%  eta=    137s
+[par] t= 1044.6s  nodes=      8000  cert=      3891  in_flight=   509  queue= 105  active=16/16  rate=      0/s  progress= 88.37209%  eta=    137s
+[par] t= 1049.7s  nodes=      8000  cert=      3891  in_flight=   519  queue= 105  active=16/16  rate=      0/s  progress= 88.37209%  eta=    138s
+[par] t= 1054.8s  nodes=      8500  cert=      4140  in_flight=   538  queue= 105  active=16/16  rate=     99/s  progress=100.00000%  eta=      0s
+[par] t= 1059.9s  nodes=      8500  cert=      4140  in_flight=   534  queue= 107  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1064.9s  nodes=      8500  cert=      4140  in_flight=   522  queue= 107  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1070.0s  nodes=      8500  cert=      4140  in_flight=   512  queue= 109  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1075.1s  nodes=      8500  cert=      4140  in_flight=   525  queue= 109  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1080.2s  nodes=      8500  cert=      4140  in_flight=   515  queue= 110  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1085.3s  nodes=      8500  cert=      4140  in_flight=   517  queue= 111  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1090.4s  nodes=      8500  cert=      4140  in_flight=   498  queue= 111  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1095.5s  nodes=      8500  cert=      4140  in_flight=   505  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1100.6s  nodes=      8500  cert=      4140  in_flight=   516  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1105.6s  nodes=      8500  cert=      4140  in_flight=   513  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1110.6s  nodes=      8500  cert=      4140  in_flight=   520  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1115.6s  nodes=      8500  cert=      4140  in_flight=   516  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1120.7s  nodes=      8500  cert=      4140  in_flight=   507  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1125.8s  nodes=      8500  cert=      4140  in_flight=   494  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1130.9s  nodes=      8500  cert=      4140  in_flight=   494  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1135.9s  nodes=      8500  cert=      4140  in_flight=   499  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1141.0s  nodes=      8500  cert=      4140  in_flight=   506  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1146.1s  nodes=      8500  cert=      4140  in_flight=   500  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1151.2s  nodes=      8500  cert=      4140  in_flight=   497  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1156.3s  nodes=      8500  cert=      4140  in_flight=   504  queue= 112  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1161.4s  nodes=      8500  cert=      4140  in_flight=   508  queue= 115  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1166.5s  nodes=      8500  cert=      4140  in_flight=   517  queue= 116  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1171.6s  nodes=      8500  cert=      4140  in_flight=   513  queue= 116  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1176.7s  nodes=      8500  cert=      4140  in_flight=   522  queue= 116  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1181.8s  nodes=      8500  cert=      4140  in_flight=   493  queue= 116  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1186.9s  nodes=      8500  cert=      4140  in_flight=   506  queue= 117  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1192.1s  nodes=      8500  cert=      4140  in_flight=   507  queue= 117  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1197.1s  nodes=      8500  cert=      4140  in_flight=   511  queue= 117  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1202.2s  nodes=      8500  cert=      4140  in_flight=   509  queue= 117  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1207.4s  nodes=      8500  cert=      4140  in_flight=   498  queue= 117  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1212.4s  nodes=      8500  cert=      4140  in_flight=   514  queue= 117  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1217.5s  nodes=      8500  cert=      4140  in_flight=   522  queue= 118  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1222.6s  nodes=      8500  cert=      4140  in_flight=   514  queue= 118  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1227.7s  nodes=      8500  cert=      4140  in_flight=   516  queue= 118  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1232.8s  nodes=      8500  cert=      4140  in_flight=   509  queue= 119  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1237.9s  nodes=      8500  cert=      4140  in_flight=   495  queue= 119  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1243.0s  nodes=      8500  cert=      4140  in_flight=   512  queue= 120  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1248.0s  nodes=      8500  cert=      4140  in_flight=   510  queue= 120  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1253.1s  nodes=      8500  cert=      4140  in_flight=   510  queue= 121  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1258.2s  nodes=      8500  cert=      4140  in_flight=   509  queue= 121  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1263.4s  nodes=      9000  cert=      4390  in_flight=   517  queue= 121  active=16/16  rate=     97/s  progress=100.00000%  eta=      0s
+[par] t= 1268.5s  nodes=      9000  cert=      4390  in_flight=   520  queue= 122  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1273.6s  nodes=      9000  cert=      4390  in_flight=   522  queue= 122  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1278.7s  nodes=      9000  cert=      4390  in_flight=   516  queue= 122  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1283.8s  nodes=      9000  cert=      4390  in_flight=   529  queue= 122  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1288.9s  nodes=      9000  cert=      4390  in_flight=   520  queue= 123  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1294.0s  nodes=      9000  cert=      4390  in_flight=   521  queue= 123  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1299.1s  nodes=      9000  cert=      4390  in_flight=   526  queue= 123  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1304.2s  nodes=      9000  cert=      4390  in_flight=   521  queue= 123  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1309.3s  nodes=      9000  cert=      4390  in_flight=   528  queue= 125  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1314.3s  nodes=      9000  cert=      4390  in_flight=   533  queue= 125  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1319.5s  nodes=      9000  cert=      4390  in_flight=   529  queue= 125  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1324.6s  nodes=      9000  cert=      4390  in_flight=   511  queue= 126  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1329.6s  nodes=      9000  cert=      4390  in_flight=   513  queue= 126  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1334.7s  nodes=      9500  cert=      4636  in_flight=   524  queue= 127  active=16/16  rate=     99/s  progress=100.00000%  eta=      0s
+[par] t= 1339.8s  nodes=      9500  cert=      4636  in_flight=   526  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1344.8s  nodes=      9500  cert=      4636  in_flight=   517  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1349.9s  nodes=      9500  cert=      4636  in_flight=   515  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1354.9s  nodes=      9500  cert=      4636  in_flight=   513  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1360.0s  nodes=      9500  cert=      4636  in_flight=   515  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1365.1s  nodes=      9500  cert=      4636  in_flight=   508  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1370.3s  nodes=      9500  cert=      4636  in_flight=   492  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1375.3s  nodes=      9500  cert=      4636  in_flight=   506  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1380.4s  nodes=     10000  cert=      4887  in_flight=   514  queue= 128  active=16/16  rate=     99/s  progress=100.00000%  eta=      0s
+[par] t= 1385.4s  nodes=     10000  cert=      4887  in_flight=   497  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1390.6s  nodes=     10000  cert=      4887  in_flight=   497  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1395.6s  nodes=     10000  cert=      4887  in_flight=   515  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1400.7s  nodes=     10000  cert=      4887  in_flight=   505  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1405.8s  nodes=     11000  cert=      5390  in_flight=   514  queue= 128  active=16/16  rate=    198/s  progress=100.00000%  eta=      0s
+[par] t= 1410.8s  nodes=     11000  cert=      5390  in_flight=   505  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1415.9s  nodes=     11000  cert=      5390  in_flight=   496  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1421.0s  nodes=     11500  cert=      5641  in_flight=   482  queue= 128  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1426.1s  nodes=     11500  cert=      5641  in_flight=   490  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1431.1s  nodes=     11500  cert=      5641  in_flight=   497  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1436.2s  nodes=     11500  cert=      5641  in_flight=   512  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1441.3s  nodes=     11500  cert=      5641  in_flight=   511  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1446.4s  nodes=     11500  cert=      5641  in_flight=   531  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1451.5s  nodes=     11500  cert=      5641  in_flight=   537  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1456.6s  nodes=     11500  cert=      5641  in_flight=   544  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1461.6s  nodes=     11500  cert=      5641  in_flight=   546  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1466.8s  nodes=     11500  cert=      5641  in_flight=   553  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1471.9s  nodes=     11500  cert=      5641  in_flight=   549  queue= 127  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1476.9s  nodes=     11500  cert=      5641  in_flight=   551  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1482.0s  nodes=     11500  cert=      5641  in_flight=   551  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1487.1s  nodes=     12000  cert=      5892  in_flight=   539  queue= 128  active=16/16  rate=     99/s  progress=100.00000%  eta=      0s
+[par] t= 1492.2s  nodes=     12000  cert=      5892  in_flight=   545  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1497.3s  nodes=     12000  cert=      5892  in_flight=   529  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1502.4s  nodes=     12000  cert=      5892  in_flight=   531  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1507.5s  nodes=     12500  cert=      6147  in_flight=   556  queue= 128  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1512.6s  nodes=     12500  cert=      6147  in_flight=   567  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1517.6s  nodes=     13000  cert=      6396  in_flight=   558  queue= 128  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1522.7s  nodes=     13000  cert=      6396  in_flight=   548  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1527.8s  nodes=     13000  cert=      6396  in_flight=   545  queue= 128  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1532.9s  nodes=     13500  cert=      6637  in_flight=   534  queue= 128  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1537.9s  nodes=     13500  cert=      6637  in_flight=   526  queue= 129  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1543.0s  nodes=     13500  cert=      6637  in_flight=   531  queue= 129  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1548.1s  nodes=     13500  cert=      6637  in_flight=   536  queue= 130  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1553.2s  nodes=     13500  cert=      6637  in_flight=   514  queue= 130  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1558.3s  nodes=     13500  cert=      6637  in_flight=   523  queue= 130  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1563.4s  nodes=     14000  cert=      6885  in_flight=   534  queue= 130  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1568.4s  nodes=     14000  cert=      6885  in_flight=   536  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1573.5s  nodes=     14000  cert=      6885  in_flight=   534  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1578.6s  nodes=     14000  cert=      6885  in_flight=   528  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1583.7s  nodes=     14000  cert=      6885  in_flight=   531  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1588.8s  nodes=     14000  cert=      6885  in_flight=   523  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1593.8s  nodes=     14000  cert=      6885  in_flight=   550  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1599.0s  nodes=     14000  cert=      6885  in_flight=   559  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1604.0s  nodes=     14000  cert=      6885  in_flight=   550  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1609.1s  nodes=     14000  cert=      6885  in_flight=   546  queue= 131  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1614.2s  nodes=     14000  cert=      6885  in_flight=   556  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1619.3s  nodes=     14000  cert=      6885  in_flight=   541  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1624.3s  nodes=     14000  cert=      6885  in_flight=   542  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1629.4s  nodes=     14000  cert=      6885  in_flight=   549  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1634.5s  nodes=     14000  cert=      6885  in_flight=   545  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1639.6s  nodes=     14000  cert=      6885  in_flight=   539  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1644.6s  nodes=     14000  cert=      6885  in_flight=   547  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1649.7s  nodes=     14000  cert=      6885  in_flight=   543  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1654.8s  nodes=     14500  cert=      7133  in_flight=   532  queue= 132  active=16/16  rate=     99/s  progress=100.00000%  eta=      0s
+[par] t= 1659.8s  nodes=     14500  cert=      7133  in_flight=   547  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1664.9s  nodes=     14500  cert=      7133  in_flight=   538  queue= 132  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1670.0s  nodes=     15500  cert=      7631  in_flight=   538  queue= 132  active=16/16  rate=    197/s  progress=100.00000%  eta=      0s
+[par] t= 1675.1s  nodes=     15500  cert=      7631  in_flight=   539  queue= 133  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1680.2s  nodes=     15500  cert=      7631  in_flight=   535  queue= 133  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1685.3s  nodes=     15500  cert=      7631  in_flight=   516  queue= 133  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1690.4s  nodes=     16000  cert=      7883  in_flight=   529  queue= 133  active=16/16  rate=     99/s  progress=100.00000%  eta=      0s
+[par] t= 1695.4s  nodes=     16000  cert=      7883  in_flight=   540  queue= 133  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1700.5s  nodes=     16000  cert=      7883  in_flight=   524  queue= 133  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1705.6s  nodes=     16000  cert=      7883  in_flight=   534  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1710.7s  nodes=     16000  cert=      7883  in_flight=   547  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1715.8s  nodes=     16000  cert=      7883  in_flight=   539  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1720.9s  nodes=     16000  cert=      7883  in_flight=   524  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1726.0s  nodes=     16000  cert=      7883  in_flight=   533  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1731.1s  nodes=     16000  cert=      7883  in_flight=   534  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1736.2s  nodes=     16000  cert=      7883  in_flight=   530  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1741.3s  nodes=     16000  cert=      7883  in_flight=   512  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1746.4s  nodes=     16000  cert=      7883  in_flight=   518  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1751.5s  nodes=     16000  cert=      7883  in_flight=   513  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1756.6s  nodes=     16000  cert=      7883  in_flight=   527  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1761.8s  nodes=     16000  cert=      7883  in_flight=   530  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1766.8s  nodes=     16500  cert=      8133  in_flight=   536  queue= 135  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1772.0s  nodes=     16500  cert=      8133  in_flight=   534  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1777.0s  nodes=     16500  cert=      8133  in_flight=   538  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1782.1s  nodes=     16500  cert=      8133  in_flight=   523  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1787.1s  nodes=     16500  cert=      8133  in_flight=   527  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1792.2s  nodes=     16500  cert=      8133  in_flight=   532  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1797.3s  nodes=     16500  cert=      8133  in_flight=   525  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1802.4s  nodes=     16500  cert=      8133  in_flight=   533  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1807.6s  nodes=     16500  cert=      8133  in_flight=   532  queue= 134  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1812.7s  nodes=     16500  cert=      8133  in_flight=   546  queue= 135  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1817.8s  nodes=     16500  cert=      8133  in_flight=   540  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1822.9s  nodes=     16500  cert=      8133  in_flight=   556  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1828.0s  nodes=     16500  cert=      8133  in_flight=   547  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1833.1s  nodes=     16500  cert=      8133  in_flight=   555  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1838.2s  nodes=     16500  cert=      8133  in_flight=   558  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1843.3s  nodes=     16500  cert=      8133  in_flight=   546  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1848.3s  nodes=     16500  cert=      8133  in_flight=   554  queue= 136  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1853.4s  nodes=     16500  cert=      8133  in_flight=   551  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1858.5s  nodes=     16500  cert=      8133  in_flight=   557  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1863.6s  nodes=     16500  cert=      8133  in_flight=   556  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1868.7s  nodes=     16500  cert=      8133  in_flight=   552  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1873.8s  nodes=     16500  cert=      8133  in_flight=   554  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1878.9s  nodes=     17000  cert=      8368  in_flight=   543  queue= 137  active=16/16  rate=     98/s  progress=100.00000%  eta=      0s
+[par] t= 1883.9s  nodes=     17000  cert=      8368  in_flight=   557  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1889.0s  nodes=     17000  cert=      8368  in_flight=   555  queue= 137  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1894.1s  nodes=     17000  cert=      8368  in_flight=   534  queue= 138  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1899.2s  nodes=     17000  cert=      8368  in_flight=   553  queue= 139  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1904.3s  nodes=     17000  cert=      8368  in_flight=   547  queue= 139  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1909.4s  nodes=     17000  cert=      8368  in_flight=   550  queue= 139  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1914.5s  nodes=     17000  cert=      8368  in_flight=   555  queue= 139  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1919.6s  nodes=     17000  cert=      8368  in_flight=   557  queue= 140  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1924.7s  nodes=     17000  cert=      8368  in_flight=   557  queue= 140  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1929.9s  nodes=     17000  cert=      8368  in_flight=   543  queue= 140  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1935.0s  nodes=     17000  cert=      8368  in_flight=   549  queue= 141  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s
+[par] t= 1940.1s  nodes=     17000  cert=      8368  in_flight=   550  queue= 140  active=16/16  rate=      0/s  progress=100.00000%  eta=      0s

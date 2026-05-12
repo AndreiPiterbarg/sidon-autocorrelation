@@ -1,0 +1,51 @@
+{
+  "k": 6,
+  "N": 12,
+  "two_pt": {
+    "k": 6,
+    "N": 12,
+    "with_3pt": false,
+    "n_orbits_y": 0,
+    "n_orbits_g": 28,
+    "n_orbits_m": 7,
+    "block_sizes": [
+      28,
+      21,
+      21,
+      7,
+      6,
+      7,
+      6
+    ],
+    "n_constraints": 35,
+    "build_seconds": 0.08140850067138672,
+    "solve_seconds": 0.3443305492401123,
+    "peak_mem_mb": 6.176768,
+    "status": "ERROR: SolverError: Solver 'MOSEK' failed. Try another solver, or solve with verbose=True for more information.",
+    "objective": null
+  },
+  "three_pt": {
+    "k": 6,
+    "N": 12,
+    "with_3pt": true,
+    "n_orbits_y": 57,
+    "n_orbits_g": 0,
+    "n_orbits_m": 0,
+    "block_sizes": [
+      84,
+      56,
+      56,
+      56,
+      7,
+      6
+    ],
+    "n_constraints": 20,
+    "build_seconds": 0.7261953353881836,
+    "solve_seconds": 2.952181100845337,
+    "peak_mem_mb": 177.99168,
+    "status": "ERROR: SolverError: Solver 'MOSEK' failed. Try another solver, or solve with verbose=True for more information.",
+    "objective": null
+  },
+  "delta": null,
+  "solver": "MOSEK"
+}

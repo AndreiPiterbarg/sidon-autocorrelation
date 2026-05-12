@@ -1,0 +1,12 @@
+=== Cascade comparison: n_half=1, m=20, c_target=1.281 ===
+
+--- L0: d=2, S=80 ---
+  canonical comps: 41
+  F-survivors:     26
+  WITHOUT SP: F=26 -> FN=26 -> Q=26 -> QN=26 -> L=26  (wall total 1.19s)
+  WITH SP:    F=26 -> FN=26 -> Q=26 -> QN=26 -> L=26 -> SP=26  (SP wall 1.76s)
+  L0 extra prunes from SP: 0
+
+--- L1: d=4, children of 26 L0 L-survivors ---
+  total children:  38181
+  F-survivors:     38181

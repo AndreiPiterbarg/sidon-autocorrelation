@@ -1,0 +1,140 @@
+=== V3 deep sweep starting at Wed Apr 29 09:33:30 2026 ===
+  ks = [8]
+  Ms = [2.1, 2.12, 2.14, 2.15, 2.16, 2.17, 2.18, 2.19, 2.2]
+  epsilon = 0.1, high_prec = False
+  existing records: 9
+
+=== (k=8, N=8, M=2.1000) ===
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:231: UserWarning: Constraint #24 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:231: UserWarning: Constraint #25 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:231: UserWarning: Constraint #26 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+  [2pt] k=8 N=8 M=2.1000  built in 1.4s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #24 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #25 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #26 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+  [2pt] -> status=optimal, lambda=1.340252012577185, solve 3.3s
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #1 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #2 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #3 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #4 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #5 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #6 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #7 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #8 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #9 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #10 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_alternatives.py:319: UserWarning: Constraint #11 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem = cp.Problem(cp.Minimize(obj), constraints)
+  [3pt] k=8 N=8 M=2.1000  built in 28.8s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #1 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #2 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #3 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #4 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #5 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #6 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #7 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #8 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #9 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #10 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\lasserre\threepoint_full.py:600: UserWarning: Constraint #11 contains too many subexpressions. Consider vectorizing your CVXPY code to speed up compilation.
+  problem.solve(solver=solver, verbose=verbose)
+  [3pt] -> status=optimal, lambda=1.357257577065667, solve 86.0s
+
+=== (k=8, N=8, M=2.1200) ===
+  [2pt] k=8 N=8 M=2.1200  built in 1.3s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.3132109919966626, solve 5.1s
+  [3pt] k=8 N=8 M=2.1200  built in 24.6s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.338768207119449, solve 96.2s
+
+=== (k=8, N=8, M=2.1400) ===
+  [2pt] k=8 N=8 M=2.1400  built in 1.6s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.2859136586340683, solve 5.5s
+  [3pt] k=8 N=8 M=2.1400  built in 36.8s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.3209725200441709, solve 143.9s
+
+=== (k=8, N=8, M=2.1500) ===
+  [2pt] k=8 N=8 M=2.1500  built in 2.8s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.272168722506259, solve 9.4s
+  [3pt] k=8 N=8 M=2.1500  built in 47.2s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.3122116228730338, solve 197.5s
+
+=== (k=8, N=8, M=2.1600) ===
+  [2pt] k=8 N=8 M=2.1600  built in 2.3s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.2583600124288383, solve 7.9s
+  [3pt] k=8 N=8 M=2.1600  built in 35.1s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.3035045993818148, solve 150.4s
+
+=== (k=8, N=8, M=2.1700) ===
+  [2pt] k=8 N=8 M=2.1700  built in 2.7s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.2444870719185266, solve 8.2s
+  [3pt] k=8 N=8 M=2.1700  built in 46.4s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.2948839977210607, solve 170.8s
+
+=== (k=8, N=8, M=2.1800) ===
+  [2pt] k=8 N=8 M=2.1800  built in 1.9s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.2305499116213554, solve 8.0s
+  [3pt] k=8 N=8 M=2.1800  built in 52.9s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.2863403065208427, solve 161.1s
+
+=== (k=8, N=8, M=2.1900) ===
+  [2pt] k=8 N=8 M=2.1900  built in 3.5s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.2165489561977976, solve 9.9s
+  [3pt] k=8 N=8 M=2.1900  built in 47.2s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.2778421838244642, solve 145.1s
+
+=== (k=8, N=8, M=2.2000) ===
+  [2pt] k=8 N=8 M=2.2000  built in 2.1s, blocks=[45, 36, 36, 9, 8, 45, 36, 36, 9, 8]
+  [2pt] -> status=optimal, lambda=1.2024837810047102, solve 7.5s
+  [3pt] k=8 N=8 M=2.2000  built in 40.6s, blocks=[165, 120, 120, 120, 45, 36, 36, 165, 120, 120, 120]
+  [3pt] -> status=optimal, lambda=1.2693795202941494, solve 201.9s
+
+=== FINAL SUMMARY ===
+  k   N       M     lam2pt     lam3pt   >1.2802?
+  7   7  2.1000    1.34235    1.35333          Y
+  7   7  2.1200    1.31771    1.33472          Y
+  7   7  2.1400    1.29283    1.31729          Y
+  7   7  2.1500    1.28030    1.30897          Y
+  7   7  2.1600    1.26772    1.30084          Y
+  7   7  2.1700    1.25508    1.29284          Y
+  7   7  2.1800    1.24238    1.28493          Y
+  7   7  2.1900    1.22962    1.27706          N
+  7   7  2.2000    1.21680    1.26924          N
+  8   8  2.1000    1.34025    1.35726          Y
+  8   8  2.1200    1.31321    1.33877          Y
+  8   8  2.1400    1.28591    1.32097          Y
+  8   8  2.1500    1.27217    1.31221          Y
+  8   8  2.1600    1.25836    1.30350          Y
+  8   8  2.1700    1.24449    1.29488          Y
+  8   8  2.1800    1.23055    1.28634          Y
+  8   8  2.1900    1.21655    1.27784          N
+  8   8  2.2000    1.20248    1.26938          N
+
+=== CROSSOVER M* by k ===
+  k=7: max M with lambda3pt >= 1.2802 = 2.18, bracket = (2.18, 2.19), linear M* = 2.186011720466525
+  k=8: max M with lambda3pt >= 1.2802 = 2.18, bracket = (2.18, 2.19), linear M* = 2.1872254858399014

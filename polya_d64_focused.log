@@ -1,0 +1,13 @@
+d=64 focused LP solve (target val(d)=1.384)
+  Building windows...
+  Z/2: 64->32, windows 8128->4096 (2.1s)
+
+--- R=4 ---
+  Build: n_vars=69,547, n_eq=58,906, nnz=1,866,067, wall=8.7s
+  Solving with method=ipm...
+  [ipm] status=OPTIMAL, alpha=1.1383170819790542, wall=79.2s
+  [ipm] gap to val(d)=0.245683, alpha-target(1.281)=-0.142683
+
+--- R=6 ---
+  Build: n_vars=3,200,675, n_eq=2,760,682, nnz=18,736,459, wall=49.4s
+  Solving with method=ipm...

@@ -1,0 +1,40 @@
+[
+  {
+    "n_half": 4,
+    "m": 10,
+    "d": 8,
+    "c_target": 1.28,
+    "n_processed": 91881,
+    "surv_F_seq": 1014,
+    "surv_F_fused": 1014,
+    "surv_FN_seq": 998,
+    "surv_FN_fused": 998,
+    "mismatch_F": 0,
+    "mismatch_FN": 0,
+    "t_seq_F": 0.33430910110473633,
+    "t_seq_FN": 0.2958981990814209,
+    "t_seq_total": 0.6302073001861572,
+    "t_fused": 0.35556554794311523,
+    "speedup": 1.7724082207395984,
+    "sound": true
+  },
+  {
+    "n_half": 5,
+    "m": 5,
+    "d": 10,
+    "c_target": 1.28,
+    "n_processed": 316251,
+    "surv_F_seq": 558,
+    "surv_F_fused": 558,
+    "surv_FN_seq": 471,
+    "surv_FN_fused": 471,
+    "mismatch_F": 0,
+    "mismatch_FN": 0,
+    "t_seq_F": 1.2970449924468994,
+    "t_seq_FN": 1.10164475440979,
+    "t_seq_total": 2.3986897468566895,
+    "t_fused": 1.229321002960205,
+    "speedup": 1.9512314042309895,
+    "sound": true
+  }
+]

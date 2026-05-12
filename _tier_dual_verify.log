@@ -1,0 +1,101 @@
+
+=== d=8 R=4 ===
+  d_eff=4, n_W=64
+  PRIMAL: alpha=1.0666666667  n_vars=170  n_eq=71  n_free=36  wall=19.7ms
+  Dual LP at d=4 R=4: n_vars=71 (1 free + 70 bounded), n_eq=36 (1 + 35 recursion), n_ub=64, nnz_eq=176, nnz_ub=559, build=1.1ms
+  DUAL  : alpha=1.0666666667  n_vars=71  n_eq=36  n_ub=64  n_free=1  wall=11.2ms
+  diff = 5.16e-13  primal_free=36 -> dual_free=1
+
+=== d=8 R=6 ===
+  d_eff=4, n_W=64
+  PRIMAL: alpha=1.1031175060  n_vars=401  n_eq=211  n_free=127  wall=15.0ms
+  Dual LP at d=4 R=6: n_vars=211 (1 free + 210 bounded), n_eq=127 (1 + 126 recursion), n_ub=64, nnz_eq=631, nnz_ub=559, build=2.0ms
+  DUAL  : alpha=1.1031175051  n_vars=211  n_eq=127  n_ub=64  n_free=1  wall=13.0ms
+  diff = 9.13e-10  primal_free=127 -> dual_free=1
+
+=== d=8 R=8 ===
+  d_eff=4, n_W=64
+  PRIMAL: alpha=1.1309523809  n_vars=890  n_eq=496  n_free=331  wall=25.5ms
+  Dual LP at d=4 R=8: n_vars=496 (1 free + 495 bounded), n_eq=331 (1 + 330 recursion), n_ub=64, nnz_eq=1651, nnz_ub=559, build=2.0ms
+  DUAL  : alpha=1.1309523804  n_vars=496  n_eq=331  n_ub=64  n_free=1  wall=19.0ms
+  diff = 5.28e-10  primal_free=331 -> dual_free=1
+
+=== d=8 R=10 ===
+  d_eff=4, n_W=64
+  PRIMAL: alpha=1.1478849387  n_vars=1781  n_eq=1002  n_free=716  wall=54.2ms
+  Dual LP at d=4 R=10: n_vars=1002 (1 free + 1001 bounded), n_eq=716 (1 + 715 recursion), n_ub=64, nnz_eq=3576, nnz_ub=559, build=4.0ms
+  DUAL  : alpha=1.1478849407  n_vars=1002  n_eq=716  n_ub=64  n_free=1  wall=45.0ms
+  diff = 2.05e-09  primal_free=716 -> dual_free=1
+
+=== d=10 R=4 ===
+  d_eff=5, n_W=100
+  PRIMAL: alpha=1.0772357724  n_vars=283  n_eq=127  n_free=57  wall=12.0ms
+  Dual LP at d=5 R=4: n_vars=127 (1 free + 126 bounded), n_eq=57 (1 + 56 recursion), n_ub=100, nnz_eq=337, nnz_ub=1245, build=2.0ms
+  DUAL  : alpha=1.0772357723  n_vars=127  n_eq=57  n_ub=100  n_free=1  wall=13.6ms
+  diff = 9.73e-11  primal_free=57 -> dual_free=1
+
+=== d=10 R=6 ===
+  d_eff=5, n_W=100
+  PRIMAL: alpha=1.1189488243  n_vars=815  n_eq=463  n_free=253  wall=23.0ms
+  Dual LP at d=5 R=6: n_vars=463 (1 free + 462 bounded), n_eq=253 (1 + 252 recursion), n_ub=100, nnz_eq=1513, nnz_ub=1245, build=3.0ms
+  DUAL  : alpha=1.1189488243  n_vars=463  n_eq=253  n_ub=100  n_free=1  wall=19.1ms
+  diff = 8.64e-13  primal_free=253 -> dual_free=1
+
+=== d=10 R=8 ===
+  d_eff=5, n_W=100
+  PRIMAL: alpha=1.1481700118  n_vars=2180  n_eq=1288  n_free=793  wall=75.7ms
+  Dual LP at d=5 R=8: n_vars=1288 (1 free + 1287 bounded), n_eq=793 (1 + 792 recursion), n_ub=100, nnz_eq=4753, nnz_ub=1245, build=5.0ms
+  DUAL  : alpha=1.1481699658  n_vars=1288  n_eq=793  n_ub=100  n_free=1  wall=66.7ms
+  diff = 4.60e-08  primal_free=793 -> dual_free=1
+
+=== d=12 R=4 ===
+  d_eff=6, n_W=144
+  PRIMAL: alpha=1.0848214286  n_vars=439  n_eq=211  n_free=85  wall=17.3ms
+  Dual LP at d=6 R=4: n_vars=211 (1 free + 210 bounded), n_eq=85 (1 + 84 recursion), n_ub=144, nnz_eq=589, nnz_ub=2433, build=3.0ms
+  DUAL  : alpha=1.0848214285  n_vars=211  n_eq=85  n_ub=144  n_free=1  wall=19.0ms
+  diff = 9.19e-11  primal_free=85 -> dual_free=1
+
+=== d=12 R=6 ===
+  d_eff=6, n_W=144
+  PRIMAL: alpha=1.1331828442  n_vars=1531  n_eq=925  n_free=463  wall=48.3ms
+  Dual LP at d=6 R=6: n_vars=925 (1 free + 924 bounded), n_eq=463 (1 + 462 recursion), n_ub=144, nnz_eq=3235, nnz_ub=2433, build=5.0ms
+  DUAL  : alpha=1.1331828440  n_vars=925  n_eq=463  n_ub=144  n_free=1  wall=42.2ms
+  diff = 1.77e-10  primal_free=463 -> dual_free=1
+
+=== d=12 R=8 ===
+  d_eff=6, n_W=144
+  PRIMAL: alpha=1.1641656663  n_vars=4864  n_eq=3004  n_free=1717  wall=211.5ms
+  Dual LP at d=6 R=8: n_vars=3004 (1 free + 3003 bounded), n_eq=1717 (1 + 1716 recursion), n_ub=144, nnz_eq=12013, nnz_ub=2433, build=11.0ms
+  DUAL  : alpha=1.1641656663  n_vars=3004  n_eq=1717  n_ub=144  n_free=1  wall=197.1ms
+  diff = 1.89e-13  primal_free=1717 -> dual_free=1
+
+=== d=16 R=4 ===
+  d_eff=8, n_W=256
+  PRIMAL: alpha=1.0994152047  n_vars=917  n_eq=496  n_free=166  wall=36.1ms
+  Dual LP at d=8 R=4: n_vars=496 (1 free + 495 bounded), n_eq=166 (1 + 165 recursion), n_ub=256, nnz_eq=1486, nnz_ub=7162, build=10.0ms
+  DUAL  : alpha=1.0994152046  n_vars=496  n_eq=166  n_ub=256  n_free=1  wall=37.0ms
+  diff = 3.75e-11  primal_free=166 -> dual_free=1
+
+=== d=16 R=6 ===
+  d_eff=8, n_W=256
+  PRIMAL: alpha=1.1529782615  n_vars=4547  n_eq=3004  n_free=1288  wall=209.5ms
+  Dual LP at d=8 R=6: n_vars=3004 (1 free + 3003 bounded), n_eq=1288 (1 + 1287 recursion), n_ub=256, nnz_eq=11584, nnz_ub=7162, build=17.0ms
+  DUAL  : alpha=1.1529782615  n_vars=3004  n_eq=1288  n_ub=256  n_free=1  wall=208.5ms
+  diff = 3.68e-11  primal_free=1288 -> dual_free=1
+
+--- SUMMARY ---
+  d   R     a_primal       a_dual       diff  p_free  d_free  p_vars  d_vars   wall_p   wall_d
+  8   4   1.06666667   1.06666667   5.16e-13      36       1     170      71    19.7ms    11.2ms
+  8   6   1.10311751   1.10311751   9.13e-10     127       1     401     211    15.0ms    13.0ms
+  8   8   1.13095238   1.13095238   5.28e-10     331       1     890     496    25.5ms    19.0ms
+  8  10   1.14788494   1.14788494   2.05e-09     716       1    1781    1002    54.2ms    45.0ms
+ 10   4   1.07723577   1.07723577   9.73e-11      57       1     283     127    12.0ms    13.6ms
+ 10   6   1.11894882   1.11894882   8.64e-13     253       1     815     463    23.0ms    19.1ms
+ 10   8   1.14817001   1.14816997   4.60e-08     793       1    2180    1288    75.7ms    66.7ms
+ 12   4   1.08482143   1.08482143   9.19e-11      85       1     439     211    17.3ms    19.0ms
+ 12   6   1.13318284   1.13318284   1.77e-10     463       1    1531     925    48.3ms    42.2ms
+ 12   8   1.16416567   1.16416567   1.89e-13    1717       1    4864    3004   211.5ms   197.1ms
+ 16   4   1.09941520   1.09941520   3.75e-11     166       1     917     496    36.1ms    37.0ms
+ 16   6   1.15297826   1.15297826   3.68e-11    1288       1    4547    3004   209.5ms   208.5ms
+
+Wrote _tier_dual_verify_results.json
