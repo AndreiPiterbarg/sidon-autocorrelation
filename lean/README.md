@@ -51,7 +51,7 @@ alternative-kernel directions) have been moved to `../archive/lean/`.
 ## Headline theorem
 
 ```lean
-theorem Sidon.MultiScale.C1a_ge_1292
+theorem Sidon.MultiScale.autoconvolution_ratio_ge_1292_1000
     (f : ℝ → ℝ)
     (hf_nonneg  : ∀ x, 0 ≤ f x)
     (hf_supp    : Function.support f ⊆ Set.Ioo (-(1/4 : ℝ)) (1/4))
@@ -60,11 +60,12 @@ theorem Sidon.MultiScale.C1a_ge_1292
         (MeasureTheory.convolution f f
           (ContinuousLinearMap.mul ℝ ℝ) MeasureTheory.volume)
         ⊤ MeasureTheory.volume ≠ ⊤) :
-    (1292 : ℝ) / 1000 ≤ autoconvolution_ratio f
+    autoconvolution_ratio f ≥ (1292 : ℝ) / 1000
 ```
 
-Equivalent restatements `autoconvolution_ratio_ge_1292_1000` and
-`autoconvolution_ratio_ge_1_292` are exported from the same namespace.
+Equivalent restatements `autoconvolution_ratio_ge_1_292` (decimal form)
+and `C1a_ge_1292` (`1292/1000 ≤ autoconvolution_ratio f`) are exported
+from the same namespace.
 
 ## Axiom inventory
 

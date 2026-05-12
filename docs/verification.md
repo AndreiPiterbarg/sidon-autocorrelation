@@ -48,7 +48,8 @@ endpoints.
 | $S_1$ (upper)      | $29.8409064555132666$ | $\le 29841/1000$  | $9.3 \times 10^{-5}$ |
 | $\min G$ (lower)   | $0.9999798743824747$ | $\ge 998/1000$   | $1.9 \times 10^{-3}$ |
 | gain $a$ (lower)   | $0.2100921474866837$ | $\ge 20925/100000$ | $8.4 \times 10^{-4}$ |
-| $M_{\text{cert}}$  | $\ge 1.2923242187500000$ | $\ge 1292/1000$ | $3.2 \times 10^{-4}$ |
+| $M_{\text{cert}}$ (production) | $\ge 1.2923242187500000$ ($66167/51200$) | $\ge 1292/1000$ | $3.2 \times 10^{-4}$ |
+| $M_{\text{cert}}$ (slack-anchor) | $\ge 1.2921564960222152$ | $\ge 1292/1000$ | $2.2 \times 10^{-4}$ |
 
 Direction sanity (must all be strict): the Lean rational bound is on the
 correct side of the arb endpoint for each anchor.
@@ -103,9 +104,10 @@ For every $j \in \{1, \ldots, 200\}$ the periodic Fourier coefficient
 $\widetilde K_{\rm ms}(j) = \sum_i \lambda_i J_0(\pi \delta_i j / u)^2$
 must be strictly positive (so that $1 / \widetilde K(j)$ in $S_1$ is
 finite). Compute $\min_j \widetilde K_{\rm ms}(j)$ at $\text{dps} = 30$
-and verify $\ge 10^{-3}$; compare with the single-scale minimum
-$\sim 10^{-6}$ to confirm the rescue mechanism that underlies the
-$S_1$ drop.
+and verify $\ge 2 \times 10^{-4}$ (the actual minimum lies near
+$2.08 \times 10^{-4}$; see `docs/proof_outline.md`); compare with the
+single-scale minimum $\sim 10^{-6}$ to confirm the rescue mechanism
+that underlies the $S_1$ drop.
 
 ### 6. Master-inequality universality
 
@@ -174,11 +176,12 @@ hash.
 
 ### 12. Cross-comparison with the prior baseline
 
-The chain $1.27481 < 1.28984 < 1.292$ states that this proof strictly
-improves on Matolcsi--Vinuesa (2010) and on the two-scale precursor.
-Each rational inequality is `norm_num`-decidable; the hypothesis sets of
-the three results agree (nonnegativity, support in $(-1/4, 1/4)$,
-positive integral, finite $\|f * f\|_\infty$).
+The chain $1.27481 < 1.2802 < 1.292$ states that this proof strictly
+improves on Matolcsi--Vinuesa~(2010) and on the announced
+Cloninger--Steinerberger~(2017) bound.  Each rational inequality is
+`norm_num`-decidable; the hypothesis sets of the three results agree
+(nonnegativity, support in $(-1/4, 1/4)$, positive integral, finite
+$\|f * f\|_\infty$).
 
 ### 13. Cross-Bessel cross-checks
 

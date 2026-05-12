@@ -55,7 +55,9 @@ Reference values are recorded in
 | $S_1$       | $\le 29.840907$                                |
 | $\min G$    | $\ge 0.99997987$                               |
 | gain $a$    | $\ge 0.21009214$                               |
-| $M_{\rm cert}$ | $= 66167/51200 \approx 1.29232422$, rationalized to $1292/1000$ |
+| $M_{\rm cert}$ (production) | $= 66167/51200 \approx 1.29232422$ |
+| $M_{\rm cert}$ (slack-anchor) | $\ge 1.29215650$ (`reference_anchors.json`) |
+| Headline rational target | $1292/1000$ |
 
 Wall time on a modern laptop is roughly 11 s at 256-bit precision.
 

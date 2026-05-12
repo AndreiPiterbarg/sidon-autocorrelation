@@ -148,7 +148,9 @@ Exit code `0` on success; `1` on any failure.
 | `S_1`        | `<= 29.840907`                              |
 | `min G`      | `>= 0.99997987`                             |
 | `a`          | `>= 0.21009214`                             |
-| `M_cert`     | `= 66167/51200 ≈ 1.29232422`, rationalised to `1292/1000`|
+| `M_cert` (production)   | `= 66167/51200 ≈ 1.29232422` (tighter bound from the live driver)|
+| `M_cert` (slack-anchor) | `>= 1.29215650` (recorded in `reference_anchors.json`)|
+| Headline rational       | `1292/1000` (used in the paper and Lean)|
 
 These are the values quoted by the writeup and by the slack rationals
 in `lean/Sidon/MultiScale.lean`; the sole user axiom in that module
@@ -182,5 +184,6 @@ value of `1.27481`.
   * Cloninger, A., Steinerberger, S.  *On suprema of autoconvolutions
     with an application to Sidon sets.*  Proc. Amer. Math. Soc.
     **145** (2017), 3191-3200, arXiv:1403.7988.
-  * Martin, G., O'Bryant, K.  *The symmetric subset problem in
-    continuous Ramsey theory.*  arXiv:0807.5121 (2009).
+  * Martin, G., O'Bryant, K.  *The supremum of autoconvolutions, with
+    applications to additive number theory.*  Illinois J. Math.
+    **53** (2009), 219-235, arXiv:0807.5121.
