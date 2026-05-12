@@ -101,10 +101,12 @@ The proof reduces the infinite-dimensional optimization to a finite
 computation via a discretization of the mass simplex, building on the
 framework of Cloninger and Steinerberger~\cite{CS17}, combined with a
 multiscale branch-and-prune cascade that eliminates all candidate
-configurations.  The entire analytic reduction is formalized in Lean~4;
-the only imported assumption is a finite computational certificate
-asserting that every composition at the terminal resolution is
-eliminated by some admissible window.
+configurations.  The analytic reduction is formalized parametrically
+in Lean~4; the new headline bound depends additionally on a finite
+computational certificate, produced by the cascade described in
+Sections~\ref{sec:pruning}--\ref{sec:cascade}, asserting that every
+composition at the terminal resolution is eliminated by some
+admissible window.
 \end{abstract}
 \noindent\textit{2020 Mathematics Subject Classification.}
 11B83, 42A85, 68V20.
@@ -260,15 +262,17 @@ The case $\|f*f\|_{L^\infty} = \infty$ is vacuous for any finite
 lower bound, so $C_{1a} \ge \tfrac75 = 1.4$ holds unconditionally.
 \end{theorem}
 
-The Lean formalization proves this as
-\texttt{autoconvolution\_ratio\_ge\_7\_5}
-in \texttt{FinalResult.lean}, with an explicit finiteness
-hypothesis on the essential supremum of $f*f$
-(see Section~\ref{sec:formalization}).
-The proof is assembled in Section~\ref{sec:algorithm} from the continuous
-reduction (Sections~\ref{sec:bin}--\ref{sec:testvalue}), the pruning
-machinery (Sections~\ref{sec:pruning}--\ref{sec:cascade}), and the
-terminal computational certificate.
+The analytic reduction underlying this theorem is formalized in Lean~4
+as a parametric chain in
+\texttt{Sidon/Proof/FinalResult.lean}; the current verified
+instantiation, \texttt{autoconvolution\_ratio\_ge\_32\_25}, certifies
+the Cloninger--Steinerberger baseline $C_{1a}\ge \tfrac{32}{25}$ and
+serves as an end-to-end soundness check of the Lean development (see
+Section~\ref{sec:formalization}).  The proof is assembled in
+Section~\ref{sec:algorithm} from the continuous reduction
+(Sections~\ref{sec:bin}--\ref{sec:testvalue}), the pruning machinery
+(Sections~\ref{sec:pruning}--\ref{sec:cascade}), and the terminal
+computational certificate produced by the cascade.
 
 
 % ======================================================================
@@ -1386,19 +1390,57 @@ canonical coverage produced by the cascade extends to the full lattice.
 \section{Lean Formalization}\label{sec:formalization}
 % ======================================================================
 
-The accompanying formalization, carried out in
-Lean~4~\cite{Lean4} on top of the Mathlib library~\cite{Mathlib},
-consists of a modular development whose key analytic files are listed
-in Table~\ref{tab:lean-map}.
+The analytic reduction underlying Theorem~\ref{thm:main} is formalized
+in Lean~4~\cite{Lean4} on top of the Mathlib library~\cite{Mathlib},
+under \texttt{lean/Sidon/}.  The development factors the reduction
+into:
+\begin{itemize}
+  \item the per-window continuous lower bound
+    (Lemma~\ref{lem:bin-reduction}),
+  \item the per-window discretization error estimate
+    (Lemma~\ref{lem:disc-error}),
+  \item the dynamic-threshold soundness theorem
+    (Theorem~\ref{thm:dynamic-threshold}, in its CS-form and its
+    $W$-refined form),
+  \item a parametric bridge \texttt{cascade\_pruned\_implies\_bound}
+    that converts a cascade-pruned certificate at any target
+    $c_{\mathrm{target}}$ into a lower bound $R(f)\ge c_{\mathrm{target}}$.
+\end{itemize}
 
 Because \texttt{autoconvolution\_ratio} is encoded using
-\texttt{ENNReal.toReal}, the formal theorem carries an explicit
-finiteness hypothesis on the essential supremum of $f*f$.
+\texttt{ENNReal.toReal}, the formal theorem statements carry an
+explicit finiteness hypothesis on the essential supremum of $f*f$;
+this hypothesis is harmless for the lower bound since the alternative
+$\|f*f\|_{L^\infty}=\infty$ already exceeds every finite target
+vacuously.
 
-The development is not axiom-free.  The analytic reduction is fully
-proved in Lean; the single imported statement is the computational
-certificate \texttt{cascade\_all\_pruned}, expressing the terminal-grid
-statement at $d=128$.
+\paragraph{Current verified instantiation.}
+The chain is currently instantiated at
+$(n_{\mathrm{half}}, m, c_{\mathrm{target}}) = (2, 20, 32/25)$ ---
+the published Cloninger--Steinerberger baseline --- producing the
+theorem \texttt{autoconvolution\_ratio\_ge\_32\_25} in
+\texttt{FinalResult.lean}.  This instantiation imports a single
+computational axiom \texttt{cascade\_all\_pruned} that encodes the
+multi-level cascade structure as a recursive predicate
+\texttt{CascadePruned}: a composition at resolution $d$ is
+cascade-pruned if either some window directly exceeds the threshold
+or every valid child at resolution $2d$ is cascade-pruned.  The
+axiom is reproducible by the command recorded in
+\texttt{FinalResult.lean} and serves as an end-to-end soundness check
+of the Lean development.
+
+\paragraph{Status of the $\tfrac{7}{5}$ bound.}
+The cascade run reported in Section~\ref{sec:correctness} terminates
+with zero survivors at $d=128$ for $c_{\mathrm{target}}=\tfrac{7}{5}$
+using the dynamic per-window correction.  Promoting this run into a
+Lean theorem only requires regenerating the
+\texttt{cascade\_all\_pruned}-style axiom at the stronger target and
+composing it with \texttt{dynamic\_threshold\_sound\_w\_refined}
+and \texttt{cascade\_pruned\_implies\_bound}, which are already
+kernel-checked.  This last step is the only component of
+Theorem~\ref{thm:main} that has not yet been replayed inside the Lean
+kernel; the cascade certificate itself is independently checked at
+the Python level (see Section~\ref{sec:correctness}).
 
 \begin{table}[h]
 \centering\small
@@ -1406,21 +1448,33 @@ statement at $d=128$.
   \toprule
   \textbf{Paper statement} & \textbf{Lean name} & \textbf{File} \\
   \midrule
-  Theorem~\ref{thm:main} & \texttt{autoconvolution\_ratio\_ge\_7\_5}
-    & \texttt{FinalResult.lean} \\
-  Theorem~\ref{thm:dynamic-threshold} & \texttt{dynamic\_threshold\_sound}
-    & \texttt{DiscretizationError.lean} \\
-  Lemma~\ref{lem:bin-reduction} & \texttt{continuous\_test\_value\_le\_ratio}
-    & \texttt{TestValueBounds.lean} \\
   Lemma~\ref{lem:sum-bin-masses} & \texttt{sum\_bin\_masses\_eq\_one}
-    & \texttt{TestValueBounds.lean} \\
-  Lemma~\ref{lem:disc-error} & \texttt{discretization\_autoconv\_error}
-    & \texttt{DiscretizationError.lean} \\
-  Theorem~\ref{thm:cascade-sound} (axiom) & \texttt{cascade\_all\_pruned}
-    & \texttt{FinalResult.lean} \\
+    & \texttt{Sidon/Proof/TestValueBounds.lean} \\
+  Lemma~\ref{lem:bin-reduction} & \texttt{continuous\_test\_value\_le\_ratio}
+    & \texttt{Sidon/Proof/TestValueBounds.lean} \\
+  Lemma~\ref{lem:disc-error} (CS form) & \texttt{dynamic\_threshold\_sound\_cs}
+    & \texttt{Sidon/Proof/DiscretizationError.lean} \\
+  Theorem~\ref{thm:dynamic-threshold} ($W$-refined)
+    & \texttt{dynamic\_threshold\_sound\_w\_refined}
+    & \texttt{Sidon/Proof/WRefinedBound.lean} \\
+  Parametric bridge (any target)
+    & \texttt{cascade\_pruned\_implies\_bound}
+    & \texttt{Sidon/Proof/FinalResult.lean} \\
+  Theorem~\ref{thm:cascade-sound} (axiom, current at $\tfrac{32}{25}$)
+    & \texttt{cascade\_all\_pruned}
+    & \texttt{Sidon/Proof/FinalResult.lean} \\
+  Baseline instantiation
+    & \texttt{autoconvolution\_ratio\_ge\_32\_25}
+    & \texttt{Sidon/Proof/FinalResult.lean} \\
   \bottomrule
 \end{tabular}
-\caption{Correspondence between paper statements and the Lean formalization.}
+\caption[Correspondence between paper statements and the Lean formalization.]{Correspondence between paper statements and the Lean
+formalization.  The files listed are checked by the Lean kernel; the
+only imported component is \texttt{cascade\_all\_pruned}, the
+computational certificate whose current instantiation matches the
+$\tfrac{32}{25}$ baseline.  The same scaffolding instantiates the
+$\tfrac{7}{5}$ headline bound once the cascade certificate is replayed
+at the stronger target.}
 \label{tab:lean-map}
 \end{table}
 
@@ -1470,11 +1524,15 @@ Cloninger--Steinerberger~\cite{CS17}.  The principal differences:
     ($c_{\mathrm{target}}$ close to $C_{1a}$) will require more
     cascade levels and higher computational cost.
 
-  \item The Lean theorem imports the terminal certificate
-    \texttt{cascade\_all\_pruned} rather than replaying the full
-    $70$-hour search inside the Lean kernel.  Eliminating this final
-    axiom would require a kernel-level certification of the same finite
-    computation.
+  \item The Lean development currently certifies the
+    $\tfrac{32}{25}$ baseline; the $\tfrac{7}{5}$ headline bound
+    requires regenerating the
+    \texttt{cascade\_all\_pruned}-style axiom at the stronger target
+    (Section~\ref{sec:formalization}).  The parametric chain that
+    consumes the axiom is already kernel-checked, and the analogous
+    update at any pruned target is mechanical.  Eliminating the
+    computational axiom entirely would require a kernel-level
+    certification of the same multi-day search.
 
   \item The formal statement isolates the case
     $\|f*f\|_{L^\infty} < \infty$ because of the way the ratio is
@@ -1488,8 +1546,14 @@ Cloninger--Steinerberger~\cite{CS17}.  The principal differences:
 \section*{Acknowledgments}
 % ======================================================================
 
-This work builds on the foundational algorithm of Cloninger and
-Steinerberger~\cite{CS17}.
+This work builds on the windowed autoconvolution lower-bound framework
+of Cloninger and Steinerberger~\cite{CS17}, the simplex grid analysis
+of Bomze, Gollowitzer, and Yildirim~\cite{Bomze2014}, and the earlier
+lower-bound progression by Martin and O'Bryant~\cite{MO2007,MO2009}
+and Matolcsi and Vinuesa~\cite{MV10}.  The Lean formalization is built
+on the Lean~4 toolchain~\cite{Lean4} and the Mathlib
+library~\cite{Mathlib}, whose authors and contributors deserve
+particular thanks.
 
 
 % ======================================================================
