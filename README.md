@@ -1,96 +1,124 @@
-# Improving the Lower Bound on the Sidon Autocorrelation Constant ($C_{1a}$)
+# A New Lower Bound on the Sidon Autocorrelation Constant $C_{1a}$
 
-> **Current bounds:** $1.2802 \leq C_{1a} \leq 1.5029$
+> **Result:** $C_{1a} \ge 7/5 = 1.4$, up from the previous best $1.2802$
+> (Cloninger & Steinerberger, 2017).
 >
-> **Goal:** Push the lower bound above 1.2802 by improving the Cloninger-Steinerberger algorithm.
+> **Companion result:** $C_{1a} \ge 1.3$ via a Lasserre SDP hierarchy.
 >
-> **Current focus:** GPU kernel optimization targeting NVIDIA A100 cloud GPUs — the algorithm is complete; all effort is on making it run as fast as possible.
+> **Current bracket:** $1.4 \le C_{1a} \le 1.50988$.
 
-## Problem Statement
+## Problem
 
-For any nonnegative function $f : \mathbb{R} \to \mathbb{R}_{\geq 0}$ supported on $[-1/4, 1/4]$ with $\int f = 1$:
+For any nonnegative function $f : \mathbb{R} \to \mathbb{R}_{\geq 0}$
+supported on $[-1/4, 1/4]$ with $\int f = 1$:
 
-$$\max_{|t| \le 1/2} (f * f)(t) \;\geq\; C_{1a}$$
+$$\max_{|t| \le 1/2} (f * f)(t) \;\geq\; C_{1a}.$$
 
-The **upper bound** comes from exhibiting explicit functions with small autoconvolution peaks. The **lower bound** requires proving that *no* function can do better than a given threshold — a fundamentally harder task.
+The upper bound comes from constructing explicit functions with small
+autoconvolution peaks. The lower bound requires proving that *no*
+function can do better — a fundamentally harder task.
 
-The best known lower bound is $C_{1a} \geq 1.2802$, established by [Cloninger & Steinerberger (2017)](https://arxiv.org/abs/1403.7988) via an exhaustive branch-and-prune algorithm. We aim to improve this.
+## Two complementary proofs
 
-## Approach
+This repository contains two independent lower-bound proofs, each with
+its own LaTeX manuscript and Lean 4 formalization.
 
-We build on the Cloninger-Steinerberger branch-and-prune algorithm:
+### `proof/cs-proof/` — Multiscale cascade ($C_{1a} \ge 7/5$)
 
-1. **Partition** $[-1/4, 1/4]$ into $d = 2n$ equal bins and track the mass $a_i = \int_{I_i} f$ on each bin.
-2. **Lower bound** $\|f*f\|_\infty$ by the maximum over windowed sums of $a_i a_j$ products (Lemma 1 of [CS17]): for any window of $\ell$ consecutive bins, $\|f*f\|_\infty \geq \frac{1}{4n\ell} \sum a_i a_j$.
-3. **Discretize** masses to a grid $B_{n,m}$ (multiples of $1/m$), with correction $C_{1a} \geq b_{n,m} - 2/m - 1/m^2$.
-4. **Prune** all grid points via:
-   - **Asymmetry argument**: if too much mass is on one side, the bound holds automatically.
-   - **Test-value computation**: check all windows; if the best lower bound exceeds the target, the point is pruned.
-5. If ALL grid points are pruned, the lower bound is **rigorously proven**.
+Extends the Cloninger–Steinerberger branch-and-prune framework with
 
-The original paper reached $n = 24$ (48 bins), $m = 50$, using ~20,000 CPU hours on Yale HPC with GPU acceleration. Our current implementation targets $c \geq 1.4$ with $n=2$, $m=20$, running the cascade on cloud CPU (~150 hours for L4).
+1. a sharper per-window discretization correction,
+2. dyadic refinement from $d = 4$ through $d = 128$,
+3. fused Gray-code generation and energy-cap pruning,
+4. exact integer arithmetic in the threshold comparison.
 
-## Repository Structure
+The cascade reaches zero survivors at $d = 128, m = 20$ after roughly
+70 hours on a 128-core machine. The analytic reduction is formalized
+in Lean 4 parametrically in the target $c_{\mathrm{target}}$; the
+$7/5$ instantiation depends on the cascade certificate at the
+matching target.
+
+Manuscript: [`proof/cs-proof/lower_bound_proof.pdf`](proof/cs-proof/lower_bound_proof.pdf).
+
+### `proof/lasserre-proof/` — Lasserre SDP hierarchy ($C_{1a} \ge 1.3$, joint with A.\ Piterbarg)
+
+Discretizes the continuous problem to the polynomial program
+$\mathrm{val}(d) = \min_{\mu \in \Delta_d} \max_W \mu^\top M_W \mu$
+and certifies $\mathrm{val}(16) \ge 1.3$ by the order-3 Lasserre
+relaxation, with correlative-sparsity restrictions for $d \in \{32, 64, 128\}$.
+The single computational dependency is a finite SDP whose dual
+solution is recorded as the certificate.
+
+Manuscript: [`proof/lasserre-proof/lasserre_lower_bound.pdf`](proof/lasserre-proof/lasserre_lower_bound.pdf).
+
+## Repository layout
 
 ```
-sidon-autocorrelation/
-├── cloninger-steinerberger/    # Active: branch-and-prune implementation
-│   ├── core.py                 # Re-exports all public API
-│   ├── compositions.py         # Batched composition generators (Numba JIT)
-│   ├── test_values.py          # Autoconvolution + windowed test-value computation
-│   ├── pruning.py              # Correction terms, asymmetry threshold, canonical mask
-│   ├── solvers.py              # Solvers + fused GPU/Numba kernels
-│   └── run.py                  # CLI entry point for running proofs
-├── tests/                      # Test suite
-│   ├── test_basics.py
-│   ├── test_compositions.py
-│   ├── test_autoconvolution.py
-│   ├── test_integration.py
-│   └── test_heavy.py           # Production-scale benchmarks
-├── exploration/                # Archived upper-bound notebooks (read-only)
-├── cloud/                      # Archived cloud infra (read-only)
-├── data/                       # Checkpoints and results
-├── docs/                       # Documentation
-└── requirements.txt
+compact_sidon/
+├── proof/
+│   ├── cs-proof/                # Cascade manuscript + figures
+│   ├── lasserre-proof/          # Lasserre manuscript + figures
+│   ├── lower_bound_refs.bib     # Shared bibliography for cs-proof
+│   └── *.md                     # Proof-supporting notes
+├── lean/                        # Lean 4 formalization (Sidon + lasserre)
+├── cloninger-steinerberger/     # Cascade implementation
+│   └── cpu/run_cascade*.py      # Multi-level cascade runners
+├── lasserre/                    # Lasserre SDP package
+│   ├── core.py                  # Monomials, windows, base SDP
+│   ├── precompute.py            # Base constraints, window PSD
+│   ├── cliques.py               # Banded cliques, correlative sparsity
+│   └── solvers.py               # solve_highd_sparse, solve_cg, solve_enhanced
+├── tests/                       # Sweep scripts and benchmarks
+└── data/                        # Cascade snapshots and SDP run logs
 ```
 
-## Running
+## Building the manuscripts
+
+The bibliography lives one directory up from each `.tex`, so compile
+from inside the proof directory with `latexmk` (or symlink the bib
+file):
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.local/bin:$PATH"
+cd proof/cs-proof
+ln -sf ../lower_bound_refs.bib .
+latexmk -pdf lower_bound_proof.tex
 
-uv venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-uv pip install -r requirements.txt
-
-# Run the branch-and-prune demo
-python cloninger-steinerberger/run.py
-
-# Run tests
-pytest tests/ -v
+cd ../lasserre-proof
+latexmk -pdf lasserre_lower_bound.tex
 ```
 
-## Prime Intellect Deployment (A100 + uv)
+## Running the cascade
 
-For full pod provisioning + on-pod execution steps, see:
+```bash
+uv venv .venv && source .venv/bin/activate
+uv pip install -r requirements.txt
 
-- `docs/prime_intellect_runbook.md`
+python -m cloninger-steinerberger.cpu.run_cascade \
+    --n_half 2 --m 20 --c_target 1.4 --max_levels 6
+```
 
-Default GPU recommendation in that runbook:
+The cascade produces a JSON survivor log per level in `data/`; the
+terminal level should have zero survivors.
 
-- `A100 (SXM4)` by default
-- `A100 (PCIE)` fallback when availability is better
+## Running the Lasserre solvers
 
-## Context
+```bash
+# High-d sparse Lasserre (correlative sparsity)
+python tests/lasserre_highd.py --d 128 --bw 16
+python tests/lasserre_highd.py --d 16  --bw 15  # tight, kernel-checkable
 
-This constant appears in [Tao et al.'s optimization constants repository](https://teorth.github.io/optimizationproblems/constants/1a.html) and connects to the asymptotic size of Sidon sets in additive combinatorics. While recent progress on the *upper* bound has come from AI-driven search (AlphaEvolve, TTT-Discover), the *lower* bound has not been improved since 2017. Closing the gap from either direction is valuable.
+# Full moment Lasserre (d ≤ 32)
+python tests/lasserre_scalable.py --d 16 --order 2 --mode cg
 
-## References
+# Sparse enhanced solver (d ≤ 64)
+python tests/lasserre_enhanced.py --d 32 --order 2 --psd sparse --bw 8
+```
 
-- [Cloninger & Steinerberger (2017), arXiv:1403.7988](https://arxiv.org/abs/1403.7988) — **Primary reference** for the lower bound algorithm
-- [Tao et al., Optimization Constants Repo](https://github.com/teorth/optimizationproblems)
-- [Matolcsi & Vinuesa (2010), arXiv:0907.1379](https://arxiv.org/abs/0907.1379)
-- [White (2022), arXiv:2210.16437](https://arxiv.org/abs/2210.16437)
-- [Boyer & Li (2025), arXiv:2506.16750](https://arxiv.org/abs/2506.16750)
-- [AlphaEvolve, arXiv:2511.02864](https://arxiv.org/abs/2511.02864)
+## Related work
+
+- [Cloninger & Steinerberger (2017), arXiv:1403.7988](https://arxiv.org/abs/1403.7988) — the prior $C_{1a} \ge 1.2802$ baseline that both proofs extend.
+- [Matolcsi & Vinuesa (2010), arXiv:0907.1379](https://arxiv.org/abs/0907.1379) — best published upper bound prior to Boyer & Li.
+- [Boyer & Li (2025), arXiv:2506.16750](https://arxiv.org/abs/2506.16750) — current best upper bound $C_{1a} \le 1.50988$.
+- [Martin & O'Bryant (2007, 2009)](https://personal.math.ubc.ca/~gerg/papers/downloads/SAAANT.pdf) — earlier lower-bound progression.
+- [Waki, Kim, Kojima & Muramatsu (2006)](https://doi.org/10.1007/s10957-006-9030-5) — correlative-sparsity SDP used in the Lasserre proof.
+- [Tao's optimization-constants catalog](https://teorth.github.io/optimizationproblems/constants/1a.html) — informal live tracker for the bracket.
