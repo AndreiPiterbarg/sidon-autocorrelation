@@ -64,3 +64,10 @@ data/subtree_test/
 # Temp/backup files
 *.stackdump
 *.bak
+
+# Latexmk intermediates
+*.fdb_latexmk
+*.fls
+
+# Local bib symlinks for cross-dir compilation
+proof/cs-proof/lower_bound_refs.bib
