@@ -13,7 +13,7 @@ Immanuel~M. Bomze, Stefan Gollowitzer, and E.~Alper Yildirim, \emph{Rounding on
   the standard simplex: Regular grids for global optimization}, Journal of
   Global Optimization \textbf{59} (2014), no.~2--3, 243--258.
 
-\bibitem[BL26]{BL25}
+\bibitem[BL26]{BL26}
 Christopher Boyer and Zane~Kun Li, \emph{An improved example for an
   autoconvolution inequality}, Experimental Mathematics (2026), Published
   online 15 February 2026.
@@ -26,6 +26,11 @@ Javier Cilleruelo, Imre~Z. Ruzsa, and Carlos Vinuesa, \emph{Generalized sidon
 Alexander Cloninger and Stefan Steinerberger, \emph{On suprema of
   autoconvolutions with an application to sidon sets}, Proceedings of the
   American Mathematical Society \textbf{145} (2017), no.~8, 3191--3200.
+
+\bibitem[CV08]{CillerueloVinuesa2008}
+Javier Cilleruelo and Carlos Vinuesa, \emph{{B}$_2[g]$ sets and a conjecture of
+  schinzel and schmidt}, Combinatorics, Probability and Computing \textbf{17}
+  (2008), no.~6, 741--747.
 
 \bibitem[dMU21]{Lean4}
 Leonardo de~Moura and Sebastian Ullrich, \emph{The lean 4 theorem prover and
@@ -50,7 +55,7 @@ Greg Martin and Kevin O'Bryant, \emph{Constructions of generalized sidon sets},
   Journal of Combinatorial Theory, Series A \textbf{113} (2006), no.~4,
   591--607.
 
-\bibitem[MO07]{MO2004}
+\bibitem[MO07]{MO2007}
 \bysame, \emph{The symmetric subset problem in continuous ramsey theory},
   Experimental Mathematics \textbf{16} (2007), no.~2, 145--165.
 
@@ -77,16 +82,16 @@ Andrzej Schinzel and Wolfgang~M. Schmidt, \emph{Comparison of {L}$^1$- and
 \bibitem[Tao]{Tao}
 Terence Tao, \emph{An autocorrelation constant related to sidon sets},
   \url{https://teorth.github.io/optimizationproblems/constants/1a.html},
-  Accessed 2026-03-26.
+  Accessed 2026-05-12.
 
 \bibitem[{The}20]{Mathlib}
 {The mathlib Community}, \emph{The lean mathematical library}, Proceedings of
   the 9th ACM {SIGPLAN} International Conference on Certified Programs and
-  Proofs, 2020, pp.~367--381.
+  Proofs (New Orleans, LA, USA), 2020, pp.~367--381.
 
 \bibitem[Whi23]{White22}
-Ethan~Patrick White, \emph{A new bound for erd\h{o}s' minimum overlap problem},
-  Acta Arithmetica \textbf{208} (2023), 235--255, Published online 16 August
-  2023; preprint arXiv:2201.05704.
+Ethan~Patrick White, \emph{A new bound for {Erd\H{o}s}' minimum overlap
+  problem}, Acta Arithmetica \textbf{208} (2023), 235--255, Published online 16
+  August 2023; preprint arXiv:2201.05704.
 
 \end{thebibliography}
