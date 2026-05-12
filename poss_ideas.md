@@ -1,5 +1,8 @@
 # Possible Ideas — Pushing $C_{1a} > 1.2802$
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 Ideas that build on previously-investigated frameworks but introduce a new analytic/computational mechanism with mathematically-defensible chance of producing a non-trivial lift on the rigorous bound.
 
 Conventions: $f \ge 0$ on $[-1/4, 1/4]$, $\int f = 1$. $C_{1a} = \inf_f \|f * f\|_\infty$. Current rigorous LB $\approx 1.2748$ (MV) / $1.28$ (CS).

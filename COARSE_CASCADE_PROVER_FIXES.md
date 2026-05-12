@@ -1,5 +1,8 @@
 # `coarse_cascade_prover.py` — Concrete Fixes to Make It Correct + Tight
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > Scoped strictly to `C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\coarse_cascade_prover.py`.
 >
 > The prover currently produces $C_{1a} \ge 1.15$ rigorously and stops there.

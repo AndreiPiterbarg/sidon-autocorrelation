@@ -1,5 +1,8 @@
 # Prompt 1 — Full audit for publication-grade correctness
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 **Context — what we are doing.**
 
 We are working to rigorously prove a lower bound on the Sidon

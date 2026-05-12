@@ -1,5 +1,8 @@
 # Prompt 2 — Deploy agents to find the FINAL improvements that close the last 4.5e-13
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 **Why this is necessary.**
 
 We are 99.99999849816% of the way to a rigorous proof of `C_{1a} >= 1.281`

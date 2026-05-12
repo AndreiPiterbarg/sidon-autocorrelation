@@ -1,5 +1,8 @@
 # High-Impact Audit: Tightening & New Directions for $C_{1a} > 1.2802$
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > Synthesized from 12 parallel research agents covering 6 tightening tracks and 6 new mathematical directions. Each finding is grounded in cited file:line references.
 >
 > **Standing bound**: $1.2802 \le C_{1a} \le 1.5029$. Goal: push the lower bound above 1.2802.

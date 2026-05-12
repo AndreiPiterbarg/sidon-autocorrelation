@@ -1,5 +1,8 @@
 # New Ideas to Push $C_{1a} > 1.2802$ — STRICT-RE-AUDITED
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > **Final survival count: 1 / 5.**
 >
 > A maximally strict re-audit of the prior 3 surviving ideas found mathematical

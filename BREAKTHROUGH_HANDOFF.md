@@ -1,5 +1,8 @@
 # Breakthrough Run — Handoff to Pod Agent
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 ## Goal
 Prove `C_{1a} > 1.2802` (current LB) via Polya/Handelman LP at `d=16`, with breathing room. Per the M1 model (`gap(R) = C_d/R`, `val_16 ≈ 1.319`, `C_16 ≈ 1.027`), the run that should clear it is **d=16 R=35**, predicted α ≈ 1.290 (+0.010 above current LB).
 

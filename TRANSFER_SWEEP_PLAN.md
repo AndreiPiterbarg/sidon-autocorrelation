@@ -1,5 +1,8 @@
 # Deep-CG Transfer Validation Sweep
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 **Status:** Draft, pending execution after initial Phase-1/Phase-2 sweep completes.
 **Target pod:** RunPod H100 (currently `103.207.149.60:19240`).
 **Deliverable:** `data/transfer_sweep_report.json` + ranking-stability table.

@@ -1,5 +1,8 @@
 # CPU Cascade Prover: 5 Validated High-Impact Ideas
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > **Root cause diagnosis**: The CPU fine cascade is infeasible at L3+ (d_parent >= 16)
 > because the Cartesian product of cursor ranges is ~160^16 = 10^35 children per
 > parent. Even at 7M children/sec/core on 64 cores, a single parent takes 10^19

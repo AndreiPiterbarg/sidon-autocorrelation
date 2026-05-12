@@ -1,5 +1,8 @@
 # Prompt 3 — Engineer Lasserre-O2 SDP escalation to unblock the d=30 BnB
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 **Working dir:** `C:/Users/andre/OneDrive - PennO365/Desktop/compact_sidon`
 **Goal:** Achieve a rigorous BnB certificate `val(d) >= 1.281` at `d = 30` (or higher), giving `C_{1a} >= 1.281`. This is the strongest unconditional lower bound that's been attempted in this codebase.
 

@@ -1,5 +1,8 @@
 # LP-Only Speedup Audit — Sidon Polya/Handelman LP
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 **Goal:** push d=16 R=27+ from projected ~1-2 days down to hours. **No bound loss allowed** — every reduction must be sound.
 
 Synthesized from 11 parallel literature/code-audit agents on 2026-05-04. Citations are arXiv ids unless noted.

@@ -1,5 +1,8 @@
 # Pólya LP Sweep — Mathematical Trend Analysis
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 Total successful records: 68
 d values with >=3 points: [4, 6, 8, 10, 12, 14, 16, 20]
 

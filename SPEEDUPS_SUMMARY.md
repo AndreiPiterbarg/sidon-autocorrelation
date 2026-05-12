@@ -1,5 +1,8 @@
 # Speedup Implementation Summary
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 Implemented 9 speedups to `coarse_cascade_prover.py` based on the multi-agent research findings. All speedups are **sound** (no false certifications) and the existing test suite (16 tests) still passes.
 
 ## Cumulative impact at d=12, S=20, c=1.22 (50,000 cells)

@@ -1,5 +1,8 @@
 # Deferred Algorithmic Improvements
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 These changes are mathematically sound and would improve speed/gap-closure,
 but were deferred due to implementation complexity. All are well-defined and
 ready to implement once the current proof run completes.

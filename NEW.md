@@ -1,5 +1,8 @@
 # Five Validated Ideas for Making the Cascade Feasible
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > **Context:** At L3-L4, each parent spawns 81^8 ≈ 2×10^15 (L3) to 81^16 ≈ 5×10^30 (L4)
 > children. Enumeration is permanently infeasible at these scales. The only viable path
 > is **per-parent certification** that proves all children pruned WITHOUT enumerating them.

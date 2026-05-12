@@ -1,5 +1,8 @@
 # `coarse_cascade_prover.py` — Full Session Summary
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > Goal: rigorously prove $C_{1a} \ge c$ for the largest $c$ achievable, with **absolute correctness** (no claims without exhaustive certification).
 >
 > Standing CS17 bound: $C_{1a} \ge 1.2802$.

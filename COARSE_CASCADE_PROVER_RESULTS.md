@@ -1,5 +1,8 @@
 # `coarse_cascade_prover.py` — Complete Test Results & Run History
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > Standalone Cloninger–Steinerberger-style prover at the project root. Implements the **coarse cascade** with **Theorem 1** (no correction term), **integer threshold pruning**, **B&B subtree pruning**, and **box certification** via water-filling QP.
 >
 > All runs were performed on **2026-04-13** (CPU pod, 48 workers).

@@ -1,5 +1,8 @@
 # `coarse_cascade_prover.py` — Audit 2: Path to $C_{1a} \ge 1.28$
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > Synthesized from 12 parallel research agents focused strictly on the prover. The cascade ALREADY converges grid-point-rigorously at c=1.28 (Test F2: d=4→16 cascade, 0 survivors at L2). The blocker is **box certification at d ≥ 12** — vertex enum is computationally infeasible.
 
 ---

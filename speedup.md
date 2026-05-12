@@ -1,5 +1,8 @@
 # Lasserre L2 d=128 Speedup Proposals
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 > **Target:** Run Lasserre order-2 (L2) at d=128 on CPU with 256 GB RAM.
 >
 > **MOSEK status:** MOSEK crashes at d=128. The "Schur ~1PB" estimate in

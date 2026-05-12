@@ -1,5 +1,8 @@
 # Interval BnB Stall Diagnostic: d=10, target=1.208
 
+> *Historical session note. For current project state see README.md and NOTES_INDEX.md. Both lower-bound proofs are now complete; the framing below dates from earlier exploration.*
+
+
 ## Methodology
 
 Re-implemented the BnB main loop in `diagnose_stall_d10_t1208.py` to harvest
