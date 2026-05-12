@@ -303,9 +303,14 @@ where $k_1=\widetilde{K}(1)$ and $z_1=\widehat{f}(1/u)$.  Their proof
 uses the arcsine kernel only through Bochner-admissibility
 (Definition~\ref{def:bochner}); the same derivation therefore applies
 to any admissible $K$, in particular to the convex
-combination~$\Kms$.  Inequality~\eqref{eq:master} follows from
+combination~$\Kms$.  The radicand of~\eqref{eq:mv-sharp} is nonnegative
+by the same Parseval-type bounds as in~\cite[\S 3]{MV10}: Bessel's
+inequality gives $2z_1^{\,2}\le M-1$ for $f\in\mathcal{F}$ with
+$\int f=1$, and $2k_1^{\,2}\le K_2-1$ holds for any Bochner-admissible
+$K$ with $\int K=1$.  Inequality~\eqref{eq:master} then follows from
 \eqref{eq:mv-sharp} by the Cauchy--Schwarz estimate
-$\sqrt{ac}+\sqrt{bd}\le\sqrt{(a+b)(c+d)}$ applied to
+$\sqrt{ac}+\sqrt{bd}\le\sqrt{(a+b)(c+d)}$ applied to the nonnegative
+quadruple
 $(a,b,c,d)=(2z_1^{\,2},\,M-1-2z_1^{\,2},\,2k_1^{\,2},\,K_2-1-2k_1^{\,2})$.
 \end{proof}
 
@@ -503,9 +508,12 @@ $K_2 = 2\int_0^{T}\widehat{\Kms}(\xi)^2\,d\xi
 + 2\int_{T}^{\infty}\widehat{\Kms}(\xi)^2\,d\xi$ with $T=10^{5}$.
 The bulk integral is computed by arb adaptive Gauss--Legendre
 quadrature and certified at $4.78882342\ldots$ with arb radius
-below $10^{-10}$.  For the tail, the classical asymptotic
-$|J_0(z)|^2\le 2/(\pi z)$~\cite[\S 7.21]{Watson} applied to both
-Bessel factors gives $J_0(\pi\delta_i\xi)^2 J_0(\pi\delta_j\xi)^2
+below $10^{-10}$.  For the tail, the standard uniform bound
+$|J_0(z)|^2\le 2/(\pi z)$~\cite[\S 7.21]{Watson} holds for $z\ge 1$;
+since $\xi\ge T=10^{5}$ in the tail forces $z=\pi\delta_i\xi\ge
+\pi(25/1000)(10^{5})\approx 7854$, the bound applies, and applied to
+both Bessel factors gives
+$J_0(\pi\delta_i\xi)^2 J_0(\pi\delta_j\xi)^2
 \le 4/(\pi^4\delta_i\delta_j\xi^2)$, whence
 $\widehat{\Kms}(\xi)^2 = \sum_{i,j}\lambda_i\lambda_j
    J_0(\pi\delta_i\xi)^2 J_0(\pi\delta_j\xi)^2
