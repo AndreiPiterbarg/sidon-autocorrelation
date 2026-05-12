@@ -1118,14 +1118,18 @@ where $\mathcal{B}_{64,\ell,s_{\mathrm{lo}}}$ is the set of contributing
 bins for that window.
 \end{theorem}
 
-This is the computational claim imported into the Lean formalization as
-the axiom \texttt{cascade\_all\_pruned}.  The dyadic cascade from $d=4$
-to $d=128$ terminates with zero survivors at level~$L_5$; the
+This is the cascade certificate produced by the Python implementation
+described in Section~\ref{sec:correctness}; the corresponding Lean
+axiom (a \texttt{cascade\_all\_pruned}-style statement at the same
+target) is currently kernel-checked only for the $\tfrac{32}{25}$
+baseline, with the $\tfrac{7}{5}$ replay deferred
+(Section~\ref{sec:formalization}).  The dyadic cascade from $d=4$ to
+$d=128$ terminates with zero survivors at level~$L_5$; the
 completeness properties in Section~\ref{sec:correctness} explain why
-this terminal outcome implies the universal quantification above.  The
-computation uses exact integer arithmetic for autoconvolutions and
-conservative floating-point rounding for threshold comparisons; no
-conclusion depends on floating-point correctness.
+this terminal outcome implies the universal quantification above.
+The computation uses exact integer arithmetic for autoconvolutions
+and conservative floating-point rounding for threshold comparisons;
+no conclusion depends on floating-point correctness.
 
 \subsection{Canonical Handling Across Levels}
 
