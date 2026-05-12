@@ -1,5 +1,12 @@
 # Full Problem State (2026-04-14)
 
+> **Status (2026-05-12).** Historical snapshot. Both lower-bound
+> proofs are now complete: $C_{1a} \ge 7/5 = 1.4$ via the cascade
+> (`proof/cs-proof/`) and $C_{1a} \ge 1.3$ via Lasserre
+> (`proof/lasserre-proof/`). For current state see `README.md` and
+> the manuscript PDFs. The text below records the Lasserre solver
+> bottlenecks as they stood on 2026-04-14.
+
 ## What We Are Trying to Do
 
 We are trying to improve the lower bound on the **Sidon autocorrelation constant** C_{1a}. The current best bounds are:
