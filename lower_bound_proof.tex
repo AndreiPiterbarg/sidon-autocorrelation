@@ -316,12 +316,14 @@ $(a,b,c,d)=(2z_1^{\,2},\,M-1-2z_1^{\,2},\,2k_1^{\,2},\,K_2-1-2k_1^{\,2})$.
 \begin{lemma}[Quadratic inversion]
 \label{lem:inversion}
 For fixed $K_2\ge 1$, the function
-$\Phi(M):=M+1+\sqrt{(M-1)(K_2-1)}$ is continuous and strictly
-increasing on $[1,\infty)$ with $\Phi(1)=2$.  For any $\tau\ge 2$
-the equation $\Phi(M)=\tau$ has a unique solution
-$M_*\in[1,\infty)$, and every $f\in\mathcal{F}$ with $\Phi(R(f))\ge\tau$
-satisfies $R(f)\ge M_*$.  In particular, with $\tau=2/u+a$,
-$C_{1a}\ge M_*$.
+\[
+  \Phi(M)\;:=\;M+1+\sqrt{(M-1)(K_2-1)}
+\]
+is continuous and strictly increasing on $[1,\infty)$ with
+$\Phi(1)=2$.  For any $\tau\ge 2$ the equation $\Phi(M)=\tau$ has a
+unique solution $M_*\in[1,\infty)$, and every $f\in\mathcal{F}$ with
+$\Phi(R(f))\ge\tau$ satisfies $R(f)\ge M_*$.  In particular, with
+$\tau=2/u+a$, $C_{1a}\ge M_*$.
 \end{lemma}
 
 \begin{proof}
@@ -441,9 +443,13 @@ We check conditions (K1)--(K4) of Definition~\ref{def:bochner}.
   [-\delta_i,\delta_i]\subseteq[-\delta_1,\delta_1]$ for $i\ge 1$, so
   $\supp\Kms\subseteq[-\delta_1,\delta_1]$; and
   $\int\Kms=\sum_i\lambda_i\int\Karc(\delta_i)=\sum_i\lambda_i=1$.
-\item \emph{(K4)~Fourier positivity.}  Linearity of the Fourier transform
-  and~\eqref{eq:sonine} give
-  $\widehat{\Kms}(\xi)=\sum_i\lambda_i J_0(\pi\delta_i\xi)^2\ge 0$,
+\item \emph{(K4)~Fourier positivity.}  Linearity of the Fourier
+  transform and~\eqref{eq:sonine} give
+  \[
+    \widehat{\Kms}(\xi)
+    \;=\;
+    \sum_i\lambda_i J_0(\pi\delta_i\xi)^2 \;\ge\; 0,
+  \]
   hence~\eqref{eq:Ktilde}.\qedhere
 \end{itemize}
 \end{proof}
@@ -559,10 +565,12 @@ enclosure
     G(c)\;+\;G'(c)\cdot[-r,r]\;+\;G''(\mathrm{cell})\cdot[-r^{2}/2,\,r^{2}/2],
 \]
 with $G''$ evaluated as an arb interval over the entire cell from
-$G''(x)=-\sum_{j=1}^{200}a_j(2\pi j/u)^{2}\cos(2\pi jx/u)$.  The
-minimum of the lower endpoints over all $n$ cells gives the certified
-bound $m_G\ge 0.99997987$, slack $\ge 1.9\times 10^{-3}$ above
-$998/1000$.
+\[
+  G''(x) \;=\; -\sum_{j=1}^{200}a_j\,(2\pi j/u)^{2}\cos(2\pi jx/u).
+\]
+The minimum of the lower endpoints over all $n$ cells gives the
+certified bound $m_G\ge 0.99997987$, slack $\ge 1.9\times 10^{-3}$
+above $998/1000$.
 \end{proof}
 
 \begin{lemma}[Gain functional]
