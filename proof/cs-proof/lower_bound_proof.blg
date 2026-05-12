@@ -3,46 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: lower_bound_proof.aux
 The style file: amsalpha.bst
 Database file #1: lower_bound_refs.bib
-Warning--missing pages in BL25
-You've used 16 entries,
+Warning--missing pages in BL26
+You've used 17 entries,
             2624 wiz_defined-function locations,
-            679 strings with 7264 characters,
-and the built_in function-call counts, 7110 in all, are:
-= -- 677
-> -- 370
+            689 strings with 7477 characters,
+and the built_in function-call counts, 7525 in all, are:
+= -- 719
+> -- 389
 < -- 4
-+ -- 136
-- -- 127
-* -- 646
-:= -- 1142
-add.period$ -- 16
-call.type$ -- 16
-change.case$ -- 115
-chr.to.int$ -- 16
-cite$ -- 17
-duplicate$ -- 251
-empty$ -- 509
-format.name$ -- 145
-if$ -- 1419
++ -- 142
+- -- 133
+* -- 688
+:= -- 1208
+add.period$ -- 17
+call.type$ -- 17
+change.case$ -- 121
+chr.to.int$ -- 17
+cite$ -- 18
+duplicate$ -- 266
+empty$ -- 540
+format.name$ -- 152
+if$ -- 1502
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 31
-newline$ -- 59
-num.names$ -- 46
-pop$ -- 118
+missing$ -- 33
+newline$ -- 62
+num.names$ -- 49
+pop$ -- 123
 preamble$ -- 1
-purify$ -- 131
+purify$ -- 138
 quote$ -- 0
-skip$ -- 191
+skip$ -- 201
 stack$ -- 0
-substring$ -- 478
-swap$ -- 35
+substring$ -- 510
+swap$ -- 36
 text.length$ -- 4
 text.prefix$ -- 3
 top$ -- 0
-type$ -- 128
+type$ -- 136
 warning$ -- 1
-while$ -- 72
-width$ -- 19
-write$ -- 186
+while$ -- 77
+width$ -- 20
+write$ -- 197
 (There was 1 warning)

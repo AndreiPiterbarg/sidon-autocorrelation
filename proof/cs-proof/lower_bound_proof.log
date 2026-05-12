@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  12 MAY 2026 14:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  12 MAY 2026 14:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1224,9 +1224,9 @@ Package pdftex.def Info: figures/04_cascade_flow.pdf  used on input line 999.
 
 [13]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 1203.
+put line 1207.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/sc' will be
-(Font)              scaled to size 10.95pt on input line 1239.
+(Font)              scaled to size 10.95pt on input line 1243.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/ntxtlf/m/sc/10.95'.
 (microtype)             Ignoring protrusion settings for this character.
@@ -1238,7 +1238,7 @@ Package microtype Info: Character `029' is missing
 ]
 
 [16]
-Overfull \hbox (76.90889pt too wide) in paragraph at lines 1400--1411
+Overfull \hbox (76.90889pt too wide) in paragraph at lines 1404--1415
 \LMS/ntxsy/m/n/10.95 ¹\OT1/minntx/m/n/10.95 2\OML/ntxmi/m/it/10.95 ; \OT1/minnt
 x/m/n/10.95 20\OML/ntxmi/m/it/10.95 ; \OT1/minntx/m/n/10.95 32\LMS/ntxsy/m/n/10
 .95 \OT1/minntx/m/n/10.95 25\LMS/ntxsy/m/n/10.95 º$\T1/ntxtlf/m/n/10.95 (-20) 
@@ -1247,7 +1247,7 @@ x/m/n/10.95 20\OML/ntxmi/m/it/10.95 ; \OT1/minntx/m/n/10.95 32\LMS/ntxsy/m/n/10
  []
 
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 10.0pt on input line 1432.
+(Font)              scaled to size 10.0pt on input line 1436.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -1286,10 +1286,10 @@ t/fonts/type1/public/newtx/txmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts
 ublic/newtx/txsys.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/ne
 wtx/ztmb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/ztmr.
 pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/ztmri.pfb>
-Output written on lower_bound_proof.pdf (20 pages, 404819 bytes).
+Output written on lower_bound_proof.pdf (20 pages, 405221 bytes).
 PDF statistics:
- 627 PDF objects out of 1000 (max. 8388607)
- 522 compressed objects within 6 object streams
+ 629 PDF objects out of 1000 (max. 8388607)
+ 524 compressed objects within 6 object streams
  126 named destinations out of 1000 (max. 500000)
  49997 words of extra memory for PDF output out of 51595 (max. 10000000)
 
