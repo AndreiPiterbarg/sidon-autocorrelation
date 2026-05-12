@@ -9,8 +9,8 @@ constant:
 $$C_{1a} \;\ge\; \frac{1292}{1000} \;=\; 1.292.$$
 This improves on the previously announced lower bound of $1.2802$ due to
 Cloninger and Steinerberger (2017) and on the rigorous analytic bound of
-$1.27481$ established by Matolcsi and Vinuesa (2010). The argument builds
-directly on the Matolcsi-Vinuesa dual framework: the single arcsine
+$1.27481$ established by Matolcsi and Vinuesa (2010). The argument
+extends the Matolcsi-Vinuesa dual framework: the single arcsine
 kernel in their master inequality is replaced by a convex combination of
 three arcsine kernels, and the cosine multiplier is re-optimized as a
 $200$-mode expansion. The five resulting functionals are evaluated

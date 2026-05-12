@@ -11,9 +11,9 @@ Matolcsi–Vinuesa (2010) master inequality, with all numerical anchors
 discharged by a `flint.arb` certifier at 256-bit precision (see
 `delsarte_dual/grid_bound_alt_kernel/`).
 
-Headline.  `Sidon.MultiScale.C1a_ge_1292`
-           (and equivalently `Sidon.MultiScale.autoconvolution_ratio_ge_1292_1000`,
-           `Sidon.MultiScale.autoconvolution_ratio_ge_1_292`).
+Headline.  `Sidon.MultiScale.autoconvolution_ratio_ge_1292_1000`
+           (and equivalently `Sidon.MultiScale.autoconvolution_ratio_ge_1_292`,
+           `Sidon.MultiScale.C1a_ge_1292`).
 
 Axioms.    The headline theorem reaches exactly **one** user axiom in
            its dependency closure:
