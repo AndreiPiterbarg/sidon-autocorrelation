@@ -1,29 +1,58 @@
-# Figure notes for `proof/lower_bound_proof.tex`
+# Figure notes for `lower_bound_proof.tex`
 
-Generated assets live in this directory. The PDFs are the publication targets; the PNGs are convenient previews.
+Source: `generate_figures.py` in this directory. Run from the repo
+root with `python proof/cs-proof/figures/generate_figures.py`; the
+script regenerates both the PDF and PNG variants of each figure. The
+PDFs are what the manuscript includes; the PNGs are convenient
+previews for review tools.
 
-## Current manuscript usage
+## Figures
 
-`01_partition_bins.pdf`
+### `01_partition_bins.pdf` — Bin partition and induced averages
 
-Caption: A nonnegative profile supported on `[-1/4,1/4]`, together with the half-open partition into equal bins. The upper panel shows the support decomposition, while the lower panel records the induced averages `a_i = 4n \mu_i` and the simplex identity `\sum_i a_i = 4n` after normalizing `\int f = 1`.
+Shows a nonnegative profile supported on $[-\tfrac14, \tfrac14]$
+together with the half-open partition into equal bins. The upper
+panel illustrates the support decomposition; the lower panel records
+the induced averages $a_i = 4n\,\mu_i$ and the simplex identity
+$\sum_i a_i = 4n$ after normalizing $\int f = 1$.
 
-Placement: after the subsection `Bin Masses and Bin Averages` in `From Functions to Bin Averages`.
+Manuscript placement: end of §2.2 (*Bin Masses and Bin Averages*).
 
-`02_simplex_lattice.pdf`
+### `02_simplex_lattice.pdf` — Lattice approximation of the simplex
 
-Caption: A three-coordinate slice of the normalized simplex. The point `\mu` is replaced by a nearby lattice point `b \in B_{n,m}`; in the formal proof this representative is chosen by the cumulative-floor map described in the text.
+A three-coordinate slice of the normalized simplex. The continuous
+point $\mu$ is replaced by a nearby lattice point $b \in B_{n,m}$,
+chosen in the formal proof by the cumulative-floor map described in
+the text.
 
-Placement: in `Discretization of the Simplex`, immediately before the definition of canonical discretization.
+Manuscript placement: §3.1, immediately before the canonical
+discretization definition.
 
-`03_reversal_canonical.pdf`
+### `03_reversal_canonical.pdf` — Reversal symmetry and canonicalization
 
-Caption: Reversal symmetry for the test value and lexicographic canonicalization via `c \le \rev(c)`.
+Reversal symmetry of the test value and the lexicographic
+canonicalization rule $c \mapsto \min(c, \mathrm{rev}(c))$.
+Palindromic compositions are fixed by the involution; non-palindromic
+pairs contribute one canonical representative each to the search.
 
-Placement: after `Reversal Symmetry`.
+Manuscript placement: §4.3 (*Reversal Symmetry*), after the corollary.
 
-`04_cascade_flow.pdf`
+### `04_cascade_flow.pdf` — Multiscale cascade overview
 
-Caption: Stylized overview of the multiscale cascade, annotated with the exact survivor counts from the terminal certificate run.
+Stylized overview of the multiscale cascade. The annotations record
+the exact survivor counts from the terminal-certificate run: $345$ at
+$d = 4$, then $48{,}443$, $7{,}499{,}382$, $147{,}279{,}894$,
+$76{,}829$, and finally $0$ at $d = 128$.
 
-Placement: at the start of `The Multiscale Cascade`.
+Manuscript placement: start of §6 (*The Multiscale Cascade*).
+
+## Regenerating
+
+```bash
+python proof/cs-proof/figures/generate_figures.py
+```
+
+The script produces both `.pdf` (LaTeX-included) and `.png` (preview)
+variants for each of the four figures. Captions live in the
+manuscript, not here — modifying a caption requires editing the
+`\caption{...}` macro in `lower_bound_proof.tex`.
