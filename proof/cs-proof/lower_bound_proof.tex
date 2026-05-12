@@ -363,7 +363,7 @@ $\sum_i a_i=4n$ after normalizing $\int f=1$.}
 \label{fig:partition-bins}
 \end{figure}
 
-\subsection[Window Lower Bound for the Ratio]{Window Lower Bound for the Ratio}
+\subsection{Window Lower Bound for the Ratio}
 
 The next lemma is the analytic bridge from the continuous problem to
 the discrete windowed expressions of Cloninger and
@@ -574,7 +574,15 @@ $c$ be the canonical discretization from
 Definition~\ref{def:canonical-disc}, and set
 $w_i=c_i/m$.  For a fixed window $(\ell,s_{\mathrm{lo}})$, write
 \[
-  W \;=\; \sum_{i\in \mathcal{B}_{n,\ell,s_{\mathrm{lo}}}} w_i.
+  W_{\mathrm{int}}
+  \;=\;
+  \sum_{i\in \mathcal{B}_{n,\ell,s_{\mathrm{lo}}}} c_i,
+  \qquad
+  W
+  \;=\;
+  \sum_{i\in \mathcal{B}_{n,\ell,s_{\mathrm{lo}}}} w_i
+  \;=\;
+  \frac{W_{\mathrm{int}}}{m}.
 \]
 Then
 \[
@@ -639,14 +647,9 @@ threshold.
 \begin{theorem}[Dynamic threshold soundness]
 \label{thm:dynamic-threshold}
 Let $c$ be the canonical discretization of a normalized function
-$f\in\mathcal{F}$ at parameters $(n,m)$, and let
-\[
-  W
-  \;=\;
-  \frac{1}{m}
-  \sum_{i\in \mathcal{B}_{n,\ell,s_{\mathrm{lo}}}} c_i.
-\]
-If, for some window $(\ell,s_{\mathrm{lo}})$ with $\ell\ge 2$,
+$f\in\mathcal{F}$ at parameters $(n,m)$, fix a window
+$(\ell,s_{\mathrm{lo}})$ with $\ell\ge 2$, and let $W$ be as in
+Lemma~\ref{lem:disc-error}.  If
 \[
   \operatorname{TV}_{n,m}(c;\ell,s_{\mathrm{lo}})
   \;>\;
@@ -671,10 +674,8 @@ continuous one by at most the correction term displayed above.
 The Lean counterpart is \texttt{dynamic\_threshold\_sound}.
 
 \begin{remark}[Integer-coordinate form]
-If
-$W_{\mathrm{int}}=\sum_{i\in\mathcal{B}_{n,\ell,s_{\mathrm{lo}}}} c_i$,
-then the threshold from
-Theorem~\ref{thm:dynamic-threshold} can be written equivalently as
+Substituting $W = W_{\mathrm{int}}/m$ into
+Theorem~\ref{thm:dynamic-threshold} rewrites the threshold as
 \[
   c_{\mathrm{target}}
   +
