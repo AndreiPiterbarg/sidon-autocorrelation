@@ -250,7 +250,8 @@ $\|f*f\|_{L^\infty} < \infty$, then
 \[
   \frac{\|f*f\|_{L^\infty}}{\left(\int f\right)^2} \;\ge\; \frac75.
 \]
-In particular, $C_{1a} \ge \tfrac75 = 1.4$.
+The case $\|f*f\|_{L^\infty} = \infty$ is vacuous for any finite
+lower bound, so $C_{1a} \ge \tfrac75 = 1.4$ holds unconditionally.
 \end{theorem}
 
 The Lean formalization proves this as
@@ -385,10 +386,12 @@ $\ell\ge 2$ and $s_{\mathrm{lo}}\ge 0$,
 Write $f_i=f\,\mathbf{1}_{I_i}$.  Then
 $f=\sum_i f_i$ and $(f*f)(t)=\sum_{i,j}(f_i*f_j)(t)$.  The support of
 $f_i*f_j$ is contained in $I_i+I_j$, an interval of length
-$\tfrac{1}{2n}$ whose location depends only on $i+j$.  If one fixes
-the sum-index window
-$s_{\mathrm{lo}}\le i+j\le s_{\mathrm{lo}}+\ell-2$, the corresponding
-Minkowski sums form an interval of total length $\tfrac{\ell}{4n}$.
+$\tfrac{1}{2n}$ whose location depends only on $i+j$.  Fixing the
+sum-index window $s_{\mathrm{lo}}\le i+j\le s_{\mathrm{lo}}+\ell-2$
+selects $\ell-1$ consecutive sum-indices.  Their Minkowski-sum
+intervals are translates by $\tfrac{1}{4n}$ of a fixed interval of
+length $\tfrac{1}{2n}$, so their union is a single interval of length
+$(\ell-2)\cdot\tfrac{1}{4n}+\tfrac{1}{2n}=\tfrac{\ell}{4n}$.
 The total $L^1$ mass contributed by these terms is
 \[
   \sum_{s=s_{\mathrm{lo}}}^{s_{\mathrm{lo}}+\ell-2}
@@ -597,14 +600,20 @@ Lemma~\ref{lem:bin-reduction}.
 \end{lemma}
 
 \begin{proof}[Proof sketch]
-Write $w_i=\mu_i+\delta_i$.  Expanding the quadratic expression gives
-linear and quadratic error terms.  The quadratic part is bounded by
-$\tfrac{4n}{\ell}\cdot\tfrac{1}{m^2}$ because
-$|\delta_i|\le \tfrac{1}{m}$, while the linear part is bounded by
-$\tfrac{4n}{\ell}\cdot \tfrac{2W}{m}$ because only the contributing
-bins matter in the chosen window.  This is precisely the estimate
-proved in Lean before the theorem
-\path{dynamic_threshold_sound}.
+Write $w_i=\mu_i+\delta_i$, so the discrete and continuous test values
+differ by terms linear and quadratic in $(\delta_i)$.  The quadratic
+part is bounded by $\tfrac{4n}{\ell}\cdot\tfrac{1}{m^2}$ from the
+pointwise estimate $|\delta_i|\le \tfrac{1}{m}$.  The linear part is
+the load-bearing step.  Proposition~\ref{prop:canonical-disc-basic}
+shows the partial sums
+$D(k)/m - M(k) = \sum_{i<k}\delta_i$ lie in $(-1/m,\,0]$, so for any
+range of consecutive indices the cumulative $\delta$-error telescopes
+to at most $1/m$ in absolute value.  Applied to the contributing bin
+range $\mathcal{B}_{n,\ell,s_{\mathrm{lo}}}$ and combined with
+$|\mu_i|\le W$, the linear cross-term is bounded by
+$\tfrac{4n}{\ell}\cdot \tfrac{2W}{m}$.  This is precisely the
+estimate proved in Lean before the theorem
+\texttt{dynamic\_threshold\_sound}.
 \end{proof}
 
 \begin{corollary}[Global correction bound]
@@ -695,15 +704,18 @@ $2d - 1$:
 The \emph{test value} is
 \[
   \tv(a) \;=\;
-  \max_{\substack{2 \le \ell \le 2d \\[2pt] 0 \le k \le 2(d-1) - (\ell-2)}}
+  \max_{\substack{2 \le \ell \le 2d \\[2pt] 0 \le s_{\mathrm{lo}} \le 2(d-1) - (\ell-2)}}
   \frac{1}{4n\ell}
-  \sum_{s=k}^{k+\ell-2} \conv[s].
+  \sum_{s=s_{\mathrm{lo}}}^{s_{\mathrm{lo}}+\ell-2} \conv[s].
 \]
 \end{definition}
 
-In words: compute the autoconvolution, slide a window of each possible
-width $\ell$ across it, sum the $\ell - 1$ consecutive entries in each
-window position, normalize by $4n\ell$, and take the maximum.
+In words: compute the autoconvolution, slide a window across it that
+covers $\ell-1$ consecutive entries, normalize by $4n\ell$, and take
+the maximum.  The parameter $\ell$ matches the convention of
+Cloninger--Steinerberger~\cite{CS17}: the corresponding Minkowski-sum
+interval has length $\ell/(4n)$, even though the window contains
+$\ell-1$ entries.
 
 (The Lean definition \texttt{max\_test\_value} lets~$s_{\mathrm{lo}}$
 range over all values $0,\dots,2d-1$; positions where the window extends
@@ -1049,6 +1061,7 @@ $x_{\text{cap}} = \min\!\left(x_{\text{cap}}^{\mathrm{TV}},
 x_{\text{cap}}^{\mathrm{CS}}\right)$.
 
 \begin{proposition}[Energy Cap Soundness]
+\label{prop:energy-cap-sound}
 If a child has some bin $c_j > x_{\mathrm{cap}}^{\mathrm{CS}}$, then
 any nonnegative function with those child-bin masses already satisfies
 $\|f*f\|_{L^\infty} > c_{\mathrm{target}}$.
@@ -1056,9 +1069,14 @@ $\|f*f\|_{L^\infty} > c_{\mathrm{target}}$.
 
 \begin{proof}
 Let $M_j = c_j/m$ be the mass in the $j$th child bin.  Restricting $f$
-to that single bin produces a nonnegative function $f_j$ supported on
-an interval of length $1/d_{\text{child}}$ and with total mass $M_j$.
-By the same averaging argument used for asymmetry pruning,
+to that bin gives a nonnegative function $f_j$ supported on an
+interval of length $1/(2 d_{\text{child}})$ (the child-bin width)
+with total mass $M_j$, hence $f_j*f_j$ is supported on an interval of
+length $1/d_{\text{child}}$ with total mass $M_j^2$.  Pointwise
+nonnegativity of $f$ gives $(f*f)(t)\ge (f_j*f_j)(t)$, so applying
+the averaging inequality
+$\|h\|_{L^\infty}\ge |J|^{-1}\int_J h$ to $h=f_j*f_j$ over its
+support yields
 \[
   \|f*f\|_{L^\infty}
   \;\ge\;
@@ -1309,15 +1327,25 @@ $\tfrac{N+P}{2}$ from Proposition~\ref{prop:canon-count}.
 \subsection{Window Exhaustion}
 
 For each composition not eliminated by asymmetry, every valid
-window $(\ell, k)$ with $2 \le \ell \le 2d$ and all valid starting
-positions~$k$ is tested before the composition is declared a survivor.
+window $(\ell, s_{\mathrm{lo}})$ with $2 \le \ell \le 2d$ and all
+valid starting positions~$s_{\mathrm{lo}}$ is tested before the
+composition is declared a survivor.
 An independent reference implementation agrees with the
 optimized kernel on all $1{,}771$ canonical compositions at $(d,m)=(4,20)$.
 
 \subsection{Conservative Arithmetic}
 
-The autoconvolution is computed in exact integer arithmetic.  The
-threshold comparison evaluates
+The autoconvolution is computed in exact integer arithmetic.
+Multiplying both sides of the inequality in
+Theorem~\ref{thm:dynamic-threshold} by $m^2\ell/(4n)$, the code
+compares the integer left-hand side
+\[
+  \sum_{s=s_{\mathrm{lo}}}^{s_{\mathrm{lo}}+\ell-2}\
+  \sum_{i+j=s} c_i\, c_j
+  \;=\;
+  \operatorname{TV}_{n,m}(c;\ell,s_{\mathrm{lo}})\,\frac{m^2\ell}{4n}
+\]
+against the right-hand side
 \[
   c_{\text{target}}m^2\frac{\ell}{4n} + 1 + 2W_{\text{int}},
 \]
@@ -1332,8 +1360,12 @@ borderline prune but never falsely prunes.
 Every refinement of a surviving parent is checked at the finer level.
 The dyadic splitting with energy cap generates all valid children
 (Section~\ref{subsec:energy-cap}); children exceeding the cap are
-provably pruned.  The Gray-code kernel produces identical canonical
-survivor sets as the earlier lexicographic kernel on all tested parents.
+provably pruned, by
+Proposition~\ref{prop:energy-cap-sound} the $L^\infty$ norm of any
+admissible $f$ with that bin pattern already exceeds the target, so
+no further refinement is required for those children.  The Gray-code
+kernel produces identical canonical survivor sets as the earlier
+lexicographic kernel on all tested parents.
 
 \subsection{Terminal Cascade}
 
@@ -1342,7 +1374,12 @@ The cascade reached zero survivors at level~$L_5$
 $70$ hours on a 128-core machine.  In the Lean formalization this
 outcome is packaged as the axiom \texttt{cascade\_all\_pruned}: every
 composition in~$\N^{128}$ of total mass~$20$ has some window whose test
-value exceeds the corrected threshold at target~$\tfrac75$.
+value exceeds the corrected threshold at target~$\tfrac75$.  The
+universal quantifier over $\N^{128}$ rather than over canonical
+representatives is justified by Theorem~\ref{thm:reversal}: for each
+non-canonical $c$ the witness for $\rev(c)$ transports to a witness
+for $c$ with the same width $\ell$ and reflected window start, so the
+canonical coverage produced by the cascade extends to the full lattice.
 
 % ======================================================================
 \section{Lean Formalization}\label{sec:formalization}
