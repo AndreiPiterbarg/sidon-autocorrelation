@@ -64,13 +64,22 @@ data/subtree_test/
 # Enormous shard/checkpoint trees (multi-GB; exceed GitHub 2GB hard blob limit)
 *.npy
 *.dat
+*.tar
+*.tar.gz
+*.tgz
 archive/data_runs/
 cloninger-steinerberger/cpu/data/
+/data/
+/data_experiment/
 **/_shards_L1/
 **/_shards_L2/
 **/coarse_shards/
 **/checkpoints/
 **/subtree_test/
+
+# Root-level cruft (one-off scripts, orphan artifacts)
+/.fix_indent_damage.py
+/lower_bound_proof.log
 
 # Temp/backup files
 *.stackdump
