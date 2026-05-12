@@ -1,0 +1,226 @@
+{
+  "results": [
+    {
+      "S": 20,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 60.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 20 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 566,
+          "survivors": 102
+        },
+        {
+          "level": 2,
+          "children": 84782,
+          "survivors": 192
+        },
+        {
+          "level": 3,
+          "children": 1443892,
+          "survivors": 0
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": "L3",
+      "status": "closed",
+      "wall_time_sec": 18.2,
+      "stdout_tail": "[warmup] done in 0.0s\n--- L0: enumerating canonical compositions ---\n[L0] d=2, S=20, compositions=21\n     x_cap = 16\n     layers: NO=on, J=on, L=off\n     0.02s: pruned asym=4 NO=0 J=0 L=0 hard=0 survivors=7\n     time breakdown: N+O=0.02s J=0.00s L=0.00s\n     BOX CERT v4: PASS (sound, N+O+J+L)\n  op_rest_d for d=4: 0.00s\n--- L1: d=2 -> 4, parents=7, x_cap=11, mode=tight ---\n  L1 done in 3.49s: 566 children -> 102 survivors (18.0212%)\n     +NO=373 (kernel)  +J=2  +L=0  uncert=77\n     time breakdown: NO=0.1s J=0.2s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n  op_rest_d for d=8: 0.01s\n--- L2: d=4 -> 8, parents=102, x_cap=8, mode=tight ---\n  [47/102] children=41,125 +NO=32,506 +J=1,278 +L=0 surv=90  (5.04s)\n  L2 done in 7.86s: 84,782 children -> 192 survivors (0.2265%)\n     +NO=64,856 (kernel)  +J=2,755  +L=0  uncert=16,977\n     time breakdown: NO=0.6s J=17.9s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n--- L3: d=8 -> 16, parents=192, x_cap=5, mode=minimal ---\n  L3 done in 4.47s: 1,443,892 children -> 0 survivors (0.0000%)\n     +NO=1,443,892 (kernel)  +J=0  +L=0  uncert=0\n     time breakdown: NO=7.6s J=0.0s L=0.0s\n     min_cert_net = -1000000000000000019884624838656.000000 (box_cert PASS: False)\n*** GRID-POINT PROOF COMPLETE at L3! ***\n*** Box certification: INCOMPLETE ***\n*** Total time: 15.85s ***\nGRID-POINT PROOF: TV >= 1.281 (box cert incomplete; increase S or use --use_sdp)"
+    },
+    {
+      "S": 25,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 60.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 25 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 966,
+          "survivors": 186
+        },
+        {
+          "level": 2,
+          "children": 322086,
+          "survivors": 741
+        },
+        {
+          "level": 3,
+          "children": 19898976,
+          "survivors": 0
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": "L3",
+      "status": "closed",
+      "wall_time_sec": 22.26,
+      "stdout_tail": "--- L0: enumerating canonical compositions ---\n[L0] d=2, S=25, compositions=26\n     x_cap = 20\n     layers: NO=on, J=on, L=off\n     0.02s: pruned asym=5 NO=0 J=0 L=0 hard=0 survivors=8\n     time breakdown: N+O=0.02s J=0.00s L=0.00s\n     BOX CERT v4: PASS (sound, N+O+J+L)\n  op_rest_d for d=4: 0.00s\n--- L1: d=2 -> 4, parents=8, x_cap=14, mode=tight ---\n  L1 done in 2.84s: 966 children -> 186 survivors (19.2547%)\n     +NO=673 (kernel)  +J=3  +L=0  uncert=104\n     time breakdown: NO=0.0s J=0.1s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n  op_rest_d for d=8: 0.00s\n--- L2: d=4 -> 8, parents=186, x_cap=10, mode=tight ---\n  [59/186] children=109,012 +NO=100,564 +J=1,401 +L=0 surv=90  (5.11s)\n  [121/186] children=221,492 +NO=192,520 +J=4,927 +L=0 surv=572  (10.41s)\n  L2 done in 13.77s: 322,086 children -> 741 survivors (0.2301%)\n     +NO=279,390 (kernel)  +J=6,767  +L=0  uncert=35,188\n     time breakdown: NO=2.3s J=40.7s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n--- L3: d=8 -> 16, parents=741, x_cap=7, mode=minimal ---\n  L3 done in 3.20s: 19,898,976 children -> 0 survivors (0.0000%)\n     +NO=19,898,976 (kernel)  +J=0  +L=0  uncert=0\n     time breakdown: NO=1.7s J=0.0s L=0.0s\n     min_cert_net = -1000000000000000019884624838656.000000 (box_cert PASS: False)\n*** GRID-POINT PROOF COMPLETE at L3! ***\n*** Box certification: INCOMPLETE ***\n*** Total time: 19.83s ***\nGRID-POINT PROOF: TV >= 1.281 (box cert incomplete; increase S or use --use_sdp)"
+    },
+    {
+      "S": 30,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 60.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 30 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 1603,
+          "survivors": 318
+        },
+        {
+          "level": 2,
+          "children": 1025086,
+          "survivors": 2386
+        },
+        {
+          "level": 3,
+          "children": 176870589,
+          "survivors": 0
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": "L3",
+      "status": "closed",
+      "wall_time_sec": 37.47,
+      "stdout_tail": "     0.02s: pruned asym=6 NO=0 J=0 L=0 hard=0 survivors=10\n     time breakdown: N+O=0.01s J=0.00s L=0.00s\n     BOX CERT v4: PASS (sound, N+O+J+L)\n  op_rest_d for d=4: 0.00s\n--- L1: d=2 -> 4, parents=10, x_cap=16, mode=tight ---\n  L1 done in 2.74s: 1,603 children -> 318 survivors (19.8378%)\n     +NO=1,102 (kernel)  +J=1  +L=0  uncert=155\n     time breakdown: NO=0.1s J=0.2s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n  op_rest_d for d=8: 0.00s\n--- L2: d=4 -> 8, parents=318, x_cap=12, mode=tight ---\n  [51/318] children=178,977 +NO=172,034 +J=1,623 +L=0 surv=70  (5.01s)\n  [114/318] children=401,409 +NO=375,839 +J=5,067 +L=0 surv=538  (10.15s)\n  [171/318] children=591,286 +NO=544,998 +J=9,043 +L=0 surv=1,349  (15.18s)\n  [227/318] children=765,508 +NO=698,409 +J=12,453 +L=0 surv=1,907  (20.20s)\n  [284/318] children=932,668 +NO=846,978 +J=15,178 +L=0 surv=2,383  (25.46s)\n  L2 done in 26.72s: 1,025,086 children -> 2,386 survivors (0.2328%)\n     +NO=936,019 (kernel)  +J=15,649  +L=0  uncert=71,023\n     time breakdown: NO=6.9s J=84.4s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n--- L3: d=8 -> 16, parents=2,386, x_cap=8, mode=minimal ---\n  [1707/2386] children=135,460,245 +NO=135,460,245 +J=0 +L=0 surv=0  (5.00s)\n  L3 done in 5.97s: 176,870,589 children -> 0 survivors (0.0000%)\n     +NO=176,870,589 (kernel)  +J=0  +L=0  uncert=0\n     time breakdown: NO=12.0s J=0.0s L=0.0s\n     min_cert_net = -1000000000000000019884624838656.000000 (box_cert PASS: False)\n*** GRID-POINT PROOF COMPLETE at L3! ***\n*** Box certification: INCOMPLETE ***\n*** Total time: 35.45s ***\nGRID-POINT PROOF: TV >= 1.281 (box cert incomplete; increase S or use --use_sdp)"
+    },
+    {
+      "S": 35,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 100.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 35 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 2362,
+          "survivors": 484
+        },
+        {
+          "level": 2,
+          "children": 2697330,
+          "survivors": 6365
+        },
+        {
+          "level": 3,
+          "children": 1163952326,
+          "survivors": 0
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": "L3",
+      "status": "closed",
+      "wall_time_sec": 70.7,
+      "stdout_tail": "     +NO=1,671 (kernel)  +J=2  +L=0  uncert=205\n     time breakdown: NO=0.0s J=0.2s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n  op_rest_d for d=8: 0.00s\n--- L2: d=4 -> 8, parents=484, x_cap=14, mode=tight ---\n  [70/484] children=424,098 +NO=418,793 +J=1,012 +L=0 surv=32  (5.02s)\n  [141/484] children=851,656 +NO=829,015 +J=3,859 +L=0 surv=444  (10.12s)\n  [197/484] children=1,238,314 +NO=1,195,535 +J=7,054 +L=0 surv=1,115  (15.13s)\n  [231/484] children=1,395,066 +NO=1,331,839 +J=11,137 +L=0 surv=2,413  (20.30s)\n  [259/484] children=1,573,166 +NO=1,489,705 +J=14,936 +L=0 surv=3,301  (25.35s)\n  [314/484] children=1,861,928 +NO=1,757,487 +J=18,175 +L=0 surv=4,289  (30.36s)\n  [347/484] children=2,041,932 +NO=1,916,617 +J=21,534 +L=0 surv=5,438  (35.45s)\n  [401/484] children=2,311,040 +NO=2,163,903 +J=24,578 +L=0 surv=6,153  (40.48s)\n  L2 done in 44.16s: 2,697,330 children -> 6,365 survivors (0.2360%)\n     +NO=2,536,492 (kernel)  +J=26,094  +L=0  uncert=128,379\n     time breakdown: NO=16.3s J=141.1s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n--- L3: d=8 -> 16, parents=6,365, x_cap=9, mode=minimal ---\n  [646/6365] children=142,158,980 +NO=142,158,980 +J=0 +L=0 surv=0  (5.00s)\n  [2250/6365] children=441,722,626 +NO=441,722,626 +J=0 +L=0 surv=0  (10.01s)\n  [3500/6365] children=720,929,874 +NO=720,929,874 +J=0 +L=0 surv=0  (15.01s)\n  [5477/6365] children=1,040,180,688 +NO=1,040,180,688 +J=0 +L=0 surv=0  (20.01s)\n  L3 done in 22.07s: 1,163,952,326 children -> 0 survivors (0.0000%)\n     +NO=1,163,952,326 (kernel)  +J=0  +L=0  uncert=0\n     time breakdown: NO=76.3s J=0.0s L=0.0s\n     min_cert_net = -1000000000000000019884624838656.000000 (box_cert PASS: False)\n*** GRID-POINT PROOF COMPLETE at L3! ***\n*** Box certification: INCOMPLETE ***\n*** Total time: 1.1m ***\nGRID-POINT PROOF: TV >= 1.281 (box cert incomplete; increase S or use --use_sdp)"
+    },
+    {
+      "S": 40,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 100.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 40 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 3763,
+          "survivors": 731
+        },
+        {
+          "level": 2,
+          "children": 6529366,
+          "survivors": 15368
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": null,
+      "status": "timeout",
+      "wall_time_sec": 101.01,
+      "stdout_tail": "     0.02s: pruned asym=8 NO=0 J=0 L=0 hard=0 survivors=13\n     time breakdown: N+O=0.01s J=0.00s L=0.00s\n     BOX CERT v4: PASS (sound, N+O+J+L)\n  op_rest_d for d=4: 0.00s\n--- L1: d=2 -> 4, parents=13, x_cap=22, mode=tight ---\n  L1 done in 3.19s: 3,763 children -> 731 survivors (19.4260%)\n     +NO=2,704 (kernel)  +J=4  +L=0  uncert=273\n     time breakdown: NO=0.1s J=0.4s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n  op_rest_d for d=8: 0.01s\n--- L2: d=4 -> 8, parents=731, x_cap=16, mode=tight ---\n  [44/731] children=419,095 +NO=417,985 +J=309 +L=0 surv=0  (5.07s)\n  [105/731] children=1,030,985 +NO=1,021,706 +J=1,820 +L=0 surv=87  (10.43s)\n  [163/731] children=1,663,784 +NO=1,644,217 +J=3,744 +L=0 surv=347  (15.43s)\n  [191/731] children=1,877,858 +NO=1,849,124 +J=4,574 +L=0 surv=635  (20.67s)\n  [207/731] children=2,038,498 +NO=1,995,516 +J=7,137 +L=0 surv=1,264  (25.76s)\n  [231/731] children=2,292,778 +NO=2,236,919 +J=8,947 +L=0 surv=1,996  (30.86s)\n  [291/731] children=2,877,948 +NO=2,812,497 +J=10,069 +L=0 surv=2,152  (36.39s)\n  [306/731] children=2,990,720 +NO=2,911,190 +J=12,604 +L=0 surv=3,164  (41.75s)\n  [318/731] children=3,107,551 +NO=3,013,099 +J=15,640 +L=0 surv=4,347  (46.89s)\n  [335/731] children=3,275,169 +NO=3,165,659 +J=18,702 +L=0 surv=5,325  (52.20s)\n  [351/731] children=3,449,497 +NO=3,326,882 +J=20,591 +L=0 surv=6,039  (57.28s)\n  [404/731] children=3,993,594 +NO=3,855,441 +J=22,476 +L=0 surv=6,254  (1.0m)\n  [434/731] children=4,170,594 +NO=4,009,203 +J=26,883 +L=0 surv=8,448  (1.1m)\n  [459/731] children=4,398,930 +NO=4,212,324 +J=31,273 +L=0 surv=10,347  (1.2m)\n  [492/731] children=4,752,618 +NO=4,542,572 +J=34,785 +L=0 surv=11,434  (1.3m)\n  [544/731] children=5,105,879 +NO=4,871,544 +J=38,170 +L=0 surv=13,039  (1.4m)\n  [583/731] children=5,455,254 +NO=5,196,441 +J=41,193 +L=0 surv=14,638  (1.5m)\n  [646/731] children=5,923,638 +NO=5,643,474 +J=43,573 +L=0 surv=15,332  (1.6m)\n  L2 done in 1.6m: 6,529,366 children -> 15,368 survivors (0.2354%)",
+      "stuck_at": "L3",
+      "stuck_with_survivors": 15368
+    },
+    {
+      "S": 45,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 100.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 45 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 5058,
+          "survivors": 1031
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": null,
+      "status": "timeout",
+      "wall_time_sec": 101.58,
+      "stdout_tail": "     0.01s: pruned asym=9 NO=0 J=0 L=0 hard=0 survivors=14\n     time breakdown: N+O=0.01s J=0.00s L=0.00s\n     BOX CERT v4: PASS (sound, N+O+J+L)\n  op_rest_d for d=4: 0.00s\n--- L1: d=2 -> 4, parents=14, x_cap=25, mode=tight ---\n  L1 done in 2.52s: 5,058 children -> 1,031 survivors (20.3836%)\n     +NO=3,696 (kernel)  +J=6  +L=0  uncert=325\n     time breakdown: NO=0.1s J=0.3s L=0.0s\n     min_cert_net = 1000000000000000019884624838656.000000 (box_cert PASS: True)\n  op_rest_d for d=8: 0.00s\n--- L2: d=4 -> 8, parents=1,031, x_cap=18, mode=tight ---\n  [54/1031] children=795,856 +NO=795,311 +J=233 +L=0 surv=0  (5.06s)\n  [138/1031] children=2,105,406 +NO=2,097,636 +J=1,573 +L=0 surv=44  (10.11s)\n  [176/1031] children=2,722,946 +NO=2,697,907 +J=4,358 +L=0 surv=643  (15.14s)\n  [252/1031] children=3,833,880 +NO=3,798,603 +J=5,353 +L=0 surv=906  (20.35s)\n  [271/1031] children=4,133,344 +NO=4,078,557 +J=8,079 +L=0 surv=2,011  (25.48s)\n  [301/1031] children=4,619,764 +NO=4,543,584 +J=11,310 +L=0 surv=3,476  (30.50s)\n  [373/1031] children=5,735,970 +NO=5,649,171 +J=12,608 +L=0 surv=3,631  (35.52s)\n  [398/1031] children=6,011,694 +NO=5,903,575 +J=14,995 +L=0 surv=5,332  (40.71s)\n  [412/1031] children=6,216,762 +NO=6,085,046 +J=19,867 +L=0 surv=7,399  (45.75s)\n  [433/1031] children=6,525,246 +NO=6,370,384 +J=24,182 +L=0 surv=9,184  (51.05s)\n  [462/1031] children=7,015,566 +NO=6,839,299 +J=26,493 +L=0 surv=10,463  (56.28s)\n  [515/1031] children=7,873,026 +NO=7,684,065 +J=27,912 +L=0 surv=10,589  (1.0m)\n  [544/1031] children=8,106,176 +NO=7,896,458 +J=31,342 +L=0 surv=12,714  (1.1m)\n  [563/1031] children=8,341,866 +NO=8,108,028 +J=35,756 +L=0 surv=15,322  (1.2m)\n  [578/1031] children=8,563,204 +NO=8,306,971 +J=39,876 +L=0 surv=17,563  (1.3m)\n  [600/1031] children=8,882,952 +NO=8,601,069 +J=43,884 +L=0 surv=19,822  (1.4m)\n  [624/1031] children=9,283,560 +NO=8,981,421 +J=46,579 +L=0 surv=20,749  (1.4m)\n  [663/1031] children=9,878,414 +NO=9,558,986 +J=48,766 +L=0 surv=21,224  (1.5m)\n  [698/1031] children=10,142,102 +NO=9,799,435 +J=52,414 +L=0 surv=23,837  (1.6m)",
+      "stuck_at": "L2",
+      "stuck_with_survivors": 1031
+    },
+    {
+      "S": 50,
+      "c_target": 1.281,
+      "d0": 2,
+      "mode": "adaptive",
+      "tight_max_level": 2,
+      "max_levels": 6,
+      "n_workers": 4,
+      "timeout_sec": 100.0,
+      "cmd": "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\cloninger-steinerberger\\cpu\\run_cascade_coarse_v5.py --d0 2 --S 50 --c_target 1.281 --max_levels 6 --mode adaptive --tight_max_level 2 --n_workers 4 --no_sdp --no_checkpoint",
+      "levels": [
+        {
+          "level": 1,
+          "children": 7288,
+          "survivors": 1409
+        }
+      ],
+      "L0_survivors": null,
+      "closed_at": null,
+      "status": "timeout",
+      "wall_time_sec": 100.98,
+      "stdout_tail": "     time breakdown: N+O=0.01s J=0.00s L=0.00s\n     BOX CERT v4: PASS (sound, N+O+J+L)\n  op_rest_d for d=4: 0.00s\n--- L1: d=2 -> 4, parents=16, x_cap=28, mode=tight ---\n  L1 done in 2.99s: 7,288 children -> 1,409 survivors (19.3332%)\n     +NO=5,385 (kernel)  +J=4  +L=0  uncert=412\n     time breakdown: NO=0.1s J=0.4s L=0.0s\n     *** RIGOR L1: FAIL  (412 cells pruned without box-cert proof) ***\n     *** This breaks the rigorous chain \u00e2\u20ac\u201d cascade is NOT a proof of C_{1a} >= 1.281 ***\n     *** Consider: increase S to shrink corrections, or stop and revise. ***\n  op_rest_d for d=8: 0.00s\n--- L2: d=4 -> 8, parents=1,409, x_cap=20, mode=tight ---\n  [42/1409] children=833,008 +NO=832,988 +J=17 +L=0 surv=0  (5.05s)\n  [110/1409] children=2,411,395 +NO=2,407,152 +J=962 +L=0 surv=15  (10.08s)\n  [174/1409] children=3,941,855 +NO=3,932,859 +J=2,079 +L=0 surv=50  (15.15s)\n  [207/1409] children=4,644,906 +NO=4,624,643 +J=3,449 +L=0 surv=342  (20.30s)\n  [230/1409] children=5,181,233 +NO=5,147,918 +J=5,784 +L=0 surv=1,002  (25.34s)\n  [269/1409] children=6,137,496 +NO=6,099,020 +J=6,415 +L=0 surv=1,179  (30.36s)\n  [327/1409] children=7,279,498 +NO=7,235,053 +J=6,800 +L=0 surv=1,339  (36.09s)\n  [341/1409] children=7,585,858 +NO=7,528,907 +J=8,100 +L=0 surv=2,035  (42.77s)\n  [352/1409] children=7,841,914 +NO=7,772,053 +J=9,814 +L=0 surv=2,848  (47.95s)\n  [363/1409] children=8,101,210 +NO=8,018,004 +J=11,884 +L=0 surv=3,846  (53.62s)\n  [377/1409] children=8,422,690 +NO=8,326,129 +J=13,791 +L=0 surv=5,127  (58.76s)\n  [394/1409] children=8,832,082 +NO=8,725,581 +J=14,737 +L=0 surv=5,957  (1.1m)\n  [438/1409] children=9,994,282 +NO=9,882,295 +J=15,411 +L=0 surv=6,005  (1.2m)\n  [487/1409] children=10,866,125 +NO=10,742,423 +J=16,325 +L=0 surv=6,588  (1.2m)\n  [503/1409] children=11,156,298 +NO=11,011,518 +J=18,778 +L=0 surv=8,633  (1.3m)\n  [515/1409] children=11,424,774 +NO=11,259,855 +J=21,715 +L=0 surv=10,606  (1.4m)\n  [522/1409] children=11,562,561 +NO=11,386,902 +J=24,140 +L=0 surv=11,452  (1.5m)\n  [531/1409] children=11,781,364 +NO=11,592,838 +J=26,030 +L=0 surv=12,618  (1.6m)",
+      "stuck_at": "L2",
+      "stuck_with_survivors": 1409
+    }
+  ],
+  "params": {
+    "c_target": 1.281,
+    "d0": 2,
+    "mode": "adaptive",
+    "tight_max_level": 2,
+    "max_levels": 6,
+    "n_workers": 4,
+    "per_test_timeout": 60.0
+  },
+  "note": "Combined from two sweep runs (S=20..30 and S=35..50)"
+}

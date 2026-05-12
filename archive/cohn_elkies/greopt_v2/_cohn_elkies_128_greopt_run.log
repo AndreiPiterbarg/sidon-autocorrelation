@@ -1,0 +1,94 @@
+(CVXPY) May 11 07:02:02 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 07:02:02 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_cohn_elkies_128_greopt.py:123: IntegrationWarning: The maximum number of subdivisions (400) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, 10.0, np.inf, limit=400, epsabs=1e-14, epsrel=1e-12)
+========================================================================
+Cohn-Elkies multi-scale (K26) + G re-optimization + rigorous cert
+========================================================================
+  delta_1 = 0.1380    u = 0.6380
+  n_modes = 119                    arb prec = 256 bits
+
+Sanity 1: pure arcsine (lambda_2 = 0); should ~match MV's 1.2742...
+  QP solver=MOSEK  S1=87.3545  min_G_grid=1.000000
+  k1=0.90928  K2(direct~)=4.1647  K2(Minkowski)=4.1648  S1=87.3545  min_G=1.00000
+  Numerical M_cert (direct K2)  = 1.2749728514713756
+  Numerical M_cert (Minkowski)  = 1.274963597768651
+  [arb] min_G >= 0.99839707  (Lipschitz rem <= 1.59e-03)
+  [arb] G2 (G > 0 on [0,1/4]):  OK
+  [arb] S1 <= 87.354467
+  [arb] k_1 enclosure mid=0.9092832947  rad<=5.77e-77
+  [arb] K_2: Minkowski <= 4.1648
+  [arb] a (gain) >= 0.071542
+  [arb] certified M_* >= 1.274415
+  ==> sanity rigorous M_cert >= 1.27442
+
+K26 best point  (delta_2 = 0.055, lambda_1 = 0.9312)
+------------------------------------------------------------------------
+  QP solver=MOSEK  S1=49.8237  min_G_grid=1.000000
+  k1=0.91450  K2(direct~)=4.3587  K2(Minkowski)=4.5059  S1=49.8237  min_G=1.00000
+  Numerical M_cert (direct K2)  = 1.2840332201517592
+  Numerical M_cert (Minkowski)  = 1.2763467842988192
+  [arb] min_G >= 0.99888740  (Lipschitz rem <= 1.10e-03)
+  [arb] G2 (G > 0 on [0,1/4]):  OK
+  [arb] S1 <= 49.823685
+  [arb] k_1 enclosure mid=0.9144970268  rad<=5.19e-77
+  [arb] K_2: Minkowski <= 4.5059
+  [arb] a (gain) >= 0.125556
+  [arb] certified M_* >= 1.276242
+  Wrote coefficients to _cohn_elkies_128_greopt_coeffs.json
+
+K26 best point with K_2 = numerical quad (NOT rigorous, reference)
+------------------------------------------------------------------------
+  QP solver=MOSEK  S1=49.8237  min_G_grid=1.000000
+  k1=0.91450  K2(direct~)=4.3587  K2(Minkowski)=4.5059  S1=49.8237  min_G=1.00000
+  Numerical M_cert (direct K2)  = 1.2840332201517592
+  Numerical M_cert (Minkowski)  = 1.2763467842988192
+  [arb] min_G >= 0.99888740  (Lipschitz rem <= 1.10e-03)
+  [arb] G2 (G > 0 on [0,1/4]):  OK
+  [arb] S1 <= 49.823685
+  [arb] k_1 enclosure mid=0.9144970268  rad<=5.19e-77
+  [arb] K_2: direct-quad ~4.3587 (NOT rigorous)
+  [arb] a (gain) >= 0.125556
+  [arb] certified M_* >= 1.283886
+
+5x5 sweep around K26 best  (delta_2 in [0.025, 0.06], lambda_1 in [0.85, 0.95])
+------------------------------------------------------------------------
+      d_2    lam_1  num_M(direct)   num_M(Mink)   rig_M(Mink)
+   0.0250   0.8500       1.285055      1.252972      1.252831  (1.6s) *
+   0.0250   0.8750       1.287533      1.258217      1.258083  (1.5s) *
+   0.0250   0.9000       1.288886      1.263242      1.263115  (1.4s) *
+   0.0250   0.9250       1.288818      1.267859      1.267740  (1.6s) *
+   0.0250   0.9500       1.286949      1.271788      1.271679  (1.8s) *
+   0.0340   0.8500       1.288455      1.263722      1.263591  (1.6s)
+   0.0340   0.8750       1.289312      1.267088      1.266963  (1.5s)
+   0.0340   0.9000       1.289275      1.270156      1.270038  (1.4s)
+   0.0340   0.9250       1.288151      1.272776      1.272664  (1.5s) *
+   0.0340   0.9500       1.285678      1.274715      1.274610  (1.4s) *
+   0.0430   0.8500       1.289986      1.270595      1.270473  (1.4s)
+   0.0430   0.8750       1.289838      1.272614      1.272497  (1.5s)
+   0.0430   0.9000       1.288946      1.274296      1.274184  (1.5s)
+   0.0430   0.9250       1.287177      1.275525      1.275420  (1.4s) *
+   0.0430   0.9500       1.284419      1.276164      1.276061  (1.2s) *
+   0.0520   0.8500       1.288829      1.273565      1.273446  (1.3s)
+   0.0520   0.8750       1.288233      1.274781      1.274667  (1.3s)
+   0.0520   0.9000       1.287067      1.275709      1.275600  (1.4s)
+   0.0520   0.9250       1.285266      1.276279      1.276176  (1.2s) *
+   0.0520   0.9500       1.282759      1.276417      1.276287  (1.1s) *
+   0.0600   0.8500       1.286913      1.274559      1.274443  (1.0s)
+   0.0600   0.8750       1.286268      1.275432      1.275321  (1.1s)
+   0.0600   0.9000       1.285171      1.276057      1.275951  (1.1s)
+   0.0600   0.9250       1.283583      1.276380      1.276271  (1.1s)
+   0.0600   0.9500       1.281427      1.276369      1.276201  (1.2s)
+
+SWEEP BEST: rigorous M_cert >= 1.276287 at (delta_2, lambda_1) = (0.052, 0.95)
+
+Wrote _cohn_elkies_128_greopt_result.json
+
+Done.

@@ -1,0 +1,31 @@
+{
+  "N_modes": 200,
+  "deltas": [
+    0.138,
+    0.055,
+    0.025
+  ],
+  "lambdas": [
+    0.85,
+    0.1,
+    0.05
+  ],
+  "min_w": 0.0002081737951680412,
+  "max_w": 0.8160395822666129,
+  "argmin_w": 147,
+  "argmax_w": 1,
+  "solver_used": "MOSEK",
+  "QP_status": "optimal",
+  "S_1_unrounded": 29.84090655470037,
+  "S_1_rounded_10e12": 29.840906554706255,
+  "S_1_v4_reported": 29.84090655472349,
+  "S_1_diff_abs": -1.723421405586123e-11,
+  "S_1_diff_rel": 5.775365444832051e-13,
+  "min_G_grid_rounded": 0.9999999999786142,
+  "Lipschitz_L": 977.3928421145933,
+  "h_grid": 1.2499937500312499e-06,
+  "L_times_h": 0.001221734943968522,
+  "min_G_minus_remainder": 0.9987782650346457,
+  "max_rel_err_scipy_mpmath": 3.912422642720388e-14,
+  "S_1_within_1e_2": true
+}

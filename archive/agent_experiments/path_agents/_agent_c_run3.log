@@ -1,0 +1,16 @@
+================================================================================
+Hard-constrained adversarial attack on Hyp_R(M_max = 1.378)
+================================================================================
+c_star = log(16)/pi = 0.8825424006
+M_max = 1.378
+
+[Golden] BL: M=1.652001, c_emp=0.901599  (expect 1.6520, 0.9016) -- OK
+
+[Anchor] Lowest-M shapes by k_ratio:
+  N=100: min anchor M = 1.7173, c = 0.8734
+  N=200: min anchor M = 1.6682, c = 0.8931
+  N=575: min anchor M = 1.6522, c = 0.9013
+
+Using 8 worker processes
+
+Total jobs: 2250

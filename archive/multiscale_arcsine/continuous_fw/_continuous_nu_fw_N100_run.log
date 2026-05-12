@@ -1,0 +1,44 @@
+
+=== Continuous-nu Frank-Wolfe on N=100 grid (DELTA=0.138) ===
+  precompute: 0.0s  C shape=(100, 100)
+(CVXPY) May 11 10:15:46 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:15:46 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\archive\multiscale_arcsine\_continuous_nu_fw.py:134: UserWarning: You are solving a parameterized problem that is not DPP. Because the problem is not DPP, subsequent solves will not be faster than the first one. For more information, see the documentation on Disciplined Parametrized Programming, at https://www.cvxpy.org/tutorial/dpp/index.html
+  _QP_PROB.solve(solver=s_name, verbose=False, warm_start=True)
+
+Init (v4 3-scale projection):
+  fixed-MV-G  M_cert = 1.2740748  (mis-aligned w/ rigor)
+  optimal-G   M_cert = 1.2913823   k_1=0.92124 K_2=4.78856 S_1=30.2496
+  atoms: [(0.138, 0.85), (0.055200000000000006, 0.1), (0.02484, 0.05)]
+
+--- Frank-Wolfe + reoptG (analytic grad, n_iters=60) ---
+  FWopt it 0: i*=2 s=0.00267 gap=7.789e-02 M=1.2914831
+  FWopt it 1: i*=65 s=0.12840 gap=1.662e-02 M=1.2925132
+  FWopt it 2: i*=82 s=0.08927 gap=4.625e-03 M=1.2927211
+  FWopt it 3: i*=99 s=0.07235 gap=1.978e-03 M=1.2927928
+  FWopt it 4: i*=5 s=0.00170 gap=1.817e-02 M=1.2928081
+  FWopt it 5: i*=28 s=0.00354 gap=3.356e-03 M=1.2928141
+  FWopt it 6: i*=49 s=0.00652 gap=1.547e-03 M=1.2928191
+  FWopt it 7: i*=99 s=0.04952 gap=1.305e-03 M=1.2928516
+  FWopt it 8: i*=6 s=0.00088 gap=7.562e-03 M=1.2928549
+  FWopt it 9: i*=27 s=0.00303 gap=3.081e-03 M=1.2928596
+  FWopt it 10: i*=52 s=0.00864 gap=1.635e-03 M=1.2928666
+  FWopt it 11: i*=99 s=0.04106 gap=1.072e-03 M=1.2928887
+  FWopt it 12: i*=8 s=0.00079 gap=4.850e-03 M=1.2928907
+  FWopt it 13: i*=28 s=0.00238 gap=2.225e-03 M=1.2928933
+  FWopt it 14: i*=73 s=0.01930 gap=1.322e-03 M=1.2929060
+  FWopt it 15: i*=49 s=0.00310 gap=7.433e-04 M=1.2929072
+  FWopt it 20: i*=99 s=0.03057 gap=7.783e-04 M=1.2929424
+  FWopt it 25: i*=29 s=0.00169 gap=1.486e-03 M=1.2929603
+  FWopt it 30: i*=48 s=0.00232 gap=6.147e-04 M=1.2929736
+  FWopt it 35: i*=99 s=0.01978 gap=5.016e-04 M=1.2929881
+  FWopt it 40: i*=99 s=0.01787 gap=4.436e-04 M=1.2929970
+  FWopt it 45: i*=24 s=0.00128 gap=1.643e-03 M=1.2930035
+  FWopt it 50: i*=70 s=0.00603 gap=4.540e-04 M=1.2930102
+  FWopt it 55: i*=45 s=0.00171 gap=5.494e-04 M=1.2930155
+  FWopt: M_cert = 1.2930190  in 209.7s  (61 accepted iters)
+  support: [(0.138, 0.6987205950723397), (0.09108000000000002, 0.06826096905562648), (0.11454000000000002, 0.05211060027780404), (0.055200000000000006, 0.04621310738964182), (0.02484, 0.02310655369482091), (0.10212000000000002, 0.013963669305755128), (0.06900000000000002, 0.009715844026758529), (0.10488000000000001, 0.009325880165945993), (0.10074000000000001, 0.00885299886328047), (0.07452000000000002, 0.008344806473194332), (0.11868000000000002, 0.007678861226151233), (0.07314000000000001, 0.005860339763453605), (0.09798000000000001, 0.0057851504776836125), (0.04002000000000001, 0.005006123734637143), (0.03588, 0.0048564905250401075), (0.07866000000000002, 0.004212488823781947), (0.06762000000000001, 0.0037266382628649945), (0.045540000000000004, 0.0035985375942610242), (0.041400000000000006, 0.002805652529500676), (0.0138, 0.0020993741917879967), (0.03864, 0.0020372186560427934), (0.06624000000000001, 0.0019809499457268146), (0.0345, 0.001922438827943711), (0.06348000000000001, 0.0016854806533742868), (0.01242, 0.001563152546714248), (0.06486000000000001, 0.0015514444432887212), (0.04692, 0.0014336888687642097), (0.0041400000000000005, 0.0012389201123011832), (0.008280000000000001, 0.0010685215740868228), (0.009660000000000002, 0.0008336107175121421), (0.015180000000000003, 0.000439892199915302)]
+
+--- Pairwise CD polish + reoptG (n_sweeps=6) ---

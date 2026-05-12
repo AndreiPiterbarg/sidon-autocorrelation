@@ -1,0 +1,95 @@
+{
+  "agent": "F4_free_probability",
+  "approach": "Voiculescu R-transform / free convolution as alternative tractable problem and possible LB transfer to classical convolution",
+  "math_correct": true,
+  "math_verification": {
+    "method": "Implemented Cauchy-Stieltjes G_mu(z), R-transform R_mu(z), and free self-convolution density via Newton-iterated subordination equation z = 2 G_mu^{-1}(w) - 1/w in upper half plane.",
+    "benchmark_test": "Semicircle on [-1/4, 1/4] (radius R=1/8). Theory: mu boxed_plus mu = semicircle radius R*sqrt(2), peak density = 1/(pi R sqrt(2)) = 1.8006. Computed: 1.7891 (d=64 bins). Relative error 0.64%.",
+    "secondary_test": "Uniform on [-1/4, 1/4]: classical f*f peak should be 2.0 (triangular hat); computed 1.9975 (0.13% err). Free conv well-defined and integrable to mass 1.",
+    "implementation_files": ["probe.py:G_step", "probe.py:free_self_conv_density"]
+  },
+  "best_lb_obtained": null,
+  "vs_1_2802": "below",
+  "promising": false,
+  "verdict_short": "Free probability gives a different convolution structure that does NOT bound classical convolution from either direction usefully; min ||mu boxed_plus mu||_inf ~ 1.22 < 1.28 numerically, free conv support exceeds [-1/2, 1/2], and ratio free/classical ranges from 0.53 to 1.05 across random configs. Direction is dead.",
+  "verdict_long": "We implemented numerical free convolution mu boxed_plus mu via Stieltjes inversion of the subordination equation 2 omega - 1/G_mu(omega) = z, verified to 0.64% accuracy against the analytic semicircle benchmark (mu boxed_plus mu of semicircle = semicircle of larger radius). Three structural failures rule out free probability as a route to a Sidon LB: (a) Free convolution support can EXCEED [-1/2, 1/2] for mu on [-1/4, 1/4] -- e.g., two-spike at d=12 gives supp(mu boxed_plus mu) = [-0.6, 0.6]. So mu boxed_plus mu and mu * mu live on different sets. (b) The hypothesized inequality ||mu boxed_plus mu||_inf <= ||mu * mu||_inf does NOT hold universally: across 12 random configs the ratio free/classical was [0.53, 1.05] -- in some configs free EXCEEDS classical, in others it is half. (c) Numerical minimization of free max gives inf ||mu boxed_plus mu||_inf ~ 1.2166 (random + local search at d=10), which is BELOW the classical 1.2802 LB. So even if the inequality flowed the right way, the free LB would weaken not strengthen. Pearson correlation between free max and classical max is only 0.62, with log-log scaling exponent 0.52 (free grows like sqrt of classical) -- they are dimensionally incompatible. Why this fails at depth: free convolution is governed by R-transform additivity (algebraic), whereas Sidon's classical bound rests on Fourier-Plancherel structure (analytic). Free entropy chi(mu) and Voiculescu's free EPI chi(mu boxed_plus mu) >= 2 chi(mu) + (1/2) log 2 bound min density and free L2 distance, but not the L^inf peak of mu * mu. The Bercovici-Pata bijection on infinitely-divisible measures shows free and classical have parallel algebraic structure but disjoint analytic properties; for non-infinitely-divisible mu (our admissible class), even structural parallels break. Notable curiosity: discretized arcsine on [-1/4, 1/4] gives free max ~ 1.2797, eerily close to the classical LB 1.2802, but its classical max is ~2.39 -- so this is coincidence at our discretization scale, not structural.",
+  "next_steps_if_promising": [],
+  "next_steps_if_pursued_anyway": [
+    "Test classical-free interpolation family mu_lambda (Cabanal-Duvillard 1999, Anshelevich-Wang 2014); check monotonicity of ||mu_lambda||_inf in lambda. Even if monotone, only the lambda=0 endpoint is what we need.",
+    "Free entropy bounds: chi(mu) is bounded above for mu on [-1/4, 1/4], giving moment bounds; not L^inf bounds.",
+    "Hyperbolic / free heat semigroup: mu_t = mu boxed_plus s_{2t} where s is semicircle; classical analog is mu * Gauss_t. Compare at small t."
+  ],
+  "tests": {
+    "semicircle_benchmark": {
+      "theory_peak_input": 2.5465,
+      "computed_peak_input_d64": 2.5446,
+      "theory_peak_free_conv": 1.8006,
+      "computed_peak_free_conv": 1.7891,
+      "rel_err_pct": 0.64
+    },
+    "uniform_check": {
+      "classical_max_theory": 2.0,
+      "classical_max_computed": 1.9975,
+      "free_max_computed": 1.4809,
+      "comment": "uniform mu on [-1/4, 1/4] has free max ~ 1.48; classical f*f triangular hat peak 2"
+    },
+    "random_d10_n12_ratio_distribution": {
+      "min_ratio_free_over_classical": 0.5275,
+      "max_ratio_free_over_classical": 1.0511,
+      "mean_ratio": 0.8223,
+      "always_free_le_classical": false,
+      "conclusion": "hypothesis ||free||_inf <= ||classical||_inf FAILS in some configs"
+    },
+    "log_log_fit_n80": {
+      "model": "log(free_max) = a + b * log(classical_max)",
+      "intercept_a": -0.0021,
+      "slope_b": 0.5181,
+      "pearson_corr": 0.6218,
+      "interpretation": "free_max scales as classical_max^0.52, sub-linearly -- not directly comparable"
+    },
+    "min_search": {
+      "best_free_max_random_d10": 1.2609,
+      "best_free_max_after_local_search": 1.2166,
+      "comment": "min ||mu boxed_plus mu||_inf can be driven below 1.28 -- so any LB on free does not transfer to classical"
+    },
+    "min_classical_attempt_naive": {
+      "best_classical_max_n80_local_search": 2.0046,
+      "comment": "our naive search is poor at minimizing classical (literature uses far better); just confirms search space is different"
+    },
+    "discretized_arcsine_d20": {
+      "classical_max": 2.3936,
+      "free_max": 1.2797,
+      "comment": "arcsine on [-1/4, 1/4]: free max numerically very close to classical LB 1.2802 -- but a different config in (a, mu) space minimizes each side"
+    },
+    "support_check_d12_two_clump": {
+      "classical_support_detected": [-0.334, 0.332],
+      "free_support_detected": [-0.6, 0.6],
+      "comment": "free conv support strictly exceeds [-0.5, 0.5] which is theoretical max for classical conv on [-1/4, 1/4]"
+    },
+    "edge_concentration_d12": {
+      "description": "Add edge mass eps to bin endpoints, check max as function of eps",
+      "data": [
+        {"eps": 0.0, "classical": 1.997, "free": 1.478},
+        {"eps": 0.1, "classical": 2.091, "free": 1.348},
+        {"eps": 0.2, "classical": 2.382, "free": 1.250},
+        {"eps": 0.3, "classical": 2.868, "free": 1.288},
+        {"eps": 0.5, "classical": 4.429, "free": 1.482},
+        {"eps": 0.7, "classical": 6.774, "free": 1.844},
+        {"eps": 0.9, "classical": 9.902, "free": 2.523}
+      ],
+      "comment": "free has minimum at eps=0.2 (free=1.25); classical monotonically increases with edge concentration. Different shape preferences."
+    }
+  },
+  "compute_time_sec": 240.0,
+  "files_created": [
+    "probe.py",
+    "probe2.py",
+    "probe3.py",
+    "probe4.py",
+    "results.json",
+    "results_probe2.json",
+    "results_probe3.json",
+    "results_probe4.json",
+    "run.log"
+  ]
+}

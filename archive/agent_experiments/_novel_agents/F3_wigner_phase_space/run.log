@@ -1,0 +1,135 @@
+[19:06:56] F3 Wigner phase-space probe START
+[19:06:56] Step 1: verify Wigner identity W_f(x, 0) = 2 (f*f)(2x).
+[19:06:56]   benchmark: arcsine
+[19:06:56]     max |W(x,0) - 2(f*f)(2x)| = 1.4103e-01, rel = 2.2202e-02
+[19:06:56]     max(f*f) = 3.176174
+[19:06:56]     sup_x W(x, 0)/2 = 3.176174
+[19:06:56]     min W = -4.2728e+00, max |W neg| = 4.2728e+00
+[19:06:56]     ||W||_inf = 6.3523e+00, ||W||_2 = 3.2419e+00
+[19:06:56]     ||f||_2^2 = 3.1762e+00 (expect ||W||_2^2 = ||f||_2^4)
+[19:06:56]   benchmark: boxcar
+[19:06:56]     max |W(x,0) - 2(f*f)(2x)| = 2.2204e-15, rel = 5.5728e-16
+[19:06:56]     max(f*f) = 1.992218
+[19:06:56]     sup_x W(x, 0)/2 = 1.992218
+[19:06:56]     min W = -6.3419e-01, max |W neg| = 6.3419e-01
+[19:06:56]     ||W||_inf = 3.9844e+00, ||W||_2 = 1.9922e+00
+[19:06:56]     ||f||_2^2 = 1.9922e+00 (expect ||W||_2^2 = ||f||_2^4)
+[19:06:56]   benchmark: boyer_li_u
+[19:06:56]     max |W(x,0) - 2(f*f)(2x)| = 1.7764e-15, rel = 3.7640e-16
+[19:06:56]     max(f*f) = 2.359688
+[19:06:56]     sup_x W(x, 0)/2 = 2.359688
+[19:06:56]     min W = -1.8195e+00, max |W neg| = 1.8195e+00
+[19:06:56]     ||W||_inf = 4.7194e+00, ||W||_2 = 2.3597e+00
+[19:06:56]     ||f||_2^2 = 2.3597e+00 (expect ||W||_2^2 = ||f||_2^4)
+[19:06:56]   benchmark: cs_disc_d10_uShape
+[19:06:56]     max |W(x,0) - 2(f*f)(2x)| = 3.5527e-15, rel = 7.0309e-16
+[19:06:56]     max(f*f) = 2.526499
+[19:06:56]     sup_x W(x, 0)/2 = 2.526499
+[19:06:56]     min W = -2.9173e+00, max |W neg| = 2.9173e+00
+[19:06:56]     ||W||_inf = 5.0530e+00, ||W||_2 = 2.5265e+00
+[19:06:56]     ||f||_2^2 = 2.5265e+00 (expect ||W||_2^2 = ||f||_2^4)
+[19:06:56]   benchmark: two_atoms_05
+[19:06:56]     max |W(x,0) - 2(f*f)(2x)| = 7.1054e-14, rel = 6.8934e-16
+[19:06:56]     max(f*f) = 51.538221
+[19:06:56]     sup_x W(x, 0)/2 = 51.538221
+[19:06:56]     min W = -1.0295e+02, max |W neg| = 1.0295e+02
+[19:06:56]     ||W||_inf = 1.0308e+02, ||W||_2 = 5.2372e+01
+[19:06:56]     ||f||_2^2 = 5.1538e+01 (expect ||W||_2^2 = ||f||_2^4)
+[19:06:56]   benchmark: two_atoms_07
+[19:06:56]     max |W(x,0) - 2(f*f)(2x)| = 2.8422e-14, rel = 3.2826e-16
+[19:06:56]     max(f*f) = 43.292105
+[19:06:56]     sup_x W(x, 0)/2 = 43.292105
+[19:06:56]     min W = -8.6478e+01, max |W neg| = 8.6478e+01
+[19:06:56]     ||W||_inf = 8.6584e+01, ||W||_2 = 6.0751e+01
+[19:06:56]     ||f||_2^2 = 5.9784e+01 (expect ||W||_2^2 = ||f||_2^4)
+[19:06:56] Step 2: explore phase-space LB candidates.
+[19:06:56] Step 3: numerical evaluation of all benchmarks.
+[19:06:56] benchmarks: {
+  "arcsine": {
+    "max_ff": 3.176174,
+    "sup_W_x_0_over_2": 3.176174,
+    "identity_rel_err": 0.022202,
+    "min_W": -4.272827,
+    "norm_W_inf": 6.352347,
+    "norm_W_2_sq": 10.510102,
+    "norm_f_2_sq": 3.176174,
+    "norm_f_2_sq_squared": 10.088078
+  },
+  "boxcar": {
+    "max_ff": 1.992218,
+    "sup_W_x_0_over_2": 1.992218,
+    "identity_rel_err": 0.0,
+    "min_W": -0.634194,
+    "norm_W_inf": 3.984436,
+    "norm_W_2_sq": 3.968992,
+    "norm_f_2_sq": 1.992218,
+    "norm_f_2_sq_squared": 3.968932
+  },
+  "boyer_li_u": {
+    "max_ff": 2.359688,
+    "sup_W_x_0_over_2": 2.359688,
+    "identity_rel_err": 0.0,
+    "min_W": -1.819548,
+    "norm_W_inf": 4.719375,
+    "norm_W_2_sq": 5.56832,
+    "norm_f_2_sq": 2.359688,
+    "norm_f_2_sq_squared": 5.568125
+  },
+  "cs_disc_d10_uShape": {
+    "max_ff": 2.526499,
+    "sup_W_x_0_over_2": 2.526499,
+    "identity_rel_err": 0.0,
+    "min_W": -2.917266,
+    "norm_W_inf": 5.052997,
+    "norm_W_2_sq": 6.38321,
+    "norm_f_2_sq": 2.526499,
+    "norm_f_2_sq_squared": 6.383196
+  },
+  "two_atoms_05": {
+    "max_ff": 51.538221,
+    "sup_W_x_0_over_2": 51.538221,
+    "identity_rel_err": 0.0,
+    "min_W": -102.950583,
+    "norm_W_inf": 103.076442,
+    "norm_W_2_sq": 2742.811552,
+    "norm_f_2_sq": 51.538221,
+    "norm_f_2_sq_squared": 2656.188206
+  },
+  "two_atoms_07": {
+    "max_ff": 43.292105,
+    "sup_W_x_0_over_2": 43.292105,
+    "identity_rel_err": 0.0,
+    "min_W": -86.478489,
+    "norm_W_inf": 86.584211,
+    "norm_W_2_sq": 3690.727225,
+    "norm_f_2_sq": 59.784336,
+    "norm_f_2_sq_squared": 3574.166849
+  }
+}
+[19:06:56] Step 4: attempt off-axis Cauchy-Schwarz LB for max(f*f).
+[19:06:56]   Cauchy-Schwarz route reproduces trivial ||f||_2^2 >= 2; no new bound.
+[19:06:56] Step 5: explore Hudson-negativity + nonnegativity-of-f as constraint.
+[19:06:56]   arcsine: max(f*f)=3.1762, ||W||_inf=6.3523, ||f||_2^2=3.1762
+[19:06:56]   boxcar: max(f*f)=1.9922, ||W||_inf=3.9844, ||f||_2^2=1.9922
+[19:06:56]   boyer_li_u: max(f*f)=2.3597, ||W||_inf=4.7194, ||f||_2^2=2.3597
+[19:06:56]   cs_disc_d10_uShape: max(f*f)=2.5265, ||W||_inf=5.0530, ||f||_2^2=2.5265
+[19:06:56]   two_atoms_05: max(f*f)=51.5382, ||W||_inf=103.0764, ||f||_2^2=51.5382
+[19:06:56]   two_atoms_07: max(f*f)=43.2921, ||W||_inf=86.5842, ||f||_2^2=59.7843
+[19:06:56] Step 6: theoretical conclusion.
+[19:06:56]   arcsine: max(f*f)=3.176174
+[19:06:56]   boxcar: max(f*f)=1.992218
+[19:06:56]   boyer_li_u: max(f*f)=2.359688
+[19:06:56]   cs_disc_d10_uShape: max(f*f)=2.526499
+[19:06:56]   two_atoms_05: max(f*f)=51.538221
+[19:06:56]   two_atoms_07: max(f*f)=43.292105
+[19:06:56]   Best benchmark with max(f*f) >= 1.2802: boxcar -> 1.9922178988326842
+[19:06:56] Step 7: write results.
+[19:06:56] DONE in 0.4s. Verdict: Wigner reformulation reduces to on-axis slice W_f(x,0) = 2(f*f)(2x); off-axis data does not yield a stronger LB than the trivial 1 via L^p / Cauchy-Schwarz.
+[19:06:56] ADDENDUM: testing rigorous dual-feasible test functions in Wigner phase space.
+[19:06:56]   Test: int_{|xi|<=b} |f_hat(xi)|^2 dxi <= max(f*f) for symmetric f.
+[19:06:56]   This is a STANDARD Plancherel inequality, not novel and gives same bounds as Cohn-Elkies LP.
+[19:06:56]     boxcar: b=0.5, int_|xi|<=b |f_hat|^2 = 1.9922, max(f*f) bound check
+[19:06:56]     boxcar: b=1.0, int_|xi|<=b |f_hat|^2 = 1.9922, max(f*f) bound check
+[19:06:56]     boxcar: b=2.0, int_|xi|<=b |f_hat|^2 = 1.9922, max(f*f) bound check
+[19:06:56]     boxcar: b=4.0, int_|xi|<=b |f_hat|^2 = 1.9922, max(f*f) bound check
+[19:06:56] ADDENDUM done.

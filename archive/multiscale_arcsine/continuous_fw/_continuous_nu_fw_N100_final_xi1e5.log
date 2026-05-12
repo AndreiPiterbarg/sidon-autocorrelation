@@ -1,0 +1,78 @@
+Loaded checkpoint: iter=50, M=1.2930102, support=27
+Top atoms:
+  delta = 0.138000   lambda = 0.700572
+  delta = 0.091080   lambda = 0.071190
+  delta = 0.114540   lambda = 0.054347
+  delta = 0.055200   lambda = 0.048196
+  delta = 0.024840   lambda = 0.024098
+  delta = 0.102120   lambda = 0.014563
+  delta = 0.069000   lambda = 0.010133
+  delta = 0.104880   lambda = 0.009726
+  delta = 0.100740   lambda = 0.009233
+  delta = 0.074520   lambda = 0.008703
+  delta = 0.073140   lambda = 0.006112
+  delta = 0.097980   lambda = 0.006033
+  delta = 0.040020   lambda = 0.005221
+  delta = 0.035880   lambda = 0.005065
+  delta = 0.078660   lambda = 0.004393
+
+CD polish: max_active=1, n_sweeps=0
+(CVXPY) May 11 10:27:21 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:27:21 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\archive\multiscale_arcsine\_continuous_nu_fw.py:134: UserWarning: You are solving a parameterized problem that is not DPP. Because the problem is not DPP, subsequent solves will not be faster than the first one. For more information, see the documentation on Disciplined Parametrized Programming, at https://www.cvxpy.org/tutorial/dpp/index.html
+  _QP_PROB.solve(solver=s_name, verbose=False, warm_start=True)
+  CD done: M=1.2930102  in 1.1s
+After CD, top atoms:
+  delta = 0.138000   lambda = 0.700572
+  delta = 0.091080   lambda = 0.071190
+  delta = 0.114540   lambda = 0.054347
+  delta = 0.055200   lambda = 0.048196
+  delta = 0.024840   lambda = 0.024098
+  delta = 0.102120   lambda = 0.014563
+  delta = 0.069000   lambda = 0.010133
+  delta = 0.104880   lambda = 0.009726
+  delta = 0.100740   lambda = 0.009233
+  delta = 0.074520   lambda = 0.008703
+  delta = 0.073140   lambda = 0.006112
+  delta = 0.097980   lambda = 0.006033
+  delta = 0.040020   lambda = 0.005221
+  delta = 0.035880   lambda = 0.005065
+  delta = 0.078660   lambda = 0.004393
+
+Effective Caratheodory dim (lambda>1e-4): 27
+
+Rigorous arb verification: support=27 (prune_thresh=0.0005)
+  Rigorous nu (rational):
+    delta = 0.138000    lambda = 0.700572
+    delta = 0.091080    lambda = 0.071190
+    delta = 0.114540    lambda = 0.054347
+    delta = 0.055200    lambda = 0.048196
+    delta = 0.024840    lambda = 0.024098
+    delta = 0.102120    lambda = 0.014563
+    delta = 0.069000    lambda = 0.010133
+    delta = 0.104880    lambda = 0.009726
+    delta = 0.100740    lambda = 0.009233
+    delta = 0.074520    lambda = 0.008703
+    delta = 0.073140    lambda = 0.006112
+    delta = 0.097980    lambda = 0.006033
+    delta = 0.040020    lambda = 0.005221
+    delta = 0.035880    lambda = 0.005065
+    delta = 0.078660    lambda = 0.004393
+    delta = 0.045540    lambda = 0.003753
+    delta = 0.041400    lambda = 0.002926
+    delta = 0.038640    lambda = 0.002125
+    delta = 0.066240    lambda = 0.002066
+    delta = 0.067620    lambda = 0.002034
+    delta = 0.013800    lambda = 0.001742
+    delta = 0.012420    lambda = 0.001630
+    delta = 0.064860    lambda = 0.001618
+    delta = 0.004140    lambda = 0.001292
+    delta = 0.034500    lambda = 0.001244
+    delta = 0.008280    lambda = 0.001114
+    delta = 0.009660    lambda = 0.000869
+  deltas  = [0.138, 0.09108, 0.11454, 0.0552, 0.02484, 0.10212, 0.069, 0.10488, 0.10074, 0.07452, 0.07314, 0.09798, 0.04002, 0.03588, 0.07866, 0.04554, 0.0414, 0.03864, 0.06624, 0.06762, 0.0138, 0.01242, 0.06486, 0.00414, 0.0345, 0.00828, 0.00966]
+  lambdas = [0.7005724470057245, 0.07119028071190281, 0.05434685054346851, 0.048196270481962705, 0.024098140240981402, 0.014562900145629002, 0.010132780101327801, 0.0097260900972609, 0.009232910092329101, 0.0087029100870291, 0.006111830061118301, 0.006033410060334101, 0.005220950052209501, 0.005064900050649, 0.0043932600439326, 0.0037529600375296006, 0.0029260500292605, 0.0021246400212464, 0.0020659600206596003, 0.0020341500203415004, 0.0017418800174188002, 0.0016302300163023, 0.0016180200161802002, 0.0012920900129209, 0.0012443300124433002, 0.0011143800111438002, 0.0008693800086938001]
+  XI_MAX  = 100000  prec = 256
+  k_1 ~ 0.9263062399

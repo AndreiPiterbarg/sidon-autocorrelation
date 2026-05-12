@@ -1,0 +1,15 @@
+{
+  "j_star": 147,
+  "min_w_j": 0.0002081738,
+  "v1_baseline_approx": 3.3e-05,
+  "improvement_vs_v1": 6.308296969696969,
+  "num_below_1e-3": 6,
+  "num_below_1e-4": 0,
+  "num_in_1e-4_to_1e-3": 6,
+  "components_at_jstar": {
+    "c1J0sq": 0.0001115710505277308,
+    "c2J0sq": 9.549431954003457e-05,
+    "c3J0sq": 1.1084251002758268e-06
+  },
+  "bessel_zero_distance_arg1": 0.14400862207574466
+}

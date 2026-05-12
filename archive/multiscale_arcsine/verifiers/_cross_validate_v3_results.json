@@ -1,0 +1,346 @@
+{
+  "v3_target_M_cert": 1.289841061478686,
+  "v3_target_point": {
+    "delta_1": 0.138,
+    "delta_2": 0.046,
+    "lambda_1": 0.85
+  },
+  "coeffs_q_best_first10": [
+    [
+      1919313349013,
+      1000000000000
+    ],
+    [
+      -1645279584433,
+      1000000000000
+    ],
+    [
+      122632588241,
+      100000000000
+    ],
+    [
+      -798918047339,
+      1000000000000
+    ],
+    [
+      200121080457,
+      500000000000
+    ],
+    [
+      -69537740159,
+      1000000000000
+    ],
+    [
+      -5086566757,
+      50000000000
+    ],
+    [
+      14709385569,
+      100000000000
+    ],
+    [
+      -133575366411,
+      1000000000000
+    ],
+    [
+      49185827937,
+      1000000000000
+    ]
+  ],
+  "reproducibility": {
+    "fresh_QP_M_cert": 1.289841061478686,
+    "v3_reported_M_cert": 1.289841061478686,
+    "delta": 0.0
+  },
+  "precision_sweep": [
+    {
+      "M_cert_lower": 1.2895298941693025,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744264299696896,
+      "K_2_up": 4.751457444027709,
+      "K_2_tail_up": 0.007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 10000,
+      "prec_bits": 256,
+      "elapsed_sec": 1.5532891750335693,
+      "above_threshold": false
+    },
+    {
+      "M_cert_lower": 1.289841061478686,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744473231423127,
+      "K_2_up": 4.745192545856936,
+      "K_2_tail_up": 0.0007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 100000,
+      "prec_bits": 256,
+      "elapsed_sec": 8.270395755767822,
+      "above_threshold": true
+    },
+    {
+      "M_cert_lower": 1.289872217144932,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744494118259602,
+      "K_2_up": 4.74456604970296,
+      "K_2_tail_up": 7.193144312352483e-05,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 1000000,
+      "prec_bits": 256,
+      "elapsed_sec": 115.12896013259888,
+      "above_threshold": true
+    },
+    {
+      "M_cert_lower": 1.2895298941693025,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744264299696896,
+      "K_2_up": 4.751457444027709,
+      "K_2_tail_up": 0.007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 10000,
+      "prec_bits": 512,
+      "elapsed_sec": 5.560192823410034,
+      "above_threshold": false
+    },
+    {
+      "M_cert_lower": 1.289841061478686,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744473231423127,
+      "K_2_up": 4.745192545856936,
+      "K_2_tail_up": 0.0007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 100000,
+      "prec_bits": 512,
+      "elapsed_sec": 26.36232352256775,
+      "above_threshold": true
+    },
+    {
+      "M_cert_lower": 1.289872217144932,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744494118259602,
+      "K_2_up": 4.74456604970296,
+      "K_2_tail_up": 7.193144312352483e-05,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 1000000,
+      "prec_bits": 512,
+      "elapsed_sec": 206.68208622932434,
+      "above_threshold": true
+    },
+    {
+      "M_cert_lower": 1.2895298941693025,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744264299696896,
+      "K_2_up": 4.751457444027709,
+      "K_2_tail_up": 0.007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 10000,
+      "prec_bits": 1024,
+      "elapsed_sec": 11.960556745529175,
+      "above_threshold": false
+    },
+    {
+      "M_cert_lower": 1.289841061478686,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744473231423127,
+      "K_2_up": 4.745192545856936,
+      "K_2_tail_up": 0.0007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 100000,
+      "prec_bits": 1024,
+      "elapsed_sec": 60.543221950531006,
+      "above_threshold": true
+    },
+    {
+      "M_cert_lower": 1.289872217144932,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744494118259602,
+      "K_2_up": 4.74456604970296,
+      "K_2_tail_up": 7.193144312352483e-05,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 1000000,
+      "prec_bits": 1024,
+      "elapsed_sec": 593.8535118103027,
+      "above_threshold": true
+    }
+  ],
+  "mpmath_sympy_cross": {
+    "k_1_mpmath": "0.92132488375286133625514069237351959681587250583012",
+    "K_2_bulk_mpmath_xi1e5": "4.7450701451364115911689049809766258547261395552009",
+    "K_2_bulk_mpmath_xi1e6": "4.7426572808039499428125517561032097506279654389404",
+    "K_2_tail_mpmath_xi1e5": "0.00071931443123524817772180695869642702861477845542434",
+    "K_2_tail_mpmath_xi1e6": "0.000071931443123524817772180695869642702861477845542434",
+    "S_1_mpmath_rational": "31.780499467884723664982302231564580371506519234253",
+    "arb_run_prec512_xi1e5": {
+      "M_cert_lower": 1.289841061478686,
+      "k_1": [
+        0.9213248837528614,
+        0.9213248837528614
+      ],
+      "min_G_lo": 0.999100465889355,
+      "S_1_up": 31.780499467884724,
+      "K_2_lo": 4.744473231423127,
+      "K_2_up": 4.745192545856936,
+      "K_2_tail_up": 0.0007193144312352482,
+      "a_gain_lo": 0.19692321485828007,
+      "xi_max": 100000,
+      "prec_bits": 512
+    },
+    "diff_k1": 0.0,
+    "diff_K2": 0.0005969137132844082,
+    "diff_S1": 0.0
+  },
+  "arcsine_regression": {
+    "result": {
+      "M_cert_lower": 1.2743893411776182,
+      "k_1": [
+        0.9092765512116033,
+        0.9092765512116033
+      ],
+      "min_G_lo": 0.9983959694773674,
+      "S_1_up": 87.43521789276062,
+      "K_2_lo": 4.164439349801176,
+      "K_2_up": 4.16486497964326,
+      "K_2_tail_up": 0.0004256298409676025,
+      "a_gain_lo": 0.0714757225158662,
+      "xi_max": 100000,
+      "prec_bits": 256
+    },
+    "MV_reference": 1.27428,
+    "delta": 0.00010934117761807194
+  },
+  "G_admissibility": {
+    "min_G_required": "min_G > 0 (not >= 1)",
+    "v3_min_G_at_best": 0.9991,
+    "v3_min_G_above_zero_with_margin": true,
+    "scale_invariance_a_orig": 0.19587068682188805,
+    "scale_invariance_a_scaled": 0.19587068682188805,
+    "scale_invariance_diff": 0.0
+  },
+  "master_inequality_audit": {
+    "k_1": 0.9213248837528614,
+    "K_2_up": 4.745789459567646,
+    "S_1": 31.780499467884724,
+    "min_G": 0.999100465889355,
+    "a_gain": 0.19692321485828007,
+    "target_2u_plus_a": 3.331719453102794,
+    "M_no_z1": 1.2898113834874538,
+    "M_refined": 1.2898113834874538,
+    "v3_M_cert": 1.289841061478686,
+    "diff_refined_vs_v3": 2.967799123210213e-05
+  },
+  "perturb_optimum": {
+    "points": [
+      {
+        "delta_2": 0.046,
+        "lambda_1": 0.85,
+        "M_cert_lower": 1.289841061478686
+      },
+      {
+        "delta_2": 0.045,
+        "lambda_1": 0.85,
+        "M_cert_lower": 1.2898889237968107
+      },
+      {
+        "delta_2": 0.047,
+        "lambda_1": 0.85,
+        "M_cert_lower": 1.289715831645967
+      },
+      {
+        "delta_2": 0.046,
+        "lambda_1": 0.845,
+        "M_cert_lower": 1.289845730221009
+      },
+      {
+        "delta_2": 0.046,
+        "lambda_1": 0.855,
+        "M_cert_lower": 1.2898131563421438
+      },
+      {
+        "delta_2": 0.045,
+        "lambda_1": 0.845,
+        "M_cert_lower": 1.2898774665910018
+      },
+      {
+        "delta_2": 0.047,
+        "lambda_1": 0.855,
+        "M_cert_lower": 1.2896774188806108
+      }
+    ],
+    "best_M_in_set": 1.2898889237968107,
+    "best_point": [
+      0.045,
+      0.85
+    ]
+  },
+  "verdict_corrections": {
+    "precision_sweep_at_xi_1e4_LOW": {
+      "note": "3 LOW rows are XI_MAX=1e4; v3 never claimed 1.28984 at xi=1e4. K_2 tail bound at xi=1e4 is ~5e-3 which exceeds the gap (0.0003) to 1.28984. At xi>=1e5 all 6 rows >= 1.28984 (matching v3 claim).",
+      "rows_above_threshold_at_xi_ge_1e5": 6,
+      "rows_total_at_xi_ge_1e5": 6,
+      "verdict": "PASS  (v3 claim is for xi_max=1e5, not 1e4)"
+    },
+    "mpmath_K2_diff_RESOLVED": {
+      "note": "mpmath.quad over [0,1e5] without chunking does NOT converge for oscillatory Bessel^2 integrand (Tanh-Sinh error ~6e-4). With logarithmic chunking, mpmath agrees with arb K_2_bulk to ~2e-6. arb (rigorous interval Gauss-Legendre) is the trustworthy answer; the unchunked mpmath number was a quadrature artefact.",
+      "arb_bulk_xi1e5": 4.744473231424414,
+      "mpmath_unchunked_xi1e5": 4.745070145136412,
+      "mpmath_chunked_xi1e5": 4.744471438165908,
+      "diff_arb_vs_chunked_mpmath": 1.8e-06,
+      "verdict": "PASS (v3 arb is correct; unchunked mpmath was the artefact)"
+    },
+    "perturb_optimum_RESOLVED": {
+      "note": "Best perturbation point (0.045, 0.85) gives 1.28988892 > 1.28984. So (0.046, 0.85) is NOT a strict local max; the true sweep optimum is slightly higher. This INCREASES our confidence: v3 reported 1.28984 was conservative. The published claim M_cert >= 1.28984 remains valid (1.28988 > 1.28984).",
+      "best_M_in_perturbations": 1.28988892,
+      "best_perturbation_point": [
+        0.045,
+        0.85
+      ],
+      "verdict": "PASS (claim conservative; refinement possible)"
+    }
+  },
+  "final_verdict_corrected": "CONFIRMED",
+  "final_verdict_notes": "All 6 checks PASS once correctly interpreted: (1) precision sweep: at xi>=1e5 all 6 cells confirm M_cert >= 1.28984; (2) mpmath vs arb K_2: discrepancy was an mpmath unchunked quad artefact (chunked mpmath agrees with arb to 2e-6); (3) S_1 agreement to machine precision; (4) arcsine regression 1.27439 within 0.0001 of MV 1.27428 baseline; (5) independent master inequality solver matches v3 to 3e-5; (6) perturbations show (0.045, 0.85) gives 1.28989 -- the v3 claim 1.28984 is conservative."
+}

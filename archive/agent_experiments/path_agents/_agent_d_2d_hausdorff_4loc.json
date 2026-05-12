@@ -1,0 +1,688 @@
+{
+  "global_best_LB": 0.9999999999965047,
+  "best_per_config": {
+    "full_4loc": {
+      "D": 6,
+      "LB": 0.9999999999755618,
+      "status": "optimal"
+    },
+    "no_4loc": {
+      "D": 6,
+      "LB": 0.9999999993859221,
+      "status": "optimal"
+    },
+    "4loc_no1Dxy": {
+      "D": 6,
+      "LB": 0.9999999999965047,
+      "status": "optimal"
+    },
+    "only_4loc_nomarkov": {
+      "D": 6,
+      "LB": 0.0,
+      "status": "optimal"
+    }
+  },
+  "results": [
+    {
+      "config": "full_4loc",
+      "D": 6,
+      "LB": 0.9999999999755618,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.42014193534851074,
+      "diag": "M_2D: shape=(10, 10) eig=[6.724e-06, 1.002e+00] |eig_min|/|eig_max|=6.71e-06 | L_x: shape=(6, 6) eig=[6.575e-06, 3.015e-02] |eig_min|/|eig_max|=2.18e-04 | L_y: shape=(6, 6) eig=[6.575e-06, 3.015e-02] |eig_min|/|eig_max|=2.18e-04 | L_4: shape=(3, 3) eig=[1.218e-05, 8.914e-04] |eig_min|/|eig_max|=1.37e-02 | H_marg: shape=(4, 4) eig=[8.094e-06, 1.001e+00] |eig_min|/|eig_max|=8.09e-06",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 6.7242502920008155e-06,
+            "max_eig": 1.0021855542171048,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": 6.574828292620845e-06,
+            "max_eig": 0.03015115341824055,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 6.574828376957965e-06,
+            "max_eig": 0.030151153417993362,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": 1.2184345154453122e-05,
+            "max_eig": 0.0008914071310311869,
+            "tight": false
+          },
+          "H_marg": {
+            "min_eig": 8.093702686545024e-06,
+            "max_eig": 1.0010496696804367,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "full_4loc",
+      "D": 8,
+      "LB": 0.9999999995766394,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.6014275550842285,
+      "diag": "M_2D: shape=(15, 15) eig=[1.007e-07, 1.002e+00] |eig_min|/|eig_max|=1.00e-07 | L_x: shape=(10, 10) eig=[1.044e-07, 3.010e-02] |eig_min|/|eig_max|=3.47e-06 | L_y: shape=(10, 10) eig=[1.044e-07, 3.010e-02] |eig_min|/|eig_max|=3.47e-06 | L_4: shape=(6, 6) eig=[1.676e-07, 8.822e-04] |eig_min|/|eig_max|=1.90e-04 | H_marg: shape=(5, 5) eig=[1.183e-07, 1.001e+00] |eig_min|/|eig_max|=1.18e-07",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 1.0072030191112425e-07,
+            "max_eig": 1.002196920184036,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": 1.0435816864162611e-07,
+            "max_eig": 0.030103429030394077,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 1.043561201999656e-07,
+            "max_eig": 0.030103429028680812,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": 1.6759590084617289e-07,
+            "max_eig": 0.0008822209818926349,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 1.1828227595259326e-07,
+            "max_eig": 1.001055103331299,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "full_4loc",
+      "D": 10,
+      "LB": 0.9999999979216884,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.0125877857208252,
+      "diag": "M_2D: shape=(21, 21) eig=[1.650e-09, 1.002e+00] |eig_min|/|eig_max|=1.65e-09 | L_x: shape=(15, 15) eig=[1.462e-09, 3.014e-02] |eig_min|/|eig_max|=4.85e-08 | L_y: shape=(15, 15) eig=[1.338e-09, 3.014e-02] |eig_min|/|eig_max|=4.44e-08 | L_4: shape=(10, 10) eig=[2.407e-09, 8.831e-04] |eig_min|/|eig_max|=2.73e-06 | H_marg: shape=(6, 6) eig=[2.087e-09, 1.001e+00] |eig_min|/|eig_max|=2.08e-09",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 1.6498228693858347e-09,
+            "max_eig": 1.0021926751035308,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": 1.462291318347597e-09,
+            "max_eig": 0.03014160094790058,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 1.337934277428285e-09,
+            "max_eig": 0.03014160093083744,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": 2.4065621379887997e-09,
+            "max_eig": 0.0008830652946950891,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 2.086585915717652e-09,
+            "max_eig": 1.001052629144784,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "full_4loc",
+      "D": 12,
+      "LB": 0.9999999952236159,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.7890040874481201,
+      "diag": "M_2D: shape=(28, 28) eig=[-1.133e-10, 1.002e+00] |eig_min|/|eig_max|=1.13e-10 | L_x: shape=(21, 21) eig=[-4.805e-10, 3.027e-02] |eig_min|/|eig_max|=1.59e-08 | L_y: shape=(21, 21) eig=[-8.768e-10, 3.027e-02] |eig_min|/|eig_max|=2.90e-08 | L_4: shape=(15, 15) eig=[-9.965e-11, 8.951e-04] |eig_min|/|eig_max|=1.11e-07 | H_marg: shape=(7, 7) eig=[5.125e-10, 1.001e+00] |eig_min|/|eig_max|=5.12e-10",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -1.1328408432423257e-10,
+            "max_eig": 1.0021780342511535,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": -4.805079954726804e-10,
+            "max_eig": 0.030273260576963824,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": -8.767503117884108e-10,
+            "max_eig": 0.030273260558282007,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": -9.964751371221558e-11,
+            "max_eig": 0.0008950932382676732,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 5.125117852598125e-10,
+            "max_eig": 1.0010440648330627,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "no_4loc",
+      "D": 6,
+      "LB": 0.9999999993859221,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.30554723739624023,
+      "diag": "M_2D: shape=(10, 10) eig=[3.573e-06, 1.002e+00] |eig_min|/|eig_max|=3.57e-06 | L_x: shape=(6, 6) eig=[6.752e-06, 2.892e-02] |eig_min|/|eig_max|=2.33e-04 | L_y: shape=(6, 6) eig=[6.752e-06, 2.892e-02] |eig_min|/|eig_max|=2.33e-04 | L_4: (skipped) | H_marg: shape=(4, 4) eig=[8.220e-06, 1.001e+00] |eig_min|/|eig_max|=8.21e-06",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 3.5733420784238838e-06,
+            "max_eig": 1.0023269198571563,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": 6.752255913932177e-06,
+            "max_eig": 0.02892300312351864,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 6.7522911474552005e-06,
+            "max_eig": 0.028923003116763817,
+            "tight": true
+          },
+          "L_4": null,
+          "H_marg": {
+            "min_eig": 8.220026061862344e-06,
+            "max_eig": 1.001131127877057,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "no_4loc",
+      "D": 8,
+      "LB": 0.9999999965373185,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.6144471168518066,
+      "diag": "M_2D: shape=(15, 15) eig=[7.079e-08, 1.002e+00] |eig_min|/|eig_max|=7.06e-08 | L_x: shape=(10, 10) eig=[6.988e-08, 2.888e-02] |eig_min|/|eig_max|=2.42e-06 | L_y: shape=(10, 10) eig=[6.998e-08, 2.888e-02] |eig_min|/|eig_max|=2.42e-06 | L_4: (skipped) | H_marg: shape=(5, 5) eig=[1.569e-07, 1.001e+00] |eig_min|/|eig_max|=1.57e-07",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 7.078551114694957e-08,
+            "max_eig": 1.0023383928035918,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": 6.988189922244593e-08,
+            "max_eig": 0.02888264936585912,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 6.997954420904738e-08,
+            "max_eig": 0.028882649335803194,
+            "tight": true
+          },
+          "L_4": null,
+          "H_marg": {
+            "min_eig": 1.569434333914847e-07,
+            "max_eig": 1.0011364809814132,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "no_4loc",
+      "D": 10,
+      "LB": 0.9999999881457798,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.9404623508453369,
+      "diag": "M_2D: shape=(21, 21) eig=[-1.894e-10, 1.002e+00] |eig_min|/|eig_max|=1.89e-10 | L_x: shape=(15, 15) eig=[8.687e-10, 2.897e-02] |eig_min|/|eig_max|=3.00e-08 | L_y: shape=(15, 15) eig=[5.880e-10, 2.897e-02] |eig_min|/|eig_max|=2.03e-08 | L_4: (skipped) | H_marg: shape=(6, 6) eig=[2.361e-09, 1.001e+00] |eig_min|/|eig_max|=2.36e-09",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -1.8942716640721346e-10,
+            "max_eig": 1.002328425615685,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": 8.686769166437069e-10,
+            "max_eig": 0.028966315898215182,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 5.879864935333031e-10,
+            "max_eig": 0.028966315774209807,
+            "tight": true
+          },
+          "L_4": null,
+          "H_marg": {
+            "min_eig": 2.3611549686576727e-09,
+            "max_eig": 1.0011308163389188,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "no_4loc",
+      "D": 12,
+      "LB": 0.9999999959896564,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.7169668674468994,
+      "diag": "M_2D: shape=(28, 28) eig=[-4.264e-10, 1.002e+00] |eig_min|/|eig_max|=4.25e-10 | L_x: shape=(21, 21) eig=[-3.706e-10, 2.918e-02] |eig_min|/|eig_max|=1.27e-08 | L_y: shape=(21, 21) eig=[-3.635e-10, 2.918e-02] |eig_min|/|eig_max|=1.25e-08 | L_4: (skipped) | H_marg: shape=(7, 7) eig=[1.654e-10, 1.001e+00] |eig_min|/|eig_max|=1.65e-10",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -4.264416109670432e-10,
+            "max_eig": 1.0023026354295614,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": -3.706406753989546e-10,
+            "max_eig": 0.029184601993271955,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": -3.6345616667427987e-10,
+            "max_eig": 0.029184601966861314,
+            "tight": true
+          },
+          "L_4": null,
+          "H_marg": {
+            "min_eig": 1.65377970123278e-10,
+            "max_eig": 1.0011161133643502,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "4loc_no1Dxy",
+      "D": 6,
+      "LB": 0.9999999999965047,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.24567198753356934,
+      "diag": "M_2D: shape=(10, 10) eig=[4.563e-06, 1.002e+00] |eig_min|/|eig_max|=4.55e-06 | L_x: (skipped) | L_y: (skipped) | L_4: shape=(3, 3) eig=[1.806e-05, 9.545e-04] |eig_min|/|eig_max|=1.89e-02 | H_marg: shape=(4, 4) eig=[1.044e-05, 1.001e+00] |eig_min|/|eig_max|=1.04e-05",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 4.563407419305068e-06,
+            "max_eig": 1.0022759648478594,
+            "tight": true
+          },
+          "L_x": null,
+          "L_y": null,
+          "L_4": {
+            "min_eig": 1.8056414854312742e-05,
+            "max_eig": 0.0009545300392606296,
+            "tight": false
+          },
+          "H_marg": {
+            "min_eig": 1.0438590828408056e-05,
+            "max_eig": 1.0011018902592559,
+            "tight": false
+          }
+        }
+      }
+    },
+    {
+      "config": "4loc_no1Dxy",
+      "D": 8,
+      "LB": 0.9999999819465947,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.5869755744934082,
+      "diag": "M_2D: shape=(15, 15) eig=[3.329e-08, 1.002e+00] |eig_min|/|eig_max|=3.32e-08 | L_x: (skipped) | L_y: (skipped) | L_4: shape=(6, 6) eig=[3.010e-07, 9.080e-04] |eig_min|/|eig_max|=3.31e-04 | H_marg: shape=(5, 5) eig=[1.643e-07, 1.001e+00] |eig_min|/|eig_max|=1.64e-07",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": 3.329306490732691e-08,
+            "max_eig": 1.002204833549979,
+            "tight": true
+          },
+          "L_x": null,
+          "L_y": null,
+          "L_4": {
+            "min_eig": 3.0096485490542464e-07,
+            "max_eig": 0.0009080228351546714,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 1.64256647297759e-07,
+            "max_eig": 1.0010596496834474,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "4loc_no1Dxy",
+      "D": 10,
+      "LB": 0.9999999848209504,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.126349925994873,
+      "diag": "M_2D: shape=(21, 21) eig=[-5.866e-09, 1.002e+00] |eig_min|/|eig_max|=5.85e-09 | L_x: (skipped) | L_y: (skipped) | L_4: shape=(10, 10) eig=[3.724e-09, 9.281e-04] |eig_min|/|eig_max|=4.01e-06 | H_marg: shape=(6, 6) eig=[1.663e-09, 1.001e+00] |eig_min|/|eig_max|=1.66e-09",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -5.866089826227192e-09,
+            "max_eig": 1.002179932591641,
+            "tight": true
+          },
+          "L_x": null,
+          "L_y": null,
+          "L_4": {
+            "min_eig": 3.7240957284366247e-09,
+            "max_eig": 0.0009281231867294254,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 1.6633946909030471e-09,
+            "max_eig": 1.001045119493172,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "4loc_no1Dxy",
+      "D": 12,
+      "LB": 0.9999999851857538,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.6579711437225342,
+      "diag": "M_2D: shape=(28, 28) eig=[-5.516e-09, 1.002e+00] |eig_min|/|eig_max|=5.50e-09 | L_x: (skipped) | L_y: (skipped) | L_4: shape=(15, 15) eig=[-1.105e-09, 9.705e-04] |eig_min|/|eig_max|=1.14e-06 | H_marg: shape=(7, 7) eig=[7.131e-09, 1.001e+00] |eig_min|/|eig_max|=7.12e-09",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -5.515509089675715e-09,
+            "max_eig": 1.0021108823091258,
+            "tight": true
+          },
+          "L_x": null,
+          "L_y": null,
+          "L_4": {
+            "min_eig": -1.104891069269563e-09,
+            "max_eig": 0.0009704796497581425,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 7.131264866218994e-09,
+            "max_eig": 1.0010044251883436,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "only_4loc_nomarkov",
+      "D": 6,
+      "LB": 0.0,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.26384687423706055,
+      "diag": "M_2D: shape=(10, 10) eig=[-8.162e-11, 1.002e+00] |eig_min|/|eig_max|=8.15e-11 | L_x: shape=(6, 6) eig=[-1.780e-12, 3.744e-02] |eig_min|/|eig_max|=4.75e-11 | L_y: shape=(6, 6) eig=[8.561e-12, 3.744e-02] |eig_min|/|eig_max|=2.29e-10 | L_4: shape=(3, 3) eig=[-2.366e-11, 1.764e-03] |eig_min|/|eig_max|=1.34e-08 | H_marg: shape=(4, 4) eig=[6.230e-06, 1.001e+00] |eig_min|/|eig_max|=6.23e-06",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -8.161704846248283e-11,
+            "max_eig": 1.0018906941716768,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": -1.7798517798100617e-12,
+            "max_eig": 0.03743571576305804,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": 8.561464608063775e-12,
+            "max_eig": 0.037435715756742954,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": -2.3659244153390307e-11,
+            "max_eig": 0.001764454875436915,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 6.229906060385564e-06,
+            "max_eig": 1.0006297722291664,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "only_4loc_nomarkov",
+      "D": 8,
+      "LB": 0.0,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 0.5948998928070068,
+      "diag": "M_2D: shape=(15, 15) eig=[-5.212e-09, 1.002e+00] |eig_min|/|eig_max|=5.20e-09 | L_x: shape=(10, 10) eig=[-2.272e-09, 3.670e-02] |eig_min|/|eig_max|=6.19e-08 | L_y: shape=(10, 10) eig=[-2.320e-09, 3.670e-02] |eig_min|/|eig_max|=6.32e-08 | L_4: shape=(6, 6) eig=[-2.484e-09, 1.735e-03] |eig_min|/|eig_max|=1.43e-06 | H_marg: shape=(5, 5) eig=[8.253e-08, 1.001e+00] |eig_min|/|eig_max|=8.25e-08",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -5.2115032299524245e-09,
+            "max_eig": 1.0020082722956134,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": -2.2715556841922578e-09,
+            "max_eig": 0.036703305204750694,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": -2.3202916631080344e-09,
+            "max_eig": 0.03670330478904774,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": -2.484358328026994e-09,
+            "max_eig": 0.0017352325357088696,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 8.253039861254588e-08,
+            "max_eig": 1.0006681509142579,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "only_4loc_nomarkov",
+      "D": 10,
+      "LB": 0.0,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.0202693939208984,
+      "diag": "M_2D: shape=(21, 21) eig=[-7.617e-09, 1.002e+00] |eig_min|/|eig_max|=7.60e-09 | L_x: shape=(15, 15) eig=[-3.509e-09, 3.692e-02] |eig_min|/|eig_max|=9.51e-08 | L_y: shape=(15, 15) eig=[-3.496e-09, 3.692e-02] |eig_min|/|eig_max|=9.47e-08 | L_4: shape=(10, 10) eig=[-5.091e-09, 1.752e-03] |eig_min|/|eig_max|=2.91e-06 | H_marg: shape=(6, 6) eig=[2.789e-09, 1.001e+00] |eig_min|/|eig_max|=2.79e-09",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -7.61703541994717e-09,
+            "max_eig": 1.001974729317773,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": -3.5094855870509796e-09,
+            "max_eig": 0.03691938455845161,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": -3.496483243480914e-09,
+            "max_eig": 0.0369193836842274,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": -5.090914075673174e-09,
+            "max_eig": 0.0017519090480376087,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 2.788552962248406e-09,
+            "max_eig": 1.0006569918678854,
+            "tight": true
+          }
+        }
+      }
+    },
+    {
+      "config": "only_4loc_nomarkov",
+      "D": 12,
+      "LB": 0.0,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "solve_time": 1.7642791271209717,
+      "diag": "M_2D: shape=(28, 28) eig=[-1.057e-09, 1.002e+00] |eig_min|/|eig_max|=1.06e-09 | L_x: shape=(21, 21) eig=[-4.070e-10, 3.683e-02] |eig_min|/|eig_max|=1.11e-08 | L_y: shape=(21, 21) eig=[-4.002e-10, 3.683e-02] |eig_min|/|eig_max|=1.09e-08 | L_4: shape=(15, 15) eig=[-6.917e-10, 1.753e-03] |eig_min|/|eig_max|=3.94e-07 | H_marg: shape=(7, 7) eig=[3.352e-11, 1.001e+00] |eig_min|/|eig_max|=3.35e-11",
+      "extra": {
+        "binding": {
+          "M_2D": {
+            "min_eig": -1.0571184648013464e-09,
+            "max_eig": 1.0019879058543897,
+            "tight": true
+          },
+          "L_x": {
+            "min_eig": -4.0703047777046526e-10,
+            "max_eig": 0.03683459761216568,
+            "tight": true
+          },
+          "L_y": {
+            "min_eig": -4.0024770626509794e-10,
+            "max_eig": 0.03683459744861959,
+            "tight": true
+          },
+          "L_4": {
+            "min_eig": -6.916603951302857e-10,
+            "max_eig": 0.0017534845406398623,
+            "tight": true
+          },
+          "H_marg": {
+            "min_eig": 3.3518191529305107e-11,
+            "max_eig": 1.0006613554102952,
+            "tight": true
+          }
+        }
+      }
+    }
+  ],
+  "gap_4loc_table": [
+    {
+      "D": 6,
+      "LB_full_4loc": 0.9999999999755618,
+      "LB_no_4loc": 0.9999999993859221,
+      "gap": 5.896396704230256e-10
+    },
+    {
+      "D": 8,
+      "LB_full_4loc": 0.9999999995766394,
+      "LB_no_4loc": 0.9999999965373185,
+      "gap": 3.0393209060619597e-09
+    },
+    {
+      "D": 10,
+      "LB_full_4loc": 0.9999999979216884,
+      "LB_no_4loc": 0.9999999881457798,
+      "gap": 9.77590852713206e-09
+    },
+    {
+      "D": 12,
+      "LB_full_4loc": 0.9999999952236159,
+      "LB_no_4loc": 0.9999999959896564,
+      "gap": -7.6604045329276e-10
+    }
+  ],
+  "sanity_mv": [
+    {
+      "D": 6,
+      "L_inner": 0.75,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "dt": 0.02401280403137207
+    },
+    {
+      "D": 8,
+      "L_inner": 0.75,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "dt": 0.026181697845458984
+    },
+    {
+      "D": 10,
+      "L_inner": 0.75,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "dt": 0.04261374473571777
+    },
+    {
+      "D": 12,
+      "L_inner": 0.75,
+      "status": "optimal",
+      "solver": "MOSEK",
+      "dt": 0.0479433536529541
+    }
+  ],
+  "sanity_uniform": [
+    {
+      "D": 6,
+      "L_inner": 0.5,
+      "status": "optimal",
+      "solver": "MOSEK"
+    },
+    {
+      "D": 8,
+      "L_inner": 0.5,
+      "status": "optimal",
+      "solver": "MOSEK"
+    },
+    {
+      "D": 10,
+      "L_inner": 0.5,
+      "status": "optimal",
+      "solver": "MOSEK"
+    },
+    {
+      "D": 12,
+      "L_inner": 0.5,
+      "status": "optimal",
+      "solver": "MOSEK"
+    }
+  ],
+  "metadata": {
+    "solvers_tried": [
+      "MOSEK",
+      "CLARABEL",
+      "SCS"
+    ],
+    "solvers_installed": [
+      "MOSEK",
+      "CLARABEL",
+      "SCS"
+    ],
+    "D_grid": [
+      6,
+      8,
+      10,
+      12
+    ],
+    "target_LB": 1.2748
+  }
+}

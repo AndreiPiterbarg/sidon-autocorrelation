@@ -1,0 +1,426 @@
+{
+  "agent": "C2_optimal_transport",
+  "approach": "Three OT/Wasserstein-derived bounds: (A) W_2(mu,U_d)<=R bin-LP diagnostic, (B) Plancherel ||hat f||_4^4 unconditional but FACE-DEPENDENT, (C) symmetric L^2.  Honestly evaluated; bin-LP TV bound is the only RIGOROUS OUTCOME.",
+  "math_correct": true,
+  "best_lb_obtained": 1.2259338271092277,
+  "best_lb_obtained_caveat": "This is the bin-LP TV-only lower bound at d=10 from local search (SLSQP).  RIGOROUS unconditional LB on C_{1a}: yes (cascade derivation valid for any f).  However the local search may not find the GLOBAL min, so the true bin-LP value could be lower; the value 1.2259 is an UPPER ESTIMATE of the true bin-LP min, hence an UPPER ESTIMATE of one rigorous LB on C_{1a}.",
+  "best_lb_diagnostic_w2_NOT_rigorous": 1.4123998555247725,
+  "joint_min_TV_and_L4_NOT_RIGOROUS": 1.3634647947215737,
+  "joint_min_caveat": "This 1.3635 is min over piecewise-constant f's (with bin masses mu) of max(maxTV(mu), ||hat f||_4^4(piecewise-const f)). It is NOT a rigorous LB on C_{1a} for general (non-piecewise-constant) f, because ||hat f||_4^4 depends on the within-bin shape of f, not just on mu.  Specifically, smoother f within bins can have SMALLER ||hat f||_4^4 than piecewise-constant.  Hence joint_min DOES NOT transfer to a rigorous LB on inf_f max(f*f).",
+  "vs_1_2802": "below",
+  "vs_mv_1_2748": "below",
+  "promising": false,
+  "verdict_short": "All RIGOROUS unconditional OT/Wasserstein angles tested fail to lift the LB above CS 1.2802 at d in {4,...,10}: bin-LP TV ~ 1.226 at d=10. The Plancherel L^4 bound on piecewise-constant f gives a within-class joint min of 1.3635 at d=8 BUT is not rigorous for general f (depends on within-bin shape). W_2(mu,U_d)<=R is diagnostic only (no Talagrand bound on f from max(f*f)). Symmetric L^2 trivially gives 2.0 but is useless for non-symmetric extremiser. Direction NEGATIVE.",
+  "verdict_long": "Probed three OT/W_2 angles for rigorous lower bounds on C_{1a}: (A) bin-LP with W_2(mu, U_d) <= R constraint - DIAGNOSTIC ONLY, since the natural Talagrand/EPI chain runs the wrong way (small max(f*f) does NOT force f close to U: it controls the spread of f*f, not f). Numerically the constraint LIFTS the bin-LP min from ~1.226 (unconstrained) to ~1.412 (at R=0.005, d=8), because U_d itself has large max_W TV (~1.42 at d=8). But this is NOT a rigorous LB on C_{1a}. (B) Plancherel-derived ||hat f||_4^4 <= max(f*f), which IS unconditional for any specific f. We computed this for bin-LP-piecewise-constant f and joint-minimised max(maxTV, ||hat f||_4^4(piecewise-const)) - obtained 1.3635 at d=8. HOWEVER this is NOT a rigorous LB on C_{1a}: the ||hat f||_4^4 quantity depends on the within-bin shape of f, and smoother (non-piecewise-constant) f compatible with the same bin masses mu can have SMALLER ||hat f||_4^4. So 1.3635 is only a LB on inf_{piecewise-const f} max(f*f), not on inf_{general f} max(f*f). (C) Symmetric L^2 ||f||_2^2 <= max(f*f) via Cauchy-Schwarz at t=0 - gives the TRIVIAL 2.0 bound for symmetric f. The C_{1a} extremiser is non-symmetric (Sidon-like sparse spike construction), so the symmetric LB does not transfer. CONCLUSION: All RIGOROUS unconditional bounds are below 1.2802; rigorous OT-derived progress is NEGATIVE. The diagnostic and within-class results (1.41 W_2-restricted, 1.36 piecewise-const-restricted) do show that OT structure carries useful signal in restricted regimes, suggesting potential paths if (i) a separate concentration bound on f_opt can be proven OR (ii) an unconditional within-bin f-shape minimisation of ||hat f||_4^4 can be carried out at the variational level. Both are non-trivial future work.",
+  "next_steps_if_promising": [
+    "Compute inf_f ||hat f||_4^4 over f compatible with given bin masses mu - this is a calc-of-variations problem (Lagrangian on each bin) that would give a TRUE LB.  Probably yields values BELOW the joint min reported here, killing the bound.",
+    "Investigate whether the C_{1a} extremiser admits a Steiner-type symmetrisation that REDUCES max(f*f) while preserving moments.  If so, restrict to symmetric f WLOG, and L^2 lift to 2.0 becomes operative - though this contradicts upper bound 1.5029, so symmetrisation FAILS for this problem (recorded).",
+    "Try Sinkhorn / entropic OT regularisation: compute S_eps(f, U) and bound max(f*f) via concentration of f*f around its mean.  Not pursued in 25-min budget."
+  ],
+  "compute_time_sec": 255.10527157783508,
+  "files_created": [
+    "run.log",
+    "probe.py",
+    "results.json"
+  ],
+  "analysis_in_response": "Mathematical derivation included in the parent response, not written as a separate analysis.md file (per harness policy: subagents return findings as text).",
+  "experiment_1_unconstrained": {
+    "4": {
+      "L_d": 1.102992223827827,
+      "mu_star": [
+        0.3080708008580701,
+        0.14030766265829903,
+        0.19112935583269086,
+        0.3604921806509401
+      ],
+      "w2_to_uniform": 0.05865477894967311,
+      "l2_norm_sq": 0.2810789015134571,
+      "time_sec": 3.688960552215576
+    },
+    "6": {
+      "L_d": 1.1722955003279585,
+      "mu_star": [
+        0.2527498014869179,
+        0.08831579820367455,
+        0.014605941657891149,
+        0.1861095869512605,
+        0.12837257749696337,
+        0.3298462942032926
+      ],
+      "w2_to_uniform": 0.06045022204562283,
+      "l2_norm_sq": 0.23181035070377,
+      "time_sec": 13.554577112197876
+    },
+    "8": {
+      "L_d": 1.2019402827996288,
+      "mu_star": [
+        0.28674282536319506,
+        0.11583991276890732,
+        0.11097572843464094,
+        0.1688205989756231,
+        1.1723036749349349e-18,
+        0.021894777975257722,
+        0.07205791882884802,
+        0.22366823765352783
+      ],
+      "w2_to_uniform": 0.0657755043954996,
+      "l2_norm_sq": 0.19215554573122887,
+      "time_sec": 20.003974676132202
+    },
+    "10": {
+      "L_d": 1.2259338271092277,
+      "mu_star": [
+        0.2514822453108782,
+        0.10559416583534095,
+        0.09977935903125962,
+        0.09734224968887685,
+        0.15031797146546583,
+        4.799110353799011e-17,
+        0.0,
+        0.021485549811430856,
+        0.0674174822029997,
+        0.20658097665374808
+      ],
+      "w2_to_uniform": 0.06695563177035933,
+      "l2_norm_sq": 0.16410281984624311,
+      "time_sec": 29.91981816291809
+    }
+  },
+  "experiment_2_w2_diagnostic": {
+    "4": {
+      "R=0.0050": {
+        "min": 1.2484025261861709,
+        "mu_star": [
+          0.2508005221355644,
+          0.2491994778116711,
+          0.2492004882649225,
+          0.25079951178784204
+        ],
+        "time_sec": 5.743149518966675
+      },
+      "R=0.0100": {
+        "min": 1.2436397405401987,
+        "mu_star": [
+          0.2532218196096846,
+          0.2467781770452121,
+          0.2468205858601369,
+          0.25317941748496653
+        ],
+        "time_sec": 10.260779619216919
+      },
+      "R=0.0200": {
+        "min": 1.2250552092879252,
+        "mu_star": [
+          0.2627947971524181,
+          0.2372052028396329,
+          0.23719463819777042,
+          0.26280536181017855
+        ],
+        "time_sec": 6.349973201751709
+      },
+      "R=0.0400": {
+        "min": 1.1580857020682436,
+        "mu_star": [
+          0.30122253365069035,
+          0.1987774661343976,
+          0.1988224584681272,
+          0.3011775417467849
+        ],
+        "time_sec": 4.345967531204224
+      },
+      "R=0.0600": {
+        "min": 1.102992630502916,
+        "mu_star": [
+          0.36049290930466527,
+          0.19112963975921332,
+          0.14030676784573115,
+          0.30807068309039026
+        ],
+        "time_sec": 2.085385322570801
+      },
+      "R=0.1000": {
+        "min": 1.102992912631489,
+        "mu_star": [
+          0.3080710631961356,
+          0.14030737706176102,
+          0.19112912365934429,
+          0.36049243608275916
+        ],
+        "time_sec": 2.1334967613220215
+      }
+    },
+    "6": {
+      "R=0.0050": {
+        "min": 1.3309332503820264,
+        "mu_star": [
+          0.16666770021523628,
+          0.16666562899134363,
+          0.1666666703891047,
+          0.16666658385349395,
+          0.16306773630826787,
+          0.17026568024255367
+        ],
+        "time_sec": 16.023053646087646
+      },
+      "R=0.0100": {
+        "min": 1.3237332151613843,
+        "mu_star": [
+          0.17801001305498426,
+          0.15532331402863278,
+          0.16666667018489506,
+          0.1666666630146559,
+          0.16360984248681143,
+          0.16972349723002053
+        ],
+        "time_sec": 16.471070528030396
+      },
+      "R=0.0200": {
+        "min": 1.2949332778804894,
+        "mu_star": [
+          0.1666666705730381,
+          0.1666667245197929,
+          0.1666665855608216,
+          0.16666665742859818,
+          0.10906670312943802,
+          0.22426665878831115
+        ],
+        "time_sec": 18.986921548843384
+      },
+      "R=0.0400": {
+        "min": 1.1935306377726203,
+        "mu_star": [
+          0.2619697917459261,
+          0.09109233462789361,
+          0.14693786477229107,
+          0.14561902225520654,
+          0.09339390013739653,
+          0.2609870864612864
+        ],
+        "time_sec": 4.694508790969849
+      },
+      "R=0.0600": {
+        "min": 1.1731006483180595,
+        "mu_star": [
+          0.25224682659298026,
+          0.08815465146426923,
+          0.018465056900254552,
+          0.1841512679349909,
+          0.12934616390778023,
+          0.3276360331997249
+        ],
+        "time_sec": 3.061018466949463
+      },
+      "R=0.1000": {
+        "min": 1.1722955027463942,
+        "mu_star": [
+          0.2527498024076779,
+          0.08831579860586433,
+          0.014605949833423865,
+          0.1861095858438565,
+          0.1283725767962929,
+          0.3298462865128845
+        ],
+        "time_sec": 2.950352907180786
+      }
+    },
+    "8": {
+      "R=0.0050": {
+        "min": 1.4123998555247725,
+        "mu_star": [
+          0.13134234926640373,
+          0.11871486733988044,
+          0.12494276883356066,
+          0.1250000063429221,
+          0.12500001206774047,
+          0.1249995524171504,
+          0.12500023723979142,
+          0.12500020649255075
+        ],
+        "time_sec": 17.045050382614136
+      },
+      "R=0.0100": {
+        "min": 1.3995998894593191,
+        "mu_star": [
+          0.14504284354091995,
+          0.10654134395233168,
+          0.12341579268168966,
+          0.12500000727149743,
+          0.1250000098451203,
+          0.1211124896971159,
+          0.12880189322771604,
+          0.12508561978360905
+        ],
+        "time_sec": 15.963502883911133
+      },
+      "R=0.0200": {
+        "min": 1.3483999427909632,
+        "mu_star": [
+          0.2269603355789472,
+          0.023080379979704732,
+          0.12495927722095866,
+          0.1249999475827047,
+          0.1250001192050838,
+          0.12499947653139482,
+          0.1246019901762662,
+          0.12539847372493995
+        ],
+        "time_sec": 15.237033367156982
+      },
+      "R=0.0400": {
+        "min": 1.2290587085457014,
+        "mu_star": [
+          0.23072990115056524,
+          0.0804398949925625,
+          0.10568318116648608,
+          0.1322621725010789,
+          0.09270002020813796,
+          0.07309359385146295,
+          0.06026546669224,
+          0.22482576943746638
+        ],
+        "time_sec": 4.555058002471924
+      },
+      "R=0.0600": {
+        "min": 1.2043721824164957,
+        "mu_star": [
+          0.2826916969084361,
+          0.10089526716839825,
+          0.1163874844929014,
+          0.16425192022666257,
+          0.0,
+          0.043009608582418285,
+          0.06964395195351454,
+          0.2231200706676688
+        ],
+        "time_sec": 6.087103843688965
+      },
+      "R=0.1000": {
+        "min": 1.2019408395909894,
+        "mu_star": [
+          0.2236664628973194,
+          0.07205949407478016,
+          0.02189498980580769,
+          4.996261058936895e-18,
+          0.16881997985043656,
+          0.1109752281089389,
+          0.11584045825774857,
+          0.2867433870049688
+        ],
+        "time_sec": 6.730053901672363
+      }
+    }
+  },
+  "experiment_3_plancherel_at_opt": {
+    "4": {
+      "l4_bound": 1.2408803954668348,
+      "tv_bound": 1.102992223827827,
+      "max_of_two": 1.2408803954668348
+    },
+    "6": {
+      "l4_bound": 1.2617811147957598,
+      "tv_bound": 1.1722955003279585,
+      "max_of_two": 1.2617811147957598
+    },
+    "8": {
+      "l4_bound": 1.2838432710424539,
+      "tv_bound": 1.2019402827996288,
+      "max_of_two": 1.2838432710424539
+    },
+    "10": {
+      "l4_bound": 1.303878207595577,
+      "tv_bound": 1.2259338271092277,
+      "max_of_two": 1.303878207595577
+    }
+  },
+  "experiment_3b_plancherel_min": {
+    "4": {
+      "min_l4": 1.2342301353964837,
+      "mu_star": [
+        0.33785964635842197,
+        0.16214076221959076,
+        0.1621414945184693,
+        0.33785809690351803
+      ],
+      "time_sec": 2.877730369567871
+    },
+    "6": {
+      "min_l4": 1.2215765286065827,
+      "mu_star": [
+        0.2332632416365339,
+        0.14426868152452943,
+        0.1223974015168346,
+        0.1226537227889803,
+        0.14413927800047263,
+        0.233277674532649
+      ],
+      "time_sec": 5.902653455734253
+    },
+    "8": {
+      "min_l4": 1.275423157329243,
+      "mu_star": [
+        0.15902741596532607,
+        0.09931883813980431,
+        0.12578278873281593,
+        0.11545021492721597,
+        0.11560074303452311,
+        0.125834529607189,
+        0.0997414860666482,
+        0.15924398352647748
+      ],
+      "time_sec": 4.928630590438843
+    }
+  },
+  "experiment_3c_joint_min": {
+    "4": {
+      "joint_min": 1.2342301353936986,
+      "mu_star": [
+        0.33785897491643796,
+        0.16214104754147268,
+        0.16214097177579925,
+        0.33785900576629013
+      ],
+      "time_sec": 2.8209340572357178
+    },
+    "6": {
+      "joint_min": 1.247090491869324,
+      "mu_star": [
+        0.2332870646069089,
+        0.1441478440072067,
+        0.12254942462547411,
+        0.1225237345902944,
+        0.14425056322773494,
+        0.23324136894238096
+      ],
+      "time_sec": 7.133972644805908
+    },
+    "8": {
+      "joint_min": 1.3634647947215737,
+      "mu_star": [
+        0.15925008147807101,
+        0.09945846166265591,
+        0.12588320023041033,
+        0.11555296112430333,
+        0.11547715770482718,
+        0.12579326502102828,
+        0.09955183085819568,
+        0.1590330419205083
+      ],
+      "time_sec": 5.504295349121094
+    }
+  },
+  "experiment_4_sym_l2": {
+    "4": {
+      "l2_lb_at_uniform": 2.0,
+      "max_tv_at_uniform": 1.25
+    },
+    "6": {
+      "l2_lb_at_uniform": 2.0,
+      "max_tv_at_uniform": 1.3333333333333333
+    },
+    "8": {
+      "l2_lb_at_uniform": 2.0,
+      "max_tv_at_uniform": 1.4166666666666665
+    }
+  },
+  "caveat_summary": "All three OT-derived bounds tested are unconditional OR diagnostic. The unconditional ones (A's R=0.5 case = unconstrained, B Plancherel) do not exceed CS 1.2802. The diagnostic W_2 lift requires a separate Talagrand-type bound which is NOT derivable from max(f*f) alone."
+}

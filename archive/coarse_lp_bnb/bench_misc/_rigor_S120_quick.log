@@ -1,0 +1,67 @@
+
+=== RIGOR CASCADE  d0=2  S=120  c=1.281  J=True  L=False ===
+
+[L0] d=2, S=120, compositions=121, x_cap=96
+     0.31s: NO=0 J=0 L=0 surv=37  uncert=0
+[L0] surv=37  uncert=0  (0.31s)
+
+--- L1: d=2->4  parents=37  x_cap=67 ---
+L1: 91,601 children -> NO=69,966 J=21 L=0 uncert=2,096 surv_next=19,052 unc_next=2,059 (2.0s)
+
+--- L2: d=4->8  parents=21,111  x_cap=48 ---
+   [3/21111] children=1,446,589 NO=1,446,589 J=0 L=0 surv=0 uncert=0
+   [6/21111] children=2,873,378 NO=2,873,378 J=0 L=0 surv=0 uncert=0
+   [9/21111] children=4,174,847 NO=4,174,847 J=0 L=0 surv=0 uncert=0
+   [13/21111] children=5,429,087 NO=5,429,087 J=0 L=0 surv=0 uncert=0
+   [16/21111] children=6,943,479 NO=6,943,479 J=0 L=0 surv=0 uncert=0
+   [18/21111] children=8,027,079 NO=8,027,079 J=0 L=0 surv=0 uncert=0
+   [21/21111] children=9,634,951 NO=9,634,951 J=0 L=0 surv=0 uncert=0
+   [23/21111] children=10,865,719 NO=10,865,719 J=0 L=0 surv=0 uncert=0
+   [26/21111] children=12,033,459 NO=12,033,459 J=0 L=0 surv=0 uncert=0
+   [29/21111] children=13,502,843 NO=13,502,843 J=0 L=0 surv=0 uncert=0
+   [31/21111] children=14,664,199 NO=14,664,199 J=0 L=0 surv=0 uncert=0
+   [35/21111] children=15,861,031 NO=15,861,031 J=0 L=0 surv=0 uncert=0
+   [38/21111] children=17,087,347 NO=17,087,347 J=0 L=0 surv=0 uncert=0
+   [41/21111] children=18,346,591 NO=18,346,591 J=0 L=0 surv=0 uncert=0
+   [45/21111] children=19,729,791 NO=19,729,791 J=0 L=0 surv=0 uncert=0
+   [48/21111] children=21,419,931 NO=21,419,931 J=0 L=0 surv=0 uncert=0
+   [51/21111] children=23,123,556 NO=23,123,556 J=0 L=0 surv=0 uncert=0
+   [53/21111] children=24,421,881 NO=24,421,881 J=0 L=0 surv=0 uncert=0
+   [56/21111] children=25,777,281 NO=25,777,281 J=0 L=0 surv=0 uncert=0
+   [59/21111] children=27,453,441 NO=27,453,441 J=0 L=0 surv=0 uncert=0
+   [61/21111] children=28,736,481 NO=28,736,481 J=0 L=0 surv=0 uncert=0
+   [63/21111] children=29,737,686 NO=29,737,686 J=0 L=0 surv=0 uncert=0
+   [66/21111] children=30,955,911 NO=30,955,911 J=0 L=0 surv=0 uncert=0
+   [69/21111] children=32,488,821 NO=32,488,821 J=0 L=0 surv=0 uncert=0
+   [72/21111] children=34,339,746 NO=34,339,746 J=0 L=0 surv=0 uncert=0
+   [77/21111] children=36,120,471 NO=36,120,471 J=0 L=0 surv=0 uncert=0
+   [82/21111] children=38,257,971 NO=38,257,971 J=0 L=0 surv=0 uncert=0
+   [86/21111] children=40,612,071 NO=40,612,071 J=0 L=0 surv=0 uncert=0
+   [92/21111] children=42,399,246 NO=42,399,246 J=0 L=0 surv=0 uncert=0
+   [96/21111] children=44,265,396 NO=44,265,396 J=0 L=0 surv=0 uncert=0
+   [100/21111] children=46,051,761 NO=46,051,761 J=0 L=0 surv=0 uncert=0
+   [105/21111] children=48,217,761 NO=48,217,761 J=0 L=0 surv=0 uncert=0
+   [109/21111] children=50,796,993 NO=50,796,993 J=0 L=0 surv=0 uncert=0
+   [113/21111] children=53,024,609 NO=53,024,609 J=0 L=0 surv=0 uncert=0
+   [117/21111] children=55,584,673 NO=55,584,673 J=0 L=0 surv=0 uncert=0
+   [122/21111] children=58,080,449 NO=58,080,449 J=0 L=0 surv=0 uncert=0
+   [126/21111] children=60,477,249 NO=60,477,249 J=0 L=0 surv=0 uncert=0
+   [130/21111] children=62,851,649 NO=62,851,649 J=0 L=0 surv=0 uncert=0
+   [135/21111] children=64,962,689 NO=64,962,689 J=0 L=0 surv=0 uncert=0
+   [139/21111] children=67,318,529 NO=67,318,529 J=0 L=0 surv=0 uncert=0
+   [142/21111] children=69,347,777 NO=69,347,777 J=0 L=0 surv=0 uncert=0
+   [147/21111] children=71,219,777 NO=71,219,777 J=0 L=0 surv=0 uncert=0
+   [152/21111] children=73,439,777 NO=73,439,777 J=0 L=0 surv=0 uncert=0
+   [156/21111] children=75,884,737 NO=75,884,737 J=0 L=0 surv=0 uncert=0
+   [159/21111] children=77,925,953 NO=77,925,953 J=0 L=0 surv=0 uncert=0
+   [168/21111] children=80,588,993 NO=80,588,993 J=0 L=0 surv=0 uncert=0
+   [172/21111] children=82,684,161 NO=82,684,161 J=0 L=0 surv=0 uncert=0
+   [175/21111] children=84,609,089 NO=84,609,089 J=0 L=0 surv=0 uncert=0
+   [181/21111] children=86,821,601 NO=86,821,601 J=0 L=0 surv=0 uncert=0
+   [186/21111] children=89,267,681 NO=89,267,681 J=0 L=0 surv=0 uncert=0
+   [189/21111] children=91,153,409 NO=91,153,409 J=0 L=0 surv=0 uncert=0
+   [194/21111] children=93,319,809 NO=93,319,809 J=0 L=0 surv=0 uncert=0
+   [198/21111] children=95,787,554 NO=95,787,554 J=0 L=0 surv=0 uncert=0
+   [201/21111] children=97,850,759 NO=97,850,759 J=0 L=0 surv=0 uncert=0
+   [205/21111] children=100,231,303 NO=100,231,303 J=0 L=0 surv=0 uncert=0
+   [208/21111] children=102,345,287 NO=102,345,287 J=0 L=0 surv=0 uncert=0

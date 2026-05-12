@@ -1,0 +1,36 @@
+
+=== Config all_off: {'enable_F4_MO217': False, 'enable_F7': False, 'enable_F8': False} ===
+  bisect M_cert = 1.274375
+OK: SHA-256 = 18237dbf1a45b57db64cc8bd53ed3483698c06ed99fd29dc23d8cf5fd37bec89
+OK: MV rationals match; N=1
+OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]
+OK: recomputed k_1..k_N: ['[0.9092765512116033677521443335140104554109884005765981659817030249314055886684 +/- 7.62e-77]']
+Verifying M_cert = 2039/1600 (~1.274375)
+Re-checking 76140 terminal cells ...
+FAIL: cell 4 claims FILTER_REJECT but no filter rigorously rejects.
+  verify accepted = False
+  reason: ['OK: SHA-256 = 18237dbf1a45b57db64cc8bd53ed3483698c06ed99fd29dc23d8cf5fd37bec89', 'OK: MV rationals match; N=1', 'OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]']
+
+=== Config only_F7: {'enable_F4_MO217': False, 'enable_F7': True, 'enable_F8': False} ===
+  bisect M_cert = 1.274375
+OK: SHA-256 = 0eac88e097aa80817ab22e697acef60821e155be1fdbb911d65d714ebbc7497d
+OK: MV rationals match; N=1
+OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]
+OK: recomputed k_1..k_N: ['[0.9092765512116033677521443335140104554109884005765981659817030249314055886684 +/- 7.62e-77]']
+Verifying M_cert = 2039/1600 (~1.274375)
+Re-checking 76140 terminal cells ...
+FAIL: cell 4 claims FILTER_REJECT but no filter rigorously rejects.
+  verify accepted = False
+  reason: ['OK: SHA-256 = 0eac88e097aa80817ab22e697acef60821e155be1fdbb911d65d714ebbc7497d', 'OK: MV rationals match; N=1', 'OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]']
+
+=== Config only_F8: {'enable_F4_MO217': False, 'enable_F7': False, 'enable_F8': True} ===
+  bisect M_cert = 1.274375
+OK: SHA-256 = 321e0ff595e0b67444d46ce8f5e6f41fb26585d6c4d2c12c8195ad20cc296e0a
+OK: MV rationals match; N=1
+OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]
+OK: recomputed k_1..k_N: ['[0.9092765512116033677521443335140104554109884005765981659817030249314055886684 +/- 7.62e-77]']
+Verifying M_cert = 2039/1600 (~1.274375)
+Re-checking 76140 terminal cells ...
+FAIL: cell 4 claims FILTER_REJECT but no filter rigorously rejects.
+  verify accepted = False
+  reason: ['OK: SHA-256 = 321e0ff595e0b67444d46ce8f5e6f41fb26585d6c4d2c12c8195ad20cc296e0a', 'OK: MV rationals match; N=1', 'OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]']

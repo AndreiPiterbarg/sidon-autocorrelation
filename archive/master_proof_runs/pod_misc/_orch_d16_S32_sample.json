@@ -1,0 +1,14 @@
+{
+  "status": "L0_terminate",
+  "level": 0,
+  "d_final": 16,
+  "total_time": 2.9020016193389893,
+  "L0_counts": {
+    "F": 30,
+    "Q": 0,
+    "L": 0,
+    "L_joint": 0,
+    "split": 0,
+    "open": 0
+  }
+}

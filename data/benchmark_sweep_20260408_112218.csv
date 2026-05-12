@@ -1,2 +1,0 @@
-n_half,m,d0,correction,l0_compositions,l0_survivors,l0_time,l0_pruned_asym,l0_pruned_test,sample_size,L1_parents_processed,L1_parents_available,L1_projected_parents,L1_survivors_out,L1_projected_survivors,L1_expansion_factor,L1_elapsed,L1_projected_time,L1_total_children,L1_throughput,proven_at,projected_total,error
-3,50,6,0.0404,1326,144,0.01589226722717285,0,1182,10000,144,144,144,0,0,0.0,0.10853242874145508,0.10853242874145508,637058,5869747.939738763,L1,0.12442469596862793,

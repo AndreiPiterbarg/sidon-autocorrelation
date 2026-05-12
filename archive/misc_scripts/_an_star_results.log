@@ -1,0 +1,8 @@
+a_n^* = min_a max_W TV_W(a)  --  cascade discrete optimum
+Target: prove a_n^* >= 1.281
+============================================================
+  n=  4 (d=   8): a_n^* <= 1.203472  vs 1.281 [BELOW]  vs 1.2802 [BELOW]  (15s)
+  n=  8 (d=  16): a_n^* <= 1.277526  vs 1.281 [BELOW]  vs 1.2802 [BELOW]  (17s)
+  n= 16 (d=  32): a_n^* <= 1.368293  vs 1.281 [above]  vs 1.2802 [above]  (23s)
+  n= 32 (d=  64): a_n^* <= 1.453251  vs 1.281 [above]  vs 1.2802 [above]  (58s)
+  n= 64 (d= 128): a_n^* <= 1.522518  vs 1.281 [above]  vs 1.2802 [above]  (253s)

@@ -1,16 +1,20 @@
-"""MV's 119 G-coefficients as EXACT fmpq rationals.
+"""Matolcsi-Vinuesa baseline parameters as exact rationals.
 
-Source: arXiv:0907.1379v2 Appendix, PDF pp. 12-13 (also transcribed in
-``delsarte_dual/mv_bound.py`` as mpmath strings, and in
-``delsarte_dual/mv_construction_detailed.md`` Section 4).
+The 119 cosine coefficients of the cosine multiplier ``G`` used in the
+original Matolcsi-Vinuesa proof of ``C_{1a} >= 1.27481`` are reproduced
+verbatim from arXiv:0907.1379v2, Appendix.  Each coefficient is given in
+the paper as an 8-mantissa-digit float; we treat the decimal string
+literally as the rational ``p / 10^k``, with no rounding.
 
-Each coefficient is given in the paper as an 8-mantissa-digit float.  We
-treat the decimal string literally as the rational p / 10**k where p is the
-signed integer mantissa and k the number of digits after the point (with a
-sign- and exponent-aware parser).  No rounding is introduced at this step.
+These coefficients are used by the verifier ``certify.py`` as the
+baseline single-scale check and by the entry points in
+``delsarte_dual.grid_bound.bisect`` for the reproduction of the
+``M_cert = 1.27481`` single-scale lower bound.
 
-Downstream, the only place real arithmetic loses exactness is when a
-coefficient meets a Bessel value, which is an ``arb`` ball.
+The production multi-scale lower bound ``C_{1a} >= 1.292`` (the
+Piterbarg-Bajaj-Vincent Bound) uses a distinct ``G`` re-optimised
+against the multi-scale kernel; those coefficients are produced at
+runtime by the QP solver and stored in the emitted JSON certificate.
 """
 from __future__ import annotations
 
@@ -49,18 +53,18 @@ _MV_DECIMALS = [
     "-7.13560569e-03",   "+4.53679038e-03",   "-3.33261516e-03",   "+2.35463427e-03",
     "+2.04023789e-04",   "-1.27746711e-03",   "+1.81247830e-04",
 ]
-assert len(_MV_DECIMALS) == 119, f"MV has 119 coefficients; got {len(_MV_DECIMALS)}"
+assert len(_MV_DECIMALS) == 119, (
+    f"Matolcsi-Vinuesa has 119 coefficients; got {len(_MV_DECIMALS)}"
+)
 
 
 def _decimal_str_to_fmpq(s: str) -> fmpq:
-    """Parse a signed decimal string (optional 'eNN' exponent) to fmpq exactly.
+    """Parse a signed decimal string (optional ``eNN`` exponent) to exact fmpq.
 
-    The returned fmpq equals the literal rational value of the decimal string;
-    no rounding.  Handles forms like "+2.16620392", "-7.29790538e-01",
-    "+1e2", "-1", "3.14".
+    Handles forms like ``"+2.16620392"``, ``"-7.29790538e-01"``, ``"+1e2"``,
+    ``"-1"``, ``"3.14"``.  No rounding.
     """
     s = s.strip()
-    # Sign
     sign = 1
     if s.startswith("+"):
         s = s[1:]
@@ -68,15 +72,12 @@ def _decimal_str_to_fmpq(s: str) -> fmpq:
         sign = -1
         s = s[1:]
 
-    # Exponent
-    exp = 0
     if "e" in s or "E" in s:
         mantissa, exp_part = s.replace("E", "e").split("e", 1)
         exp = int(exp_part)
     else:
-        mantissa = s
+        mantissa, exp = s, 0
 
-    # Mantissa digits
     if "." in mantissa:
         int_part, frac_part = mantissa.split(".", 1)
     else:
@@ -86,39 +87,36 @@ def _decimal_str_to_fmpq(s: str) -> fmpq:
     digits_after_point = len(frac_part)
     mantissa_int = int(int_part + frac_part) if (int_part + frac_part) else 0
 
-    # Value = sign * mantissa_int * 10**(exp - digits_after_point)
     net_exp = exp - digits_after_point
     if net_exp >= 0:
         return fmpq(sign * mantissa_int * (10 ** net_exp), 1)
-    else:
-        return fmpq(sign * mantissa_int, 10 ** (-net_exp))
+    return fmpq(sign * mantissa_int, 10 ** (-net_exp))
 
 
-def mv_coeffs_fmpq() -> list[fmpq]:
-    """Return MV's 119 G-coefficients as a list of exact fmpq rationals.
+def mv_coeffs_fmpq() -> list:
+    """Return the 119 Matolcsi-Vinuesa cosine coefficients as ``fmpq``.
 
-    Index convention: ``mv_coeffs_fmpq()[j-1]`` is the coefficient a_j
-    (1-based in the paper, 0-based in the list).
+    The convention is 1-based in the paper and 0-based in the list:
+    ``mv_coeffs_fmpq()[j - 1]`` is the coefficient ``a_j``.
     """
     return [_decimal_str_to_fmpq(s) for s in _MV_DECIMALS]
 
 
-# Fixed MV parameters as exact rationals
-MV_DELTA = fmpq(138, 1000)          # 0.138
-MV_U     = fmpq(638, 1000)          # 0.638 = 1/2 + delta
-MV_N     = 119
+#: Half-width of the single-scale arcsine kernel.
+MV_DELTA = fmpq(138, 1000)
 
-# MV's declared upper bound on the regularised ||K||_2^2  (MV p.3 line 141):
-#   ||K||_2^2  <  0.5747 / delta.
-# The kernel K is NOT in L^2 (arcsine endpoint singularity is logarithmic in
-# the squared integrand), so this is a SURROGATE bound -- see
-# ``mv_construction_detailed.md`` Section 2 note.  MV inherit it from
-# Martin-O'Bryant arXiv:0807.5121 without reproving it.
-#
-# Phase 1 takes this constant as a named INPUT ASSUMPTION from MV.  A fully
-# first-principles derivation of the surrogate is a Phase-2+ task (consult
-# MO [6] Lemma 3.2).
-MV_K2_NUMERATOR = fmpq(5747, 10000)   # 0.5747
+#: Period parameter ``u = 1/2 + delta``.
+MV_U = fmpq(638, 1000)
+
+#: Number of cosine modes in the single-scale baseline.
+MV_N = 119
+
+#: Martin-O'Bryant surrogate ``||K||_2^2 = 0.5747 / delta``
+#: (arXiv:0807.5121, Lemma 3.2).  Used by the single-scale arcsine
+#: baseline; the production multi-scale pipeline computes ``K_2`` directly
+#: from cross-Bessel integrals (see
+#: :class:`delsarte_dual.grid_bound_alt_kernel.kernels.MultiScaleArcsineKernel`).
+MV_K2_NUMERATOR = fmpq(5747, 10000)
 
 
 __all__ = [
@@ -127,5 +125,4 @@ __all__ = [
     "MV_U",
     "MV_N",
     "MV_K2_NUMERATOR",
-    "_decimal_str_to_fmpq",
 ]

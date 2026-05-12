@@ -1,0 +1,63 @@
+{
+  "task": "d=16 BnB feasibility for Sidon C_{1a} >= 1.281",
+  "threshold": 1.281,
+  "tier_structure_v4": [
+    "empty (B34/B35: μ-space simplex infeasibility)",
+    "B1 (μ-space corner LB: μ^T A_W μ >= Σ lo_i lo_j; sound w/o PSD assumption)",
+    "F (vectorized quadratic Shor/McCormick LB across all windows)",
+    "L_single (CVXPY/MOSEK LP/SDP top-K candidate windows; B43 widest-window-first)",
+    "L_joint (joint Shor across top-K windows, K=4 default)",
+    "split (gradient-weighted axis bisection; B45 caps depth=1 if d<=4, B46 skips wasteful root splits)"
+  ],
+  "M_uniform_by_d": {
+    "12": {"M": 1.500000, "best_window_ell_s_lo": [7, 8],  "margin_vs_1.281": 0.219000},
+    "14": {"M": 1.535714, "best_window_ell_s_lo": [8, 10], "margin_vs_1.281": 0.254714},
+    "16": {"M": 1.562500, "best_window_ell_s_lo": [8, 12], "margin_vs_1.281": 0.281500},
+    "18": {"M": 1.583333, "best_window_ell_s_lo": [8, 14], "margin_vs_1.281": 0.302333},
+    "20": {"M": 1.600000, "best_window_ell_s_lo": [9, 15], "margin_vs_1.281": 0.319000}
+  },
+  "comp_counts_d16": {
+    "n1_S64":  {"S": 64,  "C(79,15)":  5391644226101705,            "approx": "5.39e15"},
+    "n2_S128": {"S": 128, "C(143,15)": 76435265515004093841,       "approx": "7.64e19"}
+  },
+  "throughput_analysis": {
+    "v4_hard_cell_rate_cells_per_sec": 10,
+    "v4_easy_cell_rate_cells_per_sec_B1": 1.0e5,
+    "fraction_hard_assumed": "5-10% (near-uniform shells)",
+    "hard_cell_count_n1_lower": "~2.7e14",
+    "hard_cell_count_n1_upper": "~5.4e14",
+    "wallclock_n1_S64_seconds_lower":  2.7e13,
+    "wallclock_n1_S64_seconds_upper":  5.4e13,
+    "wallclock_n1_S64_years_lower":    850000,
+    "wallclock_n1_S64_years_upper":    1700000,
+    "wallclock_n2_S128_years":         "~1.2e10  (12 billion years)"
+  },
+  "worst_case_cell": {
+    "composition": "c = (4,4,...,4)  (uniform palindromic) at S=64",
+    "M_at_center": 1.5625,
+    "margin_at_center": 0.2815,
+    "concern": "cell radius is +/- 1/(2S) = +/- 1/128 per coord; near-uniform mu's are exactly the worst-case for tier_F/L_single since gradient is small. L_joint needs to close the 0.28-gap on a fat box."
+  },
+  "recommended_pushes": {
+    "a_speedup": {
+      "what": "Symmetry reduction (S_d invariance of TV_W under index reversal + palindromic conjugation)",
+      "why":  "TV_W(mu) is invariant under mu -> reverse(mu). Quotient cell count by ~factor 2 trivially; combined with sorting orbit reps by 'shells' (compositions modulo Sym), conservatively 5-10x. But this does NOT change the asymptotic — C(79,15) is still 5e14 after a 10x reduction."
+    },
+    "b_bound_tightness": {
+      "what": "Use Lasserre d>=4 moment-LP (or Farkas-certified val(d=4)>=1.0963 from MEMORY) as the L_joint replacement near uniform; ratchet up to d=6 or d=8 ONLY on the small set of unkilled near-uniform cells.",
+      "why":  "F/L_single/L_joint(K=4) all use Shor — degree-2 RLT. Near uniform mu*=1/16, the off-diag epsilon products are tiny but quadratic; Shor lies above degree-2 SOS hull and degrades to F itself. Lasserre d=4 (sigma_4) gives the only known tightening that converges to TV_W on the box."
+    },
+    "c_realistic_wallclock": {
+      "with_a+b_only": "infeasible at d=16 S=64 — even at 1e9 cells/s on B1-fast path, 5e15 cells = 60 days *just* to enumerate, ignoring memory/IO. Hard cells alone (5-10%) at 10 cells/s = 10^4-10^5 *years* on a single node.",
+      "with_1024_node_cluster_and_perfect_parallel": "still ~10-100 years for n=1, S=64.",
+      "verdict": "Coarse BnB at d=16 with S=4d is NOT feasible on any horizon Claude/the user can realistically deploy. The S=128 (n=2) variant is astronomically worse (~10^20 cells)."
+    }
+  },
+  "killing_constraint": "THROUGHPUT, by 5+ orders of magnitude. Bound tightness is secondary: even with an oracle that certifies every cell in 1 ns, C(79,15) = 5.39e15 evaluations is ~62 days at 1 GHz. The composition count C(S+d-1,d-1) blows up super-exponentially in d; at d=16 the BnB is fundamentally combinatorial-limited.",
+  "alternative_paths": [
+    "Lower d: d=8 has C(31,7) = 2.6e6 — tractable.  But M(d=8) needs check; CLAUDE.md history suggests d=8 margins exist (Farkas val(4)>=1.0963 uses d<=8).",
+    "Adaptive non-uniform grid: only resolve near-uniform shell at fine S, use coarse S elsewhere. Saves ~10^3-10^5x but still infeasible at d=16.",
+    "Symmetry-quotient BnB: enumerate Sym(d)-orbit reps only. Reduction factor ~d!/|Aut(c)| ~ 16!/few = 10^13x. THIS could make d=16 conceivable: 5e15 / 2e13 ~ 250 orbits-per-shell, feasible. BUT requires non-trivial code rewrite + correctness proof that TV_W respects this symmetry (only partially true — the WINDOW choice depends on coord order)."
+  ],
+  "bottom_line": "d=16 coarse-BnB with v4 cascade is infeasible by ~6 orders of magnitude in wall-clock, regardless of bound-tightness improvements. The killing constraint is the C(S+d-1,d-1) cell count. Symmetry-quotient enumeration (orbits under reversal + appropriate permutation subgroup commuting with windowing) is the ONLY plausible route to make d=16 viable, and even that is a stretch. The 0.281 margin at the uniform cell is healthy — bound tightness is NOT the blocker."
+}

@@ -1,0 +1,29 @@
+{
+  "K26_base_M_cert": 1.2801328313648335,
+  "K26_eps_scan_best": {
+    "M_cert": 1.2801581785463028,
+    "fam_C": "triangle",
+    "delta_C": 0.05,
+    "eps": 0.01
+  },
+  "three_family_best": {
+    "M_cert": 1.2791468701471034,
+    "fam_A": "arcsine",
+    "fam_B": "bspline3",
+    "fam_C": "triangle",
+    "delta_A": 0.138,
+    "delta_B": 0.11,
+    "delta_C": 0.07,
+    "lambda_A": 0.93,
+    "lambda_B": 0.04,
+    "lambda_C": 0.03
+  },
+  "final_v2_best": {
+    "M_cert": 1.2801581785463028,
+    "fam_C": "triangle",
+    "delta_C": 0.05,
+    "eps": 0.01
+  },
+  "beats_K26_1_28013": true,
+  "elapsed_s": 52.97605657577515
+}

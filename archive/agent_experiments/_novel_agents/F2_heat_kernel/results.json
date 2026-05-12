@@ -1,0 +1,257 @@
+{
+  "agent": "F2_heat_kernel",
+  "approach": "heat-kernel/parabolic-max-principle smoothing + heat-witness dual cert",
+  "math_correct": true,
+  "best_lb_obtained": null,
+  "vs_1_2802": "below",
+  "promising": false,
+  "verdict_short": "Parabolic max-principle gives ||(f*f)*phi_{2t}||_inf <= ||f*f||_inf for all t>0, so heat-smoothed bounds are STRICTLY WEAKER than t=0; the heat-witness route cannot LB the inf over f above CS 2017 (1.2802) without additional non-heat ingredients.",
+  "verdict_long": "We numerically verified (4 candidate f's: uniform, arcsine, two-level, near-CS extremiser) that t |-> ||(f*f)*phi_{2t}||_inf is monotone-decreasing, as required by the parabolic maximum principle.  The slope at t=0+ is finite and STRICTLY NEGATIVE for every non-degenerate f, so smoothing strictly LOSES information about max(f*f).\n\nHeat-witness dual certificate W_{t,x_0}(x) = phi_{2t}(x_0 - x):  <f*f, W> = u(t,x_0) <= ||u(t,.)||_inf <= ||f*f||_inf, so any heat-witness evaluation gives a LOWER bound on max(f*f) for THAT particular f, but the INFIMUM over admissible f of <f*f, W_{t,x_0}> is in general a smooth quadratic form which can be made arbitrarily small (concentrate f at the bin furthest from x_0).  So heat-witness alone does not deliver a universal LB above 1.2802.\n\nThe OU semigroup variant on [-1/4,1/4] with reflecting boundary preserves supp but again the spectral-gap inequality (Poincare on the OU generator) controls only ||f - 1||_2, not max(f*f), so it reduces to a moment problem already covered by Lasserre/CS hierarchies in the repo.\n\nVerdict: heat-flow / OU-semigroup smoothing is mathematically sound but fundamentally moves in the WRONG direction for this LB problem.  Not promising.",
+  "next_steps_if_promising": [
+    "Replace random search with rigorous SDP infimum of <f*f, W_{t,x_0}> (turns into a moment-SDP, but already covered by repo's Lasserre track).",
+    "REVERSE-direction approach: use heat-flow to UPPER-bound max(f*f) for the extremiser via Bochner/Strichartz, then use upper-bound monotonicity to transfer.  But UB on max(f*f) is not what we want.",
+    "Combine heat-witness with an EXACT moment cone constraint at t=0; this is essentially the Lasserre hierarchy with Gaussian test functionals and is unlikely to beat the SOS hierarchy already implemented."
+  ],
+  "compute_time_sec": 167.1932082000003,
+  "files_created": [
+    "probe.py",
+    "probe2_limit.py",
+    "run.log",
+    "results.json"
+  ],
+  "details": {
+    "grid_N": 4097,
+    "grid_half_box": 1.0,
+    "trajectories": {
+      "uniform": {
+        "name": "uniform",
+        "base_max": 2.001953125,
+        "t_grid": [
+          0.0,
+          1e-06,
+          1e-05,
+          0.0001,
+          0.001,
+          0.003,
+          0.01,
+          0.03,
+          0.1
+        ],
+        "max_curve": [
+          2.001953125,
+          1.9974847172192052,
+          1.9876943194786634,
+          1.9568224423594336,
+          1.8592246136106862,
+          1.7547384543332967,
+          1.5506585256860541,
+          1.234996271653244,
+          0.8110129062022524
+        ],
+        "elapsed_sec": 0.13966759999993883
+      },
+      "arcsine": {
+        "name": "arcsine",
+        "base_max": 3.2278001181072495,
+        "t_grid": [
+          0.0,
+          1e-06,
+          1e-05,
+          0.0001,
+          0.001,
+          0.003,
+          0.01,
+          0.03,
+          0.1
+        ],
+        "max_curve": [
+          3.2278001181072495,
+          2.8684518895768707,
+          2.5765016123390967,
+          2.212240402234439,
+          1.7974681742709016,
+          1.5886316531527065,
+          1.3557795700292348,
+          1.1181426375102794,
+          0.7770530746171163
+        ],
+        "elapsed_sec": 0.13845009999977265
+      },
+      "two_level": {
+        "name": "two_level",
+        "base_max": 2.1044057478933946,
+        "t_grid": [
+          0.0,
+          1e-06,
+          1e-05,
+          0.0001,
+          0.001,
+          0.003,
+          0.01,
+          0.03,
+          0.1
+        ],
+        "max_curve": [
+          2.1044057478933946,
+          2.1008184978220745,
+          2.092958739555614,
+          2.0681747115907245,
+          1.9896268378409665,
+          1.896086760221486,
+          1.663873328959872,
+          1.2863242937928487,
+          0.8226917946044321
+        ],
+        "elapsed_sec": 0.14423450000003868
+      },
+      "cs_extr": {
+        "name": "cs_extr",
+        "base_max": 2.196964028613859,
+        "t_grid": [
+          0.0,
+          1e-06,
+          1e-05,
+          0.0001,
+          0.001,
+          0.003,
+          0.01,
+          0.03,
+          0.1
+        ],
+        "max_curve": [
+          2.196964028613859,
+          2.1903243076710495,
+          2.1757765062828875,
+          2.1299031978171805,
+          1.9888727735832887,
+          1.865108565355898,
+          1.6387076188663237,
+          1.2747930606095252,
+          0.8197453989678811
+        ],
+        "elapsed_sec": 0.15888540000014473
+      }
+    },
+    "monotone_check": {
+      "uniform": true,
+      "arcsine": true,
+      "two_level": true,
+      "cs_extr": true
+    },
+    "slopes_at_0plus": {
+      "uniform": 1425.8805521336624,
+      "arcsine": 65129.85057681528,
+      "two_level": 1144.7008337780671,
+      "cs_extr": 2118.752233097165
+    },
+    "heat_witness_random_search": {
+      "10": {
+        "0.0001": 1.950927725984558,
+        "0.001": 1.774725691263139,
+        "0.01": 1.3120897454857063
+      },
+      "16": {
+        "0.0001": 1.9452504100437995,
+        "0.001": 1.7362050924771697,
+        "0.01": 1.3000114928832045
+      }
+    },
+    "limit_study": {
+      "approach": "smoothed-problem inf as t -> 0+",
+      "results": {
+        "10": {
+          "1e-07": {
+            "best_max": 1.9988419703359566,
+            "elapsed": 3.4109803000001193
+          },
+          "1e-06": {
+            "best_max": 1.995574131679174,
+            "elapsed": 2.4361071999996966
+          },
+          "1e-05": {
+            "best_max": 1.9854771215892877,
+            "elapsed": 2.4141905000001316
+          },
+          "0.0001": {
+            "best_max": 1.9496489441279798,
+            "elapsed": 2.330285200000162
+          },
+          "0.001": {
+            "best_max": 1.7708427106827698,
+            "elapsed": 3.1879291000000194
+          },
+          "0.01": {
+            "best_max": 1.3093454072169863,
+            "elapsed": 8.48970109999982
+          },
+          "0.03": {
+            "best_max": 1.0109849845956898,
+            "elapsed": 17.049603399999796
+          }
+        },
+        "16": {
+          "1e-07": {
+            "best_max": 1.998861927004857,
+            "elapsed": 2.5607654000000366
+          },
+          "1e-06": {
+            "best_max": 1.9955976999899439,
+            "elapsed": 2.142305099999703
+          },
+          "1e-05": {
+            "best_max": 1.9852475949340946,
+            "elapsed": 2.4682786000003034
+          },
+          "0.0001": {
+            "best_max": 1.9432447041170307,
+            "elapsed": 2.3182016999999178
+          },
+          "0.001": {
+            "best_max": 1.7432852671823453,
+            "elapsed": 3.565336600000137
+          },
+          "0.01": {
+            "best_max": 1.3089980185077772,
+            "elapsed": 10.091819000000214
+          },
+          "0.03": {
+            "best_max": 0.9963812478841934,
+            "elapsed": 16.38045420000026
+          }
+        },
+        "24": {
+          "1e-07": {
+            "best_max": 1.998635907666962,
+            "elapsed": 2.0250684000002366
+          },
+          "1e-06": {
+            "best_max": 1.9952260399893957,
+            "elapsed": 2.1842443999998977
+          },
+          "1e-05": {
+            "best_max": 1.9840320686625172,
+            "elapsed": 2.250851100000091
+          },
+          "0.0001": {
+            "best_max": 1.9311795098004814,
+            "elapsed": 2.371059399999922
+          },
+          "0.001": {
+            "best_max": 1.7293428530355712,
+            "elapsed": 2.6868005999999696
+          },
+          "0.01": {
+            "best_max": 1.3348586438138408,
+            "elapsed": 7.776921399999992
+          },
+          "0.03": {
+            "best_max": 1.0616787651606925,
+            "elapsed": 11.686854499999754
+          }
+        }
+      },
+      "elapsed_total": 109.84243839999999,
+      "note": "best_max[d, t] is an UPPER BOUND on inf_{f piecewise-const on d bins} max u(t, .)  on  [-1/2, 1/2].  This in turn UPPER-BOUNDS the true infimum at d = infinity.  If best_max is small (close to 1) for small t, this means the smoothed problem at t > 0 admits f's with arbitrarily low ||u(t,.)||_inf, which means heat-flow LB is WEAKER than 1.2802 by a margin that grows with t."
+    }
+  }
+}

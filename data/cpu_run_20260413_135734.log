@@ -1,4 +1,0 @@
-usage: prove_1_30.py [-h] [--c_target C_TARGET] [--phase PHASE]
-                     [--max_comps MAX_COMPS] [--max_time MAX_TIME]
-                     [--max_hours MAX_HOURS]
-prove_1_30.py: error: unrecognized arguments: -- --phase 1 --max_comps 500000000

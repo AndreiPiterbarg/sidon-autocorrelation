@@ -1,0 +1,113 @@
+================================================================
+PALINDROMIC BOX CERTIFICATION — SOUNDNESS ANALYSIS
+================================================================
+
+Setup
+-----
+Fix dimension d, grid resolution S, target c, and a parent center
+c = (c_0, ..., c_{d-1}) with sum_i c_i = S. The cell is
+
+    Cell(c) := { mu in R^d : c_i/S - h <= mu_i <= c_i/S + h,
+                              sum_i mu_i = 1, mu_i >= 0 },
+
+with half-width h = 1/(2S) and continuous mass mu_i in [0,1].
+Define the reversal sigma : R^d -> R^d by sigma(mu)_i = mu_{d-1-i}.
+
+The cascade discards a center c only when c is "palindromic-canonical":
+c <= sigma(c) lexicographically. Each composition tested is therefore
+either a palindrome (c = sigma(c)) or canonical with c < sigma(c).
+For the latter, the cell of sigma(c) — which is also visited by the
+cascade after the post-processing step `current[non_canon] =
+current[non_canon, ::-1]` in run_cascade_coarse.py:670 — must also be
+certified. So we must certify both Cell(c) and Cell(sigma(c)).
+
+Test value, gradient, cell variation
+------------------------------------
+For window W = (ell, s) and mu in Cell(c),
+
+    TV_W(mu) = (2d/ell) * sum_{i+j: s <= i+j <= s+ell-2} mu_i mu_j .
+
+T(mu) := max_W TV_W(mu) is the per-cell objective. The current box
+certificate uses the linearization at mu = c/S:
+
+    T(mu) >= TV_W(c/S) + grad TV_W(c/S) . delta - |R_W(delta)|
+
+with delta = mu - c/S and a quadratic remainder bound |R_W| <=
+(2d/ell) * N_pairs / (4 S^2). The "cell variation" cell_var is the
+worst-case linear drop:
+
+    cell_var := max_{delta in Cell0} |grad . delta|,
+    Cell0 := { delta : -h <= delta_i <= h, sum delta_i = 0 }.
+
+The closed form (run_cascade_coarse.py:188) is
+
+    cell_var = (1/(2S)) * sum_{k=0..d/2-1} (g_sorted[d-1-k] - g_sorted[k]).
+
+Naive palindromic restriction is UNSOUND
+----------------------------------------
+The proposed shortcut: replace Cell0 by
+
+    Cell0_sym := { delta in Cell0 : delta_i = delta_{d-1-i} for all i },
+
+so the polytope shrinks (dim reduces from d-1 to ceil(d/2)-1) and
+cell_var_sym <= cell_var. This gives a TIGHTER certificate.
+
+But the certificate must hold for ALL mu in Cell(c), not just the
+palindromic subset. Restricting delta to Cell0_sym only certifies the
+palindromic slice mu = c/S + Cell0_sym, leaving non-palindromic mu in
+Cell(c) UN-CERTIFIED. The "T(mu) is invariant under sigma" argument
+DOES NOT bridge this gap: although T(mu) = T(sigma(mu)), the minimum
+of T over Cell(c) may be attained at a non-palindromic mu when
+T(mu) > T((mu + sigma(mu))/2) (which is allowed because T is a max
+of indefinite quadratics, hence neither convex nor concave). Concretely
+if mu* != sigma(mu*) is the cell minimizer, sigma(mu*) is also a
+minimizer by symmetry but neither lies in c/S + Cell0_sym; the
+symmetric cell_var fails to upper-bound the true drop and the
+certificate is unsound.
+
+Sound use of palindromic symmetry
+---------------------------------
+There IS a sound use, but it is much weaker than dimension reduction:
+
+  Lemma 1 (orbit reduction). Define the canonical projection
+  pi : Cell(c) -> Cell(c)/<sigma>. Then min_{Cell(c)} T = min_{Cell(c)/<sigma>} T.
+  Proof: T is sigma-invariant. For any mu, the orbit {mu, sigma(mu)}
+  achieves T at both points; choose the canonical representative.
+
+  Consequence: when scanning mu in Cell(c), we only need ONE of every
+  orbit-pair. For non-palindromic centers c, this halves the number
+  of cells to check (Cell(c) and Cell(sigma(c)) certify together
+  because their certificates are identical: the box certificate
+  depends on c only through sorted gradient values and N_pairs, which
+  are sigma-invariant).
+
+  Concrete saving: skip Cell(sigma(c)) when c < sigma(c). The cascade
+  ALREADY does this via the canonical-mask filter; no further saving
+  is possible from symmetry alone. The polytope dimension and
+  cell_var are unchanged.
+
+What about palindromic centers (c = sigma(c))?
+----------------------------------------------
+If c is its own reflection, then Cell(c) is sigma-invariant, and the
+linearization point c/S lies on the symmetric subspace. But we still
+need to certify all delta in Cell0, INCLUDING anti-symmetric ones.
+The anti-symmetric component delta - sigma(delta) does NOT shrink
+the cell_var bound — both grad and the cell extent are full.
+
+Verdict: NO valid dimension reduction from palindromic symmetry.
+
+================================================================
+EMPIRICAL CHECK
+================================================================
+We nevertheless implement palindromic_box_cert as a NON-SOUND
+diagnostic: it computes cell_var on the symmetric subspace only.
+Comparing cell_var (full) vs cell_var_sym confirms the gap is
+non-trivial, which is exactly why the symmetric-only bound CANNOT
+replace the full bound — it would prove a strictly stronger statement
+than is actually true and certify cells that the sound bound rejects.
+
+The diagnostic is useful only to QUANTIFY the gap and to motivate
+ONE legitimate downstream optimization: the orbit reduction
+(saving <=2x by collapsing Cell(c) and Cell(sigma(c))). The cascade
+already realizes this saving via canonical filtering, so no
+additional speedup is available.

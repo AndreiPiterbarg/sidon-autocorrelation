@@ -1,0 +1,637 @@
+                                                       ON SUPREMA OF AUTOCONVOLUTIONS
+                                                       WITH AN APPLICATION TO SIDON SETS
+
+                                                       ALEXANDER CLONINGER AND STEFAN STEINERBERGER
+
+arXiv:1403.7988v3 [math.CO] 22 Apr 2016  Abstract. Let f be a nonnegative function supported on (-1/4, 1/4). We show
+
+                                                                                          1/4                  2
+
+                                                       sup f (t)f (x - t)dt  1.28               f (x)dx ,
+
+                                                       xR R                               -1/4
+
+                                         where 1.28 improves on a series of earlier results. The inequality arises naturally in additive
+                                         combinatorics in the study of Sidon sets. We derive a relaxation of the problem that reduces
+                                         to a finite number of cases and yields slightly stronger results. Our approach should be able to
+                                         prove lower bounds that are arbitrary close to the sharp result. Currently, the bottleneck in our
+                                         approach is runtime: new ideas might be able to significantly speed up the computation.
+
+                                                                           1. Introduction
+
+                                         1.1. Sidon sets. A subset A  {1, 2, . . . , N } is called g-Sidon if
+
+                                                            | {(a, b)  A × A : a + b = m} |  g
+
+                                         for every m. How large can g-Sidon sets possibly be? Denote the answer by
+
+                                                                                         g(n) := max |A|.
+                                                                                                                                                                   A{1,2,...,N }
+                                                                                                                                               A is g-Sidon
+
+                                         There has been a lot of research activity on bounding these quantities: we only deal with the
+                                         asymptotic case as g becomes large. Cilleruelo, Ruzsa & Vinuesa [2] have recently shown that the
+                                         maximal cardinality of a g-Sidon set satisfies
+
+                                                                        (g)gn(1 - o(1))  g(n)  (g)gn(1 + o(1)),
+
+                                         where the o(1) is with respect to n and
+
+                                                                           lim (g) =  = lim (g)
+                                                                           g              g
+
+                                         for some universal constant   R.
+
+                                         1.2. An equivalent continuous problem. As proven by Cilleruelo, Ruzsa & Vinuesa [2], the
+                                         constant  has an alternative representation as the solution of a continuous problem involving the
+                                         autoconvolution f  f which was first considered by Schinzel & Schmidt [11]. Throughout this
+                                         paper, we will use
+
+                                                                                     (f  g)(x) = f (t)g(x - t)dt
+
+                                                                                                                                   R
+
+                                         to denote the convolution. Consider all nonnegative functions f supported on [0, 1] satisfying
+
+                                                       f  f L(R) = sup f (t)f (x - t)dt  1,
+
+                                                                                  xR R
+
+                                         then we have
+
+                                                                              f (x)dx   and this inequality is sharp.
+
+                                                                                           R
+
+                                         A rephrasing of the statement is as follows: let f be a nonnegative function supported on the
+
+                                         interval [-1/4, 1/4]. Then we have that
+
+                                                                                       2     1/4                  2
+                                                                                       2
+                                                       sup     f (t)f (x -    t)dt                f (x)dx .
+
+                                                       xR   R                             -1/4
+
+                                                                                    1
+2                       ALEXANDER CLONINGER AND STEFAN STEINERBERGER
+
+We abbreviate henceforth c = 2/2. As for the lower bound, we have
+
+                  c1                                   trivial
+                     1.151                             Cilleruelo, Ruzsa & Trujillo [3]
+                     1.178                             Green [5]
+                     1.183                             Martin & O'Bryant [7]
+                     1.251                             Yu [12]
+                     1.263                             Martin & O'Bryant [8]
+                     1.274                             Matolcsi & Vinuesa [10]
+
+Work on the upper bound has been carried out by Cilleruelo, Ruzsa & Trujillo [3], Kolountzakis
+[6], Martin & O'Bryant [7] and Cilleruelo & Vinuesa [4]. The current state of the art is
+
+                                        1.2749  c  1.50992
+
+with both bounds coming from Matolcsi & Vinuesa [10]. The upper bound 1.50992 is conjectured
+to be almost thight and disproves the conjecture c = /2 due to Schinzel & Schmidt [11]. The
+upper bound comes from an explicit example; the lower bound is established using Fourier methods
+and earlier arguments of Martin & O'Bryant [9] and Yu [12]. Matolcsi & Vinuesa also claim the
+theoretical limit of their approach for the lower bound to be at 1.276.
+
+1.3. The result. The purpose of this paper is to improve on the lower bound by proving that there
+is a relaxed problem which can be dealt with computationally. The actual improvement is small
+(though comparable to previous improvements). We believe the true merit of our contribution to
+be in demonstrating a new approach to the problem that might prove quite effective.
+
+Theorem. Let f : R  R0 be supported in [-1/4, 1/4]. Then
+
+                                                       1/4                 2
+
+                        sup f (t)f (x - t)dt  1.28                 f (x)dx .
+
+                        xR R                           -1/4
+
+Our method seems to only be limited by our ability to do large-scale computations and we consider
+it likely that variants of our idea might be much faster and able to drastically improve on the result
+outlined here. There are two main ingredients: the first is to regard convolution as a bilinear
+operator that respects spatial decompositions via
+
+                               supp(f  g)  supp(f ) + supp(g)
+
+and acts nicely with respect to the L1-norm via
+
+                               (f  g)(x)dx = f (x)dx               g(x)dx
+
+                            R                    R           R
+
+for sufficiently regular functions. The second ingredient is the pigeonhole principle stating that
+
+for any h : I  R
+
+                                        h  L     1      |h(x)|dx.
+                                                 |I |
+                                                       I
+
+                                        2. Some intuition
+
+There is a trivial proof of c  1: since f is supported on (-1/4, 1/4), the function f  f must be
+supported on (-1/2, 1/2). Furthermore, by Fubini, we have that
+
+                        (f  f )(x)dx =         f (t)f (x - t)dtdx =                     2
+
+                     R                     RR                          f (x)dx
+
+                                                                     R
+
+and thus, trivially
+
+                                           2
+
+                          f (x)dx = f  f L1(-1/2,1/2)  f  f L(-1/2,1/2).
+
+                        R
+                                                                                                            3
+
+This argument inspired our approach: instead of trying to show that f  f L(R) has to be large
+by showing that f  f has to be large in a single point, we show that there has to exist an interval
+
+I  (-1/2, 1/2) such that f  f L1(I) is large and then use
+
+                       1     f f  L1(I)        f f         L(I)        f  f L(R).
+                       |I |
+
+Indeed, this also implies that we will actually be able to deduce slightly stronger results. Our
+main result reads as follows and clearly implies the bound c  1.28.
+
+Theorem (Full result). Let f : R  R0 be supported in [-1/4, 1/4]. Then there exists an
+interval J  (-1/2, 1/2) of length |J|  1/48 such that
+
+                                                                 1/4                2
+
+                               (f  f )(x)dx  1.28|J|                     f (x)dx .
+
+                             J                               -1/4
+
+We will now describe the argument in greater detail: let us decompose the interval (-1/4, 1/4)
+
+into four intervals I1, I2, I3, I4 of equal size in the canonical way, i.e.
+
+                       Ij =  -3 +    j  ,  -2 +      j       for j = 1, 2, 3, 4.
+                                8             8
+
+Denoting the characteristic function of an interval I by I , we define
+
+                                               fj = f Ij
+
+and use the linearity of the convolution to write
+
+                                             
+
+                                                  4              4
+
+                                 f  f =  fj   fj
+
+                                               j=1             j=1
+
+                                               4
+
+                                        =            fj  fk
+
+                                           j,k=1
+
+-                      1     I1   -  1     I2           0    I3          1      I4     1
+                       4             8                                   8             4
+
+Figure 1. A nonnegative function supported on (-1/4, 1/4).
+
+It is easy to see that fj  fk is supported on Ij + Ik, where + is interpreted as the Minkowski sum
+of sets. This property allows now to deduce precisely the location of the support of each term.
+We have, additionally, by Fubini, that
+
+                          (fj  fk)(x)dx = fj(x)dx                              fk(x)dx .
+
+                       R                             R                      R
+
+This allows now to deduce, for example, the pointwise inequality
+
+(f1  f1)(x) + (f1  f2)(x) + (f2  f1)(x)  (f  f )(x) on the interval (-1/2, -1/8).
+
+Integrating the inequality on both sides yields
+
+                    2                                               -    1                   3
+                                                                         8                   8
+  f1(x)dx + 2
+                            f1(x)dx          f2(x)dx                        (f   f )(x)dx       f f  L(R).
+R
+                          R                R                     -    1
+                                                                      2
+
+This corresponds to certain restrictions on the distribution of the L1-mass of the function over the
+
+intervals assuming f  f L(R) to be small, or, arguing conversely, shows that any function with
+4                    ALEXANDER CLONINGER AND STEFAN STEINERBERGER
+
+ f  f L(R) small must induce a partition of its L1-mass that satisfies the particular inequality.
+The idea behind our approach is mainly to check whether it is at all possible for a function to
+satisfy a long list of such inequalities. Note that the approach is quite insensitive as to what the
+function actually looks like ­ the only information used is the integral over a small interval: this
+implies that it suffices to check the chain of inequalities for all step functions.
+
+                                          3. Details and Proofs
+
+3.1. Step functions. This section is devoted to a simple Lemma capturing the main idea on a
+single length scale. It is part of the argument that we do not use any information on the function
+excepts its integral over certain intervals ­ the actual shape of the function over that interval plays
+no role. This has the effect that we may later restrict ourselves to step functions.
+
+Lemma 1. For any n  N let
+
+                                                                                        n-1
+
+                 An =        (a-n, a-n+1, . . . , an-1)  (R+)2n :                                 ai = 4n
+
+                                                                                        i=-n
+
+and                  an := min max                  max           1                               aiaj ,
+where k, l  Z. Then                                              4n
+                                aAn 22n          -nkn-               ki+jk+-2
+
+                                                         c  an.
+
+Proof. Let  > 0 be arbitrary and let f be a nonnegative function supported on the interval
+(-1/4, 1/4) with normalized mean
+
+                                                                                1/4
+
+                                                            f (x)dx = 1
+
+                                                                              -1/4
+
+such that
+
+                                            sup f (t)f (x - t)dt  c + .
+
+                                                                xR R
+
+Consider the decomposition of the interval into 2n equally sized intervals
+
+                          1     1         n-1                                           j      j  +1
+                          4     4                                                       4n        4n
+                       -     ,      =            Ij      where      Ij =                    ,         .
+
+                                          j=-n
+
+We denote the restriction of f to the interval Ij by fj and define the average on that region by
+
+                                aj  =      1       f (x)dx = 4n        fj (x)dx.
+                                          |Ij |
+                                                 Ij                  R
+
+Trivially, since f  0, we have aj  0 as well as
+
+                                    1      n-1       =        1/4
+                                    4n
+                                                aj                 f (x)dx = 1
+
+                                          j=-n               -1/4
+
+and thus (a-n, a-n+1, . . . , an-1)  An. Let 2    4n be an arbitrary integer and let -2n  k 
+2n -  be another arbitrary integer. A simple computation yields
+
+    1            aiaj  =  4n                         ai  aj  =  4n                                  f (x)dx    f (x)dx
+   4n                                                4n  4n      
+       ki+jk+-2                 ki+jk+-2                            ki+jk+-2                      Ii         Ij
+
+                       =  4n                           (fi  fj)(x)dx                    4n          k+l
+                                                                                         
+                                ki+jk+-2             R                                               4n
+                                                                                    ()
+                                                                                                       (f  f )(x)dx
+
+                                                                                                   k
+                                                                                                  4n
+
+                          4n         k+l  f  f L(R)dx =             f  f L  c + ,
+                                      4n
+
+                                    k
+                                   4n
+                                                                                                   5
+
+where () is the only nonobvious step, which follows from the fact that k  i + j  k +  - 2
+
+implies that
+
+                                          Ii + Ik     k   ,   k+   l    .
+                                                      4n       4n
+
+Since  was arbitrary, the compactness of An now implies
+
+                         min   max              max       4n                  aiaj  c.
+                                                           
+                         aAn  22n            -nkn-            ki+jk+
+
+3.2. Approximation of the simplex. We will now see that the simplex An can be suitably
+discretized. This problem has been considered at a greater level of generality in the literature [1],
+however, we only require a special case and can thus provide a simpler self-contained argument.
+
+Lemma 2. For any n, m  N let
+
+                                                                              n-1
+
+                      An = (a-n, a-n+1, . . . , an-1)  (R+)2n :                     ai = 4n
+
+                                                                            i=-n
+
+                                                                  1      2n n-1
+                                                                     N
+              Bn,m =        (b-n, b-n+1, . . . , bn-1)                        :        bi = 4n  .
+                                                                  m
+                                                                                 i=-n
+
+Then Bn,m is a 1/m-net of An in the -norm, i.e.
+
+                            a  An  b  Bn,m                        a-b               1  .
+                                                                                    m
+
+Proof. We give an explicit construction rule for b. First, for all -n  i  n - 1 with
+
+                                      ai     1      we set        bi = ai.
+                                                N
+
+                                             m
+
+Since ai  0, this implies that all entries not of that form are positive and therefore we can either
+round up or round down and choose either
+
+                                  bi  =   mai         or      bi   =    mai
+                                            m                             m
+
+without violating the desired bound |ai - bi|  m-1. We now need to define an explicit rule that
+tells us whether to round up or round down in every single instance. This choice is decided as
+follows: the first time we have to decide, we round down. Note that if we have to decide once, we
+have to decide at least twice. We define a variable
+
+                                             ti = (bj - aj).
+
+                                                      j<i
+
+Since we round down in the first instance, the first nonzero value in the variable t is going to be
+negative but bigger than -1/m. We will then, in each instance -n  i  n - 1 where a decision
+about rounding up or down is required, proceed in a way that ensures -1/m < ti+1  0. This is
+always possible: if rounding up ai were to lead to
+
+                                                   ti+1 > 0,
+
+then, by definition,
+
+                      0  <  ti+1  =   ti  +  mai   -  ai  =   ti  +   mai        +  1  -  ai
+                                               m                        m           m
+
+in which case, we see that rounding down leads to a value
+
+                                  ti+1 = ti +      mai    -   ai      >    -  1  .
+                                                     m                        m
+6              ALEXANDER CLONINGER AND STEFAN STEINERBERGER
+
+This construction rule now proceeds a series of nonnegative rationals that satisfy |ai - bi|  m-1.
+It remains to see why the rule ends up selecting a series of rationals that add up to the same
+number 4n. Clearly, this requires us to set
+
+                                                           n-2
+
+                                          bn-1 := 4n -           bj
+
+                                                           j=-n
+
+but it is not a priori clear whether this guarantees bn-1  0 or |bn-1 - an-1|  m-1. Multiplying
+the definition of bn-1 by m implies immediately that mbn-1  N and we will now show the two
+remaining properties to be satisfied. First we remark that, again by construction,
+
+                                     -    1    n-1       - aj)         0
+                                          m
+                                                    (bj
+
+                                               j=1
+
+which implies
+
+                            n-2                      n-2           n-2
+
+               bn-1 = 4n -        bj = an-1 +              aj -              bj = an-1 - tn-1.
+
+                            j=-n                     j=-n        j=-n
+
+This yields bn-1  an-1  0 as well as |bn-1 - an-1|  |tn-1| < m-1.
+
+Lemma 3 (Discretization). For any n, m  N let
+
+                                                              1N          2n n-1
+                                                              m
+               Bn,m =  (b-n, b-n+1, . . . , bn-1)                            :        bi = 4n
+
+                                                                                i=-n
+
+and
+
+               bn,m := min max                    max          1                         bibj .
+                                                              4n
+                              bBn,m 22n        -nkn-                   ki+jk+-2
+
+Then
+
+                                          c    bn,m  -  2  -   1    .
+                                                        m     m2
+
+Proof. The first Lemma allows us to replace a general function by a vector a  An, which - in
+turn - we interpret as a step function f . The second Lemma guarantees the existence of b  Bn,m
+approximating a which we interpret as another step-function g satisfying
+
+                                             f -g  L(R)       1  .
+                                                              m
+
+Alternatively, we can write that f (x) = g(x) + (x), where (x) is a third step function that is
+uniformly bounded by m-1. By associativity of the convolution, we have that
+
+                            (g  g) = (f  f ) - 2(f  ) + (  ).
+
+We have
+
+                                  1                             1         1                 1
+                                  4                                       4                m2
+
+               |(  )(x)| =              (x - y)(y)dy            m            |(x)|dx                .
+
+                                 -  1                                  -  1
+                                    4                                     4
+
+As for the other term, we have the inequality
+
+                                     1                           1           1             1
+                                                                 m           4             m
+                                     4
+               |(f  )(x)| =                                                     f (y)dy          .
+                                       f (x - y)(y)dy
+
+                                  -    1                                  -  1
+                                       4                                     4
+
+Using Lemma 1, this proves the result.
+                                                                                       7
+
+3.3. Conclusion of the argument. The ideas above were additionally coupled with a multi-
+
+scale argument that has no additional mathematical content but speeds up the implementation.
+The guiding idea is that for some distributions of L1-mass on (-1/4, 1/4) it is sufficient to look
+
+at very rough discretizations whereas other distributions will require a finer analysis. Consider,
+for example, a function f as depicted in Fig. 2. Assuming it to be L1-normalized, we can see
+that at least 80% of the L1-mass are contained in (-1/4, 0) and therefore at least 64% of the
+L1-mass of (f  f ) is contained in (-1/2, 0) which already implies
+
+                         sup (f    f )(x)      0.64     =  1.28.
+                                               0.5
+                      -1/2x0
+
+If our goal is to prove a lower bound of 1.28, we can effectively restrict our search for counterex-
+amples to functions satisfying
+
+     0                                                                              1
+                                                                                    4
+     0.2  f (x)dx  0.8         and, by symmetry,
+                                                              0.2  f (x)dx  0.8.
+     -  1
+        4                                                                  0
+
+     -     1                             0                                   1
+           4                                                                 4
+
+     Figure 2. A nonnegative function supported on (-1/4, 1/4).
+
+Suppose now there exists a function with f  f L  1.28. Then Lemma 3 implies that
+
+                   n  N          bn,m       1.28  +  2  +      1
+                                                     m        m2
+
+and we will now disprove this. While implementing this scheme, we realized that it is quite a bit
+more effective in Lemma 3 to not use
+
+                         1                        1        1                    1
+                                                  m        2                    m
+                         4
+     |(f  )(x)| =                                             f (x  -  y)dy  
+                           f (x - y)(y)dy
+
+                         -  1                           -  1
+                            4                              2
+
+but a refined version exploiting the support more effectively via
+
+                   1                        1        1  +min(0,x)
+                   4                                 4
+
+(1)  |(f  )(x)| =        f (x - y)(y)dy     m                       f (x - y)dy
+
+                   -  1                           -  1  +max(x,0)
+                      4                              4
+
+which is more efficient at excluding cases. We used m = 50 and started with n = 3. The same
+
+argument as above allows to ensure that some configurations in B3,50 cannot come from a function
+satisfying f  f L  1.28 but other configurations cannot be ruled out at such a rough scale.
+All cases that cannot be ruled out that level are being refined by a dyadic split of each interval.
+
+This generates elements in B6,50 where again some can be ruled out to come from a function
+ f  f L  1.28 while others cannot. We repeat the scheme as long as required. The final
+
+outcome was that no element in B24,50 can come from a function f satisfying f  f L  1.28
+which implies that such a function cannot exist.
+8  ALEXANDER CLONINGER AND STEFAN STEINERBERGER
+
+3.4. Implementation. We decided to run these cases in parallel, and moreover to utilize graph-
+
+ical processing units (GPUs). GPU computing greatly reduce the cost of computation, as GPUs
+
+are highly optimized for vector operations. However, there is overhead cost to transferring data
+
+to GPUs, and GPUs are suboptimal for any computation other than matrix multiplication. This
+
+motivated us to turn the entire problem into a the language of matrix multiplication. The crucial
+
+idea is that checking whether a certain configuration can be excluded is equivalent to check-
+
+ing whether the  norm of that configuration interpreted as a vector multiplied by a matrix
+
+Ck  R(2n)2×4n-k+1 exceeds the desired limit. The Ck indicate all possible bi, bj pairs that con-
+
+tribute to the interval Ia,a+k  (-1/2, 1/2) for for any a  {-2n, ..., 2n - 1}. These matrices are
+
+precomputed once and stored for a given n. The only matrix that must be constructed for a bin
+                                                                       n
+b  Bn,m is the matrix of refinements of b as cb = [c]  RN×2n, for N =  i=1  (1  +  mbi).  We
+
+compute the matrix F  RN×(2n)2 , where
+
+   F [, n(i - 1) + j] = c[i]c [j].
+
+This means F Ck  RN×4n-k+1 gives the sum of all c  c along all intervals of length k. A bin
+c is ruled out if
+
+   F [,  ·]Ck                           >  1.28  +  2  +   1
+                                                    m     m2
+
+for any element in the row, for any k. The lower bound can be refined by incorporating the
+
+observation from (1). Obviously, this algorithm is easily parallelizable as each parent bin b can
+
+be checked independently of the other parent bins. The actual computation was carried out on
+
+Omega, a server at the Yale High Performance Computing Center with 7 CPU nodes
+
+each of which had a dedicated GPU. The computation took roughly 20.000 CPU hours.
+
+Acknowledgement. The first author is supported by NSF Fellowship DMS-1402254, the sec-
+ond author was partially supported by SFB 1060 of the DFG, an AMS-Simons travel grant and
+INET Grant #INO15-00038. The authors are grateful to Andrew Sherman from the Yale High
+Performance Computing Center for continued support.
+
+                                                       References
+
+[1] I. Bonze, S. Gollowitzer, E. A. Yldrm, Rounding on the standard simplex: regular grids for global optimization,
+     Journal of Global Optimization 59 (2014), pp 243-258.
+     Immanuel M. Bomze , Stefan Gollowitzer, E. Alper Yldrm
+
+[2] J. Cilleruelo, I.Z. Ruzsa and C. Vinuesa, Generalized Sidon sets. Adv. Math. 225 (2010), no. 5, 2786­2807.
+[3] J. Cilleruelo, I.Z. Ruzsa, C. Trujillo, Upper and lower bounds for finite Bh[g] sequences, J. Number Theory 97
+
+     (2002) 26­34.
+[4] J. Cilleruelo, C. Vinuesa, B2[g] sets and a conjecture of Schinzel and Schmidt, Combin. Probab. Comput. 17
+
+     (6) (2008) 741­747.
+[5] B. Green, The number of squares and Bh[g]sets, Acta Arith. 100 (2001) 365­390.
+[6] M. Kolountzakis, The density of sets and the minimum of dense cosine sums, J. Number Theory 56 (1) (1996)
+
+     4­11.
+[7] G. Martin, K. O'Bryant, Constructions of generalized Sidon sets, J. Combin. Theory Ser. A 113 (4) (2006)
+
+     591­607.
+[8] G. Martin, K. O'Bryant, The symmetric subset problem in continuous Ramsey theory, Experiment. Math. 16
+
+     (2) (2007) 145­166.
+[9] G. Martin, K. O'Bryant, The supremum of autoconvolutions, with applications to additive number theory,
+
+     Illinois J. Math. 53 (1) (2009) 219­235.
+[10] M. Matolcsi and C. Vinuesa, Carlos, Improved bounds on the supremum of autoconvolutions. J. Math. Anal.
+
+     Appl. 372 (2010), no. 2, 439­447.
+[11] A. Schinzel and W.M. Schmidt, Comparison of L1- and L-norms of squares of polynomials, Acta Arith. 104
+
+     (2002), no. 3, 283­296.
+[12] G. Yu, An upper bound for B2[g] sets, J. Number Theory 122 (1) (2007) 211­220.
+
+(Alexander Cloninger) Department of Mathematics, Program in Applied Mathematics, Yale University,
+New Haven, CT 06510, USA
+E-mail address: alexander.cloninger@yale.edu
+
+(Stefan Steinerberger) Department of Mathematics, Yale University, 06511 New Haven, CT, USA
+E-mail address: stefan.steinerberger@yale.edu
+

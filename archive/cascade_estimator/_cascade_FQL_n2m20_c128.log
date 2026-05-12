@@ -1,0 +1,136 @@
+
+======================================================================
+CPU CASCADE PROVER
+  n_half=2, m=20, d0=4, c_target=1.28
+  correction(m, n_half=2)=0.102500, effective threshold=1.382500
+  L0 compositions: 708,561
+  workers: 3 (logical CPUs: 16, effective: 16)
+  max refinement levels: 5
+======================================================================
+
+[L0 B&B] d=4, m=20, n_half=2.0, compositions=708,561
+     correction=0.102500, threshold=1.382500
+(CVXPY) May 10 10:18:15 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:15 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:15 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:15 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+     58.80s: 371,503 leaves tested (of 708,561 total compositions)
+     B&B pruned: 337,058 branches, leaf pruned: 168,542, non-canonical: 101,423
+     F post-filter pruned: 49,859
+     survivors: 51,679
+     Checkpoint saved: ../../data_n2m20_c128_FQL\checkpoint_L0_survivors.npy (0.00 GB, 51,679 rows)
+
+[L1] d_parent=4 -> d_child=8, 51,679 parents
+     Survivor spool: 3.9 GB in-RAM (122,929,368 rows), then disk shards
+     (parallel: 3 workers, chunksize=1, numba_threads=1, mmap=0.00 GB)
+(CVXPY) May 10 10:18:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:18:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 4656, in _process_parent_shm
+    survivors, total_children = process_parent_fused(
+                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 3892, in process_parent_fused
+    survivors_view = apply_post_filter_chain(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\post_filters.py", line 1054, in apply_post_filter_chain
+    survivors = Q_fn(survivors, n_half_child, m, c_target,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\post_filters.py", line 380, in apply_Q_filter_parallel
+    with Pool(processes=n_workers,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\context.py", line 119, in Pool
+    return Pool(processes, initializer, initargs, maxtasksperchild,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 215, in __init__
+    self._repopulate_pool()
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 306, in _repopulate_pool
+    return self._repopulate_pool_static(self._ctx, self.Process,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 329, in _repopulate_pool_static
+    w.start()
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 118, in start
+    assert not _current_process._config.get('daemon'), \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: daemonic processes are not allowed to have children
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 6080, in <module>
+    main()
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 5976, in main
+    info = run_cascade(
+           ^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 5403, in run_cascade
+    for surv, stats in pool.imap_unordered(
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\pool.py", line 873, in next
+    raise value
+AssertionError: daemonic processes are not allowed to have children

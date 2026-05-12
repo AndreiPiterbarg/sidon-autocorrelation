@@ -1,23 +1,15 @@
-"""Rigorous Bessel-function quantities for the MV dual bound.
+"""Rigorous Bessel-function quantities for the MV master inequality.
 
-All transcendental outputs are returned as python-flint ``arb`` midpoint-radius
-intervals.  Rational inputs (``delta``, ``u``) stay as ``fmpq`` so no rounding
-is introduced before the transcendental step.
+All transcendental outputs are returned as ``flint.arb`` midpoint-radius
+intervals.  Rational inputs (``delta``, ``u``, ``j``) stay as ``fmpq`` so
+no rounding is introduced before the transcendental step.
 
-Quantities
-----------
- - ``J0(x)`` ............. Bessel function J_0, returned as ``arb``.
- - ``j0_pi_j_delta_over_u(j, delta, u, prec_bits)``
-     ................... J_0(pi * j * delta / u) as ``arb``.
- - ``K_tilde_period_u(j, delta, u, prec_bits)``
-     ................... (1/u) * |J_0(pi j delta/u)|^2   [MV p. 4 eq. (5)].
- - ``k1_period_one(delta, prec_bits)``
-     ................... |J_0(pi * delta)|^2  [MV p. 7 line 348].
-
-References
-----------
-MV = Matolcsi & Vinuesa, arXiv:0907.1379 (2010).
-Detailed derivation: ``delsarte_dual/mv_construction_detailed.md``.
+  * :func:`j0_pi_j_delta_over_u`  -- ``J_0(pi j delta / u)`` as ``arb``.
+  * :func:`K_tilde_period_u`      -- ``(1/u) |J_0(pi j delta / u)|^2``,
+                                     the period-``u`` Fourier coefficient of
+                                     the single-scale arcsine kernel.
+  * :func:`k1_period_one`         -- ``|J_0(pi delta)|^2``, the period-1
+                                     Fourier coefficient ``k_1``.
 """
 from __future__ import annotations
 
@@ -25,23 +17,23 @@ from flint import arb, fmpq, ctx
 
 
 def _arb_pi_j_delta_over_u(j: int, delta: fmpq, u: fmpq) -> arb:
-    """Return pi * j * delta / u as an arb ball at the current precision.
+    """Return ``pi * j * delta / u`` as an arb ball at the current precision.
 
-    The rational factor j * delta / u is computed exactly in fmpq, then
-    multiplied by arb.pi() to produce a tight arb ball.
+    The rational factor ``j delta / u`` is computed exactly in ``fmpq``,
+    then multiplied by ``arb.pi()`` to produce a tight enclosure.
     """
     if j < 0:
         raise ValueError("j must be non-negative")
     if u <= 0:
         raise ValueError("u must be positive")
-    q = fmpq(j) * delta / u  # exact rational
+    q = fmpq(j) * delta / u
     return arb.pi() * arb(q)
 
 
 def j0_pi_j_delta_over_u(
     j: int, delta: fmpq, u: fmpq, prec_bits: int = 256
 ) -> arb:
-    """J_0(pi * j * delta / u) as a rigorous arb ball."""
+    """Rigorous arb enclosure of ``J_0(pi j delta / u)``."""
     old = ctx.prec
     ctx.prec = prec_bits
     try:
@@ -53,11 +45,11 @@ def j0_pi_j_delta_over_u(
 def K_tilde_period_u(
     j: int, delta: fmpq, u: fmpq, prec_bits: int = 256
 ) -> arb:
-    """Period-u Fourier coefficient (1/u) * |J_0(pi j delta / u)|^2.
+    """Period-``u`` Fourier coefficient ``(1/u) |J_0(pi j delta / u)|^2``.
 
-    By MV eq. (5) this is the j-th Fourier coefficient of the kernel
-    K(x) = (1/delta) * eta(x/delta) on the period-u torus.  Non-negative
-    by the square, as required by MV Lemma 3.1(4).
+    This is the ``j``-th Fourier coefficient of the single-scale arcsine
+    kernel ``K`` on the period-``u`` torus.  Non-negative by the square,
+    as required by admissibility property (K4).
     """
     old = ctx.prec
     ctx.prec = prec_bits
@@ -69,12 +61,9 @@ def K_tilde_period_u(
 
 
 def k1_period_one(delta: fmpq, prec_bits: int = 256) -> arb:
-    """k_1 = hat_K(1) = |J_0(pi * delta)|^2  (period-1 Fourier coefficient).
+    """``k_1 = hat K(1) = |J_0(pi delta)|^2`` (period-1 Fourier coefficient).
 
-    Used in the MV Lemma-3.3 z_1-refinement (MV eq. (10)).  Note the period-1
-    vs period-u normalisation mismatch documented in
-    ``mv_construction_detailed.md`` Section 2 Remark: both statements are
-    taken from MV's paper.
+    Used in the ``z_1``-refined master inequality.
     """
     old = ctx.prec
     ctx.prec = prec_bits

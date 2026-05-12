@@ -1,0 +1,48 @@
+{
+  "d0": 2,
+  "S": 30,
+  "c_target": 1.281,
+  "max_levels": 2,
+  "use_joint": true,
+  "use_sdp": false,
+  "levels": [
+    {
+      "level": 1,
+      "d_child": 4,
+      "parents": 10,
+      "children": 1603,
+      "NO": 1102,
+      "J": 1,
+      "L": 0,
+      "uncert": 155,
+      "survivors_out": 318,
+      "uncerts_out": 144,
+      "wall_sec": 0.15
+    },
+    {
+      "level": 2,
+      "d_child": 8,
+      "parents": 462,
+      "children": 1404491,
+      "NO": 1307189,
+      "J": 17882,
+      "L": 0,
+      "uncert": 77025,
+      "survivors_out": 2386,
+      "uncerts_out": 76291,
+      "wall_sec": 75.58
+    }
+  ],
+  "rigorous_closure": false,
+  "reason_unclosed": "max_levels=2 reached with 78,677 parents",
+  "l0": {
+    "survivors": 10,
+    "uncerts": 0,
+    "NO": 0,
+    "J": 0,
+    "L": 0,
+    "time": 0.3
+  },
+  "total_time": 76.13,
+  "final_parents": 78677
+}

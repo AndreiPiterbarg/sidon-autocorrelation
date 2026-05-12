@@ -1,0 +1,106 @@
+{
+  "d4_S80_a": {
+    "2way_d3": {
+      "ok": false,
+      "n_calls": 4,
+      "wall": 0.3813302516937256
+    },
+    "2way_d4": {
+      "ok": false,
+      "n_calls": 5,
+      "wall": 0.3287227153778076
+    },
+    "2way_d5": {
+      "ok": false,
+      "n_calls": 6,
+      "wall": 0.4175713062286377
+    },
+    "2way_d6": {
+      "ok": false,
+      "n_calls": 7,
+      "wall": 0.5012204647064209
+    },
+    "2way_d7": {
+      "ok": false,
+      "n_calls": 8,
+      "wall": 0.512042760848999
+    },
+    "2way_d8": {
+      "ok": false,
+      "n_calls": 9,
+      "wall": 0.5363669395446777
+    },
+    "4way_d2": {
+      "ok": false,
+      "n_calls": 6,
+      "wall": 0.19507050514221191
+    },
+    "4way_d3": {
+      "ok": false,
+      "n_calls": 10,
+      "wall": 0.2562398910522461
+    },
+    "4way_d4": {
+      "ok": false,
+      "n_calls": 14,
+      "wall": 0.3079490661621094
+    },
+    "4way_d5": {
+      "ok": false,
+      "n_calls": 18,
+      "wall": 0.37515759468078613
+    }
+  },
+  "d4_S80_b": {
+    "2way_d3": {
+      "ok": false,
+      "n_calls": 4,
+      "wall": 0.2096114158630371
+    },
+    "2way_d4": {
+      "ok": false,
+      "n_calls": 5,
+      "wall": 0.2576296329498291
+    },
+    "2way_d5": {
+      "ok": false,
+      "n_calls": 6,
+      "wall": 0.33370065689086914
+    },
+    "2way_d6": {
+      "ok": false,
+      "n_calls": 7,
+      "wall": 0.3508157730102539
+    },
+    "2way_d7": {
+      "ok": false,
+      "n_calls": 8,
+      "wall": 0.4188973903656006
+    },
+    "2way_d8": {
+      "ok": false,
+      "n_calls": 9,
+      "wall": 0.4430267810821533
+    },
+    "4way_d2": {
+      "ok": false,
+      "n_calls": 6,
+      "wall": 0.13727402687072754
+    },
+    "4way_d3": {
+      "ok": false,
+      "n_calls": 10,
+      "wall": 0.1845872402191162
+    },
+    "4way_d4": {
+      "ok": false,
+      "n_calls": 14,
+      "wall": 0.2995870113372803
+    },
+    "4way_d5": {
+      "ok": false,
+      "n_calls": 18,
+      "wall": 0.3539390563964844
+    }
+  }
+}

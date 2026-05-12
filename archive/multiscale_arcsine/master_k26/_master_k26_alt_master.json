@@ -1,0 +1,150 @@
+{
+  "single_arcsine_MV": {
+    "name": "single_arcsine_MV",
+    "deltas": [
+      0.138
+    ],
+    "lambdas": [
+      1.0
+    ],
+    "kn": [
+      0.9092765512116029,
+      0.6735368231257818,
+      0.3841057151666097,
+      0.1430486441900927,
+      0.016484661539365595,
+      0.009484413151212049,
+      0.07377583454473306,
+      0.1410490403519093
+    ],
+    "K_2": 4.163109050612859,
+    "S_1": 87.85669009213828,
+    "a": 0.07136158293595962,
+    "target": 3.2061578211804735,
+    "bounds": {
+      "A_MV_eq7": 1.2744428748303742,
+      "B_MV_eq10": 1.2744428748303742,
+      "C_MM10_nmax2": 1.2749119482562343,
+      "C_MM10_nmax3": 1.2749119482562346,
+      "C_MM10_nmax4": 1.2749119482562346,
+      "C_MM10_nmax5": 1.2749119482562346,
+      "C_MM10_nmax6": 1.2749119482562343,
+      "C_MM10_nmax8": 1.2749119482562346,
+      "D_P_side_constant": 1.116276,
+      "D_MO211_m3_joint": 1.2744428748303742,
+      "E_K_pm_43norm_m3": 1.1322401372986246,
+      "E_K_pm_43norm_m4": 0.9446960204611904,
+      "E_P_side_m3_K_pm": 1.6084793087531897,
+      "E_P_side_m4_K_pm": 2.255543188946077,
+      "F_restricted_holder_conditional": 1.37842,
+      "G_3pt_V2_M_LB": 1.2749119482562343,
+      "G_3pt_V2_note": "V2 SDP collapses to MM-10 at n_max=2 by the lambda*k_n interior crit pt argument.",
+      "H_Yu_tilted": {
+        "M_LB": null,
+        "gamma": null,
+        "note": "Yu-tilt requires sum k_j^q; for arcsine k_j ~ 1/j on average -> diverges for q < 2."
+      },
+      "I_hybrid_max": 1.2749119482562346
+    }
+  },
+  "K26_two_comp_best": {
+    "name": "K26_two_comp_best",
+    "deltas": [
+      0.138,
+      0.055
+    ],
+    "lambdas": [
+      0.9312,
+      0.0688
+    ],
+    "kn": [
+      0.9144970268206998,
+      0.6919803427479554,
+      0.41769023306277464,
+      0.18698277792773876,
+      0.06182954996197823,
+      0.0474102056396829,
+      0.09925162695450004,
+      0.15420424930110216
+    ],
+    "K_2": 4.357158803344683,
+    "S_1": 54.67397111960169,
+    "a": 0.11467234495870113,
+    "target": 3.2494685832032153,
+    "bounds": {
+      "A_MV_eq7": 1.279974484890717,
+      "B_MV_eq10": 1.279974484890717,
+      "C_MM10_nmax2": 1.2800524132669282,
+      "C_MM10_nmax3": 1.280052413266928,
+      "C_MM10_nmax4": 1.2800524132669282,
+      "C_MM10_nmax5": 1.2800524132669282,
+      "C_MM10_nmax6": 1.2800524132669282,
+      "C_MM10_nmax8": 1.280052413266928,
+      "D_P_side_constant": 1.116276,
+      "D_MO211_m3_joint": 1.279974484890717,
+      "E_K_pm_43norm_m3": 1.1322401372986246,
+      "E_K_pm_43norm_m4": 0.9446960204611904,
+      "E_P_side_m3_K_pm": 1.6084793087531897,
+      "E_P_side_m4_K_pm": 2.255543188946077,
+      "F_restricted_holder_conditional": 1.37842,
+      "G_3pt_V2_M_LB": 1.2800524132669282,
+      "G_3pt_V2_note": "V2 SDP collapses to MM-10 at n_max=2 by the lambda*k_n interior crit pt argument.",
+      "H_Yu_tilted": {
+        "M_LB": null,
+        "gamma": null,
+        "note": "Yu-tilt requires sum k_j^q; for arcsine k_j ~ 1/j on average -> diverges for q < 2."
+      },
+      "I_hybrid_max": 1.2800524132669282
+    }
+  },
+  "K26_fine_refined": {
+    "name": "K26_fine_refined",
+    "deltas": [
+      0.138,
+      0.0525
+    ],
+    "lambdas": [
+      0.935,
+      0.065
+    ],
+    "kn": [
+      0.9142939728113776,
+      0.6912919551970668,
+      0.41653903098059014,
+      0.18571385141781005,
+      0.06095800109092877,
+      0.04738198892535542,
+      0.10024319717892824,
+      0.15605798178233876
+    ],
+    "K_2": 4.355702354446207,
+    "S_1": 54.69249498439506,
+    "a": 0.1146335064486979,
+    "target": 3.249429744693212,
+    "bounds": {
+      "A_MV_eq7": 1.2800372782576726,
+      "B_MV_eq10": 1.2800372782576726,
+      "C_MM10_nmax2": 1.2801145895956598,
+      "C_MM10_nmax3": 1.2801145895956596,
+      "C_MM10_nmax4": 1.2801145895956594,
+      "C_MM10_nmax5": 1.2801145895956596,
+      "C_MM10_nmax6": 1.2801145895956596,
+      "C_MM10_nmax8": 1.2801145895956594,
+      "D_P_side_constant": 1.116276,
+      "D_MO211_m3_joint": 1.2800372782576726,
+      "E_K_pm_43norm_m3": 1.1322401372986246,
+      "E_K_pm_43norm_m4": 0.9446960204611904,
+      "E_P_side_m3_K_pm": 1.6084793087531897,
+      "E_P_side_m4_K_pm": 2.255543188946077,
+      "F_restricted_holder_conditional": 1.37842,
+      "G_3pt_V2_M_LB": 1.2801145895956598,
+      "G_3pt_V2_note": "V2 SDP collapses to MM-10 at n_max=2 by the lambda*k_n interior crit pt argument.",
+      "H_Yu_tilted": {
+        "M_LB": null,
+        "gamma": null,
+        "note": "Yu-tilt requires sum k_j^q; for arcsine k_j ~ 1/j on average -> diverges for q < 2."
+      },
+      "I_hybrid_max": 1.2801145895956598
+    }
+  }
+}

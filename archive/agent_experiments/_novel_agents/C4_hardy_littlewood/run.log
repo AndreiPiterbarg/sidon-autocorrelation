@@ -1,0 +1,104 @@
+[2026-05-09 19:13:00] === C4 Hardy-Littlewood / BMO probe ===
+[2026-05-09 19:13:00] Setup: f >= 0 on [-1/4, 1/4], int f = 1, g = f*f.
+[2026-05-09 19:13:00] Goal: lower bound on M(f) = ||g||_inf.
+[2026-05-09 19:13:00] --- T1. L^2-Plancherel lower bound ---
+[2026-05-09 19:13:00] Bound (*): M(f) >= ||g_sym||_2^2 / ||g_sym||_1 = ||g_sym||_2^2.
+[2026-05-09 19:13:00] (Note: ||g_sym||_1 = (int f)^2 = 1 even when g_sym != g for asymm f.)
+[2026-05-09 19:13:00] Test: minimize ||g_sym||_2^2 over feasible a.
+[2026-05-09 19:13:00]   d=4: solving QP min_a ||g_sym||_2^2 ...
+[2026-05-09 19:13:00]     min ||g_sym||_2^2 = 1.234230
+[2026-05-09 19:13:00]     at argmin: ||g_sym||_inf = 2.247015, ||g||_inf (actual f*f) = 2.247015
+[2026-05-09 19:13:00]   d=6: solving QP min_a ||g_sym||_2^2 ...
+[2026-05-09 19:13:00]     min ||g_sym||_2^2 = 1.205418
+[2026-05-09 19:13:00]     at argmin: ||g_sym||_inf = 2.378226, ||g||_inf (actual f*f) = 2.378226
+[2026-05-09 19:13:00]   d=8: solving QP min_a ||g_sym||_2^2 ...
+[2026-05-09 19:13:01]     min ||g_sym||_2^2 = 1.191244
+[2026-05-09 19:13:01]     at argmin: ||g_sym||_inf = 2.473435, ||g||_inf (actual f*f) = 2.473435
+[2026-05-09 19:13:01]   d=10: solving QP min_a ||g_sym||_2^2 ...
+[2026-05-09 19:13:01]     min ||g_sym||_2^2 = 1.182782
+[2026-05-09 19:13:01]     at argmin: ||g_sym||_inf = 2.549506, ||g||_inf (actual f*f) = 2.549506
+[2026-05-09 19:13:01] --- T1 verdict ---
+[2026-05-09 19:13:01]   Best L^2 lower bound across d in {4,6,8,10}: M(f) >= 1.234230
+[2026-05-09 19:13:01]   vs CS 2017 LB 1.2802: BELOW
+[2026-05-09 19:13:01] --- T2. Calderon-Zygmund decomposition probe ---
+[2026-05-09 19:13:01]   d=4: testing CZ inequality on 100 random feasible a ...
+[2026-05-09 19:13:01]     M observed in [1.7808, 4.3282], mean 2.4336
+[2026-05-09 19:13:01]     CZ inequality min slack: 2.3507e-01 (>=0 means valid)
+[2026-05-09 19:13:01]     CZ violated: False
+[2026-05-09 19:13:01]   d=8: testing CZ inequality on 100 random feasible a ...
+[2026-05-09 19:13:01]     M observed in [1.8237, 3.5764], mean 2.3061
+[2026-05-09 19:13:01]     CZ inequality min slack: 2.6509e-01 (>=0 means valid)
+[2026-05-09 19:13:01]     CZ violated: False
+[2026-05-09 19:13:01] --- T2 verdict ---
+[2026-05-09 19:13:01]   CZ inequality L_lambda >= (1 - lambda)/(M - lambda) is
+[2026-05-09 19:13:01]   consistent with arbitrary M > 1, since L_lambda <= 1 forces
+[2026-05-09 19:13:01]   M >= 1 only. So CZ alone does NOT yield M > 1.
+[2026-05-09 19:13:01]   CZ is in the WRONG DIRECTION for lower-bound on M.
+[2026-05-09 19:13:01] --- T3. BMO/John-Nirenberg analysis (analytical) ---
+[2026-05-09 19:13:01]   ||g||_BMO <= ||g||_inf / 2 = M/2 (trivial since g >= 0).
+[2026-05-09 19:13:01]   John-Nirenberg: |{|g - g_I| > lambda}| <= C |I| exp(-c lambda / B).
+[2026-05-09 19:13:01]   This gives UPPER BOUND on level sets, hence is
+[2026-05-09 19:13:01]   CONSISTENT with arbitrary M and gives NO lower bound on M.
+[2026-05-09 19:13:01]   Conclusion: BMO/JN is structurally in the wrong direction.
+[2026-05-09 19:13:01] --- T4. Direct minimax val(d) for reference ---
+[2026-05-09 19:13:01]   d=4: solving min_a max_t (f*f)(t) via SLSQP ...
+[2026-05-09 19:13:02]     val(d=4) ~ 1.644465
+[2026-05-09 19:13:02]     L^2 bound at d=4: 1.234230; ratio = 0.751
+[2026-05-09 19:13:02]   d=6: solving min_a max_t (f*f)(t) via SLSQP ...
+[2026-05-09 19:13:02]     val(d=6) ~ 1.600766
+[2026-05-09 19:13:02]     L^2 bound at d=6: 1.205418; ratio = 0.753
+[2026-05-09 19:13:02]   d=8: solving min_a max_t (f*f)(t) via SLSQP ...
+[2026-05-09 19:13:03]     val(d=8) ~ 1.579109
+[2026-05-09 19:13:03]     L^2 bound at d=8: 1.191244; ratio = 0.754
+[2026-05-09 19:13:03] --- T5. Higher-p Holder chain on g = f*f (NEW finding) ---
+[2026-05-09 19:13:03]   Bound: M(f) = ||g||_inf >= ||g||_p^{p/(p-1)} (Holder, ||g||_1=1).
+[2026-05-09 19:13:03]   Compute min_a ||g||_p^p over d-bin step f, take p-th root.
+[2026-05-09 19:13:03]   NOTE: ||g||_p^p is NON-CONVEX in a for p >= 3 (poly degree 2p),
+[2026-05-09 19:13:03]   so SLSQP gives LOCAL minima -- bound below is NOT rigorous.
+[2026-05-09 19:13:03]   NOTE 2: step-function inf is an UPPER bound on the continuous inf,
+[2026-05-09 19:13:03]   so M_LB_step_d is an OPTIMISTIC estimate of the continuous bound.
+[2026-05-09 19:13:04]     p=2, d=4: min ||g||_p^p = 1.23434, M_LB_step_d = 1.23434
+[2026-05-09 19:13:07]     p=2, d=6: min ||g||_p^p = 1.20549, M_LB_step_d = 1.20549
+[2026-05-09 19:13:12]     p=2, d=8: min ||g||_p^p = 1.19130, M_LB_step_d = 1.19130
+[2026-05-09 19:13:19]     p=2, d=10: min ||g||_p^p = 1.18282, M_LB_step_d = 1.18282
+[2026-05-09 19:13:30]     p=2, d=12: min ||g||_p^p = 1.17719, M_LB_step_d = 1.17719
+[2026-05-09 19:13:30]     p=2: d->inf extrapolation = 1.1494
+[2026-05-09 19:13:31]     p=3, d=4: min ||g||_p^p = 1.75486, M_LB_step_d = 1.32471
+[2026-05-09 19:13:34]     p=3, d=6: min ||g||_p^p = 1.68368, M_LB_step_d = 1.29757
+[2026-05-09 19:13:40]     p=3, d=8: min ||g||_p^p = 1.64862, M_LB_step_d = 1.28398
+[2026-05-09 19:13:48]     p=3, d=10: min ||g||_p^p = 1.62765, M_LB_step_d = 1.27579
+[2026-05-09 19:14:02]     p=3, d=12: min ||g||_p^p = 1.61363, M_LB_step_d = 1.27029
+[2026-05-09 19:14:02]     p=3: d->inf extrapolation = 1.2429
+[2026-05-09 19:14:02]     p=4, d=4: min ||g||_p^p = 2.73096, M_LB_step_d = 1.39778
+[2026-05-09 19:14:04]     p=4, d=6: min ||g||_p^p = 2.56901, M_LB_step_d = 1.36958
+[2026-05-09 19:14:08]     p=4, d=8: min ||g||_p^p = 2.48342, M_LB_step_d = 1.35420
+[2026-05-09 19:14:14]     p=4, d=10: min ||g||_p^p = 2.43981, M_LB_step_d = 1.34623
+[2026-05-09 19:14:25]     p=4, d=12: min ||g||_p^p = 2.40788, M_LB_step_d = 1.34033
+[2026-05-09 19:14:25]     p=4: d->inf extrapolation = 1.3109
+[2026-05-09 19:14:26]     p=6, d=4: min ||g||_p^p = 6.91724, M_LB_step_d = 1.47227
+[2026-05-09 19:14:27]     p=6, d=6: min ||g||_p^p = 6.11063, M_LB_step_d = 1.43621
+[2026-05-09 19:14:30]     p=6, d=8: min ||g||_p^p = 5.79368, M_LB_step_d = 1.42099
+[2026-05-09 19:14:33]     p=6, d=10: min ||g||_p^p = 5.61065, M_LB_step_d = 1.41190
+[2026-05-09 19:14:39]     p=6, d=12: min ||g||_p^p = 5.49778, M_LB_step_d = 1.40617
+[2026-05-09 19:14:39]     p=6: d->inf extrapolation = 1.3818
+[2026-05-09 19:14:39] --- T5 verdict ---
+[2026-05-09 19:14:39]   HEURISTIC L^p step-function chain extrapolations:
+[2026-05-09 19:14:39]     p=2: continuous M_LB upper-estimate = 1.1494
+[2026-05-09 19:14:39]     p=3: continuous M_LB upper-estimate = 1.2429
+[2026-05-09 19:14:39]     p=4: continuous M_LB upper-estimate = 1.3109
+[2026-05-09 19:14:39]     p=6: continuous M_LB upper-estimate = 1.3818
+[2026-05-09 19:14:39]   CRITICAL CAVEATS:
+[2026-05-09 19:14:39]     (a) step-function values are UPPER bounds on the continuous inf,
+[2026-05-09 19:14:39]         so the actual continuous L^p Holder bound is SMALLER (worse).
+[2026-05-09 19:14:39]     (b) for p >= 3, ||g||_p^p is non-convex; SLSQP local optima may
+[2026-05-09 19:14:39]         OVER-estimate the actual minimum, making the bound LOOSE.
+[2026-05-09 19:14:39]     (c) computing rigorously inf_f ||g||_p^p over all admissible f
+[2026-05-09 19:14:39]         is itself a (potentially) infinite-dimensional poly opt
+[2026-05-09 19:14:39]         equivalent in difficulty to the original Sidon problem.
+[2026-05-09 19:14:39] --- Final verdict ---
+[2026-05-09 19:14:39]   best_lb_obtained = 1.234230 (from T1 L^2 chain)
+[2026-05-09 19:14:39]   vs 1.2802: below
+[2026-05-09 19:14:39]   vs MV 1.2748: below
+[2026-05-09 19:14:39]   promising: False
+[2026-05-09 19:14:39]   total time: 99.2 s
+[2026-05-09 19:14:39] Wrote results to C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\C4_hardy_littlewood\results.json

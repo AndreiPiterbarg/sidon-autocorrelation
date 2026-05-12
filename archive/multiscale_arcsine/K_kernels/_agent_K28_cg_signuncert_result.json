@@ -1,0 +1,120 @@
+{
+  "agent": "K28",
+  "date": "2026-05-11T17:56:47.877536",
+  "task": "Cohn-Goncalves sign-uncertainty two-kernel extension for C_{1a}",
+  "MV_master_form": {
+    "form": "C_{1a} >= \u222b \u011d(\u03be) w(\u03be) d\u03be / max_{t\u2208[-1/2,1/2]} g(t)",
+    "constraints": [
+      "g real, even on R",
+      "\u011d >= 0 on R (Bochner-positivity / Fourier-positive)",
+      "g >= 0 on [-1/2,1/2] (or use envelope reformulation)",
+      "w(\u03be) <= |f\u0302(\u03be)|^2 for all \u03be (Lasserre/Paley-Wiener envelope)"
+    ],
+    "MV_2010_choice": {
+      "g": "arcsine kernel + 119-cosine Fourier-positive polynomial",
+      "w": "sharp PW_{\u03c0/2} envelope cos^2(\u03c0\u03be/2) for |\u03be|<=1",
+      "bound": 1.2748,
+      "ceiling": "Self-stated ~1.276"
+    }
+  },
+  "CG_theorem": {
+    "two_radii_form_BCK": {
+      "hyp_f": [
+        "f real, integrable, even",
+        "f\u0302 real, integrable",
+        "f(0) <= 0",
+        "f(x) >= 0 for |x| >= \u03c1_1"
+      ],
+      "hyp_fhat": [
+        "f\u0302(0) <= 0",
+        "f\u0302(\u03be) >= 0 for |\u03be| >= \u03c1_2"
+      ],
+      "conclusion": "\u03c1_1\u00b7\u03c1_2 >= A_+(d)^2",
+      "d=1": "A_+(1) unknown, conjectured 1/(1+\u221a5)^{1/2}; A_+(12)=\u221a2 proven"
+    },
+    "two_radii_form_CG": {
+      "hyp_f": [
+        "f real, integrable, even",
+        "f\u0302 real, integrable",
+        "f(0) >= 0",
+        "f(x) >= 0 for |x| >= \u03c1_1"
+      ],
+      "hyp_fhat": [
+        "f\u0302(0) <= 0",
+        "f\u0302(\u03be) <= 0 for |\u03be| >= \u03c1_2"
+      ],
+      "conclusion": "\u03c1_1\u00b7\u03c1_2 >= A_-(d)^2",
+      "d=1": "A_-(1) = 1 SHARP (Cohn-Gon\u00e7alves 2019)"
+    }
+  },
+  "primal_compatibility": {
+    "primal_object": "\u03c1 = f*f with f >= 0, supp f \u2282 [-1/4,1/4]",
+    "primal_facts": [
+      "\u03c1 >= 0 on R (auto-positive, from f>=0)",
+      "\u03c1\u0302 >= 0 on R (Bochner, auto-positive)",
+      "supp \u03c1 \u2282 [-1/2,1/2] (compact support, NOT bandlimited)"
+    ],
+    "BCK_compat": {
+      "hyp": "f\u0302(0) <= 0",
+      "primal": "\u03c1\u0302(0) = (\u222bf)^2 = 1 > 0",
+      "compatible": false,
+      "reason": "\u03c1\u0302(0)=1, BCK demands <=0; only f=0 would satisfy both"
+    },
+    "CG_compat": {
+      "hyp": "f\u0302(\u03be) <= 0 for |\u03be| >= \u03c1_2",
+      "primal": "\u03c1\u0302(\u03be) >= 0 globally",
+      "compatible": false,
+      "reason": "\u03c1\u0302 >= 0 globally + <=0 at \u221e \u27f9 \u03c1\u0302 has compact support \u27f9 \u03c1 \u2261 0"
+    },
+    "verdict": "Both BCK and CG sign-uncertainty principles are STRUCTURALLY INCOMPATIBLE with the C_{1a} primal object \u03c1 = f*f."
+  },
+  "dual_compatibility": {
+    "dual_object": "test function g with g >= 0 on [-1/2,1/2], \u011d >= 0 on R",
+    "CG_on_dual": {
+      "hyp": "\u011d <= 0 for |\u03be| >= \u03c1_2 (CG, s=-1)",
+      "Bochner_constraint": "\u011d >= 0 on R",
+      "intersection": "\u011d supported in [-\u03c1_2, \u03c1_2] (bandlimited)",
+      "is_restrictive": true,
+      "produces_new_term": false,
+      "reason": "Restricting g to bandlimited only SHRINKS feasible set; CG sign-uncertainty bounds \u03c1_1\u03c1_2 from BELOW, which is a CONSTRAINT not a numerical addition"
+    },
+    "BCK_on_dual": {
+      "hyp": "\u011d(0) <= 0, \u011d >= 0 outside |\u03be| >= \u03c1_2",
+      "Bochner_constraint": "\u011d >= 0 on R",
+      "compatible": false,
+      "reason": "\u011d(0) <= 0 + \u011d >= 0 globally \u27f9 \u011d(0)=0 \u27f9 \u222bg = 0; but g>=0 on [-1/2,1/2] and not identically zero is required for nontrivial bound"
+    },
+    "Plancherel_attempt": {
+      "identity": "\u222b f\u0302 h d\u03be = -\u222b f h dx  if h is a CG -1 eigenfunction",
+      "yields_bound": false,
+      "reason": "Linear identity, no sign control, no max-norm appears"
+    },
+    "verdict": "Sign-uncertainty CONSTRAINS dual test function class but adds NO POSITIVE TERM to master inequality. Direction of inequality is wrong: CG forbids what Delsarte wants."
+  },
+  "explicit_construction_attempt": {
+    "delsarte_master_bound_numeric_demo_only": 0.4515046055753995,
+    "note_on_demo": "This is a TRIVIAL demo Delsarte bound with a triangular-kernel g, NOT the MV 1.2748 optimum. Numerical value here is irrelevant to the obstruction analysis above.",
+    "M_g_demo": 1.0,
+    "CG_eigenfunction_sanity": {
+      "psi_form": "(4\u03c0t^2 - 1) e^{-\u03c0t^2}  (Hermite H_2 type, FT eigenval -1)",
+      "FT_eigenvalue": -1,
+      "max_|psi_hat - (-psi)|": 0.004171887300382176,
+      "is_-1_eigenfn_numerically": true,
+      "note": "Confirms a valid CG-eigenfunction candidate exists (we can construct h with \u0125 = -h)."
+    },
+    "augmentation_attempt": "Plancherel identity \u222b\u03c8\u0302(\u03be)f\u0302(\u03be)d\u03be = -\u222b\u03c8(x)f(x)dx is LINEAR; sup_\u03bb Lagrangian collapses to \u03bb=0",
+    "augmented_bound": 0.4515046055753995,
+    "improvement_over_MV": 0.0
+  },
+  "verdict": "NEGATIVE \u2014 CG sign-uncertainty has ZERO POSITIVE WEIGHT in C_{1a} master inequality",
+  "obstruction_summary": [
+    "1) PRIMAL OBSTRUCTION: \u03c1 = f*f auto-satisfies \u03c1\u0302 >= 0 globally. CG hypothesis \u03c1\u0302 <= 0 outside \u03c1_2 + global \u03c1\u0302 >= 0 \u27f9 \u03c1\u0302 \u2261 0 outside \u03c1_2 \u27f9 \u03c1 entire bandlimited but also compactly supported \u27f9 \u03c1 \u2261 0.",
+    "2) DUAL OBSTRUCTION: Bochner-positive dual test \u011d >= 0 on R is INCOMPATIBLE with CG hypothesis \u011d <= 0 at infinity except via \u011d supported in [-\u03c1_2,\u03c1_2]; this only SHRINKS the dual feasible set, never adds a positive term.",
+    "3) BCK OBSTRUCTION (s=+1): hypothesis f\u0302(0) <= 0 conflicts with \u03c1\u0302(0) = (\u222bf)^2 = 1 in the C_{1a} primal.",
+    "4) PLANCHEREL LAGRANGIAN: pairing primal \u03c1\u0302 with a CG eigenfn h via \u222bf\u0302h d\u03be = -\u222bfh dx is a LINEAR identity, no sign-control, sup_\u03bb Lagrangian gives \u03bb=0 \u27f9 no improvement.",
+    "5) MISMATCH OF NUMBERS: CG produces \u03c1_1 \u03c1_2 >= 1 (a CONSTRAINT, not a positive numerical addend); the master inequality wants a positive integral or sup-norm to ADD \u2014 wrong direction."
+  ],
+  "conclusion": "Cohn-Goncalves sign-uncertainty does NOT yield a usable two-kernel extension of MV's master inequality for C_{1a}. The primal object \u03c1 = f*f is structurally 'too positive' (both \u03c1 and \u03c1\u0302 are nonneg) for CG/BCK hypotheses to bite, and the dual test function class is already maximally exploited by Bochner-positive g; CG only further restricts it. Final certified improvement over MV's 1.2748: 0.0.",
+  "improvement_over_MV": 0.0,
+  "new_bound_value": 1.2748
+}

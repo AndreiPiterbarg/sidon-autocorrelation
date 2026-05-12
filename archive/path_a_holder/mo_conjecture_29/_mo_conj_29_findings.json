@@ -1,0 +1,74 @@
+{
+  "c_star_threshold": 0.8825424006106064,
+  "c_star_threshold_formula": "log(16)/pi",
+  "verdict": "NEGATIVE (direct proof out of reach); EMPIRICAL SUPPORT (plausible on restricted class)",
+  "chance_of_direct_proof": "5-10%",
+
+  "BL_witness": {
+    "source": "arXiv:2506.16750 (Boyer-Li 2025), 575 integer coefficients in delsarte_dual/restricted_holder/coeffBL.txt",
+    "S_sum_v": 14912998,
+    "Lmax": 319479037824,
+    "M_gg_inf": 1.6520009355082168,
+    "K_gg_norm": 4.181440984600874,
+    "gg_l22": 1.489385976438798,
+    "c_star_emp": 0.901564850494838,
+    "asymmetric_max_rel": 0.977059,
+    "restricted_class_member": false,
+    "comment": "BL witness disproves UNRESTRICTED MO 2.9 but has M=1.652 >> 1.51, outside restricted class."
+  },
+
+  "parametric_families_low_M_max_c_star": {
+    "uniform_indicator_M2.0":        {"M": 2.0,    "c_star": 0.6667},
+    "triangle_4(1-4|x|)_M2.67":      {"M": 2.667,  "c_star": 0.7190},
+    "cos_bump_1+cos(4pix)_M3.0":     {"M": 3.0,    "c_star": 0.7216},
+    "arcsine_p=0.4942_M2.78":        {"M": 2.78,   "c_star": 0.4164},
+    "MV_119cosine_extremizer_M2.31": {"M": 2.314,  "c_star": 0.5889}
+  },
+
+  "BL_deformation_low_M_max_c_star": {
+    "convex_mix_a=0.05_M1.685":     {"M": 1.685, "c_star": 0.867},
+    "smoothed_w=0.005_M1.664":      {"M": 1.664, "c_star": 0.895},
+    "smoothed_w=0.020_M1.750":      {"M": 1.750, "c_star": 0.845},
+    "shrink_top10pct_0.99_M1.661":  {"M": 1.661, "c_star": 0.896},
+    "symmetrized_BL_M2.92":         {"M": 2.92,  "c_star": 0.47}
+  },
+
+  "random_step_search": {
+    "K_cells": 50, "draws": 4000, "M_max_filter": 1.51,
+    "accepted_count": 0,
+    "comment": "Restricted class {M <= 1.51} is so thin that 4000 random draws produced zero feasible samples."
+  },
+
+  "hill_climb_BL_perturbation": {
+    "Mmax_tested": [1.378, 1.51, 1.65],
+    "steps_per_run": 8000,
+    "feasible_post_climb": "none for any Mmax (perturbation always exits restricted class)",
+    "comment": "BL violator is structurally tied to M near 1.65; no continuous deformation reduces M while preserving c_*."
+  },
+
+  "structural_obstructions": [
+    "Schwarz/symmetric-decreasing rearrangement runs the WRONG way (Riesz, _master_route_b_symmetric.md §3).",
+    "Hölder-Hausdorff-Young (MO Prop 2.11) gives P-side ceiling M_LB <= 1.116 (multifreq_mo217/derivation.md §6.1).",
+    "Bochner phase identity at peak (Lemma A1) is phased; cannot bound phaseless ||f||_2^2 (_master_lemma_a1_attack.md §3).",
+    "EL/compactness admits asymmetric solutions (no symmetry-forcing argument).",
+    "MV/MO/White toolkit cannot couple support-width to Hölder ratio c_*(f)."
+  ],
+
+  "remaining_opening": {
+    "name": "BL-gap rigidity / no low-M asymmetric violators",
+    "theorem_target": "For nonneg pdf f on [-1/4,1/4] with int=1, ||f*f||_inf <= 1.378 implies ||f*f||_2^2 <= (log 16/pi)||f*f||_inf.",
+    "evidence_for": "0 violators in 4000 random + 24000 Metropolis trials; MV-class c_*=0.589 << 0.8825; no known continuous low-M analogue of BL witness.",
+    "evidence_against": "No structural rigidity theorem ruling out continuous extension of BL-style asymmetric extremizers below M=1.65.",
+    "required_new_ingredient": "Coupling between support-width / asymmetry-degree of f and c_*(f); plausibly accessible via Cohn-Goncalves sign-uncertainty (Priority 1 in _master_blocker_diagnosis.md)."
+  },
+
+  "scripts_reproducing_numerics": [
+    "_mo_conj_29_direct_probe.py",
+    "_mo_conj_29_low_M.py",
+    "_mo_conj_29_smooth_lowM.py",
+    "_mo_conj_29_asym_lowM.py",
+    "_mo_conj_29_search_lowM.py",
+    "_bl_witness_audit.py",
+    "delsarte_dual/restricted_holder/sidon_extremizer_ratio.py"
+  ]
+}

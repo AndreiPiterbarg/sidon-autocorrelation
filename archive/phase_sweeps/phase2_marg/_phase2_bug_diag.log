@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "<string>", line 25, in <module>
+TypeError: float() argument must be a string or a real number, not 'flint.types.fmpq.fmpq'
+N=1  M=1.274375
+mu(M).upper = 0.2539271473947217
+cell 4 verdict=FILTER_REJECT  reason=filter_all

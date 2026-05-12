@@ -1,0 +1,205 @@
+{
+  "DELTA": 0.138,
+  "U": 0.638,
+  "N_XI": 40001,
+  "XI_MAX": 600.0,
+  "families": [
+    "arcsine",
+    "triangle",
+    "bspline3",
+    "epanechnikov",
+    "semicircle"
+  ],
+  "sanity_pure": {
+    "arcsine": {
+      "label": "pure-arcsine",
+      "components": [
+        [
+          "arcsine",
+          0.138,
+          1.0
+        ]
+      ],
+      "k_1": 0.9092765512116029,
+      "K_2": 4.161758594759721,
+      "S_1": 87.85669009213828,
+      "M_cert": 1.2749880304800079,
+      "beats_MV_1.2748": true,
+      "beats_K26_1.28013": false
+    },
+    "triangle": {
+      "label": "pure-triangle",
+      "components": [
+        [
+          "triangle",
+          0.138,
+          1.0
+        ]
+      ],
+      "k_1": 0.9388969684228801,
+      "K_2": 4.830917841855869,
+      "S_1": 32713.038661552568,
+      "M_cert": 1.2196686953000702,
+      "beats_MV_1.2748": false,
+      "beats_K26_1.28013": false
+    },
+    "bspline3": {
+      "label": "pure-bspline3",
+      "components": [
+        [
+          "bspline3",
+          0.138,
+          1.0
+        ]
+      ],
+      "k_1": 0.9691117607442388,
+      "K_2": 6.947319990798251,
+      "S_1": 198890284820.45792,
+      "M_cert": 1.1598642109286084,
+      "beats_MV_1.2748": false,
+      "beats_K26_1.28013": false
+    },
+    "epanechnikov": {
+      "label": "pure-epanechnikov",
+      "M_cert": null,
+      "reason": "K_hat negative on grid: min=-0.08617076732281517"
+    },
+    "semicircle": {
+      "label": "pure-semicircle",
+      "M_cert": null,
+      "reason": "K_hat negative on grid: min=-0.13227926738925028"
+    }
+  },
+  "pair_coarse_bests": {
+    "arcsine+triangle": {
+      "M_cert": 1.2787436399225465,
+      "fam_A": "arcsine",
+      "fam_B": "triangle",
+      "delta_A": 0.138,
+      "delta_B": 0.09,
+      "lambda_A": 0.9
+    },
+    "arcsine+bspline3": {
+      "M_cert": 1.2781391894565983,
+      "fam_A": "arcsine",
+      "fam_B": "bspline3",
+      "delta_A": 0.138,
+      "delta_B": 0.12,
+      "lambda_A": 0.9
+    },
+    "arcsine+epanechnikov": {
+      "M_cert": -Infinity
+    },
+    "arcsine+semicircle": {
+      "M_cert": -Infinity
+    },
+    "triangle+arcsine": {
+      "M_cert": 1.2476430861162235,
+      "fam_A": "triangle",
+      "fam_B": "arcsine",
+      "delta_A": 0.138,
+      "delta_B": 0.135,
+      "lambda_A": 0.1
+    },
+    "triangle+bspline3": {
+      "M_cert": 1.2135429954699841,
+      "fam_A": "triangle",
+      "fam_B": "bspline3",
+      "delta_A": 0.138,
+      "delta_B": 0.135,
+      "lambda_A": 0.9
+    },
+    "triangle+epanechnikov": {
+      "M_cert": -Infinity
+    },
+    "triangle+semicircle": {
+      "M_cert": -Infinity
+    },
+    "bspline3+arcsine": {
+      "M_cert": 1.2414515899695604,
+      "fam_A": "bspline3",
+      "fam_B": "arcsine",
+      "delta_A": 0.138,
+      "delta_B": 0.13,
+      "lambda_A": 0.1
+    },
+    "bspline3+triangle": {
+      "M_cert": 1.210704545478011,
+      "fam_A": "bspline3",
+      "fam_B": "triangle",
+      "delta_A": 0.138,
+      "delta_B": 0.135,
+      "lambda_A": 0.1
+    },
+    "bspline3+epanechnikov": {
+      "M_cert": -Infinity
+    },
+    "bspline3+semicircle": {
+      "M_cert": -Infinity
+    },
+    "epanechnikov+arcsine": {
+      "M_cert": -Infinity
+    },
+    "epanechnikov+triangle": {
+      "M_cert": -Infinity
+    },
+    "epanechnikov+bspline3": {
+      "M_cert": -Infinity
+    },
+    "epanechnikov+semicircle": {
+      "M_cert": -Infinity
+    },
+    "semicircle+arcsine": {
+      "M_cert": -Infinity
+    },
+    "semicircle+triangle": {
+      "M_cert": -Infinity
+    },
+    "semicircle+bspline3": {
+      "M_cert": -Infinity
+    },
+    "semicircle+epanechnikov": {
+      "M_cert": -Infinity
+    }
+  },
+  "pair_refined_bests": {
+    "arcsine+triangle": {
+      "M_cert": 1.2793679160784235,
+      "fam_A": "arcsine",
+      "fam_B": "triangle",
+      "delta_A": 0.138,
+      "delta_B": 0.07,
+      "lambda_A": 0.9312
+    },
+    "arcsine+bspline3": {
+      "M_cert": 1.2789493546559627,
+      "fam_A": "arcsine",
+      "fam_B": "bspline3",
+      "delta_A": 0.138,
+      "delta_B": 0.1,
+      "lambda_A": 0.95
+    },
+    "triangle+arcsine": {
+      "M_cert": 1.2753334769913125,
+      "fam_A": "triangle",
+      "fam_B": "arcsine",
+      "delta_A": 0.138,
+      "delta_B": 0.1379,
+      "lambda_A": 0.0688
+    }
+  },
+  "three_way_best": {
+    "M_cert": 1.2793679160784235
+  },
+  "global_best": {
+    "M_cert": 1.2793679160784235,
+    "fam_A": "arcsine",
+    "fam_B": "triangle",
+    "delta_A": 0.138,
+    "delta_B": 0.07,
+    "lambda_A": 0.9312
+  },
+  "elapsed_s": 25.113653659820557,
+  "beats_K26_1_28013": false,
+  "beats_MV_1_2748": true
+}

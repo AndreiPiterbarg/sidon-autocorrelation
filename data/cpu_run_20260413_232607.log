@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/workspace/sidon-autocorrelation/tests/run_l2_cg_sweep.py", line 16, in <module>
-    from lasserre_scalable import solve_lasserre_scalable
-  File "/workspace/sidon-autocorrelation/tests/lasserre_scalable.py", line 36, in <module>
-    from scipy import sparse as sp
-ModuleNotFoundError: No module named 'scipy'

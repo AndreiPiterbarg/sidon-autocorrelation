@@ -1,0 +1,28 @@
+{
+  "agent": "C1_fisher_info",
+  "approach": "Fisher info / Stam / de Bruijn family \u2014 direction analysis + numerical scatter",
+  "math_correct": true,
+  "best_lb_obtained": null,
+  "vs_1_2802": "below",
+  "vs_mv_1_2748": "below",
+  "promising": false,
+  "verdict_short": "Fisher info family bounds ||f*f||_inf from ABOVE (Hardy-CS, Stam, infty-Renyi-EPI), not below; convex {I<=K} constraint shrinks feasible set giving UB not LB; SDP+Fisher cap was non-binding at d=4,6,8 (delta=0); direction DEAD for improving 1.2802.",
+  "verdict_long": "Probed four classical Fisher / EPI inequalities applied to f >= 0 supp f in [-1/4,1/4], int f = 1.  (i) Hardy-CS: ||g||_inf <= 1/(2L) + sqrt(I(g)) gives an UPPER bound on M.  (ii) Stam: 1/I(f*g) >= 1/I(f) + 1/I(g) gives I(f*f) <= I(f)/2, again UPPER on the convolution Fisher info.  (iii) infty-Renyi-EPI (Rogozin): ||f*f||_inf <= ||f||_inf/sqrt(2), UPPER. (iv) de Bruijn identity: dh(f*phi_t)/dt = I(f*phi_t)/2, just a flow identity.  All four give wrong direction.  Convex {I(f) <= K} can be added to SDP relaxation but restricts feasible set, yielding an UB on C_{1a} not LB; non-convex {I(f) >= K} cannot be encoded.  Numerically: at d=4,6,8 the Fisher cap K = 1.5 * I(arcsine) was completely non-binding (LB unchanged to 5+ digits).  Random feasible scatter at d=16 gave Spearman rho(I, M) = 0.348 (positive but weak): high Fisher info correlates with high M, which is the opposite of what would yield a lower-bound mechanism (we'd need: low M => high I, which is false -- uniform gives low I=8 and low M=2).  Verdict: Fisher information is structurally incompatible with lower-bounding ||f*f||_inf via convex relaxation; no mechanism in the family produces a direction-correct, monotone bound.  DIRECTION DEAD.  Note: the same conclusion was reached for entropy in delsarte_dual/ideas_entropy.md; Fisher info is a strict refinement of differential entropy (h' = I/2) and inherits the wrong direction.",
+  "next_steps_if_promising": [],
+  "compute_time_sec": 7.9769978523254395,
+  "files_created": [
+    "run.log",
+    "probe.py",
+    "results.json"
+  ],
+  "scatter_summary": {
+    "n_profiles": 15,
+    "spearman_rho_random_d16": 0.34829820745518647,
+    "spearman_pval_random_d16": 4.327531706966141e-07,
+    "M_uniform_d32": 2.0,
+    "I_uniform_d32": 8.0,
+    "M_arcsine_d32": 3.026561786716517,
+    "I_arcsine_d32": 36.31004071938928,
+    "monotonicity_violation": false
+  }
+}

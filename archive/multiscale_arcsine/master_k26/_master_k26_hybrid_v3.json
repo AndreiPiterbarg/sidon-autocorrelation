@@ -1,0 +1,16 @@
+{
+  "K26_base_M_cert": 1.2801328313648335,
+  "best": {
+    "M_cert": 1.280220537471366,
+    "config": "l1=0.93,d2=0.055,eps=0.005,triangle@0.04",
+    "l1": 0.93,
+    "d2": 0.055,
+    "eps": 0.005,
+    "fam_C": "triangle",
+    "dC": 0.04
+  },
+  "improvement_over_K26": 8.770610653252575e-05,
+  "beats_K26": true,
+  "evaluated_count": 2352,
+  "elapsed_s": 46.06619215011597
+}

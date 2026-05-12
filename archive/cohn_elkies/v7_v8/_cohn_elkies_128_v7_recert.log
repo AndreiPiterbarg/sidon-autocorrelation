@@ -1,0 +1,26 @@
+==============================================================================
+v7 final recertification @ XI_MAX = 1e5
+  deltas  = [0.138, 0.055, 0.03, 0.015]
+  lambdas = [0.85, 0.1, 0.03, 0.02]
+  N_G     = 500
+==============================================================================
+(CVXPY) May 11 10:15:08 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:15:08 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+  deltas  = [0.138, 0.055, 0.03, 0.015]
+  lambdas = [0.85, 0.1, 0.03, 0.02]
+  XI_MAX  = 100000  prec = 256
+  k_1 ~ 0.9212454089
+  min_G >= 0.997899  G2=True  (2.4s)
+  S_1 <= 29.0157
+  K_2 in [4.807515, 4.808377]  tail<=8.62e-04  (21.5s)
+  M_cert >= 1.29322292
+
+Total time: 30.0s
+M_cert_lower @ XI_MAX=100000: 1.29322292
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\archive\cohn_elkies\_cohn_elkies_128_v7_results.json
+BEST overall: 4sc NG=500 d=(0.138,0.055,0.030,0.015) l=(0.85,0.10,0.03,0.02) @xi=100000  M_cert = 1.29322292
+  vs 3-scale v4 ref (1.29216): +0.001063
+  vs CS17 paper (1.28020):     +0.013023

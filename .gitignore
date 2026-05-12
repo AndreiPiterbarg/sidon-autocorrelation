@@ -61,13 +61,44 @@ data/_shards_L2/
 data/**/_shards_L2/
 data/subtree_test/
 
+# Enormous shard/checkpoint trees (multi-GB; exceed GitHub 2GB hard blob limit)
+*.npy
+*.dat
+*.tar
+*.tar.gz
+*.tgz
+archive/data_runs/
+cloninger-steinerberger/cpu/data/
+/data/
+/data_experiment/
+**/_shards_L1/
+**/_shards_L2/
+**/coarse_shards/
+**/checkpoints/
+**/subtree_test/
+
+# Root-level cruft (one-off scripts, orphan artifacts)
+/.fix_indent_damage.py
+/lower_bound_proof.log
+
 # Temp/backup files
 *.stackdump
 *.bak
 
-# Latexmk intermediates
+# LaTeX build artefacts (keep .tex / .pdf / .bib / figures only)
+*.aux
+*.bbl
+*.blg
 *.fdb_latexmk
 *.fls
+*.lof
+*.lot
+*.out
+*.synctex.gz
+*.toc
+delsarte_dual/**/*.log
+delsarte_dual/**/texput.log
 
-# Local bib symlinks for cross-dir compilation
-proof/cs-proof/lower_bound_refs.bib
+# OneDrive sync race quarantine — review then delete
+_resurrected_quarantine/
+CLAUDE.md

@@ -1,0 +1,554 @@
+{
+  "config_summary": {
+    "n_half": 1,
+    "m": 20,
+    "c_target": 1.281,
+    "d": 2,
+    "S": 80,
+    "window": "[-w, w] (central, width 2w)",
+    "theorem": "bochner_test_function_bound.md sec 1, 3, 4, 7"
+  },
+  "d2_results": {
+    "config": {
+      "n_half": 1,
+      "m": 20,
+      "c_target": 1.281,
+      "d": 2,
+      "S": 80,
+      "window": "[-w, w] (central, width 2w)",
+      "theorem": "bochner_test_function_bound.md sec 1, 3, 4, 7"
+    },
+    "unique_L0_cells_count": 26,
+    "n_caught": 0,
+    "catch_rate": "0/26",
+    "soundness_verification": {
+      "method": "continuous f sampled with multiple distrib; check ||f*f||_inf >= LB",
+      "n_cells_checked": 5,
+      "n_violations_observed": 0,
+      "status": "PROVEN_BY_THEOREM",
+      "per_cell": [
+        {
+          "c": [
+            15,
+            65
+          ],
+          "mu": [
+            0.2,
+            0.8
+          ],
+          "LB": 1.2800000000000002,
+          "min_inf_n_sampled": 2.560768589238174,
+          "sound_pass": true,
+          "inf_norms": [
+            [
+              "uniform_in_bin",
+              2.560768589238174
+            ],
+            [
+              "concentrated_center",
+              25.58720000000102
+            ],
+            [
+              "concentrated_left",
+              25.638451264077915
+            ],
+            [
+              "concentrated_right",
+              25.793132368833735
+            ],
+            [
+              "random_within",
+              5.109444000000205
+            ]
+          ]
+        },
+        {
+          "c": [
+            16,
+            64
+          ],
+          "mu": [
+            0.2125,
+            0.7875
+          ],
+          "LB": 1.2403125,
+          "min_inf_n_sampled": 2.4813387136971063,
+          "sound_pass": true,
+          "inf_norms": [
+            [
+              "uniform_in_bin",
+              2.4813387136971063
+            ],
+            [
+              "concentrated_center",
+              24.793846875000998
+            ],
+            [
+              "concentrated_left",
+              24.846617888511858
+            ],
+            [
+              "concentrated_right",
+              24.990257707837493
+            ],
+            [
+              "random_within",
+              5.488487309089324
+            ]
+          ]
+        },
+        {
+          "c": [
+            17,
+            63
+          ],
+          "mu": [
+            0.225,
+            0.775
+          ],
+          "LB": 1.2012500000000002,
+          "min_inf_n_sampled": 2.4031611694609762,
+          "sound_pass": true,
+          "inf_norms": [
+            [
+              "uniform_in_bin",
+              2.4031611694609762
+            ],
+            [
+              "concentrated_center",
+              24.012987500000957
+            ],
+            [
+              "concentrated_left",
+              24.06710803314192
+            ],
+            [
+              "concentrated_right",
+              24.20017547920483
+            ],
+            [
+              "random_within",
+              4.958255140084885
+            ]
+          ]
+        },
+        {
+          "c": [
+            18,
+            62
+          ],
+          "mu": [
+            0.2375,
+            0.7625
+          ],
+          "LB": 1.1628124999999998,
+          "min_inf_n_sampled": 2.3262359095447236,
+          "sound_pass": true,
+          "inf_norms": [
+            [
+              "uniform_in_bin",
+              2.3262359095447236
+            ],
+            [
+              "concentrated_center",
+              23.244621875000927
+            ],
+            [
+              "concentrated_left",
+              23.299926343530064
+            ],
+            [
+              "concentrated_right",
+              23.422880886527135
+            ],
+            [
+              "random_within",
+              5.819729304687728
+            ]
+          ]
+        },
+        {
+          "c": [
+            19,
+            61
+          ],
+          "mu": [
+            0.25,
+            0.75
+          ],
+          "LB": 1.125,
+          "min_inf_n_sampled": 2.250562886965069,
+          "sound_pass": true,
+          "inf_norms": [
+            [
+              "uniform_in_bin",
+              2.250562886965069
+            ],
+            [
+              "concentrated_center",
+              22.488750000000902
+            ],
+            [
+              "concentrated_left",
+              22.54507746698482
+            ],
+            [
+              "concentrated_right",
+              22.65836913519888
+            ],
+            [
+              "random_within",
+              4.146227230868565
+            ]
+          ]
+        }
+      ]
+    },
+    "cells": [
+      {
+        "c": [
+          15,
+          65
+        ],
+        "a_min": [
+          16,
+          64
+        ],
+        "LB_max": 1.2800000000000002,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          16,
+          64
+        ],
+        "a_min": [
+          17,
+          63
+        ],
+        "LB_max": 1.2403125,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          17,
+          63
+        ],
+        "a_min": [
+          18,
+          62
+        ],
+        "LB_max": 1.2012500000000002,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          18,
+          62
+        ],
+        "a_min": [
+          19,
+          61
+        ],
+        "LB_max": 1.1628124999999998,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          19,
+          61
+        ],
+        "a_min": [
+          20,
+          60
+        ],
+        "LB_max": 1.125,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          20,
+          60
+        ],
+        "a_min": [
+          21,
+          59
+        ],
+        "LB_max": 1.0878125,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          21,
+          59
+        ],
+        "a_min": [
+          22,
+          58
+        ],
+        "LB_max": 1.05125,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          22,
+          58
+        ],
+        "a_min": [
+          23,
+          57
+        ],
+        "LB_max": 1.0153125,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          23,
+          57
+        ],
+        "a_min": [
+          24,
+          56
+        ],
+        "LB_max": 0.9799999999999999,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          24,
+          56
+        ],
+        "a_min": [
+          25,
+          55
+        ],
+        "LB_max": 0.9453125,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          25,
+          55
+        ],
+        "a_min": [
+          26,
+          54
+        ],
+        "LB_max": 0.9112500000000001,
+        "best_k": 2,
+        "caught": false
+      },
+      {
+        "c": [
+          26,
+          54
+        ],
+        "a_min": [
+          27,
+          53
+        ],
+        "LB_max": 0.894375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          27,
+          53
+        ],
+        "a_min": [
+          27,
+          53
+        ],
+        "LB_max": 0.894375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          28,
+          52
+        ],
+        "a_min": [
+          27,
+          53
+        ],
+        "LB_max": 0.894375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          29,
+          51
+        ],
+        "a_min": [
+          28,
+          52
+        ],
+        "LB_max": 0.9099999999999999,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          30,
+          50
+        ],
+        "a_min": [
+          29,
+          51
+        ],
+        "LB_max": 0.924375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          31,
+          49
+        ],
+        "a_min": [
+          30,
+          50
+        ],
+        "LB_max": 0.9375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          32,
+          48
+        ],
+        "a_min": [
+          31,
+          49
+        ],
+        "LB_max": 0.9493750000000001,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          33,
+          47
+        ],
+        "a_min": [
+          32,
+          48
+        ],
+        "LB_max": 0.96,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          34,
+          46
+        ],
+        "a_min": [
+          33,
+          47
+        ],
+        "LB_max": 0.969375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          35,
+          45
+        ],
+        "a_min": [
+          34,
+          46
+        ],
+        "LB_max": 0.9774999999999999,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          36,
+          44
+        ],
+        "a_min": [
+          35,
+          45
+        ],
+        "LB_max": 0.984375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          37,
+          43
+        ],
+        "a_min": [
+          36,
+          44
+        ],
+        "LB_max": 0.9900000000000001,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          38,
+          42
+        ],
+        "a_min": [
+          37,
+          43
+        ],
+        "LB_max": 0.994375,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          39,
+          41
+        ],
+        "a_min": [
+          38,
+          42
+        ],
+        "LB_max": 0.9974999999999999,
+        "best_k": 1,
+        "caught": false
+      },
+      {
+        "c": [
+          40,
+          40
+        ],
+        "a_min": [
+          39,
+          41
+        ],
+        "LB_max": 0.9993749999999999,
+        "best_k": 1,
+        "caught": false
+      }
+    ]
+  },
+  "BOCHNER_BOUND": {
+    "catches": "0 of 26 L0 cells",
+    "soundness_for_continuous_f": "PROVEN",
+    "soundness_proof_ref": "proof/bochner_test_function_bound.md"
+  },
+  "wall_seconds": 0.03984212875366211
+}

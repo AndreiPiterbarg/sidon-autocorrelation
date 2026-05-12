@@ -1,0 +1,7 @@
+=== M=1.2745 N=2 test (parallel one box, full root, 2M cells) ===
+  M=1.2745 -> NOT_CERTIFIED  cells=2000001  time=362.1s
+  worst_live_up = 0.026414127055271158
+
+=== M=1.2748 N=2 test ===
+  M=1.2748 -> NOT_CERTIFIED  cells=2000001  time=299.4s
+  worst_live_up = 0.027287595772620948

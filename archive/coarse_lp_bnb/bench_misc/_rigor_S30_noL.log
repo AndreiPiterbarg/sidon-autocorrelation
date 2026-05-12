@@ -1,0 +1,24 @@
+
+=== RIGOR CASCADE  d0=2  S=30  c=1.281  J=True  L=False ===
+
+[L0] d=2, S=30, compositions=31, x_cap=24
+     0.30s: NO=0 J=0 L=0 surv=10  uncert=0
+[L0] surv=10  uncert=0  (0.30s)
+
+--- L1: d=2->4  parents=10  x_cap=16 ---
+L1: 1,603 children -> NO=1,102 J=1 L=0 uncert=155 surv_next=318 unc_next=144 (0.1s)
+
+--- L2: d=4->8  parents=462  x_cap=12 ---
+   [76/462] children=279,854 NO=270,417 J=2,122 L=0 surv=79 uncert=7,236
+   [100/462] children=352,529 NO=334,053 J=3,577 L=0 surv=321 uncert=14,578
+   [118/462] children=418,529 NO=391,440 J=5,308 L=0 surv=548 uncert=21,233
+   [158/462] children=549,337 NO=511,931 J=6,943 L=0 surv=921 uncert=29,542
+   [177/462] children=609,664 NO=560,692 J=9,528 L=0 surv=1,448 uncert=37,996
+   [200/462] children=706,846 NO=646,158 J=11,372 L=0 surv=1,674 uncert=47,642
+   [237/462] children=796,588 NO=723,984 J=13,286 L=0 surv=2,150 uncert=57,168
+   [276/462] children=910,437 NO=826,256 J=15,044 L=0 surv=2,373 uncert=66,764
+   [408/462] children=1,294,632 NO=1,200,504 J=16,932 L=0 surv=2,395 uncert=74,801
+L2: 1,404,491 children -> NO=1,307,189 J=17,882 L=0 uncert=77,025 surv_next=2,386 unc_next=76,291 (75.6s)
+
+=== DONE (76.1s) ===
+NOT closed: max_levels=2 reached with 78,677 parents

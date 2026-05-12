@@ -1,0 +1,317 @@
+{
+  "threshold": 1.281,
+  "per_d": [
+    {
+      "d": 2,
+      "M_d": 1.0,
+      "best_ell": 2,
+      "best_s_lo": 1,
+      "slack_above_threshold": -0.2809999999999999,
+      "passes": false
+    },
+    {
+      "d": 3,
+      "M_d": 1.1666666666666667,
+      "best_ell": 4,
+      "best_s_lo": 1,
+      "slack_above_threshold": -0.11433333333333318,
+      "passes": false
+    },
+    {
+      "d": 4,
+      "M_d": 1.25,
+      "best_ell": 4,
+      "best_s_lo": 2,
+      "slack_above_threshold": -0.030999999999999917,
+      "passes": false
+    },
+    {
+      "d": 5,
+      "M_d": 1.3000000000000003,
+      "best_ell": 4,
+      "best_s_lo": 3,
+      "slack_above_threshold": 0.01900000000000035,
+      "passes": true
+    },
+    {
+      "d": 6,
+      "M_d": 1.3333333333333333,
+      "best_ell": 5,
+      "best_s_lo": 4,
+      "slack_above_threshold": 0.05233333333333334,
+      "passes": true
+    },
+    {
+      "d": 7,
+      "M_d": 1.3809523809523807,
+      "best_ell": 6,
+      "best_s_lo": 4,
+      "slack_above_threshold": 0.09995238095238079,
+      "passes": true
+    },
+    {
+      "d": 8,
+      "M_d": 1.4166666666666665,
+      "best_ell": 6,
+      "best_s_lo": 5,
+      "slack_above_threshold": 0.1356666666666666,
+      "passes": true
+    },
+    {
+      "d": 9,
+      "M_d": 1.4444444444444444,
+      "best_ell": 6,
+      "best_s_lo": 6,
+      "slack_above_threshold": 0.1634444444444445,
+      "passes": true
+    },
+    {
+      "d": 10,
+      "M_d": 1.4666666666666668,
+      "best_ell": 6,
+      "best_s_lo": 7,
+      "slack_above_threshold": 0.18566666666666687,
+      "passes": true
+    },
+    {
+      "d": 11,
+      "M_d": 1.4848484848484846,
+      "best_ell": 6,
+      "best_s_lo": 8,
+      "slack_above_threshold": 0.20384848484848472,
+      "passes": true
+    },
+    {
+      "d": 12,
+      "M_d": 1.5,
+      "best_ell": 7,
+      "best_s_lo": 8,
+      "slack_above_threshold": 0.21900000000000008,
+      "passes": true
+    },
+    {
+      "d": 13,
+      "M_d": 1.5192307692307694,
+      "best_ell": 8,
+      "best_s_lo": 9,
+      "slack_above_threshold": 0.23823076923076947,
+      "passes": true
+    },
+    {
+      "d": 14,
+      "M_d": 1.5357142857142854,
+      "best_ell": 8,
+      "best_s_lo": 10,
+      "slack_above_threshold": 0.25471428571428545,
+      "passes": true
+    },
+    {
+      "d": 15,
+      "M_d": 1.5499999999999998,
+      "best_ell": 8,
+      "best_s_lo": 11,
+      "slack_above_threshold": 0.2689999999999999,
+      "passes": true
+    },
+    {
+      "d": 16,
+      "M_d": 1.5625,
+      "best_ell": 8,
+      "best_s_lo": 12,
+      "slack_above_threshold": 0.2815000000000001,
+      "passes": true
+    },
+    {
+      "d": 17,
+      "M_d": 1.5735294117647056,
+      "best_ell": 8,
+      "best_s_lo": 13,
+      "slack_above_threshold": 0.2925294117647057,
+      "passes": true
+    },
+    {
+      "d": 18,
+      "M_d": 1.5833333333333335,
+      "best_ell": 8,
+      "best_s_lo": 14,
+      "slack_above_threshold": 0.30233333333333356,
+      "passes": true
+    },
+    {
+      "d": 19,
+      "M_d": 1.5921052631578945,
+      "best_ell": 8,
+      "best_s_lo": 15,
+      "slack_above_threshold": 0.31110526315789455,
+      "passes": true
+    },
+    {
+      "d": 20,
+      "M_d": 1.6000000000000005,
+      "best_ell": 9,
+      "best_s_lo": 15,
+      "slack_above_threshold": 0.3190000000000006,
+      "passes": true
+    },
+    {
+      "d": 21,
+      "M_d": 1.6095238095238094,
+      "best_ell": 10,
+      "best_s_lo": 16,
+      "slack_above_threshold": 0.32852380952380944,
+      "passes": true
+    },
+    {
+      "d": 22,
+      "M_d": 1.6181818181818184,
+      "best_ell": 10,
+      "best_s_lo": 17,
+      "slack_above_threshold": 0.33718181818181847,
+      "passes": true
+    },
+    {
+      "d": 23,
+      "M_d": 1.6260869565217386,
+      "best_ell": 10,
+      "best_s_lo": 18,
+      "slack_above_threshold": 0.3450869565217387,
+      "passes": true
+    },
+    {
+      "d": 24,
+      "M_d": 1.6333333333333333,
+      "best_ell": 10,
+      "best_s_lo": 19,
+      "slack_above_threshold": 0.3523333333333334,
+      "passes": true
+    },
+    {
+      "d": 25,
+      "M_d": 1.6400000000000001,
+      "best_ell": 10,
+      "best_s_lo": 20,
+      "slack_above_threshold": 0.3590000000000002,
+      "passes": true
+    },
+    {
+      "d": 26,
+      "M_d": 1.6461538461538465,
+      "best_ell": 10,
+      "best_s_lo": 21,
+      "slack_above_threshold": 0.3651538461538466,
+      "passes": true
+    },
+    {
+      "d": 27,
+      "M_d": 1.6518518518518517,
+      "best_ell": 10,
+      "best_s_lo": 22,
+      "slack_above_threshold": 0.37085185185185177,
+      "passes": true
+    },
+    {
+      "d": 28,
+      "M_d": 1.6571428571428568,
+      "best_ell": 10,
+      "best_s_lo": 23,
+      "slack_above_threshold": 0.3761428571428569,
+      "passes": true
+    },
+    {
+      "d": 29,
+      "M_d": 1.6620689655172416,
+      "best_ell": 10,
+      "best_s_lo": 24,
+      "slack_above_threshold": 0.3810689655172417,
+      "passes": true
+    },
+    {
+      "d": 30,
+      "M_d": 1.6666666666666672,
+      "best_ell": 12,
+      "best_s_lo": 24,
+      "slack_above_threshold": 0.38566666666666727,
+      "passes": true
+    },
+    {
+      "d": 31,
+      "M_d": 1.6720430107526882,
+      "best_ell": 12,
+      "best_s_lo": 25,
+      "slack_above_threshold": 0.3910430107526883,
+      "passes": true
+    },
+    {
+      "d": 32,
+      "M_d": 1.6770833333333333,
+      "best_ell": 12,
+      "best_s_lo": 26,
+      "slack_above_threshold": 0.39608333333333334,
+      "passes": true
+    }
+  ],
+  "d_star": 5,
+  "d_star_record": {
+    "d": 5,
+    "M_d": 1.3000000000000003,
+    "best_ell": 4,
+    "best_s_lo": 3,
+    "slack_above_threshold": 0.01900000000000035,
+    "passes": true
+  },
+  "limsup_estimate_over_d>=20": 1.6770833333333333,
+  "tail_values_d20_32": [
+    [
+      20,
+      1.6000000000000005
+    ],
+    [
+      21,
+      1.6095238095238094
+    ],
+    [
+      22,
+      1.6181818181818184
+    ],
+    [
+      23,
+      1.6260869565217386
+    ],
+    [
+      24,
+      1.6333333333333333
+    ],
+    [
+      25,
+      1.6400000000000001
+    ],
+    [
+      26,
+      1.6461538461538465
+    ],
+    [
+      27,
+      1.6518518518518517
+    ],
+    [
+      28,
+      1.6571428571428568
+    ],
+    [
+      29,
+      1.6620689655172416
+    ],
+    [
+      30,
+      1.6666666666666672
+    ],
+    [
+      31,
+      1.6720430107526882
+    ],
+    [
+      32,
+      1.6770833333333333
+    ]
+  ]
+}

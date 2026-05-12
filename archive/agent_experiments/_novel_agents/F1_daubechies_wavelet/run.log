@@ -1,0 +1,45 @@
+[   0.00s] Daubechies wavelet probe v3
+[   0.00s] ============================
+[   0.00s] 
+[   0.00s] === N=4, J=5 (db4 at resolution 5) ===
+[   0.00s] Building (v3): N=4 J=5
+[   0.00s] K=10, k range [-8, 1]
+[   0.01s]   windows: 382 averaged + 51 pointwise = 433 total
+[   1.24s]   Setting up Shor SDP w/ RLT cuts.
+[   1.24s]   using 150 windowed constraints.
+[   1.40s]   CLARABEL failed (Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.); trying SCS
+[   1.85s]   status: optimal_inaccurate, V_LB = 2.1540334674962405
+[   1.85s]   primal UB on val_W (subspace): 17.6710
+[   1.85s]   Shor LB on val_W (subspace):   2.1540334674962405
+[   1.85s]   build=0.01s primal=0.87s dual=0.96s
+[   1.85s] 
+[   1.85s] === N=4, J=6 (db4 at resolution 6) ===
+[   1.85s] Building (v3): N=4 J=6
+[   1.85s] K=26, k range [-16, 9]
+[   1.86s]   windows: 382 averaged + 51 pointwise = 433 total
+[  10.65s]   Setting up Shor SDP w/ RLT cuts.
+[  10.65s]   using 150 windowed constraints.
+[  10.95s]   CLARABEL failed (Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.); trying SCS
+[  13.49s]   status: optimal_inaccurate, V_LB = 1.2595975809289204
+[  13.49s]   primal UB on val_W (subspace): 5.4197
+[  13.49s]   Shor LB on val_W (subspace):   1.2595975809289204
+[  13.49s]   build=0.01s primal=8.79s dual=2.84s
+[  13.49s] 
+[  13.49s] === N=8, J=6 (db8 at resolution 6) ===
+[  13.49s] Building (v3): N=8 J=6
+[  13.50s] K=18, k range [-16, 1]
+[  13.51s]   windows: 382 averaged + 51 pointwise = 433 total
+[  18.74s]   Setting up Shor SDP w/ RLT cuts.
+[  18.74s]   using 150 windowed constraints.
+[  19.03s]   CLARABEL failed (Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.); trying SCS
+[  20.22s]   status: optimal_inaccurate, V_LB = 1.8320796972449809
+[  20.22s]   primal UB on val_W (subspace): 10.5784
+[  20.22s]   Shor LB on val_W (subspace):   1.8320796972449809
+[  20.22s]   build=0.02s primal=5.23s dual=1.48s
+[  20.22s] 
+[  20.22s] === Summary ===
+[  20.23s] best primal UB on val_W: 5.4197 (UB on C_{1a}|subspace; smaller subspace -> larger UB)
+[  20.23s] best Shor LB on val_W:   2.1540334674962405    (LB on val_W|subspace, NOT on C_{1a})
+[  20.23s] 
+[  20.23s] wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\F1_daubechies_wavelet\results.json
+[  20.23s] verdict: Daubechies wavelet basis is mathematically the WRONG direction for an LB on C_{1a}: restricting f to a finite-dim wavelet subspace gives val_W >= C_{1a} (an UPPER bound, smaller subspace = larger inf), and Shor relaxation of val_W gives only a LB on val_W itself, not on C_{1a}.  No analog of CS Lemma 1 (windowed test-value inequality) exists for wavelet coefficients that would connect the LB to C_{1a} universally.

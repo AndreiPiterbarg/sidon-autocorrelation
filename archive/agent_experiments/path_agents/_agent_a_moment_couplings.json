@@ -1,0 +1,780 @@
+{
+  "global_best_LB": 0.9999999999956615,
+  "global_best_cfg": [
+    "C1+C2+C3",
+    6
+  ],
+  "best_per_config": {
+    "C1": {
+      "N": 8,
+      "LB": 0.9999999997015849,
+      "status": "optimal"
+    },
+    "C1/symm": {
+      "N": 8,
+      "LB": 0.9999999997214203,
+      "status": "optimal"
+    },
+    "C1+C2": {
+      "N": 8,
+      "LB": 0.9999999994359926,
+      "status": "optimal"
+    },
+    "C1+C2/symm": {
+      "N": 8,
+      "LB": 0.9999999998894182,
+      "status": "optimal"
+    },
+    "C1+C2+C3": {
+      "N": 6,
+      "LB": 0.9999999999956615,
+      "status": "optimal"
+    },
+    "C1+C2+C3/symm": {
+      "N": 6,
+      "LB": 0.9999999999944066,
+      "status": "optimal"
+    },
+    "ALL": {
+      "N": 6,
+      "LB": 0.9999999999956615,
+      "status": "optimal"
+    },
+    "ALL/symm": {
+      "N": 6,
+      "LB": 0.9999999999944066,
+      "status": "optimal"
+    },
+    "none(SDP only)": {
+      "N": 6,
+      "LB": 0.9999999993585474,
+      "status": "optimal"
+    },
+    "none(SDP only)/symm": {
+      "N": 6,
+      "LB": 0.9999999996234725,
+      "status": "optimal"
+    },
+    "C2 only": {
+      "N": 8,
+      "LB": 0.9999999998363388,
+      "status": "optimal"
+    },
+    "C2 only/symm": {
+      "N": 6,
+      "LB": 0.9999999991621135,
+      "status": "optimal"
+    },
+    "C3 only": {
+      "N": 6,
+      "LB": 0.9999999999905215,
+      "status": "optimal"
+    },
+    "C3 only/symm": {
+      "N": 8,
+      "LB": 0.9999999998449137,
+      "status": "optimal"
+    }
+  },
+  "results": [
+    {
+      "config": "C1",
+      "N": 4,
+      "LB": 0.9999999905985967,
+      "status": "optimal",
+      "binding": "M eig min=6.260e-03 max=1.001e+00; H_f eig min=6.073e-04 max=1.001e+00; m[:5]=[1.0, -0.0, 0.0259, 0.0, 0.0013]",
+      "solver": "MOSEK",
+      "solve_time": 0.1976022720336914,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1/symm",
+      "N": 4,
+      "LB": 0.99999999192052,
+      "status": "optimal",
+      "binding": "M eig min=5.663e-03 max=1.001e+00; H_f eig min=6.083e-04 max=1.001e+00; m[:5]=[1.0, -0.0, 0.026, -0.0, 0.0013]",
+      "solver": "MOSEK",
+      "solve_time": 0.1338810920715332,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1",
+      "N": 6,
+      "LB": 0.9999999981912568,
+      "status": "optimal",
+      "binding": "M eig min=1.999e-03 max=1.001e+00; H_f eig min=6.806e-06 max=1.001e+00; m[:5]=[1.0, -0.0, 0.0255, -0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.29273247718811035,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1/symm",
+      "N": 6,
+      "LB": 0.9999999995059013,
+      "status": "optimal",
+      "binding": "M eig min=1.862e-03 max=1.001e+00; H_f eig min=6.812e-06 max=1.001e+00; m[:5]=[1.0, -0.0, 0.026, 0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.2418525218963623,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1",
+      "N": 8,
+      "LB": 0.9999999997015849,
+      "status": "optimal",
+      "binding": "M eig min=1.182e-03 max=1.001e+00; H_f eig min=1.033e-07 max=1.001e+00; m[:5]=[1.0, 0.0, 0.0261, 0.0, 0.0012]",
+      "solver": "MOSEK",
+      "solve_time": 0.4224851131439209,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1/symm",
+      "N": 8,
+      "LB": 0.9999999997214203,
+      "status": "optimal",
+      "binding": "M eig min=1.154e-03 max=1.001e+00; H_f eig min=1.042e-07 max=1.001e+00; m[:5]=[1.0, 0.0, 0.026, -0.0, 0.0012]",
+      "solver": "MOSEK",
+      "solve_time": 0.4131581783294678,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1",
+      "N": 10,
+      "LB": 0.9999999966014832,
+      "status": "optimal",
+      "binding": "M eig min=5.222e-04 max=1.001e+00; H_f eig min=1.140e-09 max=1.001e+00; m[:5]=[1.0, 0.0, 0.0245, -0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.7006103992462158,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1/symm",
+      "N": 10,
+      "LB": 0.9999999885025068,
+      "status": "optimal",
+      "binding": "M eig min=5.285e-04 max=1.001e+00; H_f eig min=8.411e-10 max=1.001e+00; m[:5]=[1.0, 0.0, 0.0244, 0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.6686804294586182,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2",
+      "N": 4,
+      "LB": 0.9999999888282606,
+      "status": "optimal",
+      "binding": "M eig min=8.659e-03 max=1.001e+00; H_f eig min=6.656e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0221, 0.0, 0.0012]",
+      "solver": "MOSEK",
+      "solve_time": 0.1231071949005127,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2/symm",
+      "N": 4,
+      "LB": 0.9999999982454558,
+      "status": "optimal",
+      "binding": "M eig min=7.786e-03 max=1.001e+00; H_f eig min=6.721e-04 max=1.001e+00; m[:5]=[1.0, 0.0, 0.0228, -0.0, 0.0012]",
+      "solver": "MOSEK",
+      "solve_time": 0.14848017692565918,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2",
+      "N": 6,
+      "LB": 0.9999999947131165,
+      "status": "optimal",
+      "binding": "M eig min=2.904e-03 max=1.000e+00; H_f eig min=7.202e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0206, 0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 0.23521852493286133,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2/symm",
+      "N": 6,
+      "LB": 0.9999999992765004,
+      "status": "optimal",
+      "binding": "M eig min=2.888e-03 max=1.000e+00; H_f eig min=7.282e-06 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0209, 0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 0.27585506439208984,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2",
+      "N": 8,
+      "LB": 0.9999999994359926,
+      "status": "optimal",
+      "binding": "M eig min=1.690e-03 max=1.000e+00; H_f eig min=1.219e-07 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0199, 0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 0.45446181297302246,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2/symm",
+      "N": 8,
+      "LB": 0.9999999998894182,
+      "status": "optimal",
+      "binding": "M eig min=1.629e-03 max=1.000e+00; H_f eig min=1.233e-07 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0202, -0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 0.5083091259002686,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2",
+      "N": 10,
+      "LB": 0.9999999988031767,
+      "status": "optimal",
+      "binding": "M eig min=6.866e-04 max=1.000e+00; H_f eig min=1.654e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0188, -0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 0.6949565410614014,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2/symm",
+      "N": 10,
+      "LB": 0.9999999990549636,
+      "status": "optimal",
+      "binding": "M eig min=6.822e-04 max=1.000e+00; H_f eig min=1.683e-09 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0193, 0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 0.7077333927154541,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3",
+      "N": 4,
+      "LB": 0.9999999999689333,
+      "status": "optimal",
+      "binding": "M eig min=5.864e-03 max=1.000e+00; H_f eig min=6.427e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0204, 0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.3009185791015625,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3/symm",
+      "N": 4,
+      "LB": 0.9999999999683609,
+      "status": "optimal",
+      "binding": "M eig min=6.068e-03 max=1.000e+00; H_f eig min=6.413e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0205, -0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.3211379051208496,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3",
+      "N": 6,
+      "LB": 0.9999999999956615,
+      "status": "optimal",
+      "binding": "M eig min=2.259e-04 max=1.000e+00; H_f eig min=6.670e-06 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0178, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.5932083129882812,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3/symm",
+      "N": 6,
+      "LB": 0.9999999999944066,
+      "status": "optimal",
+      "binding": "M eig min=2.426e-04 max=1.000e+00; H_f eig min=6.719e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0181, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.5956881046295166,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3",
+      "N": 8,
+      "LB": 0.9999999997380511,
+      "status": "optimal",
+      "binding": "M eig min=1.044e-05 max=1.000e+00; H_f eig min=1.193e-07 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0179, -0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 1.32737398147583,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3/symm",
+      "N": 8,
+      "LB": 0.9999999993066185,
+      "status": "optimal",
+      "binding": "M eig min=1.075e-05 max=1.000e+00; H_f eig min=1.204e-07 max=1.000e+00; m[:5]=[1.0, -0.0, 0.018, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 1.3410594463348389,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3",
+      "N": 10,
+      "LB": 0.9999999997317294,
+      "status": "optimal",
+      "binding": "M eig min=4.005e-04 max=1.000e+00; H_f eig min=1.505e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0186, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 1.8524198532104492,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C1+C2+C3/symm",
+      "N": 10,
+      "LB": 0.9999999997712031,
+      "status": "optimal",
+      "binding": "M eig min=6.504e-04 max=1.000e+00; H_f eig min=1.691e-09 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0209, -0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 1.8926970958709717,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL",
+      "N": 4,
+      "LB": 0.9999999999689333,
+      "status": "optimal",
+      "binding": "M eig min=5.864e-03 max=1.000e+00; H_f eig min=6.427e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0204, 0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.3826024532318115,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL/symm",
+      "N": 4,
+      "LB": 0.9999999999683609,
+      "status": "optimal",
+      "binding": "M eig min=6.068e-03 max=1.000e+00; H_f eig min=6.413e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0205, -0.0, 0.0011]",
+      "solver": "MOSEK",
+      "solve_time": 0.48250269889831543,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL",
+      "N": 6,
+      "LB": 0.9999999999956615,
+      "status": "optimal",
+      "binding": "M eig min=2.259e-04 max=1.000e+00; H_f eig min=6.670e-06 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0178, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.8367710113525391,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL/symm",
+      "N": 6,
+      "LB": 0.9999999999944066,
+      "status": "optimal",
+      "binding": "M eig min=2.426e-04 max=1.000e+00; H_f eig min=6.719e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0181, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.8277735710144043,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL",
+      "N": 8,
+      "LB": 0.9999999997380511,
+      "status": "optimal",
+      "binding": "M eig min=1.044e-05 max=1.000e+00; H_f eig min=1.193e-07 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0179, -0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 1.3347952365875244,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL/symm",
+      "N": 8,
+      "LB": 0.9999999993066185,
+      "status": "optimal",
+      "binding": "M eig min=1.075e-05 max=1.000e+00; H_f eig min=1.204e-07 max=1.000e+00; m[:5]=[1.0, -0.0, 0.018, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 1.3172202110290527,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL",
+      "N": 10,
+      "LB": 0.9999999997317294,
+      "status": "optimal",
+      "binding": "M eig min=4.005e-04 max=1.000e+00; H_f eig min=1.505e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0186, 0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 1.819671869277954,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "ALL/symm",
+      "N": 10,
+      "LB": 0.9999999997712031,
+      "status": "optimal",
+      "binding": "M eig min=6.504e-04 max=1.000e+00; H_f eig min=1.691e-09 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0209, -0.0, 0.0009]",
+      "solver": "MOSEK",
+      "solve_time": 1.8221707344055176,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)",
+      "N": 4,
+      "LB": 0.9999999962003169,
+      "status": "optimal",
+      "binding": "M eig min=1.160e-02 max=1.000e+00; H_f eig min=4.977e-04 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0166, -0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.06380033493041992,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)/symm",
+      "N": 4,
+      "LB": 0.9999999964647914,
+      "status": "optimal",
+      "binding": "M eig min=1.118e-02 max=1.000e+00; H_f eig min=4.942e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0165, -0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.07236099243164062,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)",
+      "N": 6,
+      "LB": 0.9999999993585474,
+      "status": "optimal",
+      "binding": "M eig min=3.367e-03 max=1.000e+00; H_f eig min=5.625e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0177, -0.0, 0.0007]",
+      "solver": "MOSEK",
+      "solve_time": 0.13153481483459473,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)/symm",
+      "N": 6,
+      "LB": 0.9999999996234725,
+      "status": "optimal",
+      "binding": "M eig min=3.200e-03 max=1.000e+00; H_f eig min=5.618e-06 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0172, -0.0, 0.0007]",
+      "solver": "MOSEK",
+      "solve_time": 0.13538622856140137,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)",
+      "N": 8,
+      "LB": 0.9999999970226876,
+      "status": "optimal",
+      "binding": "M eig min=1.804e-03 max=1.000e+00; H_f eig min=9.700e-08 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0171, 0.0, 0.0007]",
+      "solver": "MOSEK",
+      "solve_time": 0.17034125328063965,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)/symm",
+      "N": 8,
+      "LB": 0.9999999974364417,
+      "status": "optimal",
+      "binding": "M eig min=1.773e-03 max=1.000e+00; H_f eig min=9.610e-08 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0169, -0.0, 0.0007]",
+      "solver": "MOSEK",
+      "solve_time": 0.21007633209228516,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)",
+      "N": 10,
+      "LB": 0.9999999905764456,
+      "status": "optimal",
+      "binding": "M eig min=7.204e-04 max=1.000e+00; H_f eig min=1.389e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0149, -0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.28388094902038574,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "none(SDP only)/symm",
+      "N": 10,
+      "LB": 0.9999999952227149,
+      "status": "optimal",
+      "binding": "M eig min=7.516e-04 max=1.000e+00; H_f eig min=1.406e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0146, 0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.3078114986419678,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only",
+      "N": 4,
+      "LB": 0.9999999957210275,
+      "status": "optimal",
+      "binding": "M eig min=1.245e-02 max=1.000e+00; H_f eig min=6.003e-04 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0144, -0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.09003400802612305,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only/symm",
+      "N": 4,
+      "LB": 0.9999999967626702,
+      "status": "optimal",
+      "binding": "M eig min=1.117e-02 max=1.020e+00; H_f eig min=6.152e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0149, -0.0, 0.0008]",
+      "solver": "MOSEK",
+      "solve_time": 0.10944437980651855,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only",
+      "N": 6,
+      "LB": 0.9999999988510828,
+      "status": "optimal",
+      "binding": "M eig min=3.864e-03 max=1.000e+00; H_f eig min=6.694e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0136, -0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.17211246490478516,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only/symm",
+      "N": 6,
+      "LB": 0.9999999991621135,
+      "status": "optimal",
+      "binding": "M eig min=3.618e-03 max=1.000e+00; H_f eig min=6.911e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.014, 0.0, 0.0007]",
+      "solver": "MOSEK",
+      "solve_time": 0.17421889305114746,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only",
+      "N": 8,
+      "LB": 0.9999999998363388,
+      "status": "optimal",
+      "binding": "M eig min=2.099e-03 max=1.000e+00; H_f eig min=1.139e-07 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0133, 0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.24684381484985352,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only/symm",
+      "N": 8,
+      "LB": 0.9999999723494948,
+      "status": "optimal",
+      "binding": "M eig min=2.097e-03 max=1.024e+00; H_f eig min=1.196e-07 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0133, 0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.29401588439941406,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only",
+      "N": 10,
+      "LB": 0.9999999950767332,
+      "status": "optimal",
+      "binding": "M eig min=8.199e-04 max=1.000e+00; H_f eig min=1.647e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0119, 0.0, 0.0005]",
+      "solver": "MOSEK",
+      "solve_time": 0.3748807907104492,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C2 only/symm",
+      "N": 10,
+      "LB": 0.9999999930120766,
+      "status": "optimal",
+      "binding": "M eig min=8.503e-04 max=1.000e+00; H_f eig min=1.959e-09 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0122, -0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.3302180767059326,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only",
+      "N": 4,
+      "LB": 0.9999999991231678,
+      "status": "optimal",
+      "binding": "M eig min=5.860e-03 max=1.000e+00; H_f eig min=4.227e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0123, 0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.2787818908691406,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only/symm",
+      "N": 4,
+      "LB": 0.9999999997439358,
+      "status": "optimal",
+      "binding": "M eig min=6.028e-03 max=1.000e+00; H_f eig min=4.338e-04 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0122, -0.0, 0.0006]",
+      "solver": "MOSEK",
+      "solve_time": 0.25708889961242676,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only",
+      "N": 6,
+      "LB": 0.9999999999905215,
+      "status": "optimal",
+      "binding": "M eig min=2.665e-04 max=1.000e+00; H_f eig min=5.016e-06 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0131, 0.0, 0.0005]",
+      "solver": "MOSEK",
+      "solve_time": 0.46714305877685547,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only/symm",
+      "N": 6,
+      "LB": 0.9999999871965507,
+      "status": "optimal",
+      "binding": "M eig min=2.752e-04 max=1.000e+00; H_f eig min=4.748e-06 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0124, 0.0, 0.0005]",
+      "solver": "MOSEK",
+      "solve_time": 0.48783254623413086,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only",
+      "N": 8,
+      "LB": 0.9999999984911709,
+      "status": "optimal",
+      "binding": "M eig min=8.192e-06 max=1.000e+00; H_f eig min=7.480e-08 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0125, 0.0, 0.0004]",
+      "solver": "MOSEK",
+      "solve_time": 0.8142387866973877,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only/symm",
+      "N": 8,
+      "LB": 0.9999999998449137,
+      "status": "optimal",
+      "binding": "M eig min=8.396e-06 max=1.000e+00; H_f eig min=7.330e-08 max=1.000e+00; m[:5]=[1.0, 0.0, 0.012, 0.0, 0.0004]",
+      "solver": "MOSEK",
+      "solve_time": 0.7395834922790527,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only",
+      "N": 10,
+      "LB": 0.9999999860513371,
+      "status": "optimal",
+      "binding": "M eig min=7.082e-04 max=1.000e+00; H_f eig min=3.907e-09 max=1.000e+00; m[:5]=[1.0, -0.0, 0.0135, -0.0, 0.0005]",
+      "solver": "MOSEK",
+      "solve_time": 0.9554307460784912,
+      "notes": "",
+      "extra": {}
+    },
+    {
+      "config": "C3 only/symm",
+      "N": 10,
+      "LB": 0.9999999908122681,
+      "status": "optimal",
+      "binding": "M eig min=7.204e-04 max=1.000e+00; H_f eig min=1.218e-09 max=1.000e+00; m[:5]=[1.0, 0.0, 0.0132, -0.0, 0.0004]",
+      "solver": "MOSEK",
+      "solve_time": 1.0068161487579346,
+      "notes": "",
+      "extra": {}
+    }
+  ],
+  "sanity_check_mv": [
+    {
+      "N": 4,
+      "m_mv": [
+        1.0,
+        0.0,
+        0.03125,
+        0.0,
+        0.00146484375
+      ],
+      "L_inner_sanity": 1.2589325750220772,
+      "status": "optimal_inaccurate",
+      "solver": "SCS",
+      "dt": 5.653021574020386
+    },
+    {
+      "N": 6,
+      "m_mv": [
+        1.0,
+        0.0,
+        0.03125,
+        0.0,
+        0.00146484375,
+        0.0,
+        7.62939453125e-05
+      ],
+      "L_inner_sanity": 1.3389682590789627,
+      "status": "optimal_inaccurate",
+      "solver": "SCS",
+      "dt": 11.204959392547607
+    },
+    {
+      "N": 8,
+      "m_mv": [
+        1.0,
+        0.0,
+        0.03125,
+        0.0,
+        0.00146484375,
+        0.0,
+        7.62939453125e-05
+      ],
+      "L_inner_sanity": 1.3443309795302087,
+      "status": "optimal_inaccurate",
+      "solver": "SCS",
+      "dt": 17.582049131393433
+    },
+    {
+      "N": 10,
+      "m_mv": [
+        1.0,
+        0.0,
+        0.03125,
+        0.0,
+        0.00146484375,
+        0.0,
+        7.62939453125e-05
+      ],
+      "L_inner_sanity": 1.3467606068939348,
+      "status": "optimal_inaccurate",
+      "solver": "SCS",
+      "dt": 23.493823289871216
+    }
+  ],
+  "metadata": {
+    "solvers_tried": [
+      "MOSEK",
+      "CLARABEL",
+      "SCS"
+    ],
+    "solvers_installed": [
+      "MOSEK",
+      "CLARABEL",
+      "SCS"
+    ],
+    "N_grid": [
+      4,
+      6,
+      8,
+      10
+    ],
+    "MV_LB_target": 1.2748
+  }
+}

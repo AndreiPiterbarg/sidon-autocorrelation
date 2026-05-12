@@ -1,0 +1,90 @@
+{
+  "configs_attempted": 7,
+  "total_wall_s": 331.21,
+  "results": [
+    {
+      "d": 4,
+      "order": 2,
+      "bandwidth": 3,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 70,
+      "n_eq": 36,
+      "n_clique": 1,
+      "wall_s": 0.087,
+      "completed": true
+    },
+    {
+      "d": 4,
+      "order": 3,
+      "bandwidth": 3,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 210,
+      "n_eq": 127,
+      "n_clique": 1,
+      "wall_s": 0.451,
+      "completed": true
+    },
+    {
+      "d": 6,
+      "order": 2,
+      "bandwidth": 5,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 210,
+      "n_eq": 85,
+      "n_clique": 1,
+      "wall_s": 0.317,
+      "completed": true
+    },
+    {
+      "d": 6,
+      "order": 3,
+      "bandwidth": 5,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 924,
+      "n_eq": 463,
+      "n_clique": 1,
+      "wall_s": 12.4,
+      "completed": true
+    },
+    {
+      "d": 8,
+      "order": 2,
+      "bandwidth": 7,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 495,
+      "n_eq": 166,
+      "n_clique": 1,
+      "wall_s": 1.373,
+      "completed": true
+    },
+    {
+      "d": 8,
+      "order": 3,
+      "bandwidth": 7,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 3003,
+      "n_eq": 1288,
+      "n_clique": 1,
+      "wall_s": 311.741,
+      "completed": true
+    },
+    {
+      "d": 10,
+      "order": 2,
+      "bandwidth": 9,
+      "t_test": 1.281,
+      "status": "FEASIBLE",
+      "n_y": 1001,
+      "n_eq": 287,
+      "n_clique": 1,
+      "wall_s": 4.835,
+      "completed": true
+    }
+  ]
+}

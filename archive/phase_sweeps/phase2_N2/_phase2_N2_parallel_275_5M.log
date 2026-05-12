@@ -1,0 +1,32 @@
+=== Parallel N=2 certification at M=1.275000 ===
+split_dims=4 -> 16 sub-boxes; workers=14
+Created 16 sub-boxes
+  box  0/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  5/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  2/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  7/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  3/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  4/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  1/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box  6/16: CERTIFIED_FORBIDDEN     cells=        1  terminal=      1  (0.0s)
+  box 15/16: NOT_CERTIFIED           cells=  5000001  terminal= 179857  (1573.9s)
+  box 14/16: NOT_CERTIFIED           cells=  5000001  terminal= 179857  (1574.2s)
+  box 13/16: NOT_CERTIFIED           cells=  5000001  terminal= 201707  (1599.0s)
+  box 12/16: NOT_CERTIFIED           cells=  5000001  terminal= 202117  (1597.3s)
+  box  9/16: NOT_CERTIFIED           cells=  5000001  terminal= 202117  (1598.4s)
+  box  8/16: NOT_CERTIFIED           cells=  5000001  terminal= 201707  (1600.1s)
+  box 10/16: NOT_CERTIFIED           cells=  5000001  terminal= 179857  (1604.8s)
+  box 11/16: NOT_CERTIFIED           cells=  5000001  terminal= 179857  (1609.0s)
+
+Elapsed: 1626.1s
+Certified: 8/16; Failed: 8
+
+NOT all sub-boxes certified — global verdict NOT_CERTIFIED.
+  FAIL box 8: worst_live_up = 0.0126067896634466
+  FAIL box 9: worst_live_up = 0.012605609629213452
+  FAIL box 10: worst_live_up = 0.001150820121937476
+  FAIL box 11: worst_live_up = 0.001150820121937476
+  FAIL box 12: worst_live_up = 0.012605609629213452
+  FAIL box 13: worst_live_up = 0.0126067896634466
+  FAIL box 14: worst_live_up = 0.001150820121937476
+  FAIL box 15: worst_live_up = 0.001150820121937476

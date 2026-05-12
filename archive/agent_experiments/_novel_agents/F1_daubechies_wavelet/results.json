@@ -1,0 +1,63 @@
+{
+  "agent": "F1_daubechies_wavelet",
+  "approach": "Daubechies scaling-function basis + Shor SDP relaxation of inf_c max_t c^T M(t) c",
+  "math_correct": true,
+  "best_lb_obtained": 2.1540334674962405,
+  "vs_1_2802": "unknown_irrelevant",
+  "vs_lasserre_baseline": 1.231,
+  "promising": false,
+  "verdict_short": "Daubechies wavelet basis is mathematically the WRONG direction for an LB on C_{1a}: restricting f to a finite-dim wavelet subspace gives val_W >= C_{1a} (an UPPER bound, smaller subspace = larger inf), and Shor relaxation of val_W gives only a LB on val_W itself, not on C_{1a}.  No analog of CS Lemma 1 (windowed test-value inequality) exists for wavelet coefficients that would connect the LB to C_{1a} universally.",
+  "verdict_long": "The probe set up the autoconvolution (f*f)(t) = c^T M(t) c in the Daubechies db_N scaling-function basis at level J, with M(t) Hankel from the autoconvolution Psi(y) = (phi*phi)(y).  Three configurations were tested: (N=4,J=5,K=10), (N=4,J=6,K=26), (N=8,J=6,K=18). For each: primal min-max QP (SLSQP from random starts) gave an UPPER BOUND on val_W := inf_{c valid} max_t c^T M(t) c, and an order-1 Shor SDP with RLT cuts gave a LOWER BOUND on val_W.  Best UB = 5.4197, best LB = 2.1540334674962405.\n\nCRITICAL MATHEMATICAL OBSERVATION: val_W is the inf over the wavelet subspace, so val_W(N, J) >= C_{1a}.  Hence any LB on val_W is NOT a LB on C_{1a}.  For the bin-mass Lasserre track in lasserre/, the analogous quantity val(d) is rescued by the CS windowed inequality: ||f*f||_inf >= mu^T M_W mu for any window W, where mu are bin masses of ANY nonneg f -- this gives val(d) <= C_{1a}.  No such universal inequality is available for Daubechies wavelet coefficients because the projection of f onto a wavelet subspace can have arbitrarily different autoconvolution from f itself (when the high-frequency tail g_J = f - f_J is nontrivial).\n\nDEAD-END.  The wavelet basis is suitable for UB construction (find a smooth f with low max-autocorrelation), not for LB certification.  The current monomial Lasserre track is mathematically the right framework for LB.",
+  "next_steps_if_promising": [],
+  "compute_time_sec": 20.226322174072266,
+  "files_created": [
+    "probe.py",
+    "probe_v2.py",
+    "probe_v3.py",
+    "run.log",
+    "results.json"
+  ],
+  "experiments": [
+    {
+      "N": 4,
+      "J": 5,
+      "K": 10,
+      "primal_upper_bound": 17.671033920123243,
+      "shor_lower_bound": 2.1540334674962405,
+      "build_time_sec": 0.012113809585571289,
+      "primal_time_sec": 0.8702075481414795,
+      "dual_time_sec": 0.9645092487335205,
+      "shor_status": "optimal_inaccurate",
+      "note": "val_W is on subspace; LB does NOT prove anything about C_{1a}."
+    },
+    {
+      "N": 4,
+      "J": 6,
+      "K": 26,
+      "primal_upper_bound": 5.419698218413503,
+      "shor_lower_bound": 1.2595975809289204,
+      "build_time_sec": 0.014006614685058594,
+      "primal_time_sec": 8.787463426589966,
+      "dual_time_sec": 2.8381521701812744,
+      "shor_status": "optimal_inaccurate",
+      "note": "val_W is on subspace; LB does NOT prove anything about C_{1a}."
+    },
+    {
+      "N": 8,
+      "J": 6,
+      "K": 18,
+      "primal_upper_bound": 10.578369275994419,
+      "shor_lower_bound": 1.8320796972449809,
+      "build_time_sec": 0.022003173828125,
+      "primal_time_sec": 5.228008985519409,
+      "dual_time_sec": 1.483985185623169,
+      "shor_status": "optimal_inaccurate",
+      "note": "val_W is on subspace; LB does NOT prove anything about C_{1a}."
+    }
+  ],
+  "extra_metrics": {
+    "best_primal_val_W_UB_on_subspace": 5.419698218413503,
+    "best_shor_LB_on_val_W_subspace": 2.1540334674962405,
+    "critical_note": "val_W is on the WAVELET SUBSPACE only. val_W(N,J) >= C_{1a} (UB direction). Shor LB on val_W is NOT a LB on C_{1a}. No analog of CS Lemma 1 windowed inequality exists for wavelet coefficients, so this approach cannot produce a universal LB on C_{1a}."
+  }
+}

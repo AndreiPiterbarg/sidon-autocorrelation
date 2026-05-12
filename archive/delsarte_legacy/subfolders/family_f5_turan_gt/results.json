@@ -1,0 +1,174 @@
+{
+  "verdict": "(c) DOES NOT BEAT - F5 dominated by F1 in Delsarte ratio framework",
+  "phase_3_K_sweep_STRICT_PD": {
+    "phase": "F5 K-sweep STRICT-PD",
+    "rows": [
+      {
+        "K": 0,
+        "best_proxy": 0.4514616737196984,
+        "best_idealised": 0.5,
+        "best_c": [
+          0.95
+        ]
+      },
+      {
+        "K": 1,
+        "best_proxy": 0.7097183268093733,
+        "best_idealised": 0.833333333332039,
+        "best_c": [
+          4.77775162729601e-09,
+          7.644402603792357e-08
+        ]
+      },
+      {
+        "K": 2,
+        "best_proxy": 0.45174337357644,
+        "best_idealised": 0.5003895828704364,
+        "best_c": [
+          0.16854101860302778,
+          0.0008165242720872508,
+          0.02335189030967597
+        ]
+      },
+      {
+        "K": 3,
+        "best_proxy": 0.45199800257407396,
+        "best_idealised": 0.5006167262291676,
+        "best_c": [
+          0.06968107692287775,
+          0.011972464545085777,
+          -0.21596573056653673,
+          0.8726194479659553
+        ]
+      },
+      {
+        "K": 4,
+        "best_proxy": 0.4520194762089673,
+        "best_idealised": 0.500721700435277,
+        "best_c": [
+          0.1160183078308733,
+          0.008309844366953811,
+          -0.05973603215972858,
+          -0.49785368228264215,
+          4.008242078608587
+        ]
+      }
+    ]
+  },
+  "note_on_strict_PD": "These rows enforce ghat(xi) >= 0 on a 2001-pt xi grid in [-25, 25]. K=1 best c is tiny (~1e-9) and is degenerate: ghat dips to -8e-10 on a finer xi grid - i.e. PD is violated below numerical resolution. The TRUE strict-PD optimum is c = scaled (1, 0, 0, ..., 0) = bare F5 with idealised 0.5.",
+  "phase_3_K_sweep_LOOSE_PD_ARTIFACT": {
+    "phase": "F5 K-sweep",
+    "rows": [
+      {
+        "K": 0,
+        "best_proxy": 0.4514366670609847,
+        "best_idealised": 0.5,
+        "best_c": [
+          1.046875
+        ]
+      },
+      {
+        "K": 1,
+        "best_proxy": 0.7096933141886913,
+        "best_idealised": 0.8333333333333334,
+        "best_c": [
+          3.5530401678613135,
+          56.848642685781044
+        ]
+      },
+      {
+        "K": 2,
+        "best_proxy": 0.7212103846051149,
+        "best_idealised": 0.8571730317865325,
+        "best_c": [
+          0.1169004770482677,
+          1.4449119594597657,
+          5.592655351621167
+        ]
+      },
+      {
+        "K": 3,
+        "best_proxy": 0.7339277543493654,
+        "best_idealised": 0.8736907679867555,
+        "best_c": [
+          923461506997.5911,
+          14036888401299.344,
+          -6662205751361.457,
+          238455920799140.62
+        ]
+      },
+      {
+        "K": 4,
+        "best_proxy": 0.7599746626250382,
+        "best_idealised": 0.9144681786071874,
+        "best_c": [
+          0.0030786959944432133,
+          0.05666367671566229,
+          -0.315504240410292,
+          2.6807689261297014,
+          0.11166004185751355
+        ]
+      },
+      {
+        "K": 6,
+        "best_proxy": 0.7629747981328044,
+        "best_idealised": 0.9206827670975659,
+        "best_c": [
+          0.0016468978536373809,
+          0.03869507930728435,
+          -0.29120405007003436,
+          1.975446468619661,
+          -0.010954092539908011,
+          0.1711512448815875,
+          2.936497510247558
+        ]
+      },
+      {
+        "K": 8,
+        "best_proxy": 0.7315398109638622,
+        "best_idealised": 0.8720782263882961,
+        "best_c": [
+          184663.6327783242,
+          2561714.457054734,
+          2467964.8472874165,
+          35955592.6514492,
+          1812804.113180101,
+          12836608.09928894,
+          -5398378.435126781,
+          -306269.67615544796,
+          1821633.6925981045
+        ]
+      }
+    ],
+    "bare_F5_mpmath": {
+      "ghat_0": 0.5,
+      "M_g_low": 1.0,
+      "M_g_high": 1.0,
+      "idealised_low": 0.5,
+      "idealised_high": 0.5
+    },
+    "F1_postmortem": {
+      "best_certified_lb_low": 0.4645,
+      "note": "from postmortem.md, T=1, omega=2, a_1=0.5; rigorous"
+    },
+    "F1_idealised_max_LP": {
+      "best_score": 0.4669,
+      "note": "F1 LP sweep T=1, omega=0.5, K=3"
+    }
+  },
+  "note_on_loose_PD_artifact": "Without strict ghat-grid enforcement, Nelder-Mead pushes c to a regime where g is near-zero (P(0) ~ 0.003) and ghat is sign-changing at the ~1e-3 level. The reported idealised ratios up to 0.92 are NUMERICAL ARTIFACTS, not real lower bounds. See barx4e8wk vs bd4kkbquu probe for proof.",
+  "bare_F5_mpmath": {
+    "ghat_0": 0.5,
+    "M_g_low": 1.0,
+    "M_g_high": 1.0,
+    "idealised_low": 0.5,
+    "idealised_high": 0.5,
+    "rigorous_with_cos2_weight_approx": 0.4514
+  },
+  "F1_postmortem": {
+    "best_certified_lb_low": 0.4645,
+    "note": "from postmortem.md, T=1, omega=2, a_1=0.5; rigorous"
+  },
+  "final_lift_over_MV_1_27481": "NEGATIVE: F5 best ~0.5 << MV 1.27481 (different framework)",
+  "tests_passed": "10/10 in delsarte_dual/tests/test_f5_turan_gt.py"
+}

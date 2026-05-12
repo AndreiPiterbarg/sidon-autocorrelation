@@ -1,0 +1,89 @@
+{
+  "body": {
+    "K_2_enclosure_lower": 4.758752819398309,
+    "K_2_enclosure_upper": 4.762081244807873,
+    "K_2_mid": 4.760417032103091,
+    "K_2_width": 0.0033284254095642396,
+    "M_cert_float": 1.28984375,
+    "M_cert_q": "1651/1280",
+    "S_1": 31.441956302611327,
+    "T_split": 10000,
+    "beats_MV_1_27481": true,
+    "bisect_history": [
+      {
+        "M_float": 1.27,
+        "M_q": "127/100",
+        "cells_processed": 32,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.28,
+        "M_q": "32/25",
+        "cells_processed": 32,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.285,
+        "M_q": "257/200",
+        "cells_processed": 36,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.2875,
+        "M_q": "103/80",
+        "cells_processed": 52,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.28875,
+        "M_q": "1031/800",
+        "cells_processed": 80,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.289375,
+        "M_q": "2063/1600",
+        "cells_processed": 128,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.2896875,
+        "M_q": "4127/3200",
+        "cells_processed": 206,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.28984375,
+        "M_q": "1651/1280",
+        "cells_processed": 558,
+        "verdict": "CERTIFIED_FORBIDDEN"
+      },
+      {
+        "M_float": 1.289921875,
+        "M_q": "16511/12800",
+        "cells_processed": 50000,
+        "verdict": "NOT_CERTIFIED"
+      }
+    ],
+    "breaks_1_28": true,
+    "deltas": [
+      "138/1000",
+      "45/1000"
+    ],
+    "gain_a": 0.19938804694548898,
+    "k_1_lower": 0.9213917290771126,
+    "k_1_upper": 0.9213917290771128,
+    "kind": "multiscale_arcsine_rigorous_verification",
+    "lambdas": [
+      "85/100",
+      "15/100"
+    ],
+    "min_G_cert": 0.9999647325591194,
+    "n_coeffs": 119,
+    "prec_bits": 192,
+    "tol_q": "1/10000",
+    "wall_time_sec": 10.078457117080688
+  },
+  "sha256_of_body": "442849eaa6b8f47fab13c559fa9fefa3992bea1513276420a1ca8c830c8236f4",
+  "timestamp": 1778522742.130888
+}

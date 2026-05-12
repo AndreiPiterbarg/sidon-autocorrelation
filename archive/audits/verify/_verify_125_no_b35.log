@@ -1,0 +1,156 @@
+(CVXPY) May 11 04:11:20 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 04:11:20 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+[patch] is_cell_empty replaced with B34-only version.
+
+=== Re-verify 1.25 d=16 refinement, B35 DISABLED ===
+  d_child=16, S=16, c=1.25
+  total raw children: 7920
+  unique canonical:   7920
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:318: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones11, cp.reshape(self.eps, (1, d))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:319: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(self.eps, (d, 1)), self.X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:336: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_col = cp.reshape(self.eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:337: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_row = cp.reshape(self.eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:338: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_col = cp.reshape(self.p_lo_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:339: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_row = cp.reshape(self.p_lo_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:340: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_col = cp.reshape(self.p_hi_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:341: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_row = cp.reshape(self.p_hi_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:353: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_col = cp.reshape(self.p_mu_star, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:354: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_row = cp.reshape(self.p_mu_star, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:463: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones11, cp.reshape(self.eps, (1, d))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:464: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(self.eps, (d, 1)), self.X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:474: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_col = cp.reshape(self.eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:475: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_row = cp.reshape(self.eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:476: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_col = cp.reshape(self.p_lo_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:477: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_row = cp.reshape(self.p_lo_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:478: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_col = cp.reshape(self.p_hi_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:479: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_row = cp.reshape(self.p_hi_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:487: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_col = cp.reshape(self.p_mu_star, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:488: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_row = cp.reshape(self.p_mu_star, (1, d))
+  templates warmed
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:378: UserWarning: You are solving a parameterized problem that is not DPP. Because the problem is not DPP, subsequent solves will not be faster than the first one. For more information, see the documentation on Disciplined Parametrized Programming, at https://www.cvxpy.org/tutorial/dpp/index.html
+  self.problem.solve(solver=cp.MOSEK, verbose=verbose,
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:518: UserWarning: You are solving a parameterized problem that is not DPP. Because the problem is not DPP, subsequent solves will not be faster than the first one. For more information, see the documentation on Disciplined Parametrized Programming, at https://www.cvxpy.org/tutorial/dpp/index.html
+  self.problem.solve(solver=cp.MOSEK, verbose=verbose,
+  [  396/7920] closed=396  open=0  elapsed=20.0s  (B1=315 F=0 L=39 Lj=42 sp=0)

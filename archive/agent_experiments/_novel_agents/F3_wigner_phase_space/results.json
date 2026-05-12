@@ -1,0 +1,84 @@
+{
+  "agent": "F3_wigner_phase_space",
+  "approach": "Wigner-distribution-on-axis-slice + Cauchy-Schwarz / Lieb cubature attempts",
+  "math_correct": true,
+  "best_lb_obtained": null,
+  "vs_1_2802": "below",
+  "promising": false,
+  "verdict_short": "Wigner reformulation reduces to on-axis slice W_f(x,0) = 2(f*f)(2x); off-axis data does not yield a stronger LB than the trivial 1 via L^p / Cauchy-Schwarz.",
+  "verdict_long": "We verified the correct on-axis identity W_f(x, 0) = 2(f*f)(2x) (the user's prompt formula int_xi W_f(t/2, xi) dxi = (f*f)(t) is incorrect; that integral gives f(t/2)^2 by the spatial marginal). With the correct identity, sup_t(f*f) is exactly half of sup_x W_f(x, 0). Trying L^p bounds (Lieb 1990), Cauchy-Schwarz on the u-displacement variable, and Heisenberg/uncertainty-style inequalities all reduce to the trivial chain ||f||_2^2 >= 2 (saturated by boxcar f=2 on [-1/4,1/4] giving sup(f*f) = 2 -- way above 1.28 but trivial). The off-axis Wigner data (xi != 0) encodes the FT-magnitudes squared |f_hat(xi)|^2 (by frequency marginal) but no inequality we tried converts this into a non-trivial LB on sup_x W_f(x, 0). The deeper Hudson-theorem leverage (W_f has negative regions for non-Gaussian f >= 0) constrains W_f's geometry but does not directly yield a slice-sup bound. The Wigner approach is mathematically elegant but, at this short probe level, does not improve on the trivial 1 LB.",
+  "next_steps_if_promising": [
+    "Try sharp Lieb constants for L^p Wigner moments at non-integer p to see if any p gives a non-trivial slice-sup LB > 1.28.",
+    "Couple Wigner negativity (Hudson) with a positivity-of-marginal constraint via SDP in Wigner coefficients (would require encoding rank-1 of the underlying density operator).",
+    "Investigate the modified Wigner / Husimi smoothing where Q_f >= 0 always: this loses information but adds tractable convex constraints; check if Husimi-based dual cert beats 1.28.",
+    "Phase-space cubature: discretize W_f on a (x, xi) lattice and impose Wigner self-consistency (rank-1 constraint as PSD lift); but this scales like d^2 so not lightweight."
+  ],
+  "compute_time_sec": 0.4489901065826416,
+  "files_created": [
+    "probe.py",
+    "run.log",
+    "results.json"
+  ],
+  "benchmarks": {
+    "arcsine": {
+      "max_ff": 3.176174,
+      "sup_W_x_0_over_2": 3.176174,
+      "identity_rel_err": 0.022202,
+      "min_W": -4.272827,
+      "norm_W_inf": 6.352347,
+      "norm_W_2_sq": 10.510102,
+      "norm_f_2_sq": 3.176174,
+      "norm_f_2_sq_squared": 10.088078
+    },
+    "boxcar": {
+      "max_ff": 1.992218,
+      "sup_W_x_0_over_2": 1.992218,
+      "identity_rel_err": 0.0,
+      "min_W": -0.634194,
+      "norm_W_inf": 3.984436,
+      "norm_W_2_sq": 3.968992,
+      "norm_f_2_sq": 1.992218,
+      "norm_f_2_sq_squared": 3.968932
+    },
+    "boyer_li_u": {
+      "max_ff": 2.359688,
+      "sup_W_x_0_over_2": 2.359688,
+      "identity_rel_err": 0.0,
+      "min_W": -1.819548,
+      "norm_W_inf": 4.719375,
+      "norm_W_2_sq": 5.56832,
+      "norm_f_2_sq": 2.359688,
+      "norm_f_2_sq_squared": 5.568125
+    },
+    "cs_disc_d10_uShape": {
+      "max_ff": 2.526499,
+      "sup_W_x_0_over_2": 2.526499,
+      "identity_rel_err": 0.0,
+      "min_W": -2.917266,
+      "norm_W_inf": 5.052997,
+      "norm_W_2_sq": 6.38321,
+      "norm_f_2_sq": 2.526499,
+      "norm_f_2_sq_squared": 6.383196
+    },
+    "two_atoms_05": {
+      "max_ff": 51.538221,
+      "sup_W_x_0_over_2": 51.538221,
+      "identity_rel_err": 0.0,
+      "min_W": -102.950583,
+      "norm_W_inf": 103.076442,
+      "norm_W_2_sq": 2742.811552,
+      "norm_f_2_sq": 51.538221,
+      "norm_f_2_sq_squared": 2656.188206
+    },
+    "two_atoms_07": {
+      "max_ff": 43.292105,
+      "sup_W_x_0_over_2": 43.292105,
+      "identity_rel_err": 0.0,
+      "min_W": -86.478489,
+      "norm_W_inf": 86.584211,
+      "norm_W_2_sq": 3690.727225,
+      "norm_f_2_sq": 59.784336,
+      "norm_f_2_sq_squared": 3574.166849
+    }
+  }
+}

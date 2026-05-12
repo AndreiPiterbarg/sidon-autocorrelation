@@ -1,0 +1,168 @@
+{
+  "agent": "C4_hardy_littlewood",
+  "approach": "Hardy-Littlewood maximal function + Calderon-Zygmund + BMO + John-Nirenberg + L^p Holder chain on g=f*f",
+  "math_correct": true,
+  "best_lb_obtained": 1.234230135970258,
+  "best_heuristic_estimate": 1.3817705891748095,
+  "vs_1_2802": "below",
+  "vs_mv_1_2748": "below",
+  "promising": false,
+  "verdict_short": "Hardy-Littlewood/BMO/CZ machinery is in the WRONG direction for lower-bounding ||f*f||_inf -- those tools control UPPER bounds on maximal/level-set quantities given L^p norms. The ONE useable chain is the elementary Holder bound M(f) >= ||g||_p^{p/(p-1)} (||g||_1=1), but for p=2 this gives ~1.19 (below 1.2802), and for p>=3 the minimization is non-convex so the bound is non-rigorous; rigorously bounding inf_f ||g||_p^p is itself as hard as the Sidon problem.",
+  "verdict_long": "Five tests:\nT1: L^2-Plancherel chain M(f) >= ||g_sym||_2^2 = int|f-hat|^4. Step-function minimum over d in {4..10} is ~1.18-1.23, decreasing in d. Rigorous direction (||g_sym||_1 = 1 always), but value is BELOW 1.2802.\nT2: Calderon-Zygmund inequality L_lambda >= (1-lambda)/(M-lambda) is consistent with M -> 1 (since L_lambda <= 1), so gives no nontrivial lower bound on M.\nT3: BMO/John-Nirenberg gives upper bounds on level sets, concentrating around the average g_I = 1 -- WRONG direction.\nT4: Sanity baseline val(d) via SLSQP min-max: val(4)~1.64, val(8)~1.58. L^2 bound is ~75% of val(d), confirming L^2 is loose.\nT5: Higher-p Holder chain on g = f*f: M(f) >= ||g||_p^{p/(p-1)}. Step-function numerical minimization (SLSQP, non-convex for p>=3) gives M_LB_step at d=12: 1.270 (p=3), 1.340 (p=4), 1.406 (p=6). 1/d-extrapolation to continuous limit: p=3 -> 1.243, p=4 -> 1.311, p=6 -> 1.382. CRITICAL: these are NON-RIGOROUS because (a) SLSQP finds local minima, (b) step-function inf is an upper bound on the continuous inf, (c) rigorously bounding inf_f ||g||_p^p for p>=3 is a polynomial-optimization problem of degree 2p in f, comparable in difficulty to the original Sidon problem.\nConclusion: Real-variable HA tools (HL, BMO, CZ) are not naturally suited for lower-bounding the L^inf norm given L^1 = 1. The only usable chain (Holder L^p) reduces to a sub-problem of the same difficulty as Sidon itself, with no apparent simplification. NOT a viable new direction.",
+  "next_steps_if_promising": [
+    "(Marginal interest only) Rigorize the L^4 step-function lower bound for inf_f ||g||_4^4 = int (f*f)^4 -- this is a polynomial-optimization problem solvable by Lasserre at small order. Compare to existing Lasserre val(d) tracks. Likely no improvement: the L^p chain is loose by ~25% at p=2, less at higher p, but still bounded above by val(d)^{1/(p-1)} which the existing Lasserre track already exploits more directly via moment SDP on max-of-convolution."
+  ],
+  "details": {
+    "T1_l2_bound_per_d": {
+      "4": {
+        "min_l2_sq": 1.234230135970258,
+        "argmin_actual_g_linf": 2.2470152334644595,
+        "argmin_g_sym_linf": 2.2470152334649773
+      },
+      "6": {
+        "min_l2_sq": 1.2054181064005247,
+        "argmin_actual_g_linf": 2.3782259147966096,
+        "argmin_g_sym_linf": 2.3782259148000553
+      },
+      "8": {
+        "min_l2_sq": 1.1912443939000599,
+        "argmin_actual_g_linf": 2.473435148979812,
+        "argmin_g_sym_linf": 2.473435148988327
+      },
+      "10": {
+        "min_l2_sq": 1.1827818344974834,
+        "argmin_actual_g_linf": 2.5495060050868332,
+        "argmin_g_sym_linf": 2.5495060051017937
+      }
+    },
+    "T2_cz_per_d": {
+      "4": {
+        "M_min_observed": 1.780803759564643,
+        "M_max_observed": 4.328187503916124,
+        "M_mean_observed": 2.433572735593897,
+        "cz_inequality_min_slack": 0.2350692371944134,
+        "cz_inequality_violated": false
+      },
+      "8": {
+        "M_min_observed": 1.8237385459299054,
+        "M_max_observed": 3.576404362820269,
+        "M_mean_observed": 2.3061426907187768,
+        "cz_inequality_min_slack": 0.2650918327641377,
+        "cz_inequality_violated": false
+      }
+    },
+    "T4_val_per_d": {
+      "4": {
+        "val": 1.6444652420032753
+      },
+      "6": {
+        "val": 1.6007660479162074
+      },
+      "8": {
+        "val": 1.5791090612192233
+      }
+    },
+    "T5_lp_chain": {
+      "2": {
+        "4": {
+          "min_g_p_p": 1.2343403553093744,
+          "M_LB_step_d": 1.2343403553093744
+        },
+        "6": {
+          "min_g_p_p": 1.205490102257123,
+          "M_LB_step_d": 1.205490102257123
+        },
+        "8": {
+          "min_g_p_p": 1.1912972844687482,
+          "M_LB_step_d": 1.1912972844687482
+        },
+        "10": {
+          "min_g_p_p": 1.1828235694842226,
+          "M_LB_step_d": 1.1828235694842226
+        },
+        "12": {
+          "min_g_p_p": 1.1771917603625572,
+          "M_LB_step_d": 1.1771917603625572
+        }
+      },
+      "3": {
+        "4": {
+          "min_g_p_p": 1.7548626051531608,
+          "M_LB_step_d": 1.3247122725909808
+        },
+        "6": {
+          "min_g_p_p": 1.6836834687634994,
+          "M_LB_step_d": 1.2975682905972616
+        },
+        "8": {
+          "min_g_p_p": 1.6486163847186586,
+          "M_LB_step_d": 1.2839845733959028
+        },
+        "10": {
+          "min_g_p_p": 1.6276487090085743,
+          "M_LB_step_d": 1.2757933645416777
+        },
+        "12": {
+          "min_g_p_p": 1.6136313100543385,
+          "M_LB_step_d": 1.2702878847152477
+        }
+      },
+      "4": {
+        "4": {
+          "min_g_p_p": 2.7309618656142254,
+          "M_LB_step_d": 1.397779108957305
+        },
+        "6": {
+          "min_g_p_p": 2.5690103903344848,
+          "M_LB_step_d": 1.369583831241091
+        },
+        "8": {
+          "min_g_p_p": 2.4834245518507796,
+          "M_LB_step_d": 1.3542026421051998
+        },
+        "10": {
+          "min_g_p_p": 2.439812340153522,
+          "M_LB_step_d": 1.3462285849716842
+        },
+        "12": {
+          "min_g_p_p": 2.4078773966153273,
+          "M_LB_step_d": 1.340329130672224
+        }
+      },
+      "6": {
+        "4": {
+          "min_g_p_p": 6.917240867376884,
+          "M_LB_step_d": 1.4722670067411934
+        },
+        "6": {
+          "min_g_p_p": 6.11062586310563,
+          "M_LB_step_d": 1.4362073295373197
+        },
+        "8": {
+          "min_g_p_p": 5.793676568638638,
+          "M_LB_step_d": 1.4209894364502451
+        },
+        "10": {
+          "min_g_p_p": 5.610653930177227,
+          "M_LB_step_d": 1.4118959627253571
+        },
+        "12": {
+          "min_g_p_p": 5.497775460296868,
+          "M_LB_step_d": 1.4061686124877897
+        }
+      }
+    },
+    "T5_lp_chain_dinf_extrap": {
+      "2": 1.149434649209985,
+      "3": 1.2428668711409931,
+      "4": 1.3108938126823524,
+      "6": 1.3817705891748095
+    }
+  },
+  "compute_time_sec": 99.15714597702026,
+  "files_created": [
+    "_novel_agents/C4_hardy_littlewood/probe.py",
+    "_novel_agents/C4_hardy_littlewood/run.log",
+    "_novel_agents/C4_hardy_littlewood/results.json"
+  ]
+}

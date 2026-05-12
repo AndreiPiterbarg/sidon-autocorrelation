@@ -1,0 +1,180 @@
+[
+  {
+    "case_idx": 0,
+    "n_half": 2,
+    "m": 10,
+    "ell": 4,
+    "s_lo": 1,
+    "a": [
+      12.0,
+      20.0,
+      28.0,
+      20.0
+    ],
+    "d": 4,
+    "norm_check_step": 1.0000500125031255,
+    "cascade_TV_W": 0.985,
+    "step_window_integral_closed_form": 0.6275,
+    "step_window_avg_closed_form": 1.255,
+    "step_window_integral_numerical": 0.6278225956400162,
+    "step_window_avg_numerical": 1.2556451912800324,
+    "closed_form_minus_cascade": 0.2699999999999999,
+    "numerical_step_minus_cascade": 0.2706451912800324,
+    "continuous_variants": {
+      "triangle": {
+        "norm": 0.9999999374687382,
+        "window_avg": 1.254999371872158,
+        "diff_from_cascade": 0.26999937187215794
+      },
+      "left_concentrated": {
+        "norm": 1.0001000250062515,
+        "window_avg": 1.481419248894141,
+        "diff_from_cascade": 0.4964192488941409
+      },
+      "right_concentrated": {
+        "norm": 0.9999999999999999,
+        "window_avg": 1.0298533558925949,
+        "diff_from_cascade": 0.04485335589259487
+      },
+      "gaussian_per_bin": {
+        "norm": 1.0000189375581556,
+        "window_avg": 1.2551651350013118,
+        "diff_from_cascade": 0.2701651350013118
+      }
+    }
+  },
+  {
+    "case_idx": 1,
+    "n_half": 2,
+    "m": 10,
+    "ell": 3,
+    "s_lo": 2,
+    "a": [
+      16.0,
+      16.0,
+      24.0,
+      24.0
+    ],
+    "d": 4,
+    "norm_check_step": 0.9999999999999999,
+    "cascade_TV_W": 1.0666666666666667,
+    "step_window_integral_closed_form": 0.545,
+    "step_window_avg_closed_form": 1.4533333333333334,
+    "step_window_integral_numerical": 0.5452423860755009,
+    "step_window_avg_numerical": 1.4539796962013358,
+    "closed_form_minus_cascade": 0.3866666666666667,
+    "numerical_step_minus_cascade": 0.3873130295346692,
+    "continuous_variants": {
+      "triangle": {
+        "norm": 0.9999999374687383,
+        "window_avg": 1.4533328528759863,
+        "diff_from_cascade": 0.3866661862093197
+      },
+      "left_concentrated": {
+        "norm": 1.0000500125031258,
+        "window_avg": 1.6282870800083036,
+        "diff_from_cascade": 0.5616204133416369
+      },
+      "right_concentrated": {
+        "norm": 0.999949987496874,
+        "window_avg": 1.2801611210808521,
+        "diff_from_cascade": 0.21349445441418546
+      },
+      "gaussian_per_bin": {
+        "norm": 1.0000075990878199,
+        "window_avg": 1.453501828212798,
+        "diff_from_cascade": 0.3868351615461314
+      }
+    }
+  },
+  {
+    "case_idx": 2,
+    "n_half": 3,
+    "m": 8,
+    "ell": 5,
+    "s_lo": 3,
+    "a": [
+      8.0,
+      12.0,
+      16.0,
+      20.0,
+      16.0,
+      24.0
+    ],
+    "d": 6,
+    "norm_check_step": 0.9999999999999999,
+    "cascade_TV_W": 1.1958333333333333,
+    "step_window_integral_closed_form": 0.5963541666666665,
+    "step_window_avg_closed_form": 1.4312499999999997,
+    "step_window_integral_numerical": 0.5965228255177519,
+    "step_window_avg_numerical": 1.4316547812426048,
+    "closed_form_minus_cascade": 0.23541666666666639,
+    "numerical_step_minus_cascade": 0.2358214479092715,
+    "continuous_variants": {
+      "triangle": {
+        "norm": 0.9999994372186445,
+        "window_avg": 1.4312516459192135,
+        "diff_from_cascade": 0.2354183125858802
+      },
+      "left_concentrated": {
+        "norm": 1.0003750937734435,
+        "window_avg": 1.563365599758421,
+        "diff_from_cascade": 0.36753226642508774
+      },
+      "right_concentrated": {
+        "norm": 0.9996249062265565,
+        "window_avg": 1.3002757006317582,
+        "diff_from_cascade": 0.10444236729842493
+      },
+      "gaussian_per_bin": {
+        "norm": 1.0000074481721164,
+        "window_avg": 1.431363771210357,
+        "diff_from_cascade": 0.23553043787702377
+      }
+    }
+  },
+  {
+    "case_idx": 3,
+    "n_half": 2,
+    "m": 5,
+    "ell": 2,
+    "s_lo": 3,
+    "a": [
+      12.0,
+      8.0,
+      4.0,
+      16.0
+    ],
+    "d": 4,
+    "norm_check_step": 0.9998999749937485,
+    "cascade_TV_W": 1.12,
+    "step_window_integral_closed_form": 0.415,
+    "step_window_avg_closed_form": 1.66,
+    "step_window_integral_numerical": 0.41517143764480213,
+    "step_window_avg_numerical": 1.6606857505792085,
+    "closed_form_minus_cascade": 0.5399999999999998,
+    "numerical_step_minus_cascade": 0.5406857505792084,
+    "continuous_variants": {
+      "triangle": {
+        "norm": 0.9999999374687382,
+        "window_avg": 1.6599992695701986,
+        "diff_from_cascade": 0.5399992695701985
+      },
+      "left_concentrated": {
+        "norm": 0.9999499874968745,
+        "window_avg": 1.8016418314210358,
+        "diff_from_cascade": 0.6816418314210357
+      },
+      "right_concentrated": {
+        "norm": 0.9998499624906226,
+        "window_avg": 1.5199791191244056,
+        "diff_from_cascade": 0.39997911912440554
+      },
+      "gaussian_per_bin": {
+        "norm": 0.9999849221471483,
+        "window_avg": 1.6601808084762435,
+        "diff_from_cascade": 0.5401808084762434
+      }
+    }
+  }
+]
