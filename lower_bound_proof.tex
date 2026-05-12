@@ -124,8 +124,8 @@ $f\in L^1(\R)$ supported on $(-\tfrac14,\tfrac14)$:
 This improves on the previously announced bound of
 $1.2802$ due to Cloninger and Steinerberger~\cite{CS17} and on the
 rigorous analytic bound of $1.27481$ established by Matolcsi and
-Vinuesa~\cite{MV10}.  The argument builds directly on the
-Matolcsi--Vinuesa master inequality: the single arcsine kernel is
+Vinuesa~\cite{MV10}.  The argument extends the Matolcsi--Vinuesa
+master inequality: the single arcsine kernel is
 replaced by a convex combination of three arcsine kernels, and the
 trigonometric multiplier $G$ is re-optimized as a $200$-cosine
 expansion.
@@ -168,18 +168,17 @@ $B_2^{+}[1]$ sets and related Sidon variants.
 
 \subsection{Known Bounds}\label{subsec:intro-bounds}
 
-Progress on the lower bound has been incremental and largely
-analytical: Matolcsi--Vinuesa~\cite{MV10} established the rigorous
-analytic value $1.27481$ in 2010, and Cloninger and
-Steinerberger~\cite{CS17} subsequently announced a computational
+Prior lower bounds on $C_{1a}$ are summarized in
+Table~\ref{tab:published-bounds}.  Matolcsi--Vinuesa~\cite{MV10}
+established the rigorous analytic value $1.27481$ in 2010, and
+Cloninger and Steinerberger~\cite{CS17} announced a computational
 improvement to $1.2802$ via a discrete branch-and-prune search.  All
 subsequent progress on the constant has been on the upper-bound side,
 where recent AI-assisted searches have lowered the ceiling to
-$1.5029$~\cite{AlphaEvolve25,TTT26}.  The present work, which we refer
-to as the \emph{Piterbarg--Bajaj--Vincent Bound}, raises the lower
-bound to $1.292$ by refining the kernel class entering the
-Matolcsi--Vinuesa dual framework.  Table~\ref{tab:published-bounds}
-collects the current state of the art.
+$1.5029$~\cite{AlphaEvolve25,TTT26}.  The present work raises the
+lower bound to $1.292$ (Theorem~\ref{thm:main}), which we refer to
+as the \emph{Piterbarg--Bajaj--Vincent Bound}, by refining the kernel
+class entering the Matolcsi--Vinuesa dual framework.
 
 \begin{table}[ht]
 \centering
@@ -206,16 +205,16 @@ The Matolcsi--Vinuesa~\cite{MV10} dual framework
 a cosine multiplier $G$, producing a quadratic lower bound on $R(f)$
 in five real functionals $(k_1,K_2,S_1,m_G,a)$.  MV~2010 takes $K$ to
 be the arcsine kernel at half-width $\delta=138/1000$ and $G$ a
-$119$-cosine expansion, achieving $R(f)\ge 1.27481$.  Our improvement
-is to (i)~replace the single arcsine by a three-scale convex
+$119$-cosine expansion, achieving $R(f)\ge 1.27481$.  The present
+construction (i)~replaces the single arcsine by a three-scale convex
 combination $\Kms$ at half-widths $(138,55,25)/1000$ with weights
-$(85,10,5)/100$; (ii)~re-optimize $G$ as a $200$-cosine expansion
-against $\Kms$; (iii)~certify the five functionals in
-\texttt{flint.arb} interval arithmetic; and (iv)~solve the no-$z_1$
+$(85,10,5)/100$; (ii)~re-optimizes $G$ as a $200$-cosine expansion
+against $\Kms$; (iii)~certifies the five functionals in
+\texttt{flint.arb} interval arithmetic; and (iv)~solves the no-$z_1$
 quadratic master inequality with the certified rationals.  The
-quadratic crossover at the rational witness $M=1292/1000$ is strict
-with margin $9.6\times 10^{-5}$ from the rational anchors, giving
-the main result.
+quadratic inequality $\Phi(M)\ge\tau$ fails strictly at the rational
+witness $M=1292/1000$, with margin $9.6\times 10^{-5}$ from the
+rational anchors, giving the main result.
 
 \begin{theorem}[Main result: the Piterbarg--Bajaj--Vincent Bound]
 \label{thm:main}
@@ -404,13 +403,14 @@ and set $u=\tfrac12+\delta_1=\tfrac{638}{1000}$.  The
   \toprule
   $i$ & $\delta_i$ & $\lambda_i$ & $u$ & $N$ \\
   \midrule
-  $1$ & $138/1000$ & $85/100$ &           &       \\
-  $2$ & $55/1000$  & $10/100$ & $638/1000$ & $200$ \\
-  $3$ & $25/1000$  & $5/100$  &           &       \\
+  $1$ & $138/1000$ & $85/100$ & \multirow{3}{*}{$638/1000$} & \multirow{3}{*}{$200$} \\
+  $2$ & $55/1000$  & $10/100$ & & \\
+  $3$ & $25/1000$  & $5/100$  & & \\
   \bottomrule
 \end{tabular}
 \caption[Parameters of the three-scale arcsine kernel and the cosine multiplier.]{Parameters of the three-scale arcsine kernel and the cosine
-multiplier.}
+multiplier.  The period $u$ and the cosine degree $N$ are shared
+across the three scales.}
 \label{tab:kernel-params}
 \end{table}
 
@@ -707,11 +707,12 @@ multiplier $G$ and the five rational bounds
 $k_1\ge 9212/10000$, $K_2\le 47897/10000$, $S_1\le 29841/1000$,
 $m_G\ge 998/1000$, and $a\ge 20925/100000$ hold.
 \item[(3)] \emph{Master inequality.}  Theorem~\ref{thm:mv-master}
-applied to $(\Kms,G)$ yields $\Phi(M)\ge \tau$, where $\Phi$ is
-increasing in $K_2$, so using the certified upper bound
-$K_2\le 47897/10000$ overestimates $\Phi$ and makes the strict
-failure $\Phi(M_0)<\tau$ at the witness $M_0=1292/1000$ the
-strongest possible.
+applied to $(\Kms,G)$ yields $\Phi(M)\ge \tau$.  Since $\Phi$ is
+increasing in $K_2$, replacing the unknown $K_2$ by the certified
+upper bound $47897/10000$ overestimates $\Phi$; the strict failure
+$\Phi(M_0)<\tau$ at the witness $M_0=1292/1000$ therefore implies
+$\Phi(R(f))>\Phi(M_0)$, which (by Lemma~\ref{lem:inversion}) forces
+$R(f)>M_0$.
 \item[(4)] \emph{Strict failure.}  By Proposition~\ref{prop:fail},
 $\Phi(1292/1000)<\tau$.
 \item[(5)] \emph{Conclusion.}  Strict monotonicity of $\Phi$ on
@@ -766,10 +767,14 @@ $L^1$-equivalence-class formulation of $C_{1a}$ without loss.
 \section*{Acknowledgments}
 % ======================================================================
 
-This work builds directly on the dual framework of Matolcsi and
-Vinuesa~\cite{MV10}; we are also indebted to Cloninger and
-Steinerberger~\cite{CS17}, whose announced bound of $1.2802$ motivated
-this line of work.
+We thank M\'at\'e Matolcsi and Carlos Vinuesa, whose dual
+framework~\cite{MV10} is the foundation of this argument; and
+Alexander Cloninger and Stefan Steinerberger~\cite{CS17}, whose
+announced bound of $1.2802$ motivated this line of work.  The
+formalization rests on the Lean~4 theorem prover~\cite{Lean} and the
+Mathlib library~\cite{Mathlib}; the certifier rests on
+FLINT/Arb~\cite{Flint}.  We thank the authors and contributors of
+each.
 
 
 % ======================================================================
