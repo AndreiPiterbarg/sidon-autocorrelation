@@ -889,41 +889,19 @@ ruled out.  The threshold left-mass fraction is:
 For $c_{\mathrm{target}} = \tfrac{7}{5}$, $p^* = \sqrt{0.7} \approx 0.8367$.
 \end{corollary}
 
-\begin{remark}[Exactness for step functions and under refinement]
-For a step function already represented by a composition
-$c = (c_0,\ldots,c_{d-1})$ with $\sum c_i = m$, the left-half mass is
-\[
-  L \;=\; \sum_{i < n} \frac{c_i}{m},
-\]
-because the midpoint $x = 0$ lies exactly on a bin boundary.  This
-quantity is also preserved exactly under dyadic refinement: the left
-child bins sum to the left parent bins.  Thus asymmetry pruning is an
-exact statement for discrete step functions inside the cascade.
-\end{remark}
-
-\begin{remark}[Continuous-transfer caveat]
-The asymmetry bound is a \emph{direct} $L^\infty$ bound on $f * f$.
-It does \emph{not} go through the discretization framework of
-Lemma~\ref{lem:disc-error}.  Accordingly, one must distinguish two
-roles for asymmetry:
-\begin{itemize}
-  \item for an \emph{exact step function} represented by a composition
-    $c$, the criterion is immediate and needs no correction term;
-  \item inside the certificate computation, it serves as an
-    inexpensive early pruning rule before the more expensive
-    window scan.
-\end{itemize}
-Asymmetry pruning therefore lives inside the trusted certificate
-computation only; the final Lean reduction relies solely on the
-terminal-grid window certificate at $d = 128$.
-\end{remark}
-
-\begin{remark}[What the certificate computation prunes by]
-The recorded cascade uses asymmetry pruning, the corrected
-window-dependent threshold, reversal canonicalization, and the
-single-bin cap from Section~\ref{subsec:energy-cap}.  The imported Lean
-axiom does not encode these intermediate pruning mechanisms; it records
-only the resulting terminal window witnesses.
+\begin{remark}[Role inside the cascade]
+The asymmetry bound is a \emph{direct} $L^\infty$ bound on $f*f$ and
+does not go through the discretization framework of
+Lemma~\ref{lem:disc-error}; in particular, for a step function
+represented by a composition $c$ the left-half mass
+$L = \sum_{i<n} c_i/m$ is exact and is preserved by dyadic
+refinement.  Inside the certificate computation, asymmetry therefore
+serves as an inexpensive early pruning rule before the window scan.
+Together with reversal canonicalization (Section~\ref{subsec:reversal})
+and the single-bin cap (Section~\ref{subsec:energy-cap}), it shrinks
+the active cascade by orders of magnitude, but the resulting Lean
+axiom records only the terminal window witnesses; the final analytic
+reduction depends solely on those witnesses.
 \end{remark}
 
 \subsection{Canonical Symmetry Exploitation}
