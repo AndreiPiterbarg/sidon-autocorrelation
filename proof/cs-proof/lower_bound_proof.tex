@@ -105,8 +105,8 @@ configurations.  The analytic reduction is formalized parametrically
 in Lean~4; the new headline bound depends additionally on a finite
 computational certificate, produced by the cascade described in
 Sections~\ref{sec:pruning}--\ref{sec:cascade}, asserting that every
-composition at the terminal resolution is eliminated by some
-admissible window.
+terminal-resolution composition has a window whose test value exceeds
+the corrected threshold.
 \end{abstract}
 \noindent\textit{2020 Mathematics Subject Classification.}
 11B83, 42A85, 68V20.
@@ -214,7 +214,7 @@ The published lower bounds of Martin--O'Bryant~\cite{MO2007,MO2009},
 Matolcsi--Vinuesa~\cite{MV10}, and
 Cloninger--Steinerberger~\cite{CS17} give the progression
 \[
-  1 \;<\; 1.182778 \;<\; 1.262 \;<\; 1.2748 \;<\; 1.28
+  1 \;<\; 1.182778 \;<\; 1.2628 \;<\; 1.2748 \;<\; 1.2802
 \]
 in the present normalization, while the older upper bound $\pi/2$
 comes from Schinzel--Schmidt~\cite{SS2002}.  A related extremal problem
@@ -262,12 +262,12 @@ The case $\|f*f\|_{L^\infty} = \infty$ is vacuous for any finite
 lower bound, so $C_{1a} \ge \tfrac75 = 1.4$ holds unconditionally.
 \end{theorem}
 
-The analytic reduction underlying this theorem is formalized in Lean~4
-as a parametric chain in
-\texttt{Sidon/Proof/FinalResult.lean}; the current verified
-instantiation, \texttt{autoconvolution\_ratio\_ge\_32\_25}, certifies
-the Cloninger--Steinerberger baseline $C_{1a}\ge \tfrac{32}{25}$ and
-serves as an end-to-end soundness check of the Lean development (see
+The analytic reduction underlying this theorem is formalized in
+Lean~4 as a parametric chain in \texttt{Sidon/Proof/FinalResult.lean};
+the current verified instantiation certifies the
+Cloninger--Steinerberger baseline $C_{1a}\ge \tfrac{32}{25}$ as
+\texttt{autoconvolution\_ratio\_ge\_32\_25} and serves as an
+end-to-end soundness check of the Lean development (see
 Section~\ref{sec:formalization}).  The proof is assembled in
 Section~\ref{sec:algorithm} from the continuous reduction
 (Sections~\ref{sec:bin}--\ref{sec:testvalue}), the pruning machinery
@@ -629,9 +629,9 @@ range of consecutive indices the cumulative $\delta$-error telescopes
 to at most $1/m$ in absolute value.  Applied to the contributing bin
 range $\mathcal{B}_{n,\ell,s_{\mathrm{lo}}}$ and combined with
 $|\mu_i|\le W$, the linear cross-term is bounded by
-$\tfrac{4n}{\ell}\cdot \tfrac{2W}{m}$.  This is precisely the
-estimate proved in Lean before the theorem
-\texttt{dynamic\_threshold\_sound}.
+$\tfrac{4n}{\ell}\cdot \tfrac{2W}{m}$.  This is the estimate proved
+in Lean as \texttt{correction\_term\_bound\_w\_refined} (and its CS
+variant \texttt{correction\_term\_bound\_cs}).
 \end{proof}
 
 \begin{corollary}[Global correction bound]
@@ -679,7 +679,10 @@ and the second shows that the discrete test value exceeds the
 continuous one by at most the correction term displayed above.
 \end{proof}
 
-The Lean counterpart is \texttt{dynamic\_threshold\_sound}.
+The Lean counterpart is the theorem
+\texttt{dynamic\_threshold\_sound\_w\_refined}, with a CS-form
+variant \texttt{dynamic\_threshold\_sound\_cs} that uses the global
+correction term.
 
 \begin{remark}[Integer-coordinate form]
 Substituting $W = W_{\mathrm{int}}/m$ into
@@ -748,12 +751,12 @@ coordinates.
 
 The test value can be computed efficiently using prefix sums.  Let
 $P[s] = \sum_{k=0}^{s} \conv[k]$ be the prefix sum of the
-autoconvolution.  Then the windowed sum from $s_{\text{lo}}$ to
-$s_{\text{hi}}$ is:
+autoconvolution.  Then the windowed sum from $s_{\mathrm{lo}}$ to
+$s_{\mathrm{hi}}$ is:
 \[
-  \sum_{s=s_\text{lo}}^{s_\text{hi}} \conv[s]
+  \sum_{s=s_{\mathrm{lo}}}^{s_{\mathrm{hi}}} \conv[s]
   \;=\;
-  P[s_\text{hi}] - P[s_\text{lo} - 1]
+  P[s_{\mathrm{hi}}] - P[s_{\mathrm{lo}} - 1]
   \qquad (\text{with } P[-1] = 0).
 \]
 
@@ -950,9 +953,11 @@ loop bounds:
 \end{itemize}
 Plus a palindrome filter: when $c_0 = c_3$, require $c_1 \le c_2$.
 
-For $d = 6$, analogous bounds apply: $c_0 \le \lfloor M/2 \rfloor$,
-$c_4 \le M - c_0 - c_1 - c_2 - c_3 - c_0$, with equality checks for
-the inner pairs when outer pairs tie.
+For $d = 6$, analogous bounds apply: $c_0 \le \lfloor M/2 \rfloor$ and
+$c_4 \le M - 2c_0 - c_1 - c_2 - c_3$ (so that
+$c_5 = M - c_0 - c_1 - c_2 - c_3 - c_4 \ge c_0$), with palindrome
+filters $c_1 \le c_4$ when $c_0 = c_5$ and $c_2 \le c_3$ when both
+outer pairs are tied.
 \end{remark}
 
 
@@ -1011,39 +1016,38 @@ with $c_{2i}, c_{2i+1} \ge 0$ and both being nonnegative integers.
 
 \subsection{Energy Cap}\label{subsec:energy-cap}
 
-One might worry that generating all possible children is wasteful.
-Indeed, many children are immediately ruled out by the single-bin
-diagonal window.  The energy cap avoids generating them in the first
-place.
+Many children produced by dyadic splitting are ruled out immediately
+by the single-bin diagonal window.  The energy cap avoids generating
+them at all.
 
-Recall that $a_j = \tfrac{4n_{\text{child}}}{m}c_j$ and the $\ell = 2$ diagonal window at
+Recall that $a_j = \tfrac{4n_{\mathrm{child}}}{m}c_j$ and the $\ell = 2$ diagonal window at
 position $2j$ gives
 \[
-  \tv(a) \;\ge\; d_{\text{child}}\,\frac{c_j^2}{m^2},
-  \qquad d_{\text{child}} = 2n_{\text{child}}.
+  \tv(a) \;\ge\; d_{\mathrm{child}}\,\frac{c_j^2}{m^2},
+  \qquad d_{\mathrm{child}} = 2n_{\mathrm{child}}.
 \]
 This yields the test-value cap
 \[
-  x_{\text{cap}}^{\mathrm{TV}}
+  x_{\mathrm{cap}}^{\mathrm{TV}}
   \;=\;
   \left\lfloor
     m \sqrt{\frac{c_{\mathrm{target}} +
-      2n_{\text{child}}\left(\tfrac{2}{m} + \tfrac{1}{m^2}\right)
+      2n_{\mathrm{child}}\left(\tfrac{2}{m} + \tfrac{1}{m^2}\right)
       + 10^{-9}}
-    {d_{\text{child}}}}
+    {d_{\mathrm{child}}}}
   \right\rfloor.
 \]
 The implementation also applies the sharper direct cap
 \[
-  x_{\text{cap}}^{\mathrm{CS}}
+  x_{\mathrm{cap}}^{\mathrm{CS}}
   \;=\;
   \left\lfloor
-    m \sqrt{\frac{c_{\mathrm{target}}}{d_{\text{child}}}}
+    m \sqrt{\frac{c_{\mathrm{target}}}{d_{\mathrm{child}}}}
   \right\rfloor,
 \]
 and uses
-$x_{\text{cap}} = \min\!\left(x_{\text{cap}}^{\mathrm{TV}},
-x_{\text{cap}}^{\mathrm{CS}}\right)$.
+$x_{\mathrm{cap}} = \min\!\left(x_{\mathrm{cap}}^{\mathrm{TV}},
+x_{\mathrm{cap}}^{\mathrm{CS}}\right)$.
 
 \begin{proposition}[Energy Cap Soundness]
 \label{prop:energy-cap-sound}
@@ -1055,9 +1059,9 @@ $\|f*f\|_{L^\infty} > c_{\mathrm{target}}$.
 \begin{proof}
 Let $M_j = c_j/m$ be the mass in the $j$th child bin.  Restricting $f$
 to that bin gives a nonnegative function $f_j$ supported on an
-interval of length $1/(2 d_{\text{child}})$ (the child-bin width)
+interval of length $1/(2 d_{\mathrm{child}})$ (the child-bin width)
 with total mass $M_j$, hence $f_j*f_j$ is supported on an interval of
-length $1/d_{\text{child}}$ with total mass $M_j^2$.  Pointwise
+length $1/d_{\mathrm{child}}$ with total mass $M_j^2$.  Pointwise
 nonnegativity of $f$ gives $(f*f)(t)\ge (f_j*f_j)(t)$, so applying
 the averaging inequality
 $\|h\|_{L^\infty}\ge |J|^{-1}\int_J h$ to $h=f_j*f_j$ over its
@@ -1067,19 +1071,19 @@ support yields
   \;\ge\;
   \|f_j*f_j\|_{L^\infty}
   \;\ge\;
-  \frac{M_j^2}{1/d_{\text{child}}}
+  \frac{M_j^2}{1/d_{\mathrm{child}}}
   \;=\;
-  d_{\text{child}}\,\frac{c_j^2}{m^2}.
+  d_{\mathrm{child}}\,\frac{c_j^2}{m^2}.
 \]
 If
-$c_j > m \sqrt{c_{\mathrm{target}}/d_{\text{child}}}$,
+$c_j > m \sqrt{c_{\mathrm{target}}/d_{\mathrm{child}}}$,
 the right-hand side exceeds $c_{\mathrm{target}}$, which proves the
 claim.
 \end{proof}
 
 \begin{remark}[Tighter Cauchy--Schwarz cap]
-The cap $x_{\text{cap}}^{\mathrm{CS}}$ is tighter than
-$x_{\text{cap}}^{\mathrm{TV}}$ and requires no discretization
+The cap $x_{\mathrm{cap}}^{\mathrm{CS}}$ is tighter than
+$x_{\mathrm{cap}}^{\mathrm{TV}}$ and requires no discretization
 correction term; the implementation uses the minimum of the two.
 \end{remark}
 
@@ -1199,13 +1203,13 @@ can be updated locally instead of recomputed from scratch:
 \caption{Cascade Search For Terminal Coverage}
 \label{alg:cascade}
 \begin{algorithmic}[1]
-\Require $c_{\text{target}}$, grid resolution $m$, starting half-bins
+\Require $c_{\mathrm{target}}$, grid resolution $m$, starting half-bins
   $n_0$, max levels $L_{\max}$
 \State $d_0 \gets 2 n_0$
 \State Generate all canonical compositions of $m$ into $d_0$ parts
   \Comment{integer composition coordinates}
 \State Apply asymmetry pruning (threshold
-  $\sqrt{c_{\text{target}}/2}$)
+  $\sqrt{c_{\mathrm{target}}/2}$)
 \State For every remaining composition, scan all windows and prune if
   some window exceeds the dynamic threshold from
   Theorem~\ref{thm:dynamic-threshold}
@@ -1214,8 +1218,8 @@ can be updated locally instead of recomputed from scratch:
   \State $d_k \gets 2 d_{k-1}$; \quad
     $n_k \gets 2 n_{k-1}$
   \State Compute the single-bin child cap
-    $x_{\text{cap}} = \min(x_{\text{cap}}^{\mathrm{TV}},
-    x_{\text{cap}}^{\mathrm{CS}})$
+    $x_{\mathrm{cap}} = \min(x_{\mathrm{cap}}^{\mathrm{TV}},
+    x_{\mathrm{cap}}^{\mathrm{CS}})$
   \ForAll{parent $P \in \text{survivors}_{k-1}$}
     \ForAll{children $C$ of $P$ in mixed-radix Gray-code order (dyadic split with energy cap)}
       \State Apply asymmetry pruning to $C$
@@ -1272,7 +1276,7 @@ $(\ell,s_{\mathrm{lo}})$ such that
 \]
 This is exactly the hypothesis of
 Theorem~\ref{thm:dynamic-threshold}
-(\texttt{dynamic\_threshold\_sound} in Lean), whose proof combines
+(\texttt{dynamic\_threshold\_sound\_w\_refined} in Lean), whose proof combines
 the continuous lower bound
 \texttt{continuous\_test\_value\_le\_ratio}
 with the per-window discretization estimate from
@@ -1330,10 +1334,10 @@ compares the integer left-hand side
 \]
 against the right-hand side
 \[
-  c_{\text{target}}m^2\frac{\ell}{4n} + 1 + 2W_{\text{int}},
+  c_{\mathrm{target}}m^2\frac{\ell}{4n} + 1 + 2W_{\mathrm{int}},
 \]
 with an added $10^{-9}m^2$ margin and a final
-$(1 - 4\epsilon_{\text{mach}})$ factor before flooring.  The
+$(1 - 4\epsilon_{\mathrm{mach}})$ factor before flooring.  The
 multiplicative factor lowers the threshold, but the additive margin
 dominates, so the net effect is conservative: the code may miss a
 borderline prune but never falsely prunes.
@@ -1393,19 +1397,17 @@ $\|f*f\|_{L^\infty}=\infty$ already exceeds every finite target
 vacuously.
 
 \paragraph{Current verified instantiation.}
-The chain is currently instantiated at
-$(n_{\mathrm{half}}, m, c_{\mathrm{target}}) = (2, 20, 32/25)$ ---
-the published Cloninger--Steinerberger baseline --- producing the
-theorem \texttt{autoconvolution\_ratio\_ge\_32\_25} in
+The chain is currently instantiated at parameters
+$(n_{\mathrm{half}}, m, c_{\mathrm{target}}) = (2, 20, 32/25)$, the
+published Cloninger--Steinerberger baseline, producing the theorem
+\texttt{autoconvolution\_ratio\_ge\_32\_25} in
 \texttt{FinalResult.lean}.  This instantiation imports a single
 computational axiom \texttt{cascade\_all\_pruned} that encodes the
-multi-level cascade structure as a recursive predicate
-\texttt{CascadePruned}: a composition at resolution $d$ is
-cascade-pruned if either some window directly exceeds the threshold
-or every valid child at resolution $2d$ is cascade-pruned.  The
-axiom is reproducible by the command recorded in
-\texttt{FinalResult.lean} and serves as an end-to-end soundness check
-of the Lean development.
+multi-level cascade as a recursive predicate \texttt{CascadePruned}:
+a composition at resolution $d$ is cascade-pruned if either some
+window directly exceeds the threshold, or every valid child at
+resolution $2d$ is cascade-pruned.  The axiom is reproducible by the
+command recorded in \texttt{FinalResult.lean}.
 
 \paragraph{Status of the $\tfrac{7}{5}$ bound.}
 The cascade run reported in Section~\ref{sec:correctness} terminates
@@ -1426,33 +1428,43 @@ the Python level (see Section~\ref{sec:correctness}).
   \toprule
   \textbf{Paper statement} & \textbf{Lean name} & \textbf{File} \\
   \midrule
-  Lemma~\ref{lem:sum-bin-masses} & \texttt{sum\_bin\_masses\_eq\_one}
-    & \texttt{Sidon/Proof/TestValueBounds.lean} \\
-  Lemma~\ref{lem:bin-reduction} & \texttt{continuous\_test\_value\_le\_ratio}
-    & \texttt{Sidon/Proof/TestValueBounds.lean} \\
-  Lemma~\ref{lem:disc-error} (CS form) & \texttt{dynamic\_threshold\_sound\_cs}
-    & \texttt{Sidon/Proof/DiscretizationError.lean} \\
+  Lemma~\ref{lem:sum-bin-masses}
+    & \texttt{sum\_bin\_masses\_eq\_one}
+    & \texttt{TestValueBounds.lean} \\
+  Lemma~\ref{lem:bin-reduction}
+    & \texttt{continuous\_test\_value\_le\_ratio}
+    & \texttt{TestValueBounds.lean} \\
+  Lemma~\ref{lem:disc-error} (CS form)
+    & \texttt{correction\_term\_bound\_cs}
+    & \texttt{DiscretizationError.lean} \\
+  Lemma~\ref{lem:disc-error} ($W$-refined)
+    & \texttt{correction\_term\_bound\_w\_refined}
+    & \texttt{WRefinedBound.lean} \\
+  Theorem~\ref{thm:dynamic-threshold} (CS)
+    & \texttt{dynamic\_threshold\_sound\_cs}
+    & \texttt{DiscretizationError.lean} \\
   Theorem~\ref{thm:dynamic-threshold} ($W$-refined)
     & \texttt{dynamic\_threshold\_sound\_w\_refined}
-    & \texttt{Sidon/Proof/WRefinedBound.lean} \\
-  Parametric bridge (any target)
+    & \texttt{WRefinedBound.lean} \\
+  Parametric bridge
     & \texttt{cascade\_pruned\_implies\_bound}
-    & \texttt{Sidon/Proof/FinalResult.lean} \\
-  Theorem~\ref{thm:cascade-sound} (axiom, current at $\tfrac{32}{25}$)
+    & \texttt{FinalResult.lean} \\
+  Theorem~\ref{thm:cascade-sound} (axiom)
     & \texttt{cascade\_all\_pruned}
-    & \texttt{Sidon/Proof/FinalResult.lean} \\
+    & \texttt{FinalResult.lean} \\
   Baseline instantiation
     & \texttt{autoconvolution\_ratio\_ge\_32\_25}
-    & \texttt{Sidon/Proof/FinalResult.lean} \\
+    & \texttt{FinalResult.lean} \\
   \bottomrule
 \end{tabular}
 \caption[Correspondence between paper statements and the Lean formalization.]{Correspondence between paper statements and the Lean
-formalization.  The files listed are checked by the Lean kernel; the
-only imported component is \texttt{cascade\_all\_pruned}, the
-computational certificate whose current instantiation matches the
-$\tfrac{32}{25}$ baseline.  The same scaffolding instantiates the
-$\tfrac{7}{5}$ headline bound once the cascade certificate is replayed
-at the stronger target.}
+formalization; file paths are relative to \texttt{lean/Sidon/Proof/}.
+The files listed are checked by the Lean kernel; the only imported
+component is \texttt{cascade\_all\_pruned}, the computational
+certificate whose current instantiation matches the $\tfrac{32}{25}$
+baseline.  The same scaffolding instantiates the $\tfrac{7}{5}$
+headline bound once the cascade certificate is replayed at the
+stronger target.}
 \label{tab:lean-map}
 \end{table}
 
@@ -1477,7 +1489,7 @@ Cloninger--Steinerberger~\cite{CS17}.  The principal differences:
 
   \item \textbf{Fused generation}: each child is generated and tested
     inline, reducing per-parent memory from
-    $O(N_{\text{children}} \cdot d)$ to $O(d)$.
+    $O(N_{\mathrm{children}} \cdot d)$ to $O(d)$.
 
   \item \textbf{Integer arithmetic}: Autoconvolution and threshold
     comparisons use exact integer operations, with floating-point
