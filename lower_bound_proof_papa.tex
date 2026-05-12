@@ -1,0 +1,882 @@
+\documentclass[11pt, letterpaper]{article}
+
+% ── Packages ──
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{microtype}
+% Times Roman for text and math: a standard CS-journal look.
+\usepackage{mathptmx}
+\usepackage[scaled=0.92]{helvet}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{authblk}
+\usepackage[svgnames]{xcolor}
+
+\geometry{margin=1.0in}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  citecolor=MidnightBlue,
+  urlcolor=MidnightBlue,
+  pdftitle={An Improved Lower Bound on the Autoconvolution Constant},
+  pdfauthor={Andrei Piterbarg, Jai Bajaj, Derrick Vincent},
+  pdfsubject={A computer-assisted lower bound on the autoconvolution constant}
+}
+\captionsetup{font=small, labelfont=bf, skip=4pt}
+\setlist{topsep=4pt, itemsep=2pt, parsep=0pt}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{0pt}
+\allowdisplaybreaks
+% Reduce overfull boxes from long inline formulas.
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+% authblk: compact affiliation block, one shared UPenn affiliation.
+\renewcommand\Authfont{\normalsize}
+\renewcommand\Affilfont{\small\itshape}
+\renewcommand\Authsep{\quad}
+\renewcommand\Authand{\quad}
+\renewcommand\Authands{\quad}
+\setlength{\affilsep}{0.4em}
+
+% ── Theorem environments ──
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% ── Macros ──
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Linf}{L^\infty}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\tv}{\operatorname{tv}}
+\newcommand{\rev}{\operatorname{rev}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\Karc}{K_{\mathrm{arc}}}
+\newcommand{\Kms}{K_{\mathrm{ms}}}
+\newcommand{\Mcert}{M_{\mathrm{cert}}}
+
+% ── Hyphenation hints for long compound terms ──
+\hyphenation{
+  Matolcsi
+  Vinuesa
+  Bochner-ad-mis-si-ble
+  arc-sine
+  auto-con-vo-lu-tion
+  auto-cor-re-la-tion
+  Cloninger
+  Stein-er-berg-er
+  inter-val
+  rig-or-ous
+  for-mal-i-za-tion
+  multi-scale
+  AlphaEvolve
+}
+
+% ══════════════════════════════════════════════════════════════════════
+\title{An Improved Lower Bound on the Autoconvolution Constant}
+\author[]{Andrei Piterbarg}
+\author[]{Jai Bajaj}
+\author[]{Derrick Vincent}
+\affil[]{University of Pennsylvania, Philadelphia, PA, USA}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We propose the \emph{Piterbarg--Bajaj--Vincent (PBV) Bound} on the
+autoconvolution constant
+$C_{1a}=\inf_f \|f*f\|_{\Linf}/(\int f)^2$, taken over nonnegative
+$f\in L^1(\R)$ supported on $(-1/4,1/4)$:
+\[
+  C_{1a}\;\ge\;1292/1000\;=\;1.292.
+\]
+This improves on the previously announced bound of
+$1.2802$ due to Cloninger and Steinerberger~\cite{CS17} and on the
+rigorous analytic bound of $1.27481$ established by Matolcsi and
+Vinuesa~\cite{MV10}.  The argument extends the Matolcsi--Vinuesa
+master inequality: the single arcsine kernel is
+replaced by a convex combination of three arcsine kernels, and the
+trigonometric multiplier $G$ is re-optimized as a $200$-cosine
+expansion.
+\par\medskip
+The five resulting functionals are evaluated rigorously in
+\texttt{flint.arb} interval arithmetic at $256$-bit precision.  The
+no-$z_1$ quadratic master inequality, applied to the rounded rational
+anchors, yields strict failure at $M=1292/1000$ with margin
+$\tau-\Phi(M)\ge 9.6\times 10^{-5}$.  The analytic reduction is
+formalized in Lean~4: the headline theorem in
+\texttt{lean/Sidon/MultiScale.lean} reaches a single user axiom
+(the three-scale MV master inequality, stated at the rational slacks);
+the quadratic inversion and the slack-soundness statements are Lean
+theorems (see Section~\ref{sec:proof}).
+\end{abstract}
+
+\medskip
+
+% ======================================================================
+\section{Introduction}\label{sec:intro}
+% ======================================================================
+
+\subsection{The Constant \texorpdfstring{$C_{1a}$}{C1a}}\label{subsec:intro-constant}
+
+Let $\mathcal{F}=\{f\in L^1(\R) : f\ge 0,\
+\supp(f)\subseteq(-1/4,1/4),\ \int f>0\}$.  The
+\emph{autoconvolution constant} is
+\[
+  C_{1a}
+  \;=\;
+  \inf_{f\in\mathcal{F}} R(f),
+  \qquad
+  R(f) \;:=\; \frac{\|f*f\|_{\Linf}}{\left(\int f\right)^2}.
+\]
+By homogeneity we may normalize $\int f=1$, in which case
+$R(f)=\|f*f\|_{\Linf}\ge 1$.  The constant $C_{1a}$ is the continuous
+analogue of the Sidon-set extremal problem~\cite{ET41,MO2009};
+improving its lower bound tightens known asymptotic results on
+$B_2^{+}[1]$ sets and related Sidon variants.
+
+\subsection{Known Bounds}\label{subsec:intro-bounds}
+
+Prior lower bounds on $C_{1a}$ are summarized in
+Table~\ref{tab:published-bounds}.  Matolcsi--Vinuesa~\cite{MV10}
+established the rigorous analytic value $1.27481$ in 2010, and
+Cloninger and Steinerberger~\cite{CS17} announced a computational
+improvement to $1.2802$ via a discrete branch-and-prune search.  All
+subsequent progress on the constant has been on the upper-bound
+side, where a recent AI-assisted search lowered the ceiling to
+$1.5029$~\cite{AlphaEvolve25}.  The present work raises the
+lower bound to $1.292$ (Theorem~\ref{thm:main}), which we refer to
+as the \emph{PBV Bound}, by refining the kernel class entering the
+Matolcsi--Vinuesa dual framework.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{l l l}
+  \toprule
+  \textbf{Bound} & \textbf{Value} & \textbf{Reference} \\
+  \midrule
+  Upper bound & $\le 1.5029$  & Georgiev et al.~\cite{AlphaEvolve25} (AlphaEvolve) \\
+  Upper bound & $\le 1.50992$ & Matolcsi \& Vinuesa~\cite{MV10} \\
+  Lower bound & $\ge 1.262$   & Martin \& O'Bryant~\cite{MO2009} \\
+  Lower bound & $\ge 1.27481$ & Matolcsi \& Vinuesa~\cite{MV10} \\
+  Lower bound & $\ge 1.2802$  & Cloninger \& Steinerberger~\cite{CS17} \\
+  Lower bound & $\ge 1.292$   & \textbf{This work (PBV Bound)} \\
+  \bottomrule
+\end{tabular}
+\caption{Published bounds on $C_{1a}$ in the normalization used here.}
+\label{tab:published-bounds}
+\end{table}
+
+\subsection{Outline of the Approach}\label{subsec:intro-strategy}
+
+We sketch the idea informally before stating the main theorem.  Readers
+familiar with~\cite{MV10} can skim this subsection; the formal
+development begins in Section~\ref{sec:mv}.
+
+\paragraph{The duality framework.}
+A direct lower bound on $C_{1a}$ would require ruling out, for every
+admissible $f$, the possibility that $f*f$ is unusually flat.  The
+Matolcsi--Vinuesa dual framework~\cite{MV10} avoids this by trading the
+primal problem for a search over auxiliary pairs $(K,G)$, where
+\begin{itemize}[leftmargin=2em]
+\item $K$ is an even, nonnegative kernel on $\R$ with nonnegative
+      Fourier coefficients (``Bochner-admissible''), and
+\item $G$ is a short cosine polynomial that is bounded away from zero
+      on $[0,1/4]$.
+\end{itemize}
+Any such pair produces a quadratic lower bound on the ratio
+$\|f*f\|_{\Linf}/(\int f)^2$ whose coefficients depend on just five
+real scalars extracted from $(K,G)$.  Tightening the bound becomes a
+finite optimization: choose $(K,G)$ to maximize the implied lower bound
+on $C_{1a}$.
+
+\paragraph{Why a single kernel runs out of room.}
+The published $1.27481$ of~\cite{MV10} uses the simplest legal $K$: the
+arcsine density auto-convolved at a single scale $\delta\in(0,1/4]$.
+That choice has one free parameter and forces the cosine polynomial
+$G$ to spend its budget compensating for $K$'s Bessel zeros.  Cosine
+modes near those zeros incur large penalties, and the optimum sits
+visibly below the upper-bound side of the literature.
+
+\paragraph{What changes here.}
+We enlarge the kernel class to convex combinations of three arcsine
+densities at three different widths $(138,55,25)/1000$ with weights
+$(85,10,5)/100$.  Bochner-admissibility is preserved (sums of
+nonnegative-Fourier kernels are again nonnegative-Fourier), but the
+Bessel zeros of the three summands no longer line up.  The
+$200$-cosine multiplier $G$, re-optimized against this mixture, no
+longer pays a penalty at any single frequency.  The five scalars
+improve enough to push the certified lower bound past $1.292$.
+
+\paragraph{From real numbers to a checkable certificate.}
+The five scalars are continuous functionals of $(K,G)$, so taking them
+``equal to their decimal approximation'' would not be a proof.  We do
+two things to close that gap.  First, we evaluate each functional in
+\texttt{flint.arb} interval arithmetic at $256$-bit precision, which
+returns rigorous enclosures rather than floats.  Second, we round each
+enclosure outward to an exact rational with a small denominator.  The
+final inequality $\Phi(1292/1000)<\tau$ is then a comparison of two
+explicit rationals, settled by ordinary integer arithmetic with a
+margin of $307/3{,}190{,}000\approx 9.6\times 10^{-5}$.
+
+\paragraph{Mechanization.}
+The analytic reduction from the master inequality to that integer
+comparison is mechanized in Lean~4
+(\texttt{lean/Sidon/MultiScale.lean}).  The headline theorem closes
+under a single user axiom, namely the three-scale master inequality
+itself; the algebra of the inversion, the slack-soundness statements,
+and the final comparison are all Lean theorems with no \texttt{sorry}.
+A reader who trusts the certifier outputs (Lemmas~\ref{lem:k1}
+through~\ref{lem:a}) and the Lean kernel obtains $C_{1a}\ge 1.292$
+without further human inspection.
+
+\paragraph{Comparison with prior work.}
+The published lower bound of $1.27481$~\cite{MV10} and the announced
+$1.2802$~\cite{CS17} both use combinatorial constructions on the
+primal side or a single-scale dual kernel.  Our improvement comes from
+widening the dual class rather than searching harder within the same
+class; the gain $a$ in~\eqref{eq:S1-a} is what drives the bound, and
+$a$ is essentially $1/S_1$.  The three-scale mixture drops $S_1$ from
+$\approx 87.4$ (single-scale) to $\le 29.841$, a near three-fold
+reduction that propagates directly to the final inequality.
+
+\begin{theorem}[Main result: the PBV Bound]
+\label{thm:main}
+Let $f:\R\to\R$ be nonnegative with
+$\supp(f)\subseteq(-1/4,1/4)$, $\int f>0$, and
+$\|f*f\|_{\Linf}<\infty$.  Then
+\[
+  \frac{\|f*f\|_{\Linf}}{\left(\int f\right)^2}
+  \;\ge\;
+  \frac{1292}{1000}.
+\]
+In particular $C_{1a}\ge 1292/1000=1.292$.
+\end{theorem}
+
+The proof is assembled in Section~\ref{sec:proof}; all numerical
+anchors are reproducible from the accompanying certificate, and a
+Lean~4 mechanization is summarized at the end of
+Section~\ref{sec:proof}.
+
+% ======================================================================
+\section{The Matolcsi--Vinuesa Master Inequality}\label{sec:mv}
+% ======================================================================
+
+We summarize the dual framework of~\cite[\S 3]{MV10}; proofs of the
+four ingredient lemmas and of the resulting quadratic are recorded
+in that reference.  Throughout, $f\in\mathcal{F}$ with $\int f=1$,
+$\widehat{h}(\xi)=\int h(x)e^{-2\pi i\xi x}\,dx$, and
+$M=R(f)=\|f*f\|_{\Linf}$.
+
+\subsection{Admissible Kernels and Multipliers}\label{subsec:mv-defs}
+
+\begin{definition}[Bochner-admissible kernel]
+\label{def:bochner}
+Fix $\delta\in(0,1/4]$ and set $u=1/2+\delta$.  A function
+$K:\R\to\R$ is \emph{Bochner-admissible at scale $\delta$} if
+\begin{enumerate}[label=\textnormal{(K\arabic*)}, leftmargin=2.4em]
+\item $K\ge 0$ a.e.\ on $\R$;
+\item $K(-x)=K(x)$ for every $x\in\R$;
+\item $\supp(K)\subseteq[-\delta,\delta]$ and $\int K=1$;
+\item the periodic Fourier coefficients
+      $\widetilde{K}(j):=\widehat{K}(j/u)$ satisfy
+      $\widetilde{K}(j)\ge 0$ for every $j\in\Z$.
+\end{enumerate}
+We write $K_2:=\|K\|_{L^2(\R)}^2$.
+\end{definition}
+
+\begin{definition}[Admissible cosine multiplier]
+\label{def:multiplier}
+Fix $u$ and $N\in\N$.  A trigonometric polynomial
+$G(x)=\sum_{j=1}^{N}a_j\cos(2\pi jx/u)$ with $a_j\in\R$ is
+\emph{admissible} if there is $m_G>0$ with $G(x)\ge m_G$ for every
+$x\in[0,1/4]$.  Define
+\begin{equation}\label{eq:S1-a}
+  S_1 \;=\; \sum_{j=1}^{N}\frac{a_j^{\,2}}{\widetilde{K}(j)},
+  \qquad
+  a \;=\; \frac{4}{u}\cdot\frac{m_G^{\,2}}{S_1}.
+\end{equation}
+\end{definition}
+
+\subsection{The Master Inequality and Its Inversion}\label{subsec:mv-master}
+
+\begin{theorem}[Master inequality, $z_1$-free form]
+\label{thm:mv-master}
+Let $K$ be Bochner-admissible at scale $\delta$, $u=1/2+\delta$,
+and $G$ admissible of degree $N$ with constant $m_G$, defining $S_1$
+and $a$ by~\eqref{eq:S1-a}.  Then for every $f\in\mathcal{F}$ with
+$\int f>0$,
+\begin{equation}\label{eq:master}
+  M \;+\; 1 \;+\; \sqrt{(M-1)(K_2-1)}
+  \;\ge\;
+  \frac{2}{u} \;+\; a.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Matolcsi--Vinuesa~\cite[Eq.~(7), Lemma~3.1]{MV10} prove the sharper
+form
+\begin{equation}\label{eq:mv-sharp}
+  M + 1 + 2 z_1 k_1
+  + \sqrt{(M-1-2z_1^{\,2})(K_2-1-2k_1^{\,2})}
+  \;\ge\;
+  \frac{2}{u} + a,
+\end{equation}
+where $k_1=\widetilde{K}(1)$ and $z_1=\widehat{f}(1/u)$.  Their proof
+uses the arcsine kernel only through Bochner-admissibility
+(Definition~\ref{def:bochner}); the same derivation therefore applies
+to any admissible $K$, in particular to the convex
+combination~$\Kms$.  The radicand of~\eqref{eq:mv-sharp} is nonnegative
+by the same Parseval-type bounds as in~\cite[\S 3]{MV10}: Bessel's
+inequality gives $2z_1^{\,2}\le M-1$ for $f\in\mathcal{F}$ with
+$\int f=1$, and $2k_1^{\,2}\le K_2-1$ holds for any Bochner-admissible
+$K$ with $\int K=1$.  Inequality~\eqref{eq:master} then follows from
+\eqref{eq:mv-sharp} by the Cauchy--Schwarz estimate
+$\sqrt{ac}+\sqrt{bd}\le\sqrt{(a+b)(c+d)}$ applied to the nonnegative
+quadruple
+$(a,b,c,d)=(2z_1^{\,2},\,M-1-2z_1^{\,2},\,2k_1^{\,2},\,K_2-1-2k_1^{\,2})$.
+\end{proof}
+
+\begin{lemma}[Quadratic inversion]
+\label{lem:inversion}
+For fixed $K_2\ge 1$, the function
+\[
+  \Phi(M)\;:=\;M+1+\sqrt{(M-1)(K_2-1)}
+\]
+is continuous and strictly increasing on $[1,\infty)$ with
+$\Phi(1)=2$.  For any $\tau\ge 2$ the equation $\Phi(M)=\tau$ has a
+unique solution $M_*\in[1,\infty)$, and every $f\in\mathcal{F}$ with
+$\Phi(R(f))\ge\tau$ satisfies $R(f)\ge M_*$.  In particular, with
+$\tau=2/u+a$, $C_{1a}\ge M_*$.
+\end{lemma}
+
+\begin{proof}
+For $M>1$, $\Phi'(M)=1+1/2\sqrt{(K_2-1)/(M-1)}>1$, so $\Phi$ is
+strictly increasing on $(1,\infty)$ and continuous at $M=1$ from the
+right.  Existence, uniqueness, and the conclusion follow from the
+intermediate value theorem and Theorem~\ref{thm:mv-master}.
+\end{proof}
+
+The MV~2010 single-arcsine optimum yields $M_*\approx 1.2748$.  The
+remainder of the paper raises $M_*$ by enlarging the kernel class.
+
+% ======================================================================
+\section{The Three-Scale Arcsine Kernel}\label{sec:kernel}
+% ======================================================================
+
+\subsection{Single-Scale Arcsine and the Sonine Identity}\label{subsec:kernel-single}
+
+For $\delta\in(0,1/4]$, let
+\[
+  \eta_\delta(x)
+  \;:=\;
+  \frac{1}{\delta}\cdot
+  \frac{2/\pi}{\sqrt{1-(2x/\delta)^2}}\,
+  \mathbf{1}_{|x|<\delta/2}
+\]
+denote the arcsine density on $(-\delta/2,\delta/2)$ (the
+pushforward of the arcsine density on $(-1/2,1/2)$ under
+$u\mapsto\delta u$).  By the Sonine--Bessel
+identity~\cite[\S 13.46]{Watson}, $\widehat{\eta_\delta}(\xi)
+=J_0(\pi\delta\xi)$.  The \emph{arcsine kernel at scale $\delta$} is the
+auto-convolution
+\[
+  \Karc(\delta;\cdot)
+  \;:=\;
+  \eta_\delta*\eta_\delta,
+\]
+which is nonnegative and even, supported on $[-\delta,\delta]$, with
+$\int\Karc(\delta;\cdot)=(\int\eta_\delta)^2=1$.  The convolution
+theorem then gives
+\begin{equation}\label{eq:sonine}
+  \widehat{\Karc(\delta;\cdot)}(\xi)
+  \;=\;
+  \widehat{\eta_\delta}(\xi)^{2}
+  \;=\; J_0(\pi\delta\xi)^2
+  \;\ge\; 0.
+\end{equation}
+In particular each $\Karc(\delta;\cdot)$ is Bochner-admissible at
+scale $\delta$, with periodic coefficients
+$\widetilde{\Karc}(\delta;j)=J_0(\pi j\delta/u)^2$ for $u\ge 2\delta$.
+
+\subsection{The Convex Combination}\label{subsec:kernel-combo}
+
+\begin{definition}[Three-scale kernel]
+\label{def:Kms}
+Fix
+\begin{equation}\label{eq:anchors}
+  (\delta_1,\delta_2,\delta_3)
+  \;=\;
+  \bigl(\tfrac{138}{1000},\tfrac{55}{1000},\tfrac{25}{1000}\bigr),
+  \qquad
+  (\lambda_1,\lambda_2,\lambda_3)
+  \;=\;
+  \bigl(\tfrac{85}{100},\tfrac{10}{100},\tfrac{5}{100}\bigr),
+\end{equation}
+and set $u=1/2+\delta_1=638/1000$.  The
+\emph{three-scale arcsine kernel} is
+\[
+  \Kms(x)
+  \;:=\;
+  \sum_{i=1}^{3}\lambda_i\,\Karc(\delta_i;x),
+  \qquad x\in\R.
+\]
+\end{definition}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccccc}
+  \toprule
+  $i$ & $\delta_i$ & $\lambda_i$ & $u$ & $N$ \\
+  \midrule
+  $1$ & $138/1000$ & $85/100$ & \multirow{3}{*}{$638/1000$} & \multirow{3}{*}{$200$} \\
+  $2$ & $55/1000$  & $10/100$ & & \\
+  $3$ & $25/1000$  & $5/100$  & & \\
+  \bottomrule
+\end{tabular}
+\caption{Parameters of the three-scale arcsine kernel and the cosine
+multiplier.  The period $u$ and the cosine degree $N$ are shared
+across the three scales.}
+\label{tab:kernel-params}
+\end{table}
+
+\subsection{Admissibility}\label{subsec:kernel-admissibility}
+
+\begin{theorem}[Admissibility]
+\label{thm:admissibility}
+The kernel $\Kms$ is Bochner-admissible at scale
+$\delta_1=138/1000<1/4$, with periodic coefficients
+\begin{equation}\label{eq:Ktilde}
+  \widetilde{\Kms}(j)
+  \;=\;
+  \sum_{i=1}^{3}\lambda_i\,
+       J_0\!\left(\frac{\pi j\delta_i}{u}\right)^{\!2}
+  \;\ge\; 0,
+  \qquad j\in\Z.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We check conditions (K1)--(K4) of Definition~\ref{def:bochner}.
+\begin{itemize}[leftmargin=2em]
+\item \emph{(K1)~Nonnegativity, (K2)~evenness.}  Each
+  $\lambda_i\Karc(\delta_i;\cdot)\ge 0$ and is even; nonnegative sums
+  of even nonnegative functions are even and nonnegative.
+\item \emph{(K3)~Support and unit mass.}
+  $\supp\Karc(\delta_i;\cdot)\subseteq
+  [-\delta_i,\delta_i]\subseteq[-\delta_1,\delta_1]$ for $i\ge 1$, so
+  $\supp\Kms\subseteq[-\delta_1,\delta_1]$; and
+  $\int\Kms=\sum_i\lambda_i\int\Karc(\delta_i)=\sum_i\lambda_i=1$.
+\item \emph{(K4)~Fourier positivity.}  Linearity of the Fourier
+  transform and~\eqref{eq:sonine} give
+  \[
+    \widehat{\Kms}(\xi)
+    \;=\;
+    \sum_i\lambda_i J_0(\pi\delta_i\xi)^2 \;\ge\; 0,
+  \]
+  hence~\eqref{eq:Ktilde}.\qedhere
+\end{itemize}
+\end{proof}
+
+The motivation is structural: in~\eqref{eq:S1-a}, $S_1$ blows up at
+frequencies $j$ where the single-scale $J_0(\pi j\delta/u)^2$ is close
+to a Bessel zero.  Mixing three scales shifts the zeros of each
+summand, so the sum stays bounded away from zero on $1\le j\le 200$
+(numerically $\min_j\widetilde{\Kms}(j)\ge 2.08\times 10^{-4}$).  This
+drops $S_1$ from $\approx 87.4$ (single-scale) to $\le 29.841$
+(Lemma~\ref{lem:S1}), and proportionally raises the gain~$a$.
+
+% ======================================================================
+\section{The Rigorous Numerical Certificate}\label{sec:cert}
+% ======================================================================
+
+\subsection{The Five Certified Anchors}\label{subsec:cert-anchors}
+
+For the master inequality applied to $(\Kms,G)$ we need rigorous
+bounds on five real functionals.  The cosine multiplier
+$G(x)=\sum_{j=1}^{N}a_j\cos(2\pi jx/u)$ with $N=200$ has rational
+coefficients $a_j\in\Q$ with denominator $10^{8}$, obtained by
+rounding the solution of the convex QP that minimizes
+$\sum_j a_j^{\,2}/\widetilde{\Kms}(j)$ subject to $G\ge 1$ on a
+uniform grid of $5001$ points in $[0, 1/4]$ (solved by MOSEK).  The
+five lemmas below are arb-interval computations~\cite{Flint}; all
+certified outputs are rounded outward to exact rationals.  Only four
+of the five anchors ($K_2$, $S_1$, $m_G$, $a$) enter the
+$z_1$-free form~\eqref{eq:master} used in Section~\ref{sec:proof};
+the kernel-mass moment $k_1$ is recorded because the certifier
+internally uses the sharper inequality~\eqref{eq:mv-sharp} (which
+sharpens $M_{\rm cert}$ from $1.292$ to $\approx 1.29232$ before
+rounding to the rational headline target).
+
+\begin{lemma}[Kernel-mass moment]
+\label{lem:k1}
+\(
+  k_1 \;:=\; \widehat{\Kms}(1)
+  \;=\; \sum_{i=1}^{3}\lambda_i J_0(\pi\delta_i)^2
+  \;\ge\; 9212/10000.
+\)
+\end{lemma}
+
+\begin{proof}
+At $256$-bit precision, \texttt{arb.bessel\_j(0)} evaluated at exact
+rational $\pi\delta_i$ returns balls of radius $<7\times 10^{-77}$;
+the certified sum is $k_1\ge 0.92124658$, with slack
+$\ge 4.6\times 10^{-5}$ above $9212/10000$.
+\end{proof}
+
+\begin{lemma}[Kernel-energy moment]
+\label{lem:K2}
+\(
+  K_2 \;=\; \|\Kms\|_{L^2(\R)}^{2}
+  \;\le\; 47897/10000.
+\)
+\end{lemma}
+
+\begin{proof}
+Split
+$K_2 = 2\int_0^{T}\widehat{\Kms}(\xi)^2\,d\xi
++ 2\int_{T}^{\infty}\widehat{\Kms}(\xi)^2\,d\xi$ with $T=10^{5}$.
+The bulk integral is computed by arb adaptive Gauss--Legendre
+quadrature and certified at $4.78882342\ldots$ with arb radius
+below $10^{-10}$.  For the tail, the standard uniform bound
+$|J_0(z)|^2\le 2/(\pi z)$~\cite[\S 7.21]{Watson} holds for $z\ge 1$;
+since $\xi\ge T=10^{5}$ in the tail forces $z=\pi\delta_i\xi\ge
+\pi(25/1000)(10^{5})\approx 7854$, the bound applies, and applied to
+both Bessel factors gives
+$J_0(\pi\delta_i\xi)^2 J_0(\pi\delta_j\xi)^2
+\le 4/(\pi^4\delta_i\delta_j\xi^2)$, whence
+$\widehat{\Kms}(\xi)^2 = \sum_{i,j}\lambda_i\lambda_j
+   J_0(\pi\delta_i\xi)^2 J_0(\pi\delta_j\xi)^2
+\le 4C^2/(\pi^4\xi^2)$ with
+$C=\sum_i\lambda_i/\delta_i\approx 9.978$.  Integrating
+$\int_T^\infty \xi^{-2}\,d\xi = 1/T$ and doubling for both half-lines,
+$2\int_T^\infty\widehat{\Kms}^2 \le 8C^2/(\pi^4 T) \le 8.19\times 10^{-5}$.
+Summing,
+$K_2\in[4.78882342,\,4.78890519]\subseteq[0,\,47897/10000]$, slack
+$\ge 7.9\times 10^{-4}$.
+\end{proof}
+
+\begin{lemma}[Multiplier denominator]
+\label{lem:S1}
+\(
+  S_1 \;=\;
+  \sum_{j=1}^{200} a_j^{\,2}/\widetilde{\Kms}(j)
+  \;\le\; 29841/1000.
+\)
+\end{lemma}
+
+\begin{proof}
+Each $\widetilde{\Kms}(j)$ is evaluated in arb from~\eqref{eq:Ktilde}
+with radius $<10^{-70}$; dividing exact rational squares $a_j^{\,2}$
+yields a certified sum $S_1\le 29.840907$, slack
+$\ge 9.3\times 10^{-5}$.
+\end{proof}
+
+\begin{lemma}[Pointwise lower bound of $G$]
+\label{lem:mG}
+\(
+  m_G \;:=\; \min_{x\in[0,1/4]}G(x) \;\ge\; 998/1000.
+\)
+\end{lemma}
+
+\begin{proof}
+Partition $[0,1/4]$ into $n=32768$ closed cells of half-width
+$r=1/(8n)\approx 3.81\times 10^{-6}$.  On each cell centred at $c$,
+the second-order Taylor expansion of $G$ yields the rigorous arb
+enclosure
+\[
+  G(\mathrm{cell})\;\subseteq\;
+    G(c)\;+\;G'(c)\cdot[-r,r]\;+\;G''(\mathrm{cell})\cdot[-r^{2}/2,\,r^{2}/2],
+\]
+with $G''$ evaluated as an arb interval over the entire cell from
+\[
+  G''(x) \;=\; -\sum_{j=1}^{200}a_j\,(2\pi j/u)^{2}\cos(2\pi jx/u).
+\]
+The minimum of the lower endpoints over all $n$ cells gives the
+certified bound $m_G\ge 0.99997987$, slack $\ge 1.9\times 10^{-3}$
+above $998/1000$.
+\end{proof}
+
+\begin{lemma}[Gain functional]
+\label{lem:a}
+\(
+  a \;=\; (4/u)\cdot m_G^{\,2}/S_1 \;\ge\; 20925/100000.
+\)
+\end{lemma}
+
+\begin{proof}
+Substituting the rational anchors of
+Lemmas~\ref{lem:S1} and~\ref{lem:mG} into the definition of $a$
+in~\eqref{eq:S1-a},
+\[
+  a
+  \;\ge\;
+  \frac{4}{638/1000}\cdot\frac{(998/1000)^{2}}{29841/1000}
+  \;=\;
+  \frac{4000\cdot 998^{2}}{638\cdot 29841\cdot 10^{3}}
+  \;=\;
+  \frac{3984016000}{19038558000}
+  \;=\; 0.20926\ldots,
+\]
+hence $a\ge 20925/100000$, slack $\ge 1.0\times 10^{-5}$.  (The
+underlying arb interval evaluation returns the tighter enclosure
+$a\ge 0.21009214$ when $m_G$ and $S_1$ are coupled rather than
+rounded separately; we use only the looser rational floor in what
+follows.)
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccc}
+  \toprule
+  Functional & Symbol & Direction & Rational bound & Decimal \\
+  \midrule
+  Kernel-mass moment   & $k_1$ & $\ge$ & $9212/10000$    & $0.9212$ \\
+  Kernel-energy        & $K_2$ & $\le$ & $47897/10000$   & $4.7897$ \\
+  Multiplier denominator & $S_1$ & $\le$ & $29841/1000$  & $29.841$ \\
+  Multiplier minimum   & $m_G$ & $\ge$ & $998/1000$      & $0.998$  \\
+  Gain                 & $a$   & $\ge$ & $20925/100000$  & $0.20925$ \\
+  \bottomrule
+\end{tabular}
+\caption{Certified rational anchors for the three-scale kernel
+$\Kms$ at parameters~\eqref{eq:anchors} with $u=638/1000$ and the
+$200$-cosine multiplier $G$.}
+\label{tab:anchors}
+\end{table}
+
+\subsection{Rescaling Invariance}\label{subsec:cert-rescaling}
+
+Although the proof of Lemma~\ref{lem:mG}
+produces $m_G\ge 998/1000$, the master inequality is invariant
+under $G\mapsto G/m_G$: rescaling multiplies both $S_1$ and $m_G^{\,2}$
+by $1/m_G^{\,2}$, leaving $a$ unchanged.  The certified rational
+bound $m_G\ge 998/1000$ is therefore sufficient for the conclusion,
+and the lemma is not sharpened further.
+
+\subsection{Reproducibility}\label{subsec:cert-repro}
+
+All five anchors are produced by the reproducible script and the
+associated certificate JSON: each entry is the outward-rounded enclosure
+returned by \texttt{flint.arb} at $256$-bit precision; full pipeline
+inputs (the rational $a_j$, the bisection schedule, the
+quadrature tolerance) and the auditor logs are included in the
+accompanying repository.
+
+% ======================================================================
+\section{Proof of the Main Theorem}\label{sec:proof}
+% ======================================================================
+
+\subsection{The Strict-Failure Witness}\label{subsec:proof-witness}
+
+We close the master inequality using the anchors of
+Table~\ref{tab:anchors}.  Set $\tau:=2/u+a$ and recall
+$\Phi(M):=M+1+\sqrt{(M-1)(K_2-1)}$ from Lemma~\ref{lem:inversion}.
+With the certified rationals from Table~\ref{tab:anchors},
+\[
+  \tau
+  \;\ge\; \frac{2}{638/1000} + \frac{20925}{100000}
+  \;=\; 3.134796\ldots + 0.20925
+  \;=\; 3.344046\ldots
+\]
+
+\begin{proposition}[Strict failure at the rational witness]
+\label{prop:fail}
+With $K_2\le 47897/10000$ and $\tau=2/u+a\ge 2000/638+20925/10^{5}$,
+\begin{equation}\label{eq:strict}
+  \Phi(1292/1000) \;\le\; 3.34395
+  \;<\; 3.344046\ldots \;\le\; \tau,
+\end{equation}
+with margin $\tau-\Phi(1292/1000)\;\ge\; 9.6\times 10^{-5}$.
+\end{proposition}
+
+\begin{proof}
+At $M=1292/1000$, using the certified upper bound $K_2\le 47897/10000$,
+\[
+  (M-1)(K_2-1) \;\le\; \frac{292}{1000}\cdot\frac{37897}{10000}
+  \;=\; \frac{11065924}{10^{7}}
+  \;=\; 1.1065924,
+\]
+and since $\Phi$ is increasing in $K_2$, this upper bound transfers
+to $\Phi(M)$.  The rational bound
+$(105195/10^{5})^{2}=11065988025/10^{10}>11065924/10^{7}$
+gives $\sqrt{(M-1)(K_2-1)}\le 105195/10^{5}=1.05195$, so
+\[
+  \Phi(1292/1000)
+  \;\le\; \frac{1292}{1000} + 1 + \frac{105195}{10^{5}}
+  \;=\; \frac{66879}{20000}
+  \;=\; 3.34395.
+\]
+Combining with $\tau\ge 4267003/1276000=3.344046\ldots$ yields
+\[
+  \tau-\Phi(1292/1000)
+  \;\ge\; \frac{4267003}{1276000} - \frac{66879}{20000}
+  \;=\; \frac{307}{3190000}
+  \;\ge\; 9.6\times 10^{-5}\;>\;0.
+\]
+The conclusion is independently re-certified by an arb cell-search
+bisection at $256$-bit precision, which returns the sharper enclosure
+$\Mcert\ge 1.29215$ when the script's tighter (non-rational) interval
+bounds on $m_G$ and $S_1$ are used.
+\end{proof}
+
+\subsection{Assembly}\label{subsec:proof-assembly}
+
+\begin{theorem}[Restatement of Theorem~\ref{thm:main}]
+\label{thm:main-restated}
+Let $f\in\mathcal{F}$ with $\|f*f\|_{\Linf}<\infty$.  Then
+$R(f)\ge 1292/1000$, and hence $C_{1a}\ge 1292/1000$.
+\end{theorem}
+
+\begin{proof}
+By homogeneity assume $\int f=1$, so $M:=R(f)=\|f*f\|_{\Linf}\ge 1$.
+We assemble in five steps.
+\begin{itemize}[leftmargin=2em]
+\item[(1)] \emph{Admissibility.}  By Theorem~\ref{thm:admissibility},
+$\Kms$ is Bochner-admissible at scale $\delta_1=138/1000$, with
+period $u=638/1000$.
+\item[(2)] \emph{Anchors.}  By Lemmas~\ref{lem:k1}--\ref{lem:a}, the
+multiplier $G$ and the five rational bounds
+$k_1\ge 9212/10000$, $K_2\le 47897/10000$, $S_1\le 29841/1000$,
+$m_G\ge 998/1000$, and $a\ge 20925/100000$ hold.
+\item[(3)] \emph{Master inequality.}  Theorem~\ref{thm:mv-master}
+applied to $(\Kms,G)$ yields $\Phi(M)\ge \tau$.  Since $\Phi$ is
+increasing in $K_2$, replacing the unknown $K_2$ by the certified
+upper bound $47897/10000$ overestimates $\Phi$; the strict failure
+$\Phi(M_0)<\tau$ at the witness $M_0=1292/1000$ therefore implies
+$\Phi(R(f))>\Phi(M_0)$, which (by Lemma~\ref{lem:inversion}) forces
+$R(f)>M_0$.
+\item[(4)] \emph{Strict failure.}  By Proposition~\ref{prop:fail},
+$\Phi(1292/1000)<\tau$.
+\item[(5)] \emph{Conclusion.}  Strict monotonicity of $\Phi$ on
+$[1,\infty)$ (Lemma~\ref{lem:inversion}) together with (3) and (4)
+forces $M>1292/1000$.  Taking the infimum over $f\in\mathcal{F}$
+gives $C_{1a}\ge 1292/1000=1.292$.\qedhere
+\end{itemize}
+\end{proof}
+
+\subsection{Lean Formalization}\label{subsec:proof-lean}
+
+The analytic chain above is mechanized in Lean~4 in the file
+\texttt{lean/Sidon/MultiScale.lean}, which builds cleanly under
+Mathlib~\cite{Mathlib,Lean} with zero \texttt{sorry} tactics and
+produces the headline theorem.  The headline theorem reaches exactly
+\emph{one} user axiom in its dependency closure:
+\texttt{MV\_master\_inequality\_for\_extremiser}, the three-scale
+extension of \cite[Lemma~3.1]{MV10} (whose proof is a verbatim repeat of
+the single-scale Fourier reduction with each $J_0(\pi\delta\xi)^2$
+replaced by $\sum_i\lambda_i J_0(\pi\delta_i\xi)^2$), stated with the
+rational slacks $\texttt{K2UpperQ}=47897/10000$ and
+$\texttt{gainLowerQ}=20925/100000$ substituted for $K_2$ and $a$
+respectively.  This substitution is sound because the master inequality
+is monotone in $K_2-1$ and $a$, and the slack rationals are true bounds
+on the analytic functionals: those bounds (Lemmas~\ref{lem:k1}--\ref{lem:a})
+are discharged externally by the \texttt{flint.arb} certifier in
+\texttt{delsarte\_dual/grid\_bound\_alt\_kernel/}.
+
+Six further statements are Lean \emph{theorems}: the algebraic
+inversion \texttt{master\_inequality\_M\_lower} (corresponding to
+Proposition~\ref{prop:fail}, proved by case analysis on $M\le 1$ versus
+$M>1$ using \texttt{Real.sqrt} monotonicity) and the five
+slack-soundness theorems \texttt{K\_two\_upper\_bound},
+\texttt{k\_one\_lower\_bound}, \texttt{S\_one\_upper\_bound},
+\texttt{min\_G\_lower\_bound}, \texttt{gain\_lower\_bound}, each a
+one-line \texttt{norm\_num} verification that the rational slack is on
+the correct side of the certifier-reported decimal recorded in
+Lemmas~\ref{lem:k1}--\ref{lem:a}.
+
+An explicit finiteness hypothesis $\|f*f\|_{\Linf}<\infty$ appears in
+the Lean statement because of the \texttt{ENNReal.toReal} encoding;
+this is harmless for the infimum.  The support hypothesis is stated
+as $\texttt{Function.support}\,f\subseteq(-1/4,1/4)$, i.e.\
+$f$ vanishes pointwise off $(-1/4,1/4)$; for any
+$f\in\mathcal{F}$ in the sense of Section~\ref{subsec:intro-constant},
+its representative obtained by zero-extending off the essential
+support satisfies the pointwise condition and has the same
+autoconvolution ratio, so the Lean bound transfers to the
+$L^1$-equivalence-class formulation of $C_{1a}$ without loss.
+
+% ======================================================================
+\section*{Acknowledgments}
+% ======================================================================
+
+We thank M\'at\'e Matolcsi and Carlos Vinuesa, whose dual
+framework~\cite{MV10} is the foundation of this argument; and
+Alexander Cloninger and Stefan Steinerberger~\cite{CS17}, whose
+announced bound of $1.2802$ motivated this line of work.  The
+formalization rests on the Lean~4 theorem prover~\cite{Lean} and the
+Mathlib library~\cite{Mathlib}; the certifier rests on
+FLINT/Arb~\cite{Flint}.  We thank the authors and contributors of
+each.
+
+
+% ======================================================================
+% References
+% ======================================================================
+
+\begin{thebibliography}{ABC10}
+
+\bibitem[GGTW26]{AlphaEvolve25}
+Bogdan Georgiev, Javier G\'omez-Serrano, Terence Tao, and Adam~Zsolt
+Wagner, \emph{Mathematical exploration and discovery at scale},
+preprint, 2026, arXiv:2511.02864,
+\url{https://arxiv.org/abs/2511.02864}.
+
+\bibitem[CS17]{CS17}
+Alexander Cloninger and Stefan Steinerberger, \emph{On suprema of
+autoconvolutions with an application to Sidon sets}, Proc. Amer. Math.
+Soc.\ \textbf{145} (2017), no.~8, 3191--3200, arXiv:1403.7988.
+
+\bibitem[ET41]{ET41}
+Paul Erd\H{o}s and P\'al Tur\'an, \emph{On a problem of Sidon in additive
+number theory, and on some related problems}, J. London Math. Soc.
+\textbf{s1-16} (1941), no.~4, 212--215.
+
+\bibitem[Joh17]{Flint}
+Fredrik Johansson, \emph{Arb: efficient arbitrary-precision midpoint-radius
+interval arithmetic}, IEEE Trans. Comput. \textbf{66} (2017), no.~8,
+1281--1292.  See \url{http://arblib.org/}.
+
+\bibitem[dMU21]{Lean}
+Leonardo de Moura and Sebastian Ullrich, \emph{The Lean~4 theorem prover
+and programming language}, in: Automated Deduction --- CADE~28, LNCS
+\textbf{12699}, Springer, 2021, pp.~625--635.
+
+\bibitem[MO09]{MO2009}
+Greg Martin and Kevin O'Bryant, \emph{The supremum of autoconvolutions,
+with applications to additive number theory}, Illinois J. Math.
+\textbf{53} (2009), no.~1, 219--235, arXiv:0807.5121.
+
+\bibitem[MV10]{MV10}
+M\'at\'e Matolcsi and Carlos Vinuesa, \emph{Improved bounds on the supremum
+of autoconvolutions}, J. Math. Anal. Appl. \textbf{372} (2010), no.~2,
+439--447, arXiv:0907.1379.
+
+\bibitem[The20]{Mathlib}
+The mathlib community, \emph{The Lean mathematical library}, Proc.
+9th ACM SIGPLAN Int. Conf. Certified Programs and Proofs, 2020,
+pp.~367--381.
+
+\bibitem[Wat44]{Watson}
+George Neville Watson, \emph{A Treatise on the Theory of Bessel
+Functions}, 2nd ed., Cambridge University Press, 1944.
+
+\end{thebibliography}
+
+\end{document}
