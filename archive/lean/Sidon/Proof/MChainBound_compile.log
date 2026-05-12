@@ -1,0 +1,159 @@
+═══════════════════════════════════════════════════════════════════════════════
+M-Chain Bound — Lean Compile Log
+═══════════════════════════════════════════════════════════════════════════════
+
+FINAL STATUS: BUILD SUCCESS
+
+Toolchain:  leanprover/lean4:v4.24.0
+Mathlib:    f897ebcf72cd16f89ab4577d0c826cd14afaafc7  (per lakefile.lean)
+
+Build target: Sidon.Proof.MChainBound
+
+Last build: 30s, BUILT successfully (7357 jobs total).
+
+  [7357/7357] Built Sidon.Proof.MChainBound (30s)
+  Build completed successfully (7357 jobs).
+
+═══════════════════════════════════════════════════════════════════════════════
+SORRIES / AXIOMS DECLARED IN MChainBound.lean
+═══════════════════════════════════════════════════════════════════════════════
+
+NEW AXIOMS:  0
+NEW SORRIES: 0
+
+(Verified by grep: zero matches for "sorry" or "axiom" in MChainBound.lean.)
+
+═══════════════════════════════════════════════════════════════════════════════
+CONTENT SUMMARY
+═══════════════════════════════════════════════════════════════════════════════
+
+LEMMAS / THEOREMS PROVEN (sorry-free):
+
+  Definitions:
+    MChain.b_vec                  - single-conv b(k) vector (= BB_W with l=2)
+    MChain.Delta_b                - LP closed-form Delta_b(k) (= Delta_BB l=2)
+    MChain.n_pairs                - # pairs with i+j=k (= ell_int_arr)
+    MChain.pair_set               - pair set {(i,j) : i+j=k} (= window_pair_set l=2)
+    MChain.LB                     - M-chain lower bound (per-position)
+
+  Helper theorems:
+    MChain.icc_singleton          - Icc s (s+l-2) = {s} when l=2
+    MChain.b_vec_eq               - b(k)_j = sum_i [i+j=k] * c_i
+    MChain.pair_set_eq            - pair_set = window_pair_set k 2
+    MChain.pair_set_eq_filter     - pair_set = filter (i+j=k)
+    MChain.pair_set_card          - |pair_set| = n_pairs(k)
+    MChain.linear_identity_left   - sum_p c(p.1)d(p.2) = sum_j d_j b(k)_j
+    MChain.linear_identity_right  - sum_p d(p.1)c(p.2) = sum_j d_j b(k)_j
+    MChain.conv_decomposition     - sum a_i a_j = sum c_i c_j + 2L + Q
+    MChain.discrete_autoconv_eq_pair_sum - DA(a,k) = sum a_i a_j over pair_set
+
+  Core mathematical lemmas (matching m_chain_proof.md):
+    MChain.lemma_A   - Lemma A (convolution at breakpoint, integer c).
+                       Re-exports convolution_at_grid_point from StepFunction.lean.
+    MChain.lemma_B   - Lemma B (LP closed-form lower bound).
+                       sum_j delta_j * b(k)_j >= -Delta_b(k) under |delta|<=1, sum=0.
+                       Proof: invoke lp_closed_form_le on -delta with h=1.
+    MChain.lemma_C   - Lemma C (quadratic bound).
+                       |sum_{i+j=k} delta_i delta_j| <= n_pairs(k) under |delta|<=1.
+                       Both lemma_C_abs (absolute-value) and lemma_C (lower-bound).
+    MChain.lemma_D   - Lemma D (cell polytope subset P_d^c subset P_d).
+                       delta_j >= -min(c_j,1), delta_j <= 1 ==> |delta_j| <= 1.
+
+  Main theorems:
+    MChain.core_lower_bound       - Integer-mass cell:
+                                    sum a_i a_j >= sum c_i c_j - 2 Delta_b - n_pairs.
+    MChain.main_per_position      - TV-style:
+                                    LB(k) <= (1/(4n)/m^2) * sum a_i a_j.
+    MChain.main_DA_form           - DA-style:
+                                    LB(k) <= DA(a,k) / (4 n m^2).
+    MChain.LB_step_at_c           - Pointwise at integer c (delta=0):
+                                    LB(k) <= (step * step)(t_k).
+    MChain.cell_prune_per_position - Cell-prune soundness:
+                                    LB(k) > c_target  ==>  DA(a,k)/(4n m^2) > c_target.
+
+  Sanity examples:
+    n_pairs 1 1 = 2,  n_pairs 1 0 = 1,  n_pairs 1 2 = 1.
+
+═══════════════════════════════════════════════════════════════════════════════
+ALIGNMENT WITH m_chain_proof.md AND _smoke_M_chain.py
+═══════════════════════════════════════════════════════════════════════════════
+
+m_chain_proof.md sec.1 (Lemma A): MChain.lemma_A     [via convolution_at_grid_point]
+m_chain_proof.md sec.2 (Lemma B): MChain.lemma_B     [via lp_closed_form_le]
+m_chain_proof.md sec.3 (Lemma C): MChain.lemma_C, lemma_C_abs
+m_chain_proof.md sec.4 (Lemma D): MChain.lemma_D
+m_chain_proof.md sec.5 (Main):    MChain.core_lower_bound, MChain.main_DA_form,
+                                  MChain.cell_prune_per_position
+
+Python:
+  _smoke_M_chain.py:_b_vec      <->  MChain.b_vec  (proved equal up to BB_W def)
+  _smoke_M_chain.py:_delta_b    <->  MChain.Delta_b  (= Delta_BB n c k 2)
+  _smoke_M_chain.py:_n_pairs    <->  MChain.n_pairs  (= ell_int_arr n k)
+  _smoke_M_chain.py:prune_M_one <->  MChain.cell_prune_per_position
+  Hand-check c=(40,40), k=1, LB=1.99875: matches MChain.LB definition.
+
+═══════════════════════════════════════════════════════════════════════════════
+INTEGRATION POINTS
+═══════════════════════════════════════════════════════════════════════════════
+
+The file imports:
+  Mathlib, Sidon.Defs, Sidon.Proof.Foundational, Sidon.Proof.StepFunction,
+  Sidon.Proof.WRefinedDefs, Sidon.Proof.TightDiscretizationBound,
+  Sidon.Proof.PostFilterF.
+
+Key reuse:
+  - lp_closed_form_le  (from PostFilterF.lean)         -> MChain.lemma_B
+  - BB_W, Delta_BB     (from PostFilterF.lean)         -> MChain.b_vec, Delta_b
+  - ell_int_arr, ell_int_arr_eq_card  (TightDiscretizationBound.lean)
+  - window_pair_set    (TightDiscretizationBound.lean) -> MChain.pair_set
+  - convolution_at_grid_point  (StepFunction.lean)     -> MChain.lemma_A
+  - discrete_autoconvolution   (Sidon.Defs.lean)
+
+The file does NOT yet wire into the master Sidon.Proof index - to do so,
+add 'import Sidon.Proof.MChainBound' to lean/Sidon/Proof.lean.
+
+═══════════════════════════════════════════════════════════════════════════════
+ITERATION HISTORY
+═══════════════════════════════════════════════════════════════════════════════
+
+Iteration 1: 4 errors (~5 min compile time).
+  - Pi.neg_apply rewrites in lemma_B failed.
+  - "convert this using 2" closed the goal early in core_lower_bound.
+  - field_simp rewrite shape mismatch in main_DA_form.
+
+Iteration 2: 1 error.
+  - h_neg_sum rewrite chain still wrong (sum_neg_distrib direction).
+
+Iteration 3: 0 errors.
+  - Build succeeded in 30s.
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT REMAINS (out of scope for this file)
+═══════════════════════════════════════════════════════════════════════════════
+
+The file proves the full M-chain mathematical core. What remains for a
+publication-grade Lean formalisation:
+
+1. M-chain in CONTINUOUS form for arbitrary cell variable a:
+   Prove that for real a (not integer c), there exists a step function
+   step_function_real n m a with the same convolution-at-breakpoint
+   property; then (step_function_real * step_function_real)(t_k) >= LB(k)
+   follows from MChain.main_per_position.
+
+   Currently: only step_function n m c (integer-c) is proven via
+   convolution_at_grid_point. The bridge to real a is straightforward
+   but requires re-running the measure-theoretic lemmas in
+   StepFunction.lean for real heights.  Out of scope here.
+
+2. Cascade integration: chaining MChain.cell_prune_per_position into the
+   CascadePruned inductive predicate from Sidon.Defs. This is a
+   straightforward case-split on direct vs. refine - a one-page wrap
+   in a separate file.
+
+3. Step-vs-continuous gap (m_chain_proof.md sec.7a): proving that step
+   pruning implies continuous f pruning. This is the open math problem
+   discussed in the proof document, not a Lean formalisation gap.
+
+═══════════════════════════════════════════════════════════════════════════════
+END
+═══════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,171 @@
+[2026-05-09T19:07:56] [+   0.0s] F5_de_branges probe START
+[2026-05-09T19:07:56] [+   0.0s] Sanity check: (f*f) for box function, expect ~2.0
+[2026-05-09T19:07:56] [+   0.1s]   box test: max(f*f) ~ 4.6208, expected 2.0
+[2026-05-09T19:07:56] [+   0.1s]   box test: (f*f)(0) = 4.1253
+[2026-05-09T19:07:56] [+   0.1s] --- SDP at N = 4 ---
+[2026-05-09T19:08:02] [+   5.6s] build_and_solve_sdp: N=4, alpha=0.25, solver=MOSEK
+[2026-05-09T19:08:02] [+   5.6s]   cos(2 pi alpha) = 0.000000
+[2026-05-09T19:08:02] [+   5.7s]   problem assembled.  variables: 305
+[2026-05-09T19:08:02] [+   5.7s]   num constraints: 88
+[2026-05-09T19:08:02] [+   5.7s]   solving with MOSEK...
+[2026-05-09T19:08:03] [+   6.9s]   solver finished in 1.1s,  status=optimal,  M=0.9999999924086476
+[2026-05-09T19:08:03] [+   6.9s]   N=4: M = 1.000000,  status = optimal, t = 1.1s
+[2026-05-09T19:08:03] [+   6.9s] --- SDP at N = 6 ---
+[2026-05-09T19:08:03] [+   6.9s] build_and_solve_sdp: N=6, alpha=0.25, solver=MOSEK
+[2026-05-09T19:08:03] [+   6.9s]   cos(2 pi alpha) = 0.000000
+[2026-05-09T19:08:03] [+   7.1s]   problem assembled.  variables: 621
+[2026-05-09T19:08:03] [+   7.1s]   num constraints: 148
+[2026-05-09T19:08:03] [+   7.1s]   solving with MOSEK...
+[2026-05-09T19:08:05] [+   8.9s]   solver finished in 1.8s,  status=optimal,  M=0.9999999915473871
+[2026-05-09T19:08:05] [+   9.0s]   N=6: M = 1.000000,  status = optimal, t = 1.8s
+[2026-05-09T19:08:05] [+   9.0s] --- SDP at N = 8 ---
+[2026-05-09T19:08:05] [+   9.0s] build_and_solve_sdp: N=8, alpha=0.25, solver=MOSEK
+[2026-05-09T19:08:05] [+   9.0s]   cos(2 pi alpha) = 0.000000
+[2026-05-09T19:08:05] [+   9.3s]   problem assembled.  variables: 1049
+[2026-05-09T19:08:05] [+   9.3s]   num constraints: 224
+[2026-05-09T19:08:05] [+   9.3s]   solving with MOSEK...
+[2026-05-09T19:08:09] [+  12.9s]   solver finished in 3.6s,  status=optimal,  M=0.9999999998557367
+[2026-05-09T19:08:09] [+  13.0s]   N=8: M = 1.000000,  status = optimal, t = 3.6s
+[2026-05-09T19:08:09] [+  13.0s] --- SDP at N = 10 ---
+[2026-05-09T19:08:09] [+  13.0s] build_and_solve_sdp: N=10, alpha=0.25, solver=MOSEK
+[2026-05-09T19:08:09] [+  13.0s]   cos(2 pi alpha) = 0.000000
+[2026-05-09T19:08:10] [+  13.7s]   problem assembled.  variables: 1589
+[2026-05-09T19:08:10] [+  13.7s]   num constraints: 316
+[2026-05-09T19:08:10] [+  13.7s]   solving with MOSEK...
+[2026-05-09T19:08:14] [+  18.4s]   solver finished in 4.7s,  status=optimal,  M=0.9999999999999519
+[2026-05-09T19:08:14] [+  18.4s]   N=10: M = 1.000000,  status = optimal, t = 4.7s
+[2026-05-09T19:08:14] [+  18.4s] === Final results ===
+[2026-05-09T19:08:14] [+  18.4s] {'N': 4, 'M': 0.9999999924086476, 'status': 'optimal', 'time_s': 1.1256792545318604}
+[2026-05-09T19:08:14] [+  18.5s] {'N': 6, 'M': 0.9999999915473871, 'status': 'optimal', 'time_s': 1.825587511062622}
+[2026-05-09T19:08:14] [+  18.5s] {'N': 8, 'M': 0.9999999998557367, 'status': 'optimal', 'time_s': 3.6220953464508057}
+[2026-05-09T19:08:14] [+  18.5s] {'N': 10, 'M': 0.9999999999999519, 'status': 'optimal', 'time_s': 4.73004412651062}
+[2026-05-09T19:08:14] [+  18.5s] DONE. results -> C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\F5_de_branges\results.json
+[2026-05-09T19:08:14] [+  18.5s] verdict: F5: SDP at best N gave M = 1.0000, below 1.2802 LB.  Lift drops rank-1, relaxation too loose.
+[2026-05-09T19:11:17] [+   0.0s] F5_de_branges probe START.  Approach: arc-decomposition parametrisation + local search.
+[2026-05-09T19:11:17] [+   0.0s] Sanity check on box function:
+[2026-05-09T19:11:17] [+   0.0s]   box: ||f*f||_inf ~ 2.0050, expected 2.0
+[2026-05-09T19:11:17] [+   0.0s] Sanity check on uniform on full circle (NOT supported on [-1/4,1/4], should give 1):
+[2026-05-09T19:11:17] [+   0.0s] --- N = 3 ---
+[2026-05-09T19:11:17] [+   0.0s]   random search (200 trials) ...
+[2026-05-09T19:11:18] [+   0.1s]   N=3 random best ||f*f||_inf = 1.79217
+[2026-05-09T19:11:18] [+   0.1s]   local optimisation (10 starts) ...
+[2026-05-09T19:11:19] [+   1.4s]   start 0: improved to 1.68557
+[2026-05-09T19:11:22] [+   4.6s]   start 4: improved to 1.66308
+[2026-05-09T19:11:27] [+   9.4s]   N=3 local-opt best ||f*f||_inf = 1.66308
+[2026-05-09T19:11:27] [+   9.4s] --- N = 5 ---
+[2026-05-09T19:11:27] [+   9.4s]   random search (200 trials) ...
+[2026-05-09T19:11:27] [+   9.5s]   N=5 random best ||f*f||_inf = 1.85468
+[2026-05-09T19:11:27] [+   9.5s]   local optimisation (10 starts) ...
+[2026-05-09T19:11:28] [+  10.4s]   start 0: improved to 1.78281
+[2026-05-09T19:11:29] [+  11.1s]   start 1: improved to 1.67007
+[2026-05-09T19:11:31] [+  13.1s]   start 3: improved to 1.64973
+[2026-05-09T19:11:37] [+  19.7s]   N=5 local-opt best ||f*f||_inf = 1.64973
+[2026-05-09T19:11:37] [+  19.7s] --- N = 8 ---
+[2026-05-09T19:11:37] [+  19.7s]   random search (200 trials) ...
+[2026-05-09T19:11:37] [+  19.8s]   N=8 random best ||f*f||_inf = 1.79978
+[2026-05-09T19:11:37] [+  19.8s]   local optimisation (10 starts) ...
+[2026-05-09T19:11:39] [+  21.1s]   start 0: improved to 1.67730
+[2026-05-09T19:11:41] [+  23.3s]   start 2: improved to 1.66333
+[2026-05-09T19:11:46] [+  28.6s]   start 6: improved to 1.66180
+[2026-05-09T19:11:47] [+  30.0s]   start 7: improved to 1.63483
+[2026-05-09T19:11:50] [+  32.6s]   N=8 local-opt best ||f*f||_inf = 1.63483
+[2026-05-09T19:11:50] [+  32.6s] --- N = 12 ---
+[2026-05-09T19:11:50] [+  32.6s]   random search (200 trials) ...
+[2026-05-09T19:11:50] [+  32.7s]   N=12 random best ||f*f||_inf = 1.85822
+[2026-05-09T19:11:50] [+  32.7s]   local optimisation (10 starts) ...
+[2026-05-09T19:11:52] [+  34.5s]   start 0: improved to 1.94788
+[2026-05-09T19:11:54] [+  36.2s]   start 1: improved to 1.88132
+[2026-05-09T19:11:55] [+  37.9s]   start 2: improved to 1.70114
+[2026-05-09T19:12:08] [+  51.0s]   N=12 local-opt best ||f*f||_inf = 1.70114
+[2026-05-09T19:12:08] [+  51.0s] === Feasible upper bounds (smaller is closer to UB ~1.5029) ===
+[2026-05-09T19:12:08] [+  51.0s]   N=3: {'random': np.float64(1.79217023515753), 'local_opt': np.float64(1.663084623230492)}
+[2026-05-09T19:12:08] [+  51.0s]   N=5: {'random': np.float64(1.8546839178171486), 'local_opt': np.float64(1.6497266589007447)}
+[2026-05-09T19:12:08] [+  51.0s]   N=8: {'random': np.float64(1.799780844914569), 'local_opt': np.float64(1.6348349476467852)}
+[2026-05-09T19:12:08] [+  51.0s]   N=12: {'random': np.float64(1.8582180064547613), 'local_opt': np.float64(1.7011409354837135)}
+[2026-05-09T19:12:08] [+  51.0s] DONE.  best_lb = 1.0, best_feasible_upper = 1.6348349476467852
+[2026-05-09T19:12:08] [+  51.0s] verdict: F5 (de Branges/Paley-Wiener/Krein-Nudelman): natural Shor SDP relaxation in Fourier moments gives the trivial LB of 1.0; the autocorrelation lift drops rank-1 trivially so the relaxation decouples positivity of f from the bound on f*f.  No improvement on 1.2802.
+[2026-05-09T19:14:10] [+   0.0s] F5_de_branges probe START.  Approach: arc-decomposition parametrisation + local search.
+[2026-05-09T19:14:10] [+   0.0s] Sanity check on box function:
+[2026-05-09T19:14:10] [+   0.0s]   box: ||f*f||_inf ~ 2.0050, expected 2.0
+[2026-05-09T19:14:10] [+   0.0s] Sanity check on uniform on full circle (NOT supported on [-1/4,1/4], should give 1):
+[2026-05-09T19:14:10] [+   0.0s] --- N = 3 ---
+[2026-05-09T19:14:10] [+   0.0s]   random search (200 trials) ...
+[2026-05-09T19:14:10] [+   0.1s]   N=3 random best ||f*f||_inf = 1.79217
+[2026-05-09T19:14:10] [+   0.1s]   local optimisation (10 starts) ...
+[2026-05-09T19:14:11] [+   1.4s]   start 0: improved to 1.68557
+[2026-05-09T19:14:14] [+   4.3s]   start 4: improved to 1.66308
+[2026-05-09T19:14:18] [+   8.6s]   N=3 local-opt best ||f*f||_inf = 1.66308
+[2026-05-09T19:14:18] [+   8.6s] --- N = 5 ---
+[2026-05-09T19:14:18] [+   8.6s]   random search (200 trials) ...
+[2026-05-09T19:14:19] [+   8.7s]   N=5 random best ||f*f||_inf = 1.85468
+[2026-05-09T19:14:19] [+   8.7s]   local optimisation (10 starts) ...
+[2026-05-09T19:14:19] [+   9.5s]   start 0: improved to 1.78281
+[2026-05-09T19:14:20] [+  10.1s]   start 1: improved to 1.67007
+[2026-05-09T19:14:22] [+  11.8s]   start 3: improved to 1.64973
+[2026-05-09T19:14:27] [+  16.9s]   N=5 local-opt best ||f*f||_inf = 1.64973
+[2026-05-09T19:14:27] [+  16.9s] --- N = 8 ---
+[2026-05-09T19:14:27] [+  16.9s]   random search (200 trials) ...
+[2026-05-09T19:14:27] [+  17.0s]   N=8 random best ||f*f||_inf = 1.79978
+[2026-05-09T19:14:27] [+  17.0s]   local optimisation (10 starts) ...
+[2026-05-09T19:14:28] [+  18.1s]   start 0: improved to 1.67730
+[2026-05-09T19:14:30] [+  20.0s]   start 2: improved to 1.66333
+[2026-05-09T19:14:35] [+  24.7s]   start 6: improved to 1.66180
+[2026-05-09T19:14:36] [+  26.0s]   start 7: improved to 1.63483
+[2026-05-09T19:14:38] [+  28.3s]   N=8 local-opt best ||f*f||_inf = 1.63483
+[2026-05-09T19:14:38] [+  28.3s] --- N = 12 ---
+[2026-05-09T19:14:38] [+  28.3s]   random search (200 trials) ...
+[2026-05-09T19:14:38] [+  28.4s]   N=12 random best ||f*f||_inf = 1.85822
+[2026-05-09T19:14:38] [+  28.4s]   local optimisation (10 starts) ...
+[2026-05-09T19:14:40] [+  29.9s]   start 0: improved to 1.94788
+[2026-05-09T19:14:41] [+  31.2s]   start 1: improved to 1.88132
+[2026-05-09T19:14:42] [+  32.5s]   start 2: improved to 1.70114
+[2026-05-09T19:14:52] [+  41.8s]   N=12 local-opt best ||f*f||_inf = 1.70114
+[2026-05-09T19:14:52] [+  41.8s] === Feasible upper bounds (smaller is closer to UB ~1.5029) ===
+[2026-05-09T19:14:52] [+  41.8s]   N=3: {'random': np.float64(1.79217023515753), 'local_opt': np.float64(1.663084623230492)}
+[2026-05-09T19:14:52] [+  41.8s]   N=5: {'random': np.float64(1.8546839178171486), 'local_opt': np.float64(1.6497266589007447)}
+[2026-05-09T19:14:52] [+  41.8s]   N=8: {'random': np.float64(1.799780844914569), 'local_opt': np.float64(1.6348349476467852)}
+[2026-05-09T19:14:52] [+  41.8s]   N=12: {'random': np.float64(1.8582180064547613), 'local_opt': np.float64(1.7011409354837135)}
+[2026-05-09T19:15:16] [+   0.0s] F5_de_branges probe START.  Approach: arc-decomposition parametrisation + local search.
+[2026-05-09T19:15:16] [+   0.0s] Sanity check on box function:
+[2026-05-09T19:15:16] [+   0.0s]   box: ||f*f||_inf ~ 2.0050, expected 2.0
+[2026-05-09T19:15:16] [+   0.0s] Sanity check on uniform on full circle (NOT supported on [-1/4,1/4], should give 1):
+[2026-05-09T19:15:16] [+   0.0s] --- N = 3 ---
+[2026-05-09T19:15:16] [+   0.0s]   random search (200 trials) ...
+[2026-05-09T19:15:16] [+   0.1s]   N=3 random best ||f*f||_inf = 1.79217
+[2026-05-09T19:15:16] [+   0.1s]   local optimisation (10 starts) ...
+[2026-05-09T19:15:17] [+   1.1s]   start 0: improved to 1.68557
+[2026-05-09T19:15:20] [+   3.7s]   start 4: improved to 1.66308
+[2026-05-09T19:15:23] [+   7.0s]   N=3 local-opt best ||f*f||_inf = 1.66308
+[2026-05-09T19:15:23] [+   7.0s] --- N = 5 ---
+[2026-05-09T19:15:23] [+   7.0s]   random search (200 trials) ...
+[2026-05-09T19:15:23] [+   7.1s]   N=5 random best ||f*f||_inf = 1.85468
+[2026-05-09T19:15:23] [+   7.1s]   local optimisation (10 starts) ...
+[2026-05-09T19:15:24] [+   7.9s]   start 0: improved to 1.78281
+[2026-05-09T19:15:24] [+   8.4s]   start 1: improved to 1.67007
+[2026-05-09T19:15:26] [+  10.1s]   start 3: improved to 1.64973
+[2026-05-09T19:15:31] [+  15.4s]   N=5 local-opt best ||f*f||_inf = 1.64973
+[2026-05-09T19:15:31] [+  15.4s] --- N = 8 ---
+[2026-05-09T19:15:31] [+  15.4s]   random search (200 trials) ...
+[2026-05-09T19:15:31] [+  15.4s]   N=8 random best ||f*f||_inf = 1.79978
+[2026-05-09T19:15:31] [+  15.4s]   local optimisation (10 starts) ...
+[2026-05-09T19:15:32] [+  16.5s]   start 0: improved to 1.67730
+[2026-05-09T19:15:34] [+  18.2s]   start 2: improved to 1.66333
+[2026-05-09T19:15:38] [+  22.3s]   start 6: improved to 1.66180
+[2026-05-09T19:15:39] [+  23.4s]   start 7: improved to 1.63483
+[2026-05-09T19:15:41] [+  25.4s]   N=8 local-opt best ||f*f||_inf = 1.63483
+[2026-05-09T19:15:41] [+  25.4s] --- N = 12 ---
+[2026-05-09T19:15:41] [+  25.4s]   random search (200 trials) ...
+[2026-05-09T19:15:41] [+  25.6s]   N=12 random best ||f*f||_inf = 1.85822
+[2026-05-09T19:15:41] [+  25.6s]   local optimisation (10 starts) ...
+[2026-05-09T19:15:43] [+  26.9s]   start 0: improved to 1.94788
+[2026-05-09T19:15:44] [+  28.2s]   start 1: improved to 1.88132
+[2026-05-09T19:15:45] [+  29.6s]   start 2: improved to 1.70114
+[2026-05-09T19:15:55] [+  39.4s]   N=12 local-opt best ||f*f||_inf = 1.70114
+[2026-05-09T19:15:55] [+  39.4s] === Feasible upper bounds (smaller is closer to UB ~1.5029) ===
+[2026-05-09T19:15:55] [+  39.4s]   N=3: {'random': np.float64(1.79217023515753), 'local_opt': np.float64(1.663084623230492)}
+[2026-05-09T19:15:55] [+  39.4s]   N=5: {'random': np.float64(1.8546839178171486), 'local_opt': np.float64(1.6497266589007447)}
+[2026-05-09T19:15:55] [+  39.4s]   N=8: {'random': np.float64(1.799780844914569), 'local_opt': np.float64(1.6348349476467852)}
+[2026-05-09T19:15:55] [+  39.4s]   N=12: {'random': np.float64(1.8582180064547613), 'local_opt': np.float64(1.7011409354837135)}
+[2026-05-09T19:15:55] [+  39.4s] analysis.md written (5152 chars)
+[2026-05-09T19:15:55] [+  39.4s] DONE.  best_lb = 1.0, best_feasible_upper = 1.6348349476467852
+[2026-05-09T19:15:55] [+  39.4s] verdict: F5 (de Branges/Paley-Wiener/Krein-Nudelman): natural Shor SDP relaxation in Fourier moments gives the trivial LB of 1.0; the autocorrelation lift drops rank-1 trivially so the relaxation decouples positivity of f from the bound on f*f.  No improvement on 1.2802.

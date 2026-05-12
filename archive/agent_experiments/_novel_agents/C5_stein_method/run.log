@@ -1,0 +1,76 @@
+[19:18:51] ======================================================================
+[19:18:51] C5: Stein-method / Lipschitz-cover probe for inf_a G(a) on Delta_d.
+[19:18:51] ======================================================================
+[19:18:51] NORMALISATION: TV_W(a) = (2d/ell) * a^T M_W a; for uniform a, max TV ~ 2.
+[19:18:51] 
+--- d = 4 ---
+[19:18:51]   built 28 windows for d=4
+[19:18:51]   M_arr shape: (28, 4, 4)
+[19:18:51]   Lipschitz_l1(G) = 16.0000
+[19:18:51]   Uniform Dirichlet (n=2000): E[G]=2.8543, std=0.8949, min=1.6889, max=7.3071
+[19:18:51]   Stein-swap @ uniform: Var=0.011843, bias=-0.011667
+[19:18:53]   local_min_search: inf(G) ≈ 1.6539
+[19:18:53]   cover_net d=4, N=60: est_pts ~39711
+[19:18:53]     N=60: min_grid=1.6800, L*cover_r=1.0667, det_LB=0.6133, npts=39711, t=0.2s
+[19:18:53]   cover_net d=4, N=100: est_pts ~176851
+[19:18:53]     N=100: min_grid=1.6640, L*cover_r=0.6400, det_LB=1.0240, npts=176851, t=0.7s
+[19:18:53]   cover_net d=4, N=160: est_pts ~708561
+[19:18:56]     N=160: min_grid=1.6538, L*cover_r=0.4000, det_LB=1.2538, npts=708561, t=2.4s
+[19:18:56]   cover_net d=4, N=240: est_pts ~2362041
+[19:19:04]     N=240: min_grid=1.6506, L*cover_r=0.2667, det_LB=1.3839, npts=2362041, t=8.4s
+[19:19:04]   cover_net d=4, N=360: est_pts ~7906261
+[19:19:32]     N=360: min_grid=1.6491, L*cover_r=0.1778, det_LB=1.4714, npts=7906261, t=27.3s
+[19:19:32]   Summary d=4:
+[19:19:32]     rigorous deterministic LB (best N) = 1.471358024691358
+[19:19:32]     target inf(G) (local search)       ~ 1.6539
+[19:19:32]     Lipschitz_l1                        = 16.0000
+[19:19:32]     For LB > 1.28, need cover_r < (1.6539-1.28)/16.0000 = 0.02336835512424379
+[19:19:32] 
+--- d = 6 ---
+[19:19:32]   built 66 windows for d=6
+[19:19:32]   M_arr shape: (66, 6, 6)
+[19:19:32]   Lipschitz_l1(G) = 24.0000
+[19:19:32]   Uniform Dirichlet (n=2000): E[G]=2.9648, std=0.9199, min=1.7357, max=8.5231
+[19:19:32]   Stein-swap @ uniform: Var=0.003850, bias=-0.013333
+[19:19:33]   local_min_search: inf(G) ≈ 1.6299
+[19:19:33]   cover_net d=6, N=16: est_pts ~20349
+[19:19:33]     N=16: min_grid=1.6875, L*cover_r=9.0000, det_LB=-7.3125, npts=20349, t=0.2s
+[19:19:33]   cover_net d=6, N=24: est_pts ~118755
+[19:19:34]     N=24: min_grid=1.6875, L*cover_r=6.0000, det_LB=-4.3125, npts=118755, t=1.1s
+[19:19:34]   cover_net d=6, N=32: est_pts ~435897
+[19:19:38]     N=32: min_grid=1.6641, L*cover_r=4.5000, det_LB=-2.8359, npts=435897, t=4.2s
+[19:19:38]   cover_net d=6, N=48: est_pts ~2869685
+[19:20:05]     N=48: min_grid=1.6354, L*cover_r=3.0000, det_LB=-1.3646, npts=2869685, t=26.8s
+[19:20:05]   Summary d=6:
+[19:20:05]     rigorous deterministic LB (best N) = -1.3645833333333335
+[19:20:05]     target inf(G) (local search)       ~ 1.6299
+[19:20:05]     Lipschitz_l1                        = 24.0000
+[19:20:05]     For LB > 1.28, need cover_r < (1.6299-1.28)/24.0000 = 0.014577437212657344
+[19:20:05] 
+--- d = 8 ---
+[19:20:05]   built 120 windows for d=8
+[19:20:05]   M_arr shape: (120, 8, 8)
+[19:20:05]   Lipschitz_l1(G) = 32.0000
+[19:20:05]   Uniform Dirichlet (n=1000): E[G]=3.0061, std=0.8864, min=1.7631, max=7.4351
+[19:20:05]   Stein-swap @ uniform: Var=0.001558, bias=-0.009792
+[19:20:07]   local_min_search: inf(G) ≈ 1.6338
+[19:20:07]   cover_net d=8, N=10: est_pts ~19448
+[19:20:07]     N=10: min_grid=1.7600, L*cover_r=25.6000, det_LB=-23.8400, npts=19448, t=0.3s
+[19:20:07]   cover_net d=8, N=14: est_pts ~116280
+[19:20:10]     N=14: min_grid=1.7143, L*cover_r=18.2857, det_LB=-16.5714, npts=116280, t=2.6s
+[19:20:10]   cover_net d=8, N=18: est_pts ~480700
+[19:20:21]     N=18: min_grid=1.6790, L*cover_r=14.2222, det_LB=-12.5432, npts=480700, t=10.7s
+[19:20:21]   Summary d=8:
+[19:20:21]     rigorous deterministic LB (best N) = -12.543209876543209
+[19:20:21]     target inf(G) (local search)       ~ 1.6338
+[19:20:21]     Lipschitz_l1                        = 32.0000
+[19:20:21]     For LB > 1.28, need cover_r < (1.6338-1.28)/32.0000 = 0.011055141488949406
+[19:20:21] 
+======================================================================
+[19:20:21] VERDICT
+[19:20:21] ======================================================================
+[19:20:21] Best rigorous LB across d: 1.471358024691358
+[19:20:21] 
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\C5_stein_method\results.json
+[19:20:21] Total time: 89.2s
+[19:20:21] Cover-net rigorous LB on val(d) := inf over piecewise-constant f at d-bin discretisation reaches 1.4714 at d=4 (val(4) ~ 1.654). But val(d) >= C_{1a} (piecewise-const is a SUBSET of admissible f), so a LB on val(d) gives NO LB on C_{1a}. Stein/Lipschitz misses the per-cell sub-bin correction the cascade uses for genuine LB.

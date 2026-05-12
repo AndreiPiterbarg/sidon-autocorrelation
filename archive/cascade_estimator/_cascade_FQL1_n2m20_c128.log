@@ -1,0 +1,165 @@
+
+======================================================================
+CPU CASCADE PROVER
+  n_half=2, m=20, d0=4, c_target=1.28
+  correction(m, n_half=2)=0.102500, effective threshold=1.382500
+  L0 compositions: 708,561
+  workers: 1 (logical CPUs: 16, effective: 16)
+  max refinement levels: 5
+======================================================================
+
+[L0 B&B] d=4, m=20, n_half=2.0, compositions=708,561
+     correction=0.102500, threshold=1.382500
+(CVXPY) May 10 10:30:54 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:30:54 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:30:54 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:30:54 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+     57.19s: 371,503 leaves tested (of 708,561 total compositions)
+     B&B pruned: 337,058 branches, leaf pruned: 168,542, non-canonical: 101,423
+     F post-filter pruned: 49,859
+     survivors: 51,679
+     Checkpoint saved: ../../data_n2m20_c128_FQL1\checkpoint_L0_survivors.npy (0.00 GB, 51,679 rows)
+
+[L1] d_parent=4 -> d_child=8, 51,679 parents
+     Survivor spool: 3.7 GB in-RAM (116,577,912 rows), then disk shards
+       parent 1/51679: 28,924,885 children, 41 slices on bin[0]
+       parent 1/51679: slice 2/41 (5%) 0 surv, ETA 0.86s
+       parent 1/51679: slice 4/41 (10%) 0 surv, ETA 0.66s
+       parent 1/51679: slice 6/41 (15%) 0 surv, ETA 0.57s
+       parent 1/51679: slice 8/41 (20%) 0 surv, ETA 0.51s
+       parent 1/51679: slice 10/41 (24%) 0 surv, ETA 0.46s
+       parent 1/51679: slice 12/41 (29%) 0 surv, ETA 0.42s
+       parent 1/51679: slice 14/41 (34%) 0 surv, ETA 0.38s
+       parent 1/51679: slice 16/41 (39%) 0 surv, ETA 0.34s
+       parent 1/51679: slice 18/41 (44%) 0 surv, ETA 0.31s
+       parent 1/51679: slice 20/41 (49%) 0 surv, ETA 0.28s
+       parent 1/51679: slice 22/41 (54%) 0 surv, ETA 0.25s
+       parent 1/51679: slice 24/41 (59%) 0 surv, ETA 0.22s
+       parent 1/51679: slice 26/41 (63%) 0 surv, ETA 0.20s
+       parent 1/51679: slice 28/41 (68%) 0 surv, ETA 0.17s
+       parent 1/51679: slice 30/41 (73%) 0 surv, ETA 0.14s
+       parent 1/51679: slice 32/41 (78%) 0 surv, ETA 0.12s
+       parent 1/51679: slice 34/41 (83%) 0 surv, ETA 0.09s
+       parent 1/51679: slice 36/41 (88%) 0 surv, ETA 0.06s
+       parent 1/51679: slice 38/41 (93%) 0 surv, ETA 0.04s
+       parent 1/51679: slice 40/41 (98%) 0 surv, ETA 0.01s
+       parent 1/51679: slice 41/41 (100%) 0 surv, ETA 0.00s
+       parent 1/51679: done in 0.52s, 0 survivors
+       parent 2/51679: 26,545,585 children, 89 slices on bin[0]
+       parent 2/51679: slice 4/89 (4%) 0 surv, ETA 0.42s
+       parent 2/51679: slice 8/89 (9%) 0 surv, ETA 0.40s
+       parent 2/51679: slice 12/89 (13%) 0 surv, ETA 0.39s
+       parent 2/51679: slice 16/89 (18%) 0 surv, ETA 0.37s
+       parent 2/51679: slice 20/89 (22%) 0 surv, ETA 0.35s
+       parent 2/51679: slice 24/89 (27%) 0 surv, ETA 0.33s
+       parent 2/51679: slice 28/89 (31%) 0 surv, ETA 0.32s
+       parent 2/51679: slice 32/89 (36%) 0 surv, ETA 0.30s
+       parent 2/51679: slice 36/89 (40%) 0 surv, ETA 0.28s
+       parent 2/51679: slice 40/89 (45%) 0 surv, ETA 0.26s
+       parent 2/51679: slice 44/89 (49%) 0 surv, ETA 0.24s
+       parent 2/51679: slice 48/89 (54%) 0 surv, ETA 0.22s
+       parent 2/51679: slice 52/89 (58%) 0 surv, ETA 0.20s
+       parent 2/51679: slice 56/89 (63%) 1 surv, ETA 0.17s
+       parent 2/51679: slice 60/89 (67%) 174 surv, ETA 0.15s
+       parent 2/51679: slice 64/89 (72%) 1,399 surv, ETA 0.13s
+       parent 2/51679: slice 68/89 (76%) 5,997 surv, ETA 0.11s
+       parent 2/51679: slice 72/89 (81%) 16,113 surv, ETA 0.09s
+       parent 2/51679: slice 76/89 (85%) 32,146 surv, ETA 0.07s
+       parent 2/51679: slice 80/89 (90%) 47,784 surv, ETA 0.05s
+       parent 2/51679: slice 84/89 (94%) 56,334 surv, ETA 0.03s
+       parent 2/51679: slice 88/89 (99%) 59,005 surv, ETA 0.01s
+       parent 2/51679: slice 89/89 (100%) 59,151 surv, ETA 0.00s
+(CVXPY) May 10 10:31:40 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:31:40 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+       parent 2/51679: done in 23.28s, 321 survivors
+       parent 3/51679: 15,836,535 children, 107 slices on bin[0]
+       parent 3/51679: slice 5/107 (5%) 0 surv, ETA 0.34s
+       parent 3/51679: slice 10/107 (9%) 0 surv, ETA 0.30s
+       parent 3/51679: slice 15/107 (14%) 0 surv, ETA 0.29s
+       parent 3/51679: slice 20/107 (19%) 0 surv, ETA 0.27s
+       parent 3/51679: slice 25/107 (23%) 0 surv, ETA 0.26s
+       parent 3/51679: slice 30/107 (28%) 0 surv, ETA 0.25s
+       parent 3/51679: slice 35/107 (33%) 0 surv, ETA 0.23s
+       parent 3/51679: slice 40/107 (37%) 0 surv, ETA 0.24s
+       parent 3/51679: slice 45/107 (42%) 0 surv, ETA 0.22s
+       parent 3/51679: slice 50/107 (47%) 0 surv, ETA 0.21s
+       parent 3/51679: slice 55/107 (51%) 0 surv, ETA 0.19s
+       parent 3/51679: slice 60/107 (56%) 0 surv, ETA 0.17s
+       parent 3/51679: slice 65/107 (61%) 0 surv, ETA 0.15s
+       parent 3/51679: slice 70/107 (65%) 0 surv, ETA 0.13s
+       parent 3/51679: slice 75/107 (70%) 0 surv, ETA 0.11s
+       parent 3/51679: slice 80/107 (75%) 0 surv, ETA 0.09s
+       parent 3/51679: slice 85/107 (79%) 0 surv, ETA 0.07s
+       parent 3/51679: slice 90/107 (84%) 0 surv, ETA 0.05s
+       parent 3/51679: slice 95/107 (89%) 0 surv, ETA 0.04s
+       parent 3/51679: slice 100/107 (93%) 0 surv, ETA 0.02s
+       parent 3/51679: slice 105/107 (98%) 0 surv, ETA 0.01s
+       parent 3/51679: slice 107/107 (100%) 0 surv, ETA 0.00s
+       parent 3/51679: done in 0.33s, 0 survivors
+       parent 4/51679: 1,193,125 children, 83 slices on bin[0]
+       parent 4/51679: slice 4/83 (5%) 0 surv, ETA 0.02s
+       parent 4/51679: slice 8/83 (10%) 0 surv, ETA 0.02s
+       parent 4/51679: slice 12/83 (14%) 0 surv, ETA 0.02s
+       parent 4/51679: slice 16/83 (19%) 0 surv, ETA 0.02s
+       parent 4/51679: slice 20/83 (24%) 0 surv, ETA 0.02s
+       parent 4/51679: slice 24/83 (29%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 28/83 (34%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 32/83 (39%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 36/83 (43%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 40/83 (48%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 44/83 (53%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 48/83 (58%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 52/83 (63%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 56/83 (67%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 60/83 (72%) 0 surv, ETA 0.01s
+       parent 4/51679: slice 64/83 (77%) 0 surv, ETA 0.00s
+       parent 4/51679: slice 68/83 (82%) 0 surv, ETA 0.00s
+       parent 4/51679: slice 72/83 (87%) 0 surv, ETA 0.00s
+       parent 4/51679: slice 76/83 (92%) 0 surv, ETA 0.00s
+       parent 4/51679: slice 80/83 (96%) 0 surv, ETA 0.00s
+       parent 4/51679: slice 83/83 (100%) 0 surv, ETA 0.00s
+       parent 4/51679: done in 0.02s, 0 survivors
+       parent 5/51679: 25,700,085 children, 93 slices on bin[0]
+       parent 5/51679: slice 4/93 (4%) 0 surv, ETA 0.47s
+       parent 5/51679: slice 8/93 (9%) 0 surv, ETA 0.45s
+       parent 5/51679: slice 12/93 (13%) 0 surv, ETA 0.43s
+       parent 5/51679: slice 16/93 (17%) 0 surv, ETA 0.42s
+       parent 5/51679: slice 20/93 (22%) 0 surv, ETA 0.40s
+       parent 5/51679: slice 24/93 (26%) 0 surv, ETA 0.37s
+       parent 5/51679: slice 28/93 (30%) 0 surv, ETA 0.36s
+       parent 5/51679: slice 32/93 (34%) 488 surv, ETA 0.34s
+       parent 5/51679: slice 36/93 (39%) 16,200 surv, ETA 0.32s
+       parent 5/51679: slice 40/93 (43%) 70,616 surv, ETA 0.33s
+       parent 5/51679: slice 44/93 (47%) 171,586 surv, ETA 0.34s
+       parent 5/51679: slice 48/93 (52%) 320,205 surv, ETA 0.35s
+       parent 5/51679: slice 52/93 (56%) 507,844 surv, ETA 0.36s
+       parent 5/51679: slice 56/93 (60%) 728,589 surv, ETA 0.37s
+       parent 5/51679: slice 60/93 (65%) 976,478 surv, ETA 0.36s
+       parent 5/51679: slice 64/93 (69%) 1,240,960 surv, ETA 0.35s
+       parent 5/51679: slice 68/93 (73%) 1,509,259 surv, ETA 0.32s
+       parent 5/51679: slice 72/93 (77%) 1,768,448 surv, ETA 0.29s
+       parent 5/51679: slice 76/93 (82%) 2,008,578 surv, ETA 0.24s
+       parent 5/51679: slice 80/93 (86%) 2,229,499 surv, ETA 0.19s
+       parent 5/51679: slice 84/93 (90%) 2,435,017 surv, ETA 0.14s
+       parent 5/51679: slice 88/93 (95%) 2,626,151 surv, ETA 0.08s
+       parent 5/51679: slice 92/93 (99%) 2,784,356 surv, ETA 0.02s
+       parent 5/51679: slice 93/93 (100%) 2,813,432 surv, ETA 0.00s
+(CVXPY) May 10 10:56:13 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 10:56:13 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\spawn.py", line 113, in spawn_main
+    new_handle = reduction.duplicate(pipe_handle,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\reduction.py", line 79, in duplicate
+    return _winapi.DuplicateHandle(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied

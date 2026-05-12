@@ -1,0 +1,52 @@
+{
+  "family": "Wendland",
+  "delta": 0.138,
+  "results": [
+    {
+      "label": "Wendland_k=1",
+      "k_1": 0.9647543931974495,
+      "K_2": 6.46997929606775,
+      "S_1": 13043.52989571194,
+      "Z": 1.0000000000000593,
+      "K_min": 0.0,
+      "bochner_min": 6.932856523820452e-08,
+      "M_cert": 1.1703255375242914,
+      "beats_MV": false,
+      "wendland_k": 1,
+      "bochner_min_j100": 1.1699935259843983e-06,
+      "bochner_neg_count_j100": 0
+    },
+    {
+      "label": "Wendland_k=2",
+      "k_1": 0.9752226209153161,
+      "K_2": 7.783520826999572,
+      "S_1": 843661.35659152,
+      "Z": 1.0,
+      "K_min": 0.0,
+      "bochner_min": 6.40293874353433e-10,
+      "M_cert": 1.144560328228778,
+      "beats_MV": false,
+      "wendland_k": 2,
+      "bochner_min_j100": 4.257734737117659e-08,
+      "bochner_neg_count_j100": 0
+    },
+    {
+      "label": "Wendland_k=3",
+      "k_1": 0.9808939756798486,
+      "K_2": 8.907238524701055,
+      "S_1": 33674840.103583634,
+      "Z": 1.0000000000000002,
+      "K_min": 0.0,
+      "bochner_min": 7.37004227365093e-12,
+      "M_cert": 1.1281524602390083,
+      "beats_MV": false,
+      "wendland_k": 3,
+      "bochner_min_j100": 2.151771353895348e-09,
+      "bochner_neg_count_j100": 0
+    }
+  ],
+  "best_M_cert": 1.1703255375242914,
+  "best_k": 1,
+  "beats_MV_1_2748": false,
+  "beats_arcsine_numerical_1_270": false
+}

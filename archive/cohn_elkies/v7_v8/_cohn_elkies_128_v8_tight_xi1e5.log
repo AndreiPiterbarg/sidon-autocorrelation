@@ -1,0 +1,45 @@
+(CVXPY) May 11 09:45:03 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 09:45:03 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+==============================================================================
+Cohn--Elkies multi-scale arcsine certifier v8 TIGHT
+  (sharper Bessel tail + 2nd-order min_G Taylor)
+==============================================================================
+
+Using v4 best 3-scale anchor:
+  deltas  = [0.138, 0.055, 0.025]
+  lambdas = [0.85, 0.1, 0.05]
+  N = 200
+
+Solving QP for G coefficients...
+
+--- Certification at XI_MAX = 100000 ---
+  deltas = [0.1380, 0.0550, 0.0250]  lambdas = [0.8500, 0.1000, 0.0500]
+  n_modes = 200  XI_MAX = 100000  prec = 256 bits  arb_grid = 200001
+  [arb] k_1 mid=0.9212465899
+  [arb] min_G (loose)  >= 0.9987588690  rem <= 1.22e-03  (1.09s)
+  [arb] min_G (TIGHT)  >= 0.9999804665  rem <= 1.37e-07  [|G'(x*)|<= 8.92e-03; 2nd-ord <= 1.32e-07]  (1.50s)
+  [arb] S_1 <= 29.840907
+  [arb] K_2 (loose):  bulk + (8/pi^2)*C^2/XI  upper = 4.7896303638  tail <= 8.069e-04
+  [arb] K_2 (TIGHT):  bulk + (8/pi^4)*C^2/XI  upper = 4.7889051816  tail <= 8.176e-05  (28.3s)
+  [arb] a_gain (loose) >= 0.2095794
+  [arb] a_gain (TIGHT) >= 0.2100924
+  [arb] M_cert (loose) >= 1.2921564960
+  [arb] M_cert (TIGHT) >= 1.2923756442    delta = +2.191482e-04
+
+==============================================================================
+COMPARISON: v4 anchors (loose) vs v8 anchors (tight)
+==============================================================================
+  Quantity                  v4 (loose)             v8 (TIGHT)             ratio
+  K_2 tail bound        8.0694e-04            8.1760e-05            9.87x
+  K_2 upper             4.78963036        4.78890518
+  K_2 interval width    8.0694e-04            8.1760e-05
+  min_G remainder       1.2217e-03            1.3737e-07            8893.8x
+  min_G lower           0.9987588690      0.9999804665
+  S_1 upper             29.840907             29.840907
+  a_gain lower          0.20957940        0.21009240
+  M_cert lower          1.2921564960      1.2923756442
+  Delta M_cert         (v8 - v4 ref):                    +2.191482e-04
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_cohn_elkies_128_v8_tight_results.json

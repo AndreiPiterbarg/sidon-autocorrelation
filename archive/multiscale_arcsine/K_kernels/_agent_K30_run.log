@@ -1,0 +1,107 @@
+======================================================================
+Agent K30: direct parametric K_hat = |P|^2 search
+DELTA = 0.138,  U = 0.638,  N_QP = 119
+======================================================================
+
+=== Sanity: cos-basis DC (tophat phi -> triangle K) ===
+  fast:   {'k_1': 0.938896974547644, 'K_2': 5.012077540690762, 'S_1': 32721.036138403637, 'M_cert': 1.2126913352066058, 'bochner_min': 2.4958059135470655e-07, 'phi_min': 1.0}
+  helper: {'k_1': 0.938896974547644, 'K_2': 4.921497830545836, 'S_1': 32721.036138403637, 'Z': 0.13799999290621318, 'phi_min': 1.0, 'bochner_min': 2.4958059135470655e-07, 'phi_hat_at_2': 0.8793224354964908, 'phi_hat_at_3': 0.7409729092704826, 'M_cert': 1.216116957991807, 'beats_MV': False, 'beats_127': False}
+
+=== Sanity: cos-basis c=[1,-0.5,0.2] ===
+  fast:   {'k_1': 0.918979674534366, 'K_2': 4.5285724599528585, 'S_1': 11113.938123025435, 'M_cert': 1.2321967877798434, 'bochner_min': 7.232122148492697e-07, 'phi_min': 0.6437500152767748}
+  helper: {'k_1': 0.918979674534366, 'K_2': 4.437992749807927, 'S_1': 11113.938123025435, 'Z': 0.1379999879405684, 'phi_min': 0.6437500152767748, 'bochner_min': 7.232122148492697e-07, 'phi_hat_at_2': 0.8396549965724664, 'phi_hat_at_3': 0.6577038672654086, 'M_cert': 1.2363475659921612, 'beats_MV': False, 'beats_127': False}
+
+======================================================================
+PARAMETRISATION (a): phi cosine series
+======================================================================
+
+--- (a) cos basis, N=2 ---
+[K30_cos_N2] k_1=0.92152  K_2=4.5240  S_1=14920.11  M_cert=1.23241  beats_MV=False
+
+--- (a) cos basis, N=3 ---
+[K30_cos_N3] k_1=0.91703  K_2=4.4206  S_1=9342.33  M_cert=1.23715  beats_MV=False
+
+--- (a) cos basis, N=4 ---
+[K30_cos_N4] k_1=0.91501  K_2=4.3742  S_1=6566.89  M_cert=1.23941  beats_MV=False
+
+--- (a) cos basis, N=5 ---
+[K30_cos_N5] k_1=0.91386  K_2=4.3480  S_1=4949.42  M_cert=1.24075  beats_MV=False
+
+--- (a) cos basis, N=6 ---
+[K30_cos_N6] k_1=0.91306  K_2=4.3313  S_1=3737.07  M_cert=1.24169  beats_MV=False
+
+======================================================================
+PARAMETRISATION (b): phi sinc basis
+======================================================================
+
+--- (b) sinc basis, N=4, alpha=10.87 ---
+[K30_sinc_N4_a10.87] k_1=0.91926  K_2=4.4743  S_1=2747.36  M_cert=1.23524  beats_MV=False
+
+--- (b) sinc basis, N=4, alpha=21.74 ---
+[K30_sinc_N4_a21.74] k_1=0.92362  K_2=4.5929  S_1=14756156.36  M_cert=1.22925  beats_MV=False
+
+--- (b) sinc basis, N=4, alpha=32.61 ---
+[K30_sinc_N4_a32.61] k_1=0.92052  K_2=4.5080  S_1=100900.59  M_cert=1.23299  beats_MV=False
+
+--- (b) sinc basis, N=4, alpha=43.48 ---
+
+--- (b) sinc basis, N=5, alpha=14.49 ---
+[K30_sinc_N5_a14.49] k_1=0.91993  K_2=4.4960  S_1=3163.16  M_cert=1.23416  beats_MV=False
+
+--- (b) sinc basis, N=5, alpha=28.99 ---
+[K30_sinc_N5_a28.99] k_1=0.91629  K_2=4.4190  S_1=4177.73  M_cert=1.23749  beats_MV=False
+
+--- (b) sinc basis, N=5, alpha=43.48 ---
+[K30_sinc_N5_a43.48] k_1=0.91459  K_2=4.3855  S_1=1377.50  M_cert=1.24007  beats_MV=False
+
+--- (b) sinc basis, N=5, alpha=57.97 ---
+
+--- (b) sinc basis, N=6, alpha=18.12 ---
+[K30_sinc_N6_a18.12] k_1=0.91751  K_2=4.4413  S_1=10592.29  M_cert=1.23617  beats_MV=False
+
+--- (b) sinc basis, N=6, alpha=36.23 ---
+[K30_sinc_N6_a36.23] k_1=0.91855  K_2=4.4637  S_1=6485.99  M_cert=1.23528  beats_MV=False
+
+--- (b) sinc basis, N=6, alpha=54.35 ---
+[K30_sinc_N6_a54.35] k_1=0.91375  K_2=4.3560  S_1=1827.61  M_cert=1.24109  beats_MV=False
+
+--- (b) sinc basis, N=6, alpha=72.46 ---
+
+======================================================================
+PARAMETRISATION (c): Chebyshev phi (physical space)
+======================================================================
+
+--- (c) Cheb phi (physical), N=2 ---
+[K30_cheb_N2] k_1=0.93890  K_2=4.9215  S_1=32721.04  M_cert=1.21612  beats_MV=False
+
+--- (c) Cheb phi (physical), N=3 ---
+[K30_cheb_N3] k_1=0.91643  K_2=4.4382  S_1=3553.28  M_cert=1.23668  beats_MV=False
+
+--- (c) Cheb phi (physical), N=4 ---
+[K30_cheb_N4] k_1=0.91643  K_2=4.4382  S_1=3554.73  M_cert=1.23668  beats_MV=False
+
+--- (c) Cheb phi (physical), N=5 ---
+[K30_cheb_N5] k_1=0.91355  K_2=4.3403  S_1=1709.64  M_cert=1.24193  beats_MV=False
+
+--- (c) Cheb phi (physical), N=6 ---
+[K30_cheb_N6] k_1=0.91354  K_2=4.3403  S_1=1709.88  M_cert=1.24193  beats_MV=False
+
+======================================================================
+TOP 10 across all parametrisations (re-evaluated via helper)
+======================================================================
+  cheb  N=5                     M_cert=1.24193  k_1=0.9136  K_2=4.340  S_1=1709.64  beats=-
+  cheb  N=6                     M_cert=1.24193  k_1=0.9135  K_2=4.340  S_1=1709.88  beats=-
+  cos   N=6                     M_cert=1.24169  k_1=0.9131  K_2=4.331  S_1=3737.07  beats=-
+  sinc  N=6 (a=54.35)           M_cert=1.24109  k_1=0.9137  K_2=4.356  S_1=1827.61  beats=-
+  cos   N=5                     M_cert=1.24075  k_1=0.9139  K_2=4.348  S_1=4949.42  beats=-
+  sinc  N=5 (a=43.48)           M_cert=1.24007  k_1=0.9146  K_2=4.386  S_1=1377.50  beats=-
+  cos   N=4                     M_cert=1.23941  k_1=0.9150  K_2=4.374  S_1=6566.89  beats=-
+  sinc  N=5 (a=28.99)           M_cert=1.23749  k_1=0.9163  K_2=4.419  S_1=4177.73  beats=-
+  cos   N=3                     M_cert=1.23715  k_1=0.9170  K_2=4.421  S_1=9342.33  beats=-
+  cheb  N=4                     M_cert=1.23668  k_1=0.9164  K_2=4.438  S_1=3554.73  beats=-
+
+Wrote: C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_agent_K30_direct_Khat_result.json
+
+BEST M_cert = 1.24193  (parametrisation=cheb, N=5)
+  beats MV (1.27481)? False
+  beats 1.27 numerical? False

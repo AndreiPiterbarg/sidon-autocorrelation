@@ -1,0 +1,50 @@
+Re-certifying 27 atoms at xi_max=100000...
+  Rigorous nu (rational):
+    delta = 0.138000    lambda = 0.703561
+    delta = 0.091080    lambda = 0.054995
+    delta = 0.114540    lambda = 0.048058
+    delta = 0.055200    lambda = 0.039850
+    delta = 0.024840    lambda = 0.022633
+    delta = 0.069000    lambda = 0.020637
+    delta = 0.102120    lambda = 0.017083
+    delta = 0.100740    lambda = 0.016534
+    delta = 0.074520    lambda = 0.015152
+    delta = 0.104880    lambda = 0.012260
+    delta = 0.073140    lambda = 0.006112
+    delta = 0.097980    lambda = 0.006033
+    delta = 0.040020    lambda = 0.005221
+    delta = 0.035880    lambda = 0.005065
+    delta = 0.078660    lambda = 0.004393
+    delta = 0.045540    lambda = 0.003753
+    delta = 0.041400    lambda = 0.002926
+    delta = 0.038640    lambda = 0.002125
+    delta = 0.066240    lambda = 0.002066
+    delta = 0.067620    lambda = 0.002034
+    delta = 0.013800    lambda = 0.001742
+    delta = 0.012420    lambda = 0.001630
+    delta = 0.064860    lambda = 0.001618
+    delta = 0.004140    lambda = 0.001292
+    delta = 0.034500    lambda = 0.001244
+    delta = 0.008280    lambda = 0.001114
+    delta = 0.009660    lambda = 0.000869
+(CVXPY) May 11 10:27:43 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:27:43 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+  deltas  = [0.138, 0.09108, 0.11454, 0.0552, 0.02484, 0.069, 0.10212, 0.10074, 0.07452, 0.10488, 0.07314, 0.09798, 0.04002, 0.03588, 0.07866, 0.04554, 0.0414, 0.03864, 0.06624, 0.06762, 0.0138, 0.01242, 0.06486, 0.00414, 0.0345, 0.00828, 0.00966]
+  lambdas = [0.70356057, 0.05499493, 0.04805828, 0.03984969, 0.02263344, 0.02063687, 0.01708266, 0.01653385, 0.01515172, 0.01225957, 0.00611183, 0.00603341, 0.00522095, 0.0050649, 0.00439326, 0.00375296, 0.00292605, 0.00212464, 0.00206596, 0.00203415, 0.00174188, 0.00163023, 0.00161802, 0.00129209, 0.00124433, 0.00111438, 0.00086938]
+  XI_MAX  = 100000  prec = 256
+  k_1 ~ 0.9261743317
+  min_G >= 0.999059  G2=True  (0.4s)
+  S_1 <= 28.0802
+  K_2 in [4.871219, 4.872079]  tail<=8.60e-04  (124.5s)
+  M_cert >= 1.29282721
+
+  Rigorous M_cert >= 1.29282721
+  K_2 in [4.871219, 4.872079]
+  K_2 tail upper: 8.6036e-04
+  S_1 <= 28.080156
+  min_G >= 0.999059
+  a_gain >= 0.222855
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\archive\multiscale_arcsine\_continuous_nu_fw_N100_final_xi1e5.json

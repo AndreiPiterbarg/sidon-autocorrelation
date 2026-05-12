@@ -1,0 +1,65 @@
+[2026-05-09 18:58:34] Agent C1_fisher_info started.
+[2026-05-09 18:58:35] Problem: lower bound C_{1a} = inf_f max_t (f*f)(t) for f >= 0, supp f in [-1/4,1/4], int f = 1. Current rigorous LB = 1.2802 (CS 2017), UB = 1.5029.
+[2026-05-09 18:58:35] Direction: Fisher information / Stam / de Bruijn (NEW for repo). Existing ideas_entropy.md notes EPI gives wrong direction; Fisher info not yet tried.
+[2026-05-09 18:59:00] Math scoping: investigated four candidate inequalities.
+[2026-05-09 18:59:00]   (a) sqrt(I(g)) >= ||g||_inf for g vanishing at left boundary (upper bound on ||g||_inf -- wrong direction).
+[2026-05-09 18:59:00]   (b) Stam: I(f*g) <= I(f)I(g)/(I(f)+I(g)). Convolution shrinks Fisher info -- wrong direction for lower-bounding ||f*f||_inf.
+[2026-05-09 18:59:00]   (c) Hardy/Poincare-type ||g||_inf <= 1/(2L) + sqrt(I(g)) -- upper bound, wrong direction.
+[2026-05-09 18:59:00]   (d) Reverse-direction inequality ||g||_inf >= phi(I(g)) for some phi increasing? UNKNOWN, needs probe.
+[2026-05-09 18:59:00] Decision: probe (d) numerically -- compute (||f*f||_inf, I(f)) for known near-optimal profiles and small-d optima; then try LP/SDP relaxation that uses Fisher info as side-info.
+[2026-05-09 18:59:30] Approach selected: TWO sub-probes
+[2026-05-09 18:59:30]   SUB-PROBE A: Numerical scatter of (I(f), ||f*f||_inf) over near-optimal profiles + random feasible f to test if monotone increasing relation exists.
+[2026-05-09 18:59:30]   SUB-PROBE B: Use known Fisher info inequality I(f) >= pi^2 * (something) for compact support, and try to combine with Boyer-Li L^2 bound.
+[2026-05-09 18:59:45] Building probe.py.
+[2026-05-09 19:03:28] Probe started.
+[2026-05-09 19:03:28] Section 1: direction-of-bound analysis -- all classical Fisher inequalities give UB on M, not LB.
+[2026-05-09 19:03:28] Section 2: scatter (I(f), M(f)) over candidate profiles for d in {4, 6, 8, 16, 32}.
+[2026-05-09 19:03:28]   d = 4, bin-width h = 0.125000
+[2026-05-09 19:03:29]     uniform                    M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=3.3524  Stam: I(f*f)<=I(f)/2  delta=-0.6476
+[2026-05-09 19:03:29]     mv_arcsine                 M(f*f)=2.22222  I(f)=12.4444  ||f||_2=1.4907  ||f||_inf=2.6667  Hardy_UB=5.5277 (ratio M_f/UB=0.482)  I(f*f)=5.1358  Stam: I(f*f)<=I(f)/2  delta=-1.0864
+[2026-05-09 19:03:29]     cs_step_extremizer         M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=3.3524  Stam: I(f*f)<=I(f)/2  delta=-0.6476
+[2026-05-09 19:03:29]   d = 6, bin-width h = 0.083333
+[2026-05-09 19:03:29]     uniform                    M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=2.5043  Stam: I(f*f)<=I(f)/2  delta=-1.4957
+[2026-05-09 19:03:29]     mv_arcsine                 M(f*f)=2.37067  I(f)=15.4297  ||f||_2=1.5397  ||f||_inf=3.2126  Hardy_UB=5.9281 (ratio M_f/UB=0.542)  I(f*f)=4.9684  Stam: I(f*f)<=I(f)/2  delta=-2.7465
+[2026-05-09 19:03:29]     cs_step_extremizer         M(f*f)=1.61639  I(f)=15.0624  ||f||_2=1.5726  ||f||_inf=3.5295  Hardy_UB=5.8810 (ratio M_f/UB=0.600)  I(f*f)=4.3360  Stam: I(f*f)<=I(f)/2  delta=-3.1952
+[2026-05-09 19:03:29]   d = 8, bin-width h = 0.062500
+[2026-05-09 19:03:29]     uniform                    M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=2.0218  Stam: I(f*f)<=I(f)/2  delta=-1.9782
+[2026-05-09 19:03:29]     mv_arcsine                 M(f*f)=2.47991  I(f)=17.9202  ||f||_2=1.5748  ||f||_inf=3.6809  Hardy_UB=6.2332 (ratio M_f/UB=0.591)  I(f*f)=4.8618  Stam: I(f*f)<=I(f)/2  delta=-4.0983
+[2026-05-09 19:03:29]     cs_step_extremizer         M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=2.0218  Stam: I(f*f)<=I(f)/2  delta=-1.9782
+[2026-05-09 19:03:29]   d = 16, bin-width h = 0.031250
+[2026-05-09 19:03:29]     uniform                    M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=1.1841  Stam: I(f*f)<=I(f)/2  delta=-2.8159
+[2026-05-09 19:03:29]     mv_arcsine                 M(f*f)=2.75049  I(f)=25.5628  ||f||_2=1.6585  ||f||_inf=5.1476  Hardy_UB=7.0560 (ratio M_f/UB=0.730)  I(f*f)=4.6458  Stam: I(f*f)<=I(f)/2  delta=-8.1356
+[2026-05-09 19:03:29]     cs_step_extremizer         M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=1.1841  Stam: I(f*f)<=I(f)/2  delta=-2.8159
+[2026-05-09 19:03:29]   d = 32, bin-width h = 0.015625
+[2026-05-09 19:03:29]     uniform                    M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=0.6787  Stam: I(f*f)<=I(f)/2  delta=-3.3213
+[2026-05-09 19:03:29]     mv_arcsine                 M(f*f)=3.02656  I(f)=36.3100  ||f||_2=1.7397  ||f||_inf=7.2406  Hardy_UB=8.0258 (ratio M_f/UB=0.902)  I(f*f)=4.4778  Stam: I(f*f)<=I(f)/2  delta=-13.6772
+[2026-05-09 19:03:29]     cs_step_extremizer         M(f*f)=2.00000  I(f)=8.0000  ||f||_2=1.4142  ||f||_inf=2.0000  Hardy_UB=4.8284 (ratio M_f/UB=0.414)  I(f*f)=0.6787  Stam: I(f*f)<=I(f)/2  delta=-3.3213
+[2026-05-09 19:03:29] Scatter complete.
+[2026-05-09 19:03:29] Section 3: random feasible scatter at d=16 (200 samples).
+[2026-05-09 19:03:30]   scatter ranges: I in [9.491, 62.348], M in [1.814, 3.436]
+[2026-05-09 19:03:33]   Spearman(I, M) = 0.3483 (p=4.33e-07)
+[2026-05-09 19:03:33]   if |rho| < 0.5 then I is NOT a useful predictor of M.
+[2026-05-09 19:03:33] Section 4: testing whether Fisher info can lower-bound ||f||_2^2 via Boyer-Li route.
+[2026-05-09 19:03:33]   Boyer-Li uses ||f*f||_inf >= ||f*f||_2^2, but Fisher doesn't lower-bound ||f||_2.
+[2026-05-09 19:03:33]   In fact uniform f minimises both ||f||_2 (= 1/sqrt(2L) = sqrt(2)) and I(f) (= 0).
+[2026-05-09 19:03:33]   uniform M=2.0000 I=8.0000  ||f||_2=1.4142
+[2026-05-09 19:03:33]   arcsine M=3.0266 I=36.3100  ||f||_2=1.7397
+[2026-05-09 19:03:33]   CS-extr M=2.0000 I=8.0000  ||f||_2=1.4142
+[2026-05-09 19:03:33] Section 5: SDP-with-Fisher-constraint test at d in {4,6,8}.
+[2026-05-09 19:03:36]   d=4  base SDP val(d) LB = 1.14286
+[2026-05-09 19:03:36]     Fisher cap K = 18.6667 (1.5 x I(arcsine) = 12.4444)
+[2026-05-09 19:03:36]   d=4  SDP+Fisher<=K LB = 1.14286  (changed by -0.00000)
+[2026-05-09 19:03:36]   d=6  base SDP val(d) LB = 1.09091
+[2026-05-09 19:03:36]     Fisher cap K = 23.1445 (1.5 x I(arcsine) = 15.4297)
+[2026-05-09 19:03:36]   d=6  SDP+Fisher<=K LB = 1.09091  (changed by -0.00000)
+[2026-05-09 19:03:36]   d=8  base SDP val(d) LB = 1.06667
+[2026-05-09 19:03:36]     Fisher cap K = 26.8803 (1.5 x I(arcsine) = 17.9202)
+[2026-05-09 19:03:36]   d=8  SDP+Fisher<=K LB = 1.06667  (changed by -0.00000)
+[2026-05-09 19:03:36] Section 6: verdict.
+[2026-05-09 19:03:36]   monotone violation in (I, M)? False
+[2026-05-09 19:03:36]   uniform: I=8.000, M=2.000; arcsine: I=36.310, M=3.027
+[2026-05-09 19:03:36]   scatter Spearman rho on random sample = 0.348
+[2026-05-09 19:03:36] Total elapsed: 7.98 s
+[2026-05-09 19:03:36] Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\C1_fisher_info\results.json
+[2026-05-09 19:03:36] DONE.
+[2026-05-09 19:05:00] Verdict updated. Fisher direction dead for LB on C_{1a}; UB-direction inequalities cannot be inverted; SDP-with-Fisher constraint added zero improvement at d=4,6,8.  Results.json finalised; analysis.md not created (file system policy blocks .md report writes from subagents — derivation captured inline in this run.log).

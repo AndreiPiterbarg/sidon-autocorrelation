@@ -1,0 +1,277 @@
+[
+  {
+    "label": "CASE 1: All mass in bin 0",
+    "c": [
+      160,
+      0,
+      0,
+      0
+    ],
+    "n_half": 2,
+    "m": 20,
+    "c_target": 1.2,
+    "conv": [
+      25600,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 0,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 0,
+    "gg_max": 8.0,
+    "gg_argmax": 0,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 2: All mass in bin d-1 (mirror of 1)",
+    "c": [
+      0,
+      0,
+      0,
+      160
+    ],
+    "n_half": 2,
+    "m": 20,
+    "c_target": 1.2,
+    "conv": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      25600
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 6,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 6,
+    "gg_max": 8.0,
+    "gg_argmax": 6,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 3: Two-bin sparse (S/2 at bin 0 and bin d-1)",
+    "c": [
+      60,
+      0,
+      0,
+      0,
+      0,
+      60
+    ],
+    "n_half": 3,
+    "m": 10,
+    "c_target": 1.2,
+    "conv": [
+      3600,
+      0,
+      0,
+      0,
+      0,
+      7200,
+      0,
+      0,
+      0,
+      0,
+      3600
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 0,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 0,
+    "gg_max": 6.000000000000003,
+    "gg_argmax": 5,
+    "max_lattice_err": 4.796163466380676e-12
+  },
+  {
+    "label": "CASE 4: Uniform c_i = 2m (q* should be d-1)",
+    "c": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "n_half": 4,
+    "m": 5,
+    "c_target": 1.2,
+    "conv": [
+      100,
+      200,
+      300,
+      400,
+      500,
+      600,
+      700,
+      800,
+      700,
+      600,
+      500,
+      400,
+      300,
+      200,
+      100
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 6,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 6,
+    "gg_max": 2.0,
+    "gg_argmax": 7,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 7: All-zero composition (S=0, not in cascade)",
+    "c": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "n_half": 2,
+    "m": 20,
+    "c_target": 1.2,
+    "conv": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pyref_pruned": false,
+    "pyref_q": null,
+    "numba_pruned": false,
+    "lean_pruned": false,
+    "lean_q": null,
+    "gg_max": 0.0,
+    "gg_argmax": 0,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 8: Single nonzero bin 2 (out of 4)",
+    "c": [
+      0,
+      0,
+      160,
+      0
+    ],
+    "n_half": 2,
+    "m": 20,
+    "c_target": 1.2,
+    "conv": [
+      0,
+      0,
+      0,
+      0,
+      25600,
+      0,
+      0
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 4,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 4,
+    "gg_max": 8.0,
+    "gg_argmax": 4,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 9: Mixed heights, c_i multiples of m boundaries",
+    "c": [
+      20,
+      80,
+      40,
+      20
+    ],
+    "n_half": 2,
+    "m": 20,
+    "c_target": 1.2,
+    "conv": [
+      400,
+      3200,
+      8000,
+      7200,
+      4800,
+      1600,
+      400
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 2,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 2,
+    "gg_max": 2.5,
+    "gg_argmax": 2,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 10a: conv[q] == thr_int (strict > should NOT fire)",
+    "c": [
+      20,
+      0
+    ],
+    "n_half": 1,
+    "m": 5,
+    "c_target": 3.59,
+    "conv": [
+      400,
+      0,
+      0
+    ],
+    "pyref_pruned": false,
+    "pyref_q": null,
+    "numba_pruned": false,
+    "lean_pruned": false,
+    "lean_q": null,
+    "gg_max": 4.0,
+    "gg_argmax": 0,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 10b: conv[q] > thr_int (strict > SHOULD fire)",
+    "c": [
+      20,
+      0
+    ],
+    "n_half": 1,
+    "m": 5,
+    "c_target": 3.589,
+    "conv": [
+      400,
+      0,
+      0
+    ],
+    "pyref_pruned": true,
+    "pyref_q": 0,
+    "numba_pruned": true,
+    "lean_pruned": true,
+    "lean_q": 0,
+    "gg_max": 4.0,
+    "gg_argmax": 0,
+    "max_lattice_err": 0.0
+  },
+  {
+    "label": "CASE 11: max-S overflow check",
+    "n_half": 12,
+    "m": 64,
+    "S": 3072,
+    "max_conv": 9437184,
+    "int64_safe": true
+  }
+]

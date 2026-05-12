@@ -1,0 +1,27 @@
+[
+  {
+    "n_half": 3,
+    "m": 20,
+    "c_target": 1.25,
+    "n_processed": 7381,
+    "surv_A": 1194,
+    "surv_D": 876,
+    "surv_F": 324,
+    "surv_P": 0,
+    "pruned_A": 6187,
+    "pruned_D": 6505,
+    "pruned_F": 7057,
+    "pruned_P": 7381,
+    "extra_F_over_D": 552,
+    "extra_P_over_F": 324,
+    "bug_F_minus_A": 0,
+    "bug_F_minus_D": 0,
+    "bug_P_minus_A": 0,
+    "bug_P_minus_F": 0,
+    "t_A": 0.0,
+    "t_D": 0.0,
+    "t_F": 0.021994352340698242,
+    "t_P": 0.0,
+    "elapsed": 0.03128981590270996
+  }
+]

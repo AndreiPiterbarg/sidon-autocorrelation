@@ -1,0 +1,28 @@
+{
+  "MV": {
+    "min_G_certified_lower": 1.0000393095750693,
+    "min_G_enclosure_upper": 1.0001826614974305,
+    "argmin_cell_center": 0.245697021484375
+  },
+  "ReOpt": {
+    "delta_1": 0.138,
+    "delta_2": 0.045,
+    "lambda_1": 0.85,
+    "S_1_numerical": 31.441956237231366,
+    "min_G_numerical": 1.0000000004606586,
+    "min_G_certified_lower": 0.9999647325591193,
+    "min_G_enclosure_upper": 1.0000581834192825,
+    "argmin_cell_center": 0.246063232421875
+  },
+  "ImpactOnMCert": {
+    "k_1": 0.9213917290771123,
+    "K_2": 4.7588403455758925,
+    "S_1": 31.441956237221916,
+    "min_G_used_in_JSON": 1.0000000004606624,
+    "M_cert_in_JSON": 1.2900489969954338,
+    "M_cert_with_rigorous_min_G": 1.290043973804345,
+    "M_cert_with_numerical_min_G": 1.2900489969954338
+  },
+  "n_cells": 4096,
+  "prec_bits": 192
+}

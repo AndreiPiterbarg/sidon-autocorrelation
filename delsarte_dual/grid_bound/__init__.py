@@ -1,19 +1,22 @@
-"""Grid-evaluation multi-moment dual bound for the Sidon autocorrelation
-constant C_{1a}.
+"""Matolcsi-Vinuesa master inequality and cell-search certifier.
 
-Phase 1 target
---------------
-Reproduce the Matolcsi-Vinuesa (2010) lower bound 1.2748 through a fully
-rigorous pipeline:
-  - All transcendentals (Bessel J_0, pi) via python-flint arb midpoint-radius
-    interval arithmetic.
-  - All algebraic inputs (delta, u, MV's 119 G-coefficients) as exact fmpq.
-  - Cell-interval B&B on the admissible moment variable z_1 in [0, sqrt(mu(M))]
-    with the Lemma 3.4 bathtub box; rejection only when the arb upper bound of
-    Phi over the cell is strictly < 0.
-  - Independent fmpq/arb-only verifier that reconsumes the emitted certificate
-    and re-checks every quantitative claim.
+This subpackage implements the rigorous Matolcsi-Vinuesa dual machinery:
 
-Phase 1 reuses MV's verified formulas verbatim; no filter-panel generation
-(F4/F5/F9) or multi-moment extension yet -- those are Phase 2.
+  * :mod:`bessel`        -- arb wrappers for ``J_0(pi j delta / u)``.
+  * :mod:`coeffs`        -- the 119 cosine coefficients of the original
+                            Matolcsi-Vinuesa multiplier (kept for
+                            reproducibility of the single-scale baseline).
+  * :mod:`phi`           -- rigorous arb evaluation of the forbidden-
+                            region function ``Phi(M, y)``.
+  * :mod:`G_min`         -- Taylor branch-and-bound lower bound on
+                            ``min_{[0, 1/4]} G(x)``.
+  * :mod:`cell_search`   -- priority-queue cell bisection certifying
+                            ``Phi(M, .) < 0`` over the admissible box.
+  * :mod:`bisect`        -- bisection on ``M`` to find the largest
+                            certifiable ``M_cert``.
+  * :mod:`certify`       -- standalone independent verifier with no
+                            internal imports.
+
+Every transcendental output is a ``flint.arb`` interval; every
+algebraic input is an exact ``flint.fmpq``.
 """

@@ -1,0 +1,33 @@
+{
+  "v4_config": [
+    [
+      "arcsine",
+      0.138,
+      0.925
+    ],
+    [
+      "arcsine",
+      0.057,
+      0.06999999999999995
+    ],
+    [
+      "bspline3",
+      0.01,
+      0.005
+    ]
+  ],
+  "converged_pure_arcsine_best": {
+    "M_cert": 1.2800727874867122,
+    "l1": 0.9349999999999999,
+    "d2": 0.052500000000000005
+  },
+  "converged_hybrid_best": {
+    "M_cert": 1.2804463870120364,
+    "l1": 0.925,
+    "d2": 0.0575,
+    "eps": 0.005,
+    "dC": 0.01
+  },
+  "genuine_gain_over_pure_arcsine": 0.0003735995253242308,
+  "beats_K26_at_converged_grid": true
+}

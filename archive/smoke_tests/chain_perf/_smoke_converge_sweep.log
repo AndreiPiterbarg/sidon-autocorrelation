@@ -1,0 +1,97 @@
+
+Smoke convergence sweep at c_target=1.281, n_workers=2
+================================================================================
+
+--- n_half=1, m=10, d0=2, L0_total_compositions=41 ---
+(CVXPY) May 09 04:16:19 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:16:19 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:16:19 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:16:19 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+    L0: F+FN+Q=13 -> L=13  in 2.7s (F+FN+Q=0.9s, L=1.8s)
+    L1 probe (2 parents) ...
+      L1 parent[1/2]: children=0  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0  wall=0.0s
+(CVXPY) May 09 04:16:28 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:16:28 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+      L1 parent[2/2]: children=1,665  F=599 -> FN=595 -> Q=592 -> QN=592 -> L=583  wall=14.4s
+    L1: avg_F=299.5, avg_L=291.5, est_total_L=3,790  in 14.5s
+    => verdict: NONCONVERGENT_L1>=L0
+
+--- n_half=1, m=20, d0=2, L0_total_compositions=81 ---
+(CVXPY) May 09 04:16:34 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:16:34 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+    L0: F+FN+Q=25 -> L=25  in 4.1s (F+FN+Q=0.1s, L=4.0s)
+    L1 probe (2 parents) ...
+      L1 parent[1/2]: children=0  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0  wall=0.0s
+(CVXPY) May 09 04:16:56 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:16:56 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+      L1 parent[2/2]: children=6,461  F=2,197 -> FN=2,195 -> Q=2,171 -> QN=2,170 -> L=2,160  wall=32.8s
+    L1: avg_F=1098.5, avg_L=1080.0, est_total_L=27,000  in 32.8s
+    => verdict: NONCONVERGENT_L1>=L0
+
+--- n_half=1, m=30, d0=2, L0_total_compositions=121 ---
+(CVXPY) May 09 04:17:11 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:17:11 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+    L0: F+FN+Q=37 -> L=37  in 4.4s (F+FN+Q=0.2s, L=4.2s)
+    L1 probe (2 parents) ...
+      L1 parent[1/2]: children=0  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0  wall=0.0s
+(CVXPY) May 09 04:17:37 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:17:37 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+      L1 parent[2/2]: children=14,385  F=4,807 -> FN=4,806 -> Q=4,754 -> QN=4,754 -> L=4,738  wall=42.0s
+    L1: avg_F=2403.5, avg_L=2369.0, est_total_L=87,653  in 42.0s
+    => verdict: NONCONVERGENT_L1>=L0
+
+--- n_half=1, m=50, d0=2, L0_total_compositions=201 ---
+(CVXPY) May 09 04:17:57 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:17:57 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+    L0: F+FN+Q=61 -> L=61  in 3.3s (F+FN+Q=0.3s, L=3.0s)
+    L1 probe (2 parents) ...
+      L1 parent[1/2]: children=0  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0  wall=0.0s
+(CVXPY) May 09 04:18:53 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:18:53 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+      L1 parent[2/2]: children=39,725  F=12,819 -> FN=12,819 -> Q=12,769 -> QN=12,769 -> L=12,758  wall=116.3s
+    L1: avg_F=6409.5, avg_L=6379.0, est_total_L=389,119  in 116.3s
+    => verdict: NONCONVERGENT_L1>=L0
+
+--- n_half=1, m=100, d0=2, L0_total_compositions=401 ---
+(CVXPY) May 09 04:20:04 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:20:04 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+    L0: F+FN+Q=121 -> L=121  in 11.7s (F+FN+Q=7.8s, L=3.9s)
+    L1 probe (2 parents) ...
+      L1 parent[1/2]: children=0  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0  wall=0.0s
+(CVXPY) May 09 04:23:11 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:23:11 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+      L1 parent[2/2]: children=157,191  F=50,397 -> FN=50,394 -> Q=50,213 -> QN=50,211 -> L=50,200  wall=357.3s
+      [parent wall 357.3s > budget 180s, stopping further L1 parents]
+    L1: avg_F=25198.5, avg_L=25100.0, est_total_L=3,037,100  in 357.3s
+    => verdict: NONCONVERGENT_L1>=L0
+
+--- n_half=2, m=10, d0=4, L0_total_compositions=91,881 ---
+(CVXPY) May 09 04:26:18 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 09 04:26:18 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+    L0: F+FN+Q=7,781 -> L=7,576  in 42.0s (F+FN+Q=12.7s, L=29.3s)
+    L1 probe (2 parents) ...
+      L1 parent[1/2]: children=2,397,465  F=0 -> FN=0 -> Q=0 -> QN=0 -> L=0  wall=0.1s

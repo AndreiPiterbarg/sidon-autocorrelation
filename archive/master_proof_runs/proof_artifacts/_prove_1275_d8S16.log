@@ -1,0 +1,235 @@
+(CVXPY) May 11 02:07:46 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 02:07:46 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+
+########################################################################
+# PROVE C_{1a} >= 1.275
+# Config: d=8, S=16
+# Time budget: 1560s
+# Started: 2026-05-11 14:07:46
+########################################################################
+
+========================================================================
+STAGE 1: Numba F + cell-net on FULL canonical enumeration
+  d=8  S=16  c_target=1.275
+  batch_size=200000  time_budget=60.0s
+========================================================================
+  JIT warm done in 0.0s
+  batch    1: processed=     122,661  grid_pruned=     122,642  cell_uncertain=   11,446  grid_surv=       19  rate=1729.6K/s  elapsed=0.1s  min_net=-0.400000
+
+  STAGE 1 SUMMARY:
+    processed:              122,661
+    grid-pruned:            122,642 (99.9845%)
+    grid-survivors:         19 (need d-refinement)
+    cell-certified by F:    111,196 (90.6531%)
+    cell-uncertain residue: 11,446 (9.3314%)  → Stage 2 (v4 L tier)
+    min_net seen:           -0.400000
+    elapsed:                0.1s
+
+========================================================================
+STAGE 2: v4 cell-cert (B1→F→L→L_joint→split) on 11,446 residue cells
+  time_budget=1500.0s
+========================================================================
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:318: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones11, cp.reshape(self.eps, (1, d))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:319: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(self.eps, (d, 1)), self.X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:336: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_col = cp.reshape(self.eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:337: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_row = cp.reshape(self.eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:338: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_col = cp.reshape(self.p_lo_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:339: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_row = cp.reshape(self.p_lo_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:340: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_col = cp.reshape(self.p_hi_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:341: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_row = cp.reshape(self.p_hi_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:353: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_col = cp.reshape(self.p_mu_star, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:354: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_row = cp.reshape(self.p_mu_star, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:463: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones11, cp.reshape(self.eps, (1, d))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:464: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(self.eps, (d, 1)), self.X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:474: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_col = cp.reshape(self.eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:475: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  eps_row = cp.reshape(self.eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:476: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_col = cp.reshape(self.p_lo_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:477: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  lo_row = cp.reshape(self.p_lo_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:478: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_col = cp.reshape(self.p_hi_eps, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:479: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  hi_row = cp.reshape(self.p_hi_eps, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:487: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_col = cp.reshape(self.p_mu_star, (d, 1))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:488: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  mu_row = cp.reshape(self.p_mu_star, (1, d))
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:378: UserWarning: You are solving a parameterized problem that is not DPP. Because the problem is not DPP, subsequent solves will not be faster than the first one. For more information, see the documentation on Disciplined Parametrized Programming, at https://www.cvxpy.org/tutorial/dpp/index.html
+  self.problem.solve(solver=cp.MOSEK, verbose=verbose,
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_coarse_bnb_v3.py:518: UserWarning: You are solving a parameterized problem that is not DPP. Because the problem is not DPP, subsequent solves will not be faster than the first one. For more information, see the documentation on Disciplined Parametrized Programming, at https://www.cvxpy.org/tutorial/dpp/index.html
+  self.problem.solve(solver=cp.MOSEK, verbose=verbose,
+  [   381/11,446] closed=  381  (B1=4 empty=0 F=101 L=257 Lj=19 split=0)  open=0  elapsed=16.8s
+  [   762/11,446] closed=  762  (B1=13 empty=0 F=190 L=491 Lj=68 split=0)  open=0  elapsed=32.7s
+  [  1143/11,446] closed= 1143  (B1=17 empty=0 F=243 L=738 Lj=145 split=0)  open=0  elapsed=50.8s
+  [  1524/11,446] closed= 1524  (B1=22 empty=0 F=313 L=979 Lj=210 split=0)  open=0  elapsed=67.9s
+  [  1905/11,446] closed= 1905  (B1=24 empty=0 F=346 L=1199 Lj=336 split=0)  open=0  elapsed=88.6s
+  [  2286/11,446] closed= 2286  (B1=30 empty=0 F=410 L=1442 Lj=404 split=0)  open=0  elapsed=106.6s
+  [  2667/11,446] closed= 2667  (B1=36 empty=0 F=463 L=1690 Lj=478 split=0)  open=0  elapsed=125.2s
+  [  3048/11,446] closed= 3048  (B1=63 empty=0 F=531 L=1917 Lj=537 split=0)  open=0  elapsed=141.2s
+  [  3429/11,446] closed= 3429  (B1=67 empty=0 F=622 L=2121 Lj=619 split=0)  open=0  elapsed=158.2s
+  [  3810/11,446] closed= 3810  (B1=77 empty=0 F=667 L=2329 Lj=737 split=0)  open=0  elapsed=177.5s
+  [  4191/11,446] closed= 4191  (B1=78 empty=0 F=689 L=2547 Lj=877 split=0)  open=0  elapsed=198.9s
+  [  4572/11,446] closed= 4572  (B1=82 empty=0 F=723 L=2799 Lj=968 split=0)  open=0  elapsed=218.3s
+  [  4953/11,446] closed= 4953  (B1=82 empty=0 F=739 L=2952 Lj=1180 split=0)  open=0  elapsed=241.5s
+  [  5334/11,446] closed= 5334  (B1=83 empty=0 F=747 L=3111 Lj=1393 split=0)  open=0  elapsed=264.9s
+  [  5715/11,446] closed= 5715  (B1=84 empty=0 F=785 L=3315 Lj=1531 split=0)  open=0  elapsed=286.3s
+  [  6096/11,446] closed= 6096  (B1=84 empty=0 F=828 L=3506 Lj=1678 split=0)  open=0  elapsed=306.7s
+  [  6477/11,446] closed= 6477  (B1=84 empty=0 F=884 L=3685 Lj=1824 split=0)  open=0  elapsed=327.6s
+  [  6858/11,446] closed= 6858  (B1=90 empty=0 F=950 L=3877 Lj=1941 split=0)  open=0  elapsed=346.5s
+  [  7239/11,446] closed= 7239  (B1=110 empty=0 F=995 L=4067 Lj=2067 split=0)  open=0  elapsed=365.8s
+  [  7620/11,446] closed= 7620  (B1=111 empty=0 F=1016 L=4213 Lj=2277 split=3)  open=0  elapsed=389.1s
+  [  8001/11,446] closed= 8001  (B1=112 empty=0 F=1059 L=4412 Lj=2415 split=3)  open=0  elapsed=409.7s
+  [  8382/11,446] closed= 8381  (B1=116 empty=0 F=1084 L=4551 Lj=2625 split=5)  open=1  elapsed=432.8s
+  [  8763/11,446] closed= 8762  (B1=116 empty=0 F=1088 L=4629 Lj=2923 split=6)  open=1  elapsed=458.5s
+  [  9144/11,446] closed= 9142  (B1=116 empty=0 F=1109 L=4772 Lj=3138 split=7)  open=2  elapsed=482.2s
+  [  9525/11,446] closed= 9521  (B1=116 empty=0 F=1123 L=4879 Lj=3395 split=8)  open=4  elapsed=507.6s
+  [  9906/11,446] closed= 9901  (B1=116 empty=0 F=1182 L=5086 Lj=3509 split=8)  open=5  elapsed=527.4s
+  [ 10287/11,446] closed=10272  (B1=129 empty=0 F=1223 L=5204 Lj=3705 split=11)  open=15  elapsed=553.0s
+  [ 10668/11,446] closed=10651  (B1=155 empty=0 F=1250 L=5327 Lj=3906 split=13)  open=17  elapsed=575.9s
+  [ 11049/11,446] closed=11022  (B1=175 empty=0 F=1281 L=5456 Lj=4095 split=15)  open=27  elapsed=600.4s
+  [ 11430/11,446] closed=11402  (B1=219 empty=0 F=1349 L=5624 Lj=4194 split=16)  open=28  elapsed=618.3s
+
+  STAGE 2 SUMMARY:
+    closed by tier: B1=233 empty=0 F=1351 L=5624 L_joint=4194 split=16
+    still open:     28
+    elapsed:        618.3s
+    sample open compositions (first 5):
+      [3, 1, 0, 1, 3, 2, 0, 6]
+      [3, 2, 0, 0, 3, 1, 3, 4]
+      [3, 2, 0, 1, 2, 2, 1, 5]
+      [3, 2, 1, 0, 2, 1, 2, 5]
+      [3, 2, 2, 2, 2, 0, 0, 5]
+
+########################################################################
+# FINAL VERDICT @ d=8, S=16, c=1.275
+########################################################################
+  Stage 1 processed: 122,661
+  Stage 1 grid-survivors (NEED d-refinement, NOT closed): 19
+  Stage 1 cell-certified by F: 111,196
+  Stage 1 cell-uncertain residue: 11,446
+  Stage 2 closed by v4: 11418
+  Stage 2 still open after v4: 28
+
+  Proof INCOMPLETE: 47 cells unclosed at this level.
+  (grid-survivors need d-refinement; v4-open need split/SDP)
+
+  Total wall time: 618.4s
+
+  Saved: _prove_1275_d8S16.json

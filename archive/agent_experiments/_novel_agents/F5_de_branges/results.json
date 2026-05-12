@@ -1,0 +1,43 @@
+{
+  "agent": "F5_de_branges",
+  "approach": "Paley-Wiener/Krein-Nudelman arc moments + Fejer-Riesz; tested Shor SDP and arc-decomp parametrisation",
+  "math_correct": true,
+  "best_lb_obtained": 1.0,
+  "vs_1_2802": "below",
+  "promising": false,
+  "verdict_short": "F5 (de Branges/Paley-Wiener/Krein-Nudelman): natural Shor SDP relaxation in Fourier moments gives the trivial LB of 1.0; the autocorrelation lift drops rank-1 trivially so the relaxation decouples positivity of f from the bound on f*f.  No improvement on 1.2802.",
+  "verdict_long": "Worked through the Paley-Wiener / arc-moment formulation: f >= 0 on [-1/4, 1/4] becomes Krein-Nudelman two-PSD on the Fourier moments a_k = f^(k); the autocorrelation b_k = sum a_j conj(a_{j-k}) is the FT of f*f, supported on [-1/2, 1/2].  Fejer-Riesz gives the PSD encoding of f*f <= M.  HOWEVER, the link b_k = autocorr(a) is QUADRATIC in a, requiring a Lasserre level-2 lift with rank-1.  Without rank-1 (the standard Shor relaxation), the SDP decouples and yields M = 1.0 trivially (as confirmed numerically at N=4..10).  With rank-1 the SDP is non-convex (BMI), intractable.  An alternative dual via Cohn-Elkies multipliers also gives the trivial bound 1.0.  The arc-decomp parametrisation provides FEASIBLE f's (upper bounds on the C_{1a} optimum), with best feasible upper ~ 1.6348349476467852 (still > 1.2802 but doesn't help the LB).  CONCLUSION: this Fourier/de Branges framework does NOT readily yield a non-trivial lower bound; the natural relaxations are too loose.  To make it work, one would need either (i) tight rank-1 enforcement at Lasserre L2 in the trig basis -- intractable; or (ii) a fundamentally different dual exploiting de Branges reproducing kernel structure (which we did not identify here).",
+  "next_steps_if_promising": [
+    "Lasserre L2 trig-moment SDP with strong RANK-1 enforcement (e.g., via Burer-Monteiro factorisation) -- non-convex but may give locally tight bounds",
+    "de Branges space E(z) with hermite-Biehler structure: try specific E functions with explicit reproducing kernels (e.g., Hermite, Laguerre families) to see if any gives a usable trace formula bound",
+    "Combine arc-PSD with EVALUATIONS of (f*f) at specific t (e.g., t=0, t=1/4, etc) as additional linear constraints"
+  ],
+  "compute_time_sec": 39.365997076034546,
+  "files_created": [
+    "C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_novel_agents\\F5_de_branges\\run.log",
+    "C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_novel_agents\\F5_de_branges\\probe.py",
+    "C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_novel_agents\\F5_de_branges\\results.json",
+    "C:\\Users\\andre\\OneDrive - PennO365\\Desktop\\compact_sidon\\_novel_agents\\F5_de_branges\\analysis.md"
+  ],
+  "feasible_upper_bounds_via_arc_param": {
+    "3": {
+      "random": 1.79217023515753,
+      "local_opt": 1.663084623230492
+    },
+    "5": {
+      "random": 1.8546839178171486,
+      "local_opt": 1.6497266589007447
+    },
+    "8": {
+      "random": 1.799780844914569,
+      "local_opt": 1.6348349476467852
+    },
+    "12": {
+      "random": 1.8582180064547613,
+      "local_opt": 1.7011409354837135
+    }
+  },
+  "best_feasible_upper": 1.6348349476467852,
+  "shor_sdp_lower_bound_run1": 1.0,
+  "sanity_box_max": 2.0050000000000017
+}

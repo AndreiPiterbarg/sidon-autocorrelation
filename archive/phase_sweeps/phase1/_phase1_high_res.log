@@ -1,0 +1,32 @@
+Building Phase-1 (single-moment) params at high resolution...
+  built in 5.1s
+Bisecting Phase-1 with tol=1e-5, max_cells=2e6...
+Initial bracket: [1.270000, 1.280000]
+  mid = 1.275000 -> NOT_CERTIFIED           (cells=2000000)
+  mid = 1.272500 -> CERTIFIED_FORBIDDEN     (cells=64)
+  mid = 1.273750 -> CERTIFIED_FORBIDDEN     (cells=72)
+  mid = 1.274375 -> CERTIFIED_FORBIDDEN     (cells=86)
+  mid = 1.274687 -> CERTIFIED_FORBIDDEN     (cells=108)
+  mid = 1.274844 -> NOT_CERTIFIED           (cells=2000000)
+  mid = 1.274766 -> CERTIFIED_FORBIDDEN     (cells=126)
+  mid = 1.274805 -> CERTIFIED_FORBIDDEN     (cells=144)
+  mid = 1.274824 -> CERTIFIED_FORBIDDEN     (cells=166)
+  mid = 1.274834 -> CERTIFIED_FORBIDDEN     (cells=204)
+  bisected in 56.9s
+CERTIFIED M_cert = 1.274833984375  (rational 130543/102400)
+Certificate -> delsarte_dual/grid_bound/certificates/phase1_high_res.json  sha256=959eb6947e2199bf...
+Verifying with INDEPENDENT verifier...
+OK: SHA-256 integrity = 959eb6947e2199bf12779838cade3cee0c156f73c6ebb0c6877d688b43e853f8
+OK: MV input rationals match (delta=69/500, u=319/500, K2*delta=5747/10000, n=119)
+OK: recomputed k_1    = [0.9092765512116033677521443335140104554109884005765981659817030249314055886684 +/- 7.62e-77]
+OK: recomputed K_2    = [4.164492753623188405797101449275362318840579710144927536231884057971014492754 +/- 6.07e-76]
+OK: recomputed S_1    = [87.85669009213829323870436074885329072078367275902500152791466121735041298 +/- 2.72e-72]
+OK: recomputed min_G cert lower = [1.000062235208668780364499103223430511310346468797569998193478028988361494338 +/- 2.56e-76]
+OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]
+Verifying M_cert = 130543/102400  (~1.274834)
+Re-checking 134 terminal cells ...
+OK: all 134 cells have Phi.upper() < 0; max recomputed upper = -4.081e-07
+OK: cells cover [0, 0.25429937] >= [0, mu(M_cert).upper()=0.25429937]
+
+VERDICT: CERTIFICATE ACCEPTED.  C_{1a} >= 130543/102400 (~1.274834).
+  verified in 4.5s; accepted=True

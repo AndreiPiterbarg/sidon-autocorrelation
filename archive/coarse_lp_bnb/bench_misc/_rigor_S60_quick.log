@@ -1,0 +1,40 @@
+
+=== RIGOR CASCADE  d0=2  S=60  c=1.281  J=True  L=False ===
+
+[L0] d=2, S=60, compositions=61, x_cap=48
+     0.31s: NO=0 J=0 L=0 surv=19  uncert=0
+[L0] surv=19  uncert=0  (0.31s)
+
+--- L1: d=2->4  parents=19  x_cap=33 ---
+L1: 11,910 children -> NO=8,816 J=7 L=0 uncert=533 surv_next=2,438 unc_next=515 (0.5s)
+
+--- L2: d=4->8  parents=2,953  x_cap=24 ---
+   [28/2953] children=1,033,687 NO=1,033,687 J=0 L=0 surv=0 uncert=0
+   [56/2953] children=2,138,293 NO=2,138,246 J=24 L=0 surv=0 uncert=23
+   [77/2953] children=3,059,513 NO=3,059,337 J=130 L=0 surv=0 uncert=46
+   [106/2953] children=4,267,813 NO=4,267,631 J=134 L=0 surv=0 uncert=48
+   [133/2953] children=5,524,922 NO=5,522,594 J=713 L=0 surv=1 uncert=1,614
+   [165/2953] children=6,960,796 NO=6,957,669 J=985 L=0 surv=1 uncert=2,141
+   [200/2953] children=8,575,772 NO=8,572,639 J=985 L=0 surv=1 uncert=2,147
+   [219/2953] children=9,437,133 NO=9,429,873 J=1,505 L=0 surv=51 uncert=5,704
+   [229/2953] children=9,932,757 NO=9,920,991 J=2,284 L=0 surv=130 uncert=9,352
+   [242/2953] children=10,582,077 NO=10,566,006 J=3,176 L=0 surv=220 uncert=12,675
+   [253/2953] children=11,071,845 NO=11,053,409 J=3,678 L=0 surv=283 uncert=14,475
+   [272/2953] children=11,935,341 NO=11,915,969 J=3,852 L=0 surv=293 uncert=15,227
+   [294/2953] children=12,927,189 NO=12,907,698 J=3,860 L=0 surv=293 uncert=15,338
+   [315/2953] children=13,947,285 NO=13,927,794 J=3,860 L=0 surv=293 uncert=15,338
+   [343/2953] children=15,030,152 NO=15,010,402 J=3,876 L=0 surv=293 uncert=15,581
+   [353/2953] children=15,464,430 NO=15,440,261 J=4,182 L=0 surv=455 uncert=19,532
+   [359/2953] children=15,746,348 NO=15,718,458 J=4,552 L=0 surv=603 uncert=22,735
+   [366/2953] children=16,093,981 NO=16,061,859 J=5,004 L=0 surv=758 uncert=26,360
+   [369/2953] children=16,222,538 NO=16,185,395 J=5,587 L=0 surv=1,106 uncert=30,450
+   [376/2953] children=16,585,953 NO=16,545,313 J=6,029 L=0 surv=1,196 uncert=33,415
+   [379/2953] children=16,699,521 NO=16,653,905 J=6,888 L=0 surv=1,544 uncert=37,184
+   [385/2953] children=17,033,673 NO=16,982,744 J=7,412 L=0 surv=1,897 uncert=41,620
+   [392/2953] children=17,313,628 NO=17,257,077 J=8,699 L=0 surv=2,306 uncert=45,546
+   *** mid-level budget exceeded (50,642 > 50,000); aborting at parent 394/2953 ***
+L2: 17,417,225 children -> NO=17,357,646 J=8,937 L=0 uncert=47,961 surv_next=2,681 unc_next=47,961 (204.8s)
+   *** budget exceeded; aborting ***
+
+=== DONE (205.8s) ===
+NOT closed: budget exceeded at L2: cumul 53,614 > 50,000 (mid-level abort)

@@ -1,0 +1,71 @@
+W11 reproduction of threescale_N200_best
+deltas_q = [Fraction(69, 500), Fraction(11, 200), Fraction(1, 40)]
+lambdas_q = [Fraction(17, 20), Fraction(1, 10), Fraction(1, 20)]
+[Solving QP for G coefficients with N=200] ...
+(CVXPY) May 11 10:14:44 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:14:44 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+  QP done in 3.1s; coeffs[0..2]=[1.908075424416, -1.615007693064, 1.17725683128]
+[Calling certify() with xi_max=1e5] ...
+  deltas = [0.1380, 0.0550, 0.0250]  lambdas = [0.8500, 0.1000, 0.0500]
+  n_modes = 200  XI_MAX = 100000  prec = 256 bits  arb_grid = 200001
+  [arb] k_1 mid=0.9212465899  rad<=7.02e-77
+  [arb] min_G >= 0.99875887 (lip rem <= 1.22e-03) G2 = OK  (0.7s)
+  [arb] S_1 <= 29.840907
+  [arb] K_2 in [4.78882342, 4.78963036]  tail <= 8.07e-04  (12.3s)
+  [arb] gain a >= 0.209579
+  [arb] certified M_* >= 1.29215650
+  Certify done in 13.1s
+
+=== RESULT ===
+{
+  "deltas": [
+    0.138,
+    0.055,
+    0.025
+  ],
+  "lambdas": [
+    0.85,
+    0.1,
+    0.05
+  ],
+  "n_scales": 3,
+  "n_modes": 200,
+  "xi_max": 100000,
+  "prec_bits": 256,
+  "arb_grid": 200001,
+  "k_1_mid": 0.9212465899364083,
+  "k_1_rad": 7.024115177119155e-77,
+  "min_G_lower": 0.9987588689743072,
+  "lip_remainder_upper": 0.001221734943974394,
+  "G2_OK": true,
+  "S_1_upper": 29.84090655472349,
+  "K_2_lower": 4.788823421259034,
+  "K_2_upper": 4.789630363787504,
+  "K_2_bulk_lower": 4.788823421260266,
+  "K_2_bulk_upper": 4.788823421260266,
+  "K_2_tail_upper": 0.0008069425260069316,
+  "a_gain_lower": 0.2095794023970866,
+  "M_cert_lower": 1.2921564960222152,
+  "time_K2_seconds": 12.322425127029419,
+  "time_minG_seconds": 0.7149717807769775
+}
+
+=== COMPARISON ===
+  [OK ]                k_1_mid  old=            0.9212465899364083  new=            0.9212465899364083  reldiff=0.00e+00
+  [OK ]                k_1_rad  old=         7.024115177119155e-77  new=         7.024115177119155e-77  reldiff=0.00e+00
+  [OK ]              K_2_lower  old=             4.788823421259034  new=             4.788823421259034  reldiff=0.00e+00
+  [OK ]              K_2_upper  old=             4.789630363787504  new=             4.789630363787504  reldiff=0.00e+00
+  [OK ]         K_2_tail_upper  old=         0.0008069425260069316  new=         0.0008069425260069316  reldiff=0.00e+00
+  [OK ]            min_G_lower  old=            0.9987588689743072  new=            0.9987588689743072  reldiff=0.00e+00
+  [OK ]    lip_remainder_upper  old=          0.001221734943974394  new=          0.001221734943974394  reldiff=0.00e+00
+  [OK ]              S_1_upper  old=             29.84090655472349  new=             29.84090655472349  reldiff=0.00e+00
+  [OK ]           a_gain_lower  old=            0.2095794023970866  new=            0.2095794023970866  reldiff=0.00e+00
+  [OK ]           M_cert_lower  old=            1.2921564960222152  new=            1.2921564960222152  reldiff=0.00e+00
+
+ALL_FIELDS_MATCH: True
+M_cert_lower reproduced: 1.2921564960222152
+M_cert_lower ref:        1.2921564960222152
+Claim threshold:         1.29215
+PASS (M >= 1.29215):     True

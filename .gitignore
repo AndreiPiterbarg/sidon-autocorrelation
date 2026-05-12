@@ -61,6 +61,35 @@ data/_shards_L2/
 data/**/_shards_L2/
 data/subtree_test/
 
+# Enormous shard/checkpoint trees (multi-GB; exceed GitHub 2GB hard blob limit)
+*.npy
+*.dat
+archive/data_runs/
+cloninger-steinerberger/cpu/data/
+**/_shards_L1/
+**/_shards_L2/
+**/coarse_shards/
+**/checkpoints/
+**/subtree_test/
+
 # Temp/backup files
 *.stackdump
 *.bak
+
+# LaTeX build artefacts (keep .tex / .pdf / .bib / figures only)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.synctex.gz
+*.toc
+delsarte_dual/**/*.log
+delsarte_dual/**/texput.log
+
+# OneDrive sync race quarantine — review then delete
+_resurrected_quarantine/
+CLAUDE.md

@@ -1,0 +1,765 @@
+{
+  "d2_n1_m20": [
+    {
+      "c": [
+        40,
+        40
+      ],
+      "n_half": 1,
+      "m": 20,
+      "d": 2,
+      "h": 0.25,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 1.0,
+      "cascade_best_ell": 2,
+      "cascade_best_s_lo": 1,
+      "ell2_max_TV": 1.0,
+      "max_t_ff_exact": 2.0,
+      "max_t_ff_numerical": 2.0004998750231207,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.5,
+      "cascade_pct_of_2x_ell2": 0.5,
+      "knot_t": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "knot_vals_exact": [
+        1.0,
+        2.0,
+        1.0
+      ],
+      "ell2_TVs": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "conv": [
+        1600,
+        3200,
+        1600
+      ],
+      "gap_A_max_t_minus_cascade_TV": 1.0,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.0,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        30,
+        50
+      ],
+      "n_half": 1,
+      "m": 20,
+      "d": 2,
+      "h": 0.25,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 1.1458333333333333,
+      "cascade_best_ell": 3,
+      "cascade_best_s_lo": 1,
+      "ell2_max_TV": 0.9375,
+      "max_t_ff_exact": 1.875,
+      "max_t_ff_numerical": 1.8754686328341756,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.611111111111111,
+      "cascade_pct_of_2x_ell2": 0.611111111111111,
+      "knot_t": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "knot_vals_exact": [
+        0.5625,
+        1.875,
+        1.5625
+      ],
+      "ell2_TVs": [
+        0.28125,
+        0.9375,
+        0.78125
+      ],
+      "conv": [
+        900,
+        3000,
+        2500
+      ],
+      "gap_A_max_t_minus_cascade_TV": 0.7291666666666667,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.20833333333333326,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        20,
+        60
+      ],
+      "n_half": 1,
+      "m": 20,
+      "d": 2,
+      "h": 0.25,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 1.25,
+      "cascade_best_ell": 3,
+      "cascade_best_s_lo": 1,
+      "ell2_max_TV": 1.125,
+      "max_t_ff_exact": 2.25,
+      "max_t_ff_numerical": 2.2505623594010107,
+      "numerical_argmax_t": 0.24999999999950007,
+      "cascade_pct_of_max_t": 0.5555555555555556,
+      "cascade_pct_of_2x_ell2": 0.5555555555555556,
+      "knot_t": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "knot_vals_exact": [
+        0.25,
+        1.5,
+        2.25
+      ],
+      "ell2_TVs": [
+        0.125,
+        0.75,
+        1.125
+      ],
+      "conv": [
+        400,
+        2400,
+        3600
+      ],
+      "gap_A_max_t_minus_cascade_TV": 1.0,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.125,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        0,
+        80
+      ],
+      "n_half": 1,
+      "m": 20,
+      "d": 2,
+      "h": 0.25,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 2.0,
+      "cascade_best_ell": 2,
+      "cascade_best_s_lo": 2,
+      "ell2_max_TV": 2.0,
+      "max_t_ff_exact": 4.0,
+      "max_t_ff_numerical": 4.000999750046241,
+      "numerical_argmax_t": 0.24999999999950007,
+      "cascade_pct_of_max_t": 0.5,
+      "cascade_pct_of_2x_ell2": 0.5,
+      "knot_t": [
+        -0.25,
+        0.0,
+        0.25
+      ],
+      "knot_vals_exact": [
+        0.0,
+        0.0,
+        4.0
+      ],
+      "ell2_TVs": [
+        0.0,
+        0.0,
+        2.0
+      ],
+      "conv": [
+        0,
+        0,
+        6400
+      ],
+      "gap_A_max_t_minus_cascade_TV": 2.0,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.0,
+      "soundness_ok": true
+    }
+  ],
+  "d4_n2_m10": [
+    {
+      "c": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "n_half": 2,
+      "m": 10,
+      "d": 4,
+      "h": 0.125,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 1.25,
+      "cascade_best_ell": 4,
+      "cascade_best_s_lo": 2,
+      "ell2_max_TV": 1.0,
+      "max_t_ff_exact": 2.0,
+      "max_t_ff_numerical": 2.0004998750231207,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.625,
+      "cascade_pct_of_2x_ell2": 0.625,
+      "knot_t": [
+        -0.375,
+        -0.25,
+        -0.125,
+        0.0,
+        0.125,
+        0.25,
+        0.375
+      ],
+      "knot_vals_exact": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "ell2_TVs": [
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        0.75,
+        0.5,
+        0.25
+      ],
+      "conv": [
+        400,
+        800,
+        1200,
+        1600,
+        1200,
+        800,
+        400
+      ],
+      "gap_A_max_t_minus_cascade_TV": 0.75,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.25,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        15,
+        25,
+        25,
+        15
+      ],
+      "n_half": 2,
+      "m": 10,
+      "d": 4,
+      "h": 0.125,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 1.390625,
+      "cascade_best_ell": 4,
+      "cascade_best_s_lo": 2,
+      "ell2_max_TV": 1.0625,
+      "max_t_ff_exact": 2.125,
+      "max_t_ff_numerical": 2.1250312421808255,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.6544117647058824,
+      "cascade_pct_of_2x_ell2": 0.6544117647058824,
+      "knot_t": [
+        -0.375,
+        -0.25,
+        -0.125,
+        0.0,
+        0.125,
+        0.25,
+        0.375
+      ],
+      "knot_vals_exact": [
+        0.28125,
+        0.9375,
+        1.71875,
+        2.125,
+        1.71875,
+        0.9375,
+        0.28125
+      ],
+      "ell2_TVs": [
+        0.140625,
+        0.46875,
+        0.859375,
+        1.0625,
+        0.859375,
+        0.46875,
+        0.140625
+      ],
+      "conv": [
+        225,
+        750,
+        1375,
+        1700,
+        1375,
+        750,
+        225
+      ],
+      "gap_A_max_t_minus_cascade_TV": 0.734375,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.328125,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        0,
+        40,
+        40,
+        0
+      ],
+      "n_half": 2,
+      "m": 10,
+      "d": 4,
+      "h": 0.125,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 2.0,
+      "cascade_best_ell": 2,
+      "cascade_best_s_lo": 3,
+      "ell2_max_TV": 2.0,
+      "max_t_ff_exact": 4.0,
+      "max_t_ff_numerical": 3.9990002499212807,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.5,
+      "cascade_pct_of_2x_ell2": 0.5,
+      "knot_t": [
+        -0.375,
+        -0.25,
+        -0.125,
+        0.0,
+        0.125,
+        0.25,
+        0.375
+      ],
+      "knot_vals_exact": [
+        0.0,
+        0.0,
+        2.0,
+        4.0,
+        2.0,
+        0.0,
+        0.0
+      ],
+      "ell2_TVs": [
+        0.0,
+        0.0,
+        1.0,
+        2.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "conv": [
+        0,
+        0,
+        1600,
+        3200,
+        1600,
+        0,
+        0
+      ],
+      "gap_A_max_t_minus_cascade_TV": 2.0,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.0,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        10,
+        30,
+        30,
+        10
+      ],
+      "n_half": 2,
+      "m": 10,
+      "d": 4,
+      "h": 0.125,
+      "S_4nm": 80,
+      "cascade_max_TV_W": 1.5625,
+      "cascade_best_ell": 4,
+      "cascade_best_s_lo": 2,
+      "ell2_max_TV": 1.25,
+      "max_t_ff_exact": 2.5,
+      "max_t_ff_numerical": 2.4996250937164204,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.625,
+      "cascade_pct_of_2x_ell2": 0.625,
+      "knot_t": [
+        -0.375,
+        -0.25,
+        -0.125,
+        0.0,
+        0.125,
+        0.25,
+        0.375
+      ],
+      "knot_vals_exact": [
+        0.125,
+        0.75,
+        1.875,
+        2.5,
+        1.875,
+        0.75,
+        0.125
+      ],
+      "ell2_TVs": [
+        0.0625,
+        0.375,
+        0.9375,
+        1.25,
+        0.9375,
+        0.375,
+        0.0625
+      ],
+      "conv": [
+        100,
+        600,
+        1500,
+        2000,
+        1500,
+        600,
+        100
+      ],
+      "gap_A_max_t_minus_cascade_TV": 0.9375,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.3125,
+      "soundness_ok": true
+    }
+  ],
+  "d8_n2_m5": [
+    {
+      "c": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "n_half": 2,
+      "m": 5,
+      "d": 8,
+      "h": 0.0625,
+      "S_4nm": 40,
+      "cascade_max_TV_W": 0.7083333333333334,
+      "cascade_best_ell": 6,
+      "cascade_best_s_lo": 5,
+      "ell2_max_TV": 0.5,
+      "max_t_ff_exact": 2.0,
+      "max_t_ff_numerical": 2.0004998750231207,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.3541666666666667,
+      "cascade_pct_of_2x_ell2": 0.7083333333333334,
+      "knot_t": [
+        -0.4375,
+        -0.375,
+        -0.3125,
+        -0.25,
+        -0.1875,
+        -0.125,
+        -0.0625,
+        0.0,
+        0.0625,
+        0.125,
+        0.1875,
+        0.25,
+        0.3125,
+        0.375,
+        0.4375
+      ],
+      "knot_vals_exact": [
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.25,
+        1.5,
+        1.75,
+        2.0,
+        1.75,
+        1.5,
+        1.25,
+        1.0,
+        0.75,
+        0.5,
+        0.25
+      ],
+      "ell2_TVs": [
+        0.0625,
+        0.125,
+        0.1875,
+        0.25,
+        0.3125,
+        0.375,
+        0.4375,
+        0.5,
+        0.4375,
+        0.375,
+        0.3125,
+        0.25,
+        0.1875,
+        0.125,
+        0.0625
+      ],
+      "conv": [
+        25,
+        50,
+        75,
+        100,
+        125,
+        150,
+        175,
+        200,
+        175,
+        150,
+        125,
+        100,
+        75,
+        50,
+        25
+      ],
+      "gap_A_max_t_minus_cascade_TV": 1.2916666666666665,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.20833333333333337,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        0,
+        10,
+        10,
+        0,
+        0,
+        10,
+        10,
+        0
+      ],
+      "n_half": 2,
+      "m": 5,
+      "d": 8,
+      "h": 0.0625,
+      "S_4nm": 40,
+      "cascade_max_TV_W": 1.0,
+      "cascade_best_ell": 2,
+      "cascade_best_s_lo": 7,
+      "ell2_max_TV": 1.0,
+      "max_t_ff_exact": 4.0,
+      "max_t_ff_numerical": 3.9990002499212807,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.25,
+      "cascade_pct_of_2x_ell2": 0.5,
+      "knot_t": [
+        -0.4375,
+        -0.375,
+        -0.3125,
+        -0.25,
+        -0.1875,
+        -0.125,
+        -0.0625,
+        0.0,
+        0.0625,
+        0.125,
+        0.1875,
+        0.25,
+        0.3125,
+        0.375,
+        0.4375
+      ],
+      "knot_vals_exact": [
+        0.0,
+        0.0,
+        1.0,
+        2.0,
+        1.0,
+        0.0,
+        2.0,
+        4.0,
+        2.0,
+        0.0,
+        1.0,
+        2.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "ell2_TVs": [
+        0.0,
+        0.0,
+        0.25,
+        0.5,
+        0.25,
+        0.0,
+        0.5,
+        1.0,
+        0.5,
+        0.0,
+        0.25,
+        0.5,
+        0.25,
+        0.0,
+        0.0
+      ],
+      "conv": [
+        0,
+        0,
+        100,
+        200,
+        100,
+        0,
+        200,
+        400,
+        200,
+        0,
+        100,
+        200,
+        100,
+        0,
+        0
+      ],
+      "gap_A_max_t_minus_cascade_TV": 3.0,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.0,
+      "soundness_ok": true
+    },
+    {
+      "c": [
+        2,
+        8,
+        4,
+        6,
+        6,
+        4,
+        8,
+        2
+      ],
+      "n_half": 2,
+      "m": 5,
+      "d": 8,
+      "h": 0.0625,
+      "S_4nm": 40,
+      "cascade_max_TV_W": 0.7666666666666667,
+      "cascade_best_ell": 6,
+      "cascade_best_s_lo": 5,
+      "ell2_max_TV": 0.6,
+      "max_t_ff_exact": 2.4,
+      "max_t_ff_numerical": 2.399560109962766,
+      "numerical_argmax_t": 5.551115123125783e-17,
+      "cascade_pct_of_max_t": 0.3194444444444445,
+      "cascade_pct_of_2x_ell2": 0.638888888888889,
+      "knot_t": [
+        -0.4375,
+        -0.375,
+        -0.3125,
+        -0.25,
+        -0.1875,
+        -0.125,
+        -0.0625,
+        0.0,
+        0.0625,
+        0.125,
+        0.1875,
+        0.25,
+        0.3125,
+        0.375,
+        0.4375
+      ],
+      "knot_vals_exact": [
+        0.04,
+        0.32,
+        0.8,
+        0.88,
+        1.36,
+        1.6,
+        1.8,
+        2.4,
+        1.8,
+        1.6,
+        1.36,
+        0.88,
+        0.8,
+        0.32,
+        0.04
+      ],
+      "ell2_TVs": [
+        0.01,
+        0.08,
+        0.2,
+        0.22,
+        0.34,
+        0.4,
+        0.45,
+        0.6,
+        0.45,
+        0.4,
+        0.34,
+        0.22,
+        0.2,
+        0.08,
+        0.01
+      ],
+      "conv": [
+        4,
+        32,
+        80,
+        88,
+        136,
+        160,
+        180,
+        240,
+        180,
+        160,
+        136,
+        88,
+        80,
+        32,
+        4
+      ],
+      "gap_A_max_t_minus_cascade_TV": 1.6333333333333333,
+      "gap_C_cascade_TV_minus_ell2_TV": 0.16666666666666674,
+      "soundness_ok": true
+    }
+  ],
+  "summary": {
+    "n_tested": 11,
+    "n_soundness_violated": 0,
+    "n_ell_gt2_beats_ell2": 7,
+    "max_gap_A_max_t_minus_cascade_TV": 3.0,
+    "max_gap_A_cell": [
+      "d8_n2_m5",
+      [
+        0,
+        10,
+        10,
+        0,
+        0,
+        10,
+        10,
+        0
+      ]
+    ],
+    "min_cascade_pct_of_max_t": 0.25,
+    "min_pct_cell": [
+      "d8_n2_m5",
+      [
+        0,
+        10,
+        10,
+        0,
+        0,
+        10,
+        10,
+        0
+      ]
+    ],
+    "max_gap_C_cascade_TV_minus_ell2_TV": 0.328125,
+    "max_gap_C_cell": [
+      "d4_n2_m10",
+      [
+        15,
+        25,
+        25,
+        15
+      ]
+    ],
+    "interpretation": {
+      "theorem_1": "TV_W(c) = (2d/(ell*S^2)) * ws_W = ws_W/(4n*ell*m^2) [for fine grid, S=4nm, d=2n]. Theorem 1: max_t(f*f) >= TV_W.  This is a LOWER bound, so cascade_TV <= max_t(f*f) always.",
+      "tightness_at_ell2": "At conv-position knots, (f*f) = (2d/S^2)*conv[k] = 2 * TV_ell2[k]. So cascade is at most HALF of max_t(f*f) at single-conv knot. The factor 2 is structural.",
+      "cascade_optimum_strategy": "Cascade picks ell, s_lo to maximize ws_W/(4n*ell*m^2). Larger ell averages more conv positions => smaller per-position contribution but possibly larger sum (when surrounding positions are also large).",
+      "gap_A_meaning": "max_t(f*f) - max_W TV_W; ALWAYS >= 0 (Theorem 1).  Tight when conv is highly concentrated at one position AND ell=2 is the optimal window.",
+      "gap_C_meaning": "max_W TV_W - max_ell=2 TV; >0 means ell>=3 averaging gives a STRICTLY TIGHTER LB than peak ell=2.  This happens for SPREAD distributions (uniform, palindromic)."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\delsarte_dual\grid_bound\bisect_mm.py", line 259, in <module>
+    main()
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\delsarte_dual\grid_bound\bisect_mm.py", line 240, in main
+    bound = bisect_M_cert_mm(
+            ^^^^^^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\delsarte_dual\grid_bound\bisect_mm.py", line 90, in bisect_M_cert_mm
+    raise RuntimeError(
+RuntimeError: M_lo_init = 1.270000 could not be certified; widen bracket.
+======================================================================
+Phase 2 -- multi-moment bound at N=2 with filter panel
+======================================================================
+Compiled params: gain_a=[0.0713671934332336 +/- 2.99e-17], min_G=[1.00003930957507 +/- 5.59e-16]
+Initial bracket: [1.270000, 1.310000]  (N=2)

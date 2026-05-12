@@ -1,19 +1,21 @@
-"""Adaptive 1-D interval B&B on y = z_1^2 for the Phi < 0 certificate.
+"""Adaptive cell B&B certifier for ``Phi(M, y) < 0`` on ``[0, mu(M)]``.
 
-At N = 1, Phi is a smooth function of y on [0, mu(M)].  We certify that
-sup_{y in [0, mu(M)]} Phi(M, y) < 0 by subdividing the admissible y-interval
-into cells and checking that every cell's arb-enclosure of Phi has
-``.upper() < 0``.
+At a fixed ``M``, ``Phi(M, .)`` is smooth in ``y``.  We certify that
 
-Adaptive strategy
------------------
-Priority queue over "live" cells sorted by Phi.upper() descending.  Pop the
-worst-case cell; if its Phi.upper() is already negative, all others are too
-(queue invariant) and we're done.  Otherwise bisect the cell and re-queue.
+    ``sup_{y in [0, mu(M)]} Phi(M, y) < 0``
 
-Output on success is the complete list of terminal cells with their
-arb-enclosed Phi.upper() (all < 0); this serves as the witness in the
-certificate and is re-checkable by the independent verifier.
+by subdividing ``[0, mu(M)]`` into cells, evaluating an arb enclosure of
+``Phi`` on each, and accepting only when every cell's ``Phi.upper() < 0``.
+
+A priority-queue over live cells is sorted by ``Phi.upper()`` descending.
+Each iteration pops the worst cell; if its upper bound is already
+negative, the queue invariant proves every other cell is too and we
+certify.  Otherwise the cell is bisected and re-queued, until either the
+certificate succeeds or the cell budget is exhausted.
+
+The list of terminal cells (every one of which has ``Phi.upper() < 0``)
+is returned as the witness for the certificate and is re-checked by the
+independent verifier in :mod:`certify`.
 """
 from __future__ import annotations
 
@@ -28,10 +30,8 @@ from .phi import PhiParams, phi_N1, mu_of_M
 
 @dataclass
 class Cell:
-    """Rational-endpoint cell [lo, hi] for y = z_1^2.
+    """Closed cell ``[lo, hi]`` with exact rational endpoints."""
 
-    Stored with exact fmpq endpoints so certificates remain replayable.
-    """
     lo: fmpq
     hi: fmpq
 
@@ -65,33 +65,30 @@ class Cell:
 @dataclass
 class CellResult:
     cell: Cell
-    phi_upper_float: float     # arb.upper() converted to float, for prioritising
-    phi_arb_str: str           # arb's str(), kept for the certificate
+    phi_upper_float: float
+    phi_arb_str: str
 
 
 @dataclass
 class CellSearchResult:
-    verdict: str                        # "CERTIFIED_FORBIDDEN" or "NOT_CERTIFIED"
-    terminal_cells: List[CellResult]    # all cells that proved Phi.upper() < 0
-    worst_cell: Optional[CellResult]    # cell with largest Phi.upper() (if any)
+    verdict: str
+    terminal_cells: List[CellResult]
+    worst_cell: Optional[CellResult]
     cells_processed: int
 
 
-def _mu_upper_rational(M: arb, extra_cushion: fmpq = fmpq(1, 10**10)) -> fmpq:
-    """A conservative rational upper bound on mu(M) := M sin(pi/M)/pi.
+def _mu_upper_rational(
+    M: arb, extra_cushion: fmpq = fmpq(1, 10**10)
+) -> fmpq:
+    """Conservative rational upper bound on ``mu(M)``.
 
-    We take the arb-enclosed mu(M).upper(), then add a tiny rational cushion
-    so the cell domain [0, mu_rat] strictly covers [0, mu(M)_true].
+    Takes the arb-enclosed ``mu(M).upper()``, converts to its exact
+    binary rational, then adds a tiny cushion so the cell domain
+    ``[0, mu_rat]`` strictly covers ``[0, mu(M)_true]``.
     """
-    mu = mu_of_M(M)
-    mu_up_arb = mu.upper()                      # arb, ball around true upper
-    # Extract a float then convert to fmpq (exact binary to rational)
-    f = float(mu_up_arb)
-    # Round up in rationals: take a fmpq greater than f.
-    # fmpq from float is exact-binary; add cushion.
-    num, den = f.as_integer_ratio()
-    q = fmpq(num, den) + extra_cushion
-    return q
+    mu_up = float(mu_of_M(M).upper())
+    num, den = mu_up.as_integer_ratio()
+    return fmpq(num, den) + extra_cushion
 
 
 def certify_phi_negative(
@@ -101,57 +98,47 @@ def certify_phi_negative(
     initial_splits: int = 16,
     prec_bits: int = 256,
 ) -> CellSearchResult:
-    """Certify Phi(M, y) < 0 for all y in [0, mu(M)] by adaptive 1-D B&B.
+    """Certify ``Phi(M, y) < 0`` for all ``y in [0, mu(M)]``.
 
-    Args:
-        M:              arb enclosing the claimed ||f*f||_inf.
-        params:         precompiled Phi parameters.
-        max_cells:      total cell budget; if exceeded without certifying,
-                        returns verdict NOT_CERTIFIED.
-        initial_splits: how many equal cells to start with on [0, mu_upper].
-        prec_bits:      arb precision.
+    Returns ``CERTIFIED_FORBIDDEN`` on success, ``NOT_CERTIFIED`` if the
+    cell budget is exhausted before the certificate succeeds.
     """
     old = ctx.prec
     ctx.prec = prec_bits
     try:
         mu_q = _mu_upper_rational(M)
-        # Initial cells
-        live: list[tuple[float, int, Cell, CellResult]] = []
+
+        live: list = []
+        terminal: List[CellResult] = []
         cells_processed = 0
-        terminal: list[CellResult] = []
-        worst_overall: Optional[CellResult] = None
 
         def eval_cell(cell: Cell) -> CellResult:
             y_arb = cell.as_arb()
             phi_v = phi_N1(M, y_arb, params)
-            u_val = float(phi_v.upper())
             return CellResult(
                 cell=cell,
-                phi_upper_float=u_val,
+                phi_upper_float=float(phi_v.upper()),
                 phi_arb_str=str(phi_v),
             )
 
-        # Seed cells
         w = mu_q / fmpq(initial_splits)
         for k in range(initial_splits):
-            c = Cell(fmpq(k) * w, fmpq(k + 1) * w)
-            r = eval_cell(c)
+            cell = Cell(fmpq(k) * w, fmpq(k + 1) * w)
+            r = eval_cell(cell)
             cells_processed += 1
-            # Heap: max-heap on Phi.upper() => push negative for min-heap.
-            heappush(live, (-r.phi_upper_float, cells_processed, c, r))
+            # heapq is a min-heap; store negated upper bound for max-heap semantics.
+            heappush(live, (-r.phi_upper_float, cells_processed, cell, r))
 
-        # Adaptive B&B
         while live:
             neg_up, _serial, cell, res = heappop(live)
             up_val = -neg_up
             if up_val < 0:
-                # Popped cell is the worst remaining; all others are <=;
-                # certified.  Include it and all remaining as terminal.
+                # The popped cell is the worst remaining; every other cell
+                # has Phi.upper() <= up_val < 0.  Collect them and certify.
                 terminal.append(res)
                 while live:
                     _n, _s, _c, _r = heappop(live)
                     terminal.append(_r)
-                # Worst terminal == this just-popped cell (heap max).
                 return CellSearchResult(
                     verdict="CERTIFIED_FORBIDDEN",
                     terminal_cells=terminal,
@@ -159,9 +146,7 @@ def certify_phi_negative(
                     cells_processed=cells_processed,
                 )
 
-            # Need to refine this cell.
             if cells_processed >= max_cells:
-                # Record the worst unrefined cell, then fail.
                 heappush(live, (neg_up, _serial, cell, res))
                 return CellSearchResult(
                     verdict="NOT_CERTIFIED",
@@ -169,18 +154,25 @@ def certify_phi_negative(
                     worst_cell=res,
                     cells_processed=cells_processed,
                 )
+
             left, right = cell.bisect()
-            r_left  = eval_cell(left)
+            r_left = eval_cell(left)
             r_right = eval_cell(right)
             cells_processed += 2
-            heappush(live, (-r_left.phi_upper_float,  cells_processed - 1, left,  r_left))
-            heappush(live, (-r_right.phi_upper_float, cells_processed,     right, r_right))
+            heappush(
+                live,
+                (-r_left.phi_upper_float, cells_processed - 1, left, r_left),
+            )
+            heappush(
+                live,
+                (-r_right.phi_upper_float, cells_processed, right, r_right),
+            )
 
-        # Empty queue means all cells already < 0 (handled above), safety net:
+        # Unreachable: an empty queue means the loop above already certified.
         return CellSearchResult(
             verdict="CERTIFIED_FORBIDDEN",
             terminal_cells=terminal,
-            worst_cell=worst_overall,
+            worst_cell=None,
             cells_processed=cells_processed,
         )
     finally:

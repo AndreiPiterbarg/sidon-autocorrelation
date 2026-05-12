@@ -1,0 +1,362 @@
+{
+  "derivation_summary": {
+    "chain": "f_eps = f*h_eps with h_eps=(1/eps)1_{[-eps/2,eps/2]}; g_eps = f_eps*f_eps = g*phi_eps. Rescale to [-1/4,1/4] via g(y)=(1+2eps)f_eps((1+2eps)y). ||g_eps||_2^2 <= [1 + mu((1+2eps)M) * ((1+2eps)K_eps - 1)]/(1+2eps).",
+    "mo_214_support_issue": "f_eps has support [-1/4-eps/2, 1/4+eps/2], larger than [-1/4, 1/4]. Rescaling to [-1/4,1/4] inflates M_eff to (1+2eps)*M and K_eff to (1+2eps)*K_eps, so MO 2.14 applies but with mu((1+2eps)*M) > mu(M).",
+    "K_eps_naive_bound": "K_eps <= ||phi_eps||_inf = 1/eps (when int f = 1).",
+    "K_eps_loose_at_small_eps": "As eps -> 0, naive K_eps -> infinity. Tight bound depends on f and is K_eps -> K = ||f||_2^2."
+  },
+  "naive_K_sweep_at_M_1p275": [
+    {
+      "eps": 0.0001,
+      "K_eps_bound": 10000.0,
+      "UB_g_eps_L2sq": 2547.1515080199338,
+      "c_eps": 1997.7658886430852,
+      "mu_at_M_eff": 0.25464062976917684
+    },
+    {
+      "eps": 0.0003,
+      "K_eps_bound": 3333.3333333333335,
+      "UB_g_eps_L2sq": 850.9237942487341,
+      "c_eps": 667.3912111754778,
+      "mu_at_M_eff": 0.2550537884210587
+    },
+    {
+      "eps": 0.001,
+      "K_eps_bound": 1000.0,
+      "UB_g_eps_L2sq": 257.2399153067927,
+      "c_eps": 201.7567963190531,
+      "mu_at_M_eff": 0.25649789724016614
+    },
+    {
+      "eps": 0.003,
+      "K_eps_bound": 333.3333333333333,
+      "UB_g_eps_L2sq": 87.60406212247844,
+      "c_eps": 68.70906833135564,
+      "mu_at_M_eff": 0.260607237772323
+    },
+    {
+      "eps": 0.01,
+      "K_eps_bound": 100.0,
+      "UB_g_eps_L2sq": 28.19052061493852,
+      "c_eps": 22.110212247010605,
+      "mu_at_M_eff": 0.27479535670531974
+    },
+    {
+      "eps": 0.03,
+      "K_eps_bound": 33.333333333333336,
+      "UB_g_eps_L2sq": 11.103294846643747,
+      "c_eps": 8.708466546387253,
+      "mu_at_M_eff": 0.313674539925506
+    },
+    {
+      "eps": 0.05,
+      "K_eps_bound": 20.0,
+      "UB_g_eps_L2sq": 7.593644960154681,
+      "c_eps": 5.95579996874877,
+      "mu_at_M_eff": 0.35014330743667377
+    },
+    {
+      "eps": 0.1,
+      "K_eps_bound": 10.0,
+      "UB_g_eps_L2sq": 4.787908477154693,
+      "c_eps": 3.7552223350232885,
+      "mu_at_M_eff": 0.4314081975077847
+    },
+    {
+      "eps": 0.15,
+      "K_eps_bound": 6.666666666666667,
+      "UB_g_eps_L2sq": 3.718239426847842,
+      "c_eps": 2.916266217135562,
+      "mu_at_M_eff": 0.5000492941176776
+    },
+    {
+      "eps": 0.2,
+      "K_eps_bound": 5.0,
+      "UB_g_eps_L2sq": 3.105902730253915,
+      "c_eps": 2.43600214137562,
+      "mu_at_M_eff": 0.5580439703925802
+    },
+    {
+      "eps": 0.25,
+      "K_eps_bound": 4.0,
+      "UB_g_eps_L2sq": 2.6906541805838167,
+      "c_eps": 2.110317004379464,
+      "mu_at_M_eff": 0.607196254175145
+    },
+    {
+      "eps": 0.3,
+      "K_eps_bound": 3.3333333333333335,
+      "UB_g_eps_L2sq": 2.3828280223905245,
+      "c_eps": 1.8688847234435486,
+      "mu_at_M_eff": 0.6490441928826552
+    }
+  ],
+  "young_K_sweep_at_M_1p275": [
+    {
+      "eps": 0.0001,
+      "K_eps_bound": 20000.0,
+      "UB_g_eps_L2sq": 5093.557805711702,
+      "c_eps": 3994.9472985974135,
+      "mu_at_M_eff": 0.25464062976917684
+    },
+    {
+      "eps": 0.0003,
+      "K_eps_bound": 6666.666666666667,
+      "UB_g_eps_L2sq": 1701.1030889855965,
+      "c_eps": 1334.1985011651736,
+      "mu_at_M_eff": 0.2550537884210587
+    },
+    {
+      "eps": 0.001,
+      "K_eps_bound": 2000.0,
+      "UB_g_eps_L2sq": 513.7378125469588,
+      "c_eps": 402.93161768388927,
+      "mu_at_M_eff": 0.25649789724016614
+    },
+    {
+      "eps": 0.003,
+      "K_eps_bound": 666.6666666666666,
+      "UB_g_eps_L2sq": 174.4731413799194,
+      "c_eps": 136.84167951366229,
+      "mu_at_M_eff": 0.260607237772323
+    },
+    {
+      "eps": 0.01,
+      "K_eps_bound": 200.0,
+      "UB_g_eps_L2sq": 55.670056285470494,
+      "c_eps": 43.66278924350627,
+      "mu_at_M_eff": 0.27479535670531974
+    },
+    {
+      "eps": 0.03,
+      "K_eps_bound": 66.66666666666667,
+      "UB_g_eps_L2sq": 21.559112844160612,
+      "c_eps": 16.90910811306715,
+      "mu_at_M_eff": 0.313674539925506
+    },
+    {
+      "eps": 0.05,
+      "K_eps_bound": 40.0,
+      "UB_g_eps_L2sq": 14.596511108888157,
+      "c_eps": 11.448244006971104,
+      "mu_at_M_eff": 0.35014330743667377
+    },
+    {
+      "eps": 0.1,
+      "K_eps_bound": 20.0,
+      "UB_g_eps_L2sq": 9.10199045223254,
+      "c_eps": 7.138816040966698,
+      "mu_at_M_eff": 0.4314081975077847
+    },
+    {
+      "eps": 0.15,
+      "K_eps_bound": 13.333333333333334,
+      "UB_g_eps_L2sq": 7.051901387632359,
+      "c_eps": 5.530903049123419,
+      "mu_at_M_eff": 0.5000492941176776
+    },
+    {
+      "eps": 0.2,
+      "K_eps_bound": 10.0,
+      "UB_g_eps_L2sq": 5.896122582216816,
+      "c_eps": 4.624409868405346,
+      "mu_at_M_eff": 0.5580439703925802
+    },
+    {
+      "eps": 0.25,
+      "K_eps_bound": 8.0,
+      "UB_g_eps_L2sq": 5.119439197284397,
+      "c_eps": 4.015246429242664,
+      "mu_at_M_eff": 0.607196254175145
+    },
+    {
+      "eps": 0.3,
+      "K_eps_bound": 6.666666666666667,
+      "UB_g_eps_L2sq": 4.546308665332709,
+      "c_eps": 3.5657322865354577,
+      "mu_at_M_eff": 0.6490441928826552
+    }
+  ],
+  "mv_extremizer_test": {
+    "M_observed": 2.3144927920699283,
+    "K_observed": 2.3144927920699283,
+    "g_L2sq_observed": 1.3628955904657931,
+    "c_observed": 0.588852812648818,
+    "log16pi_threshold": 0.8825424006106064,
+    "eps_sweep_results": [
+      {
+        "eps": 0.001,
+        "K_eps_observed": 2.312335013671313,
+        "M_eps_observed": 2.3123350136713126,
+        "g_eps_L2sq_observed": 1.362886395928601,
+        "UB_predicted_from_chain": 1.9456655457882932,
+        "c_eps_observed": 0.5888488400561085,
+        "c_eps_UB_from_chain": 0.840644461047649,
+        "log16pi": 0.8825424006106064,
+        "closes_chain": true
+      },
+      {
+        "eps": 0.01,
+        "K_eps_observed": 2.251244963136971,
+        "M_eps_observed": 2.251244963136971,
+        "g_eps_L2sq_observed": 1.3621910434141555,
+        "UB_predicted_from_chain": 1.908003346557149,
+        "c_eps_observed": 0.5885484059753336,
+        "c_eps_UB_from_chain": 0.8243721272731889,
+        "log16pi": 0.8825424006106064,
+        "closes_chain": true
+      },
+      {
+        "eps": 0.05,
+        "K_eps_observed": 2.032848330790796,
+        "M_eps_observed": 2.032848330790795,
+        "g_eps_L2sq_observed": 1.353173841873538,
+        "UB_predicted_from_chain": 1.7686061960185449,
+        "c_eps_observed": 0.5846524329260707,
+        "c_eps_UB_from_chain": 0.7641441797003053,
+        "log16pi": 0.8825424006106064,
+        "closes_chain": true
+      },
+      {
+        "eps": 0.1,
+        "K_eps_observed": 1.928043815889671,
+        "M_eps_observed": 1.9280438158896713,
+        "g_eps_L2sq_observed": 1.3327519998651054,
+        "UB_predicted_from_chain": 1.7090915295715328,
+        "c_eps_observed": 0.5758289697127036,
+        "c_eps_UB_from_chain": 0.7384302666343735,
+        "log16pi": 0.8825424006106064,
+        "closes_chain": true
+      },
+      {
+        "eps": 0.2,
+        "K_eps_observed": 1.7704967641047356,
+        "M_eps_observed": 1.7704967641047358,
+        "g_eps_L2sq_observed": 1.2643562693416424,
+        "UB_predicted_from_chain": 1.6126276856376847,
+        "c_eps_observed": 0.5462779031646438,
+        "c_eps_UB_from_chain": 0.6967520880440754,
+        "log16pi": 0.8825424006106064,
+        "closes_chain": true
+      }
+    ]
+  },
+  "mv_extremizer_test_error": null,
+  "synthetic_asymmetric_test": {
+    "M_observed": 3.9352959526914058,
+    "K_observed": 5.555582682292278,
+    "K_over_M_ratio": 1.411731861867399,
+    "g_L2sq_observed": 2.413055131891194,
+    "c_observed": 0.6131826324881285,
+    "is_asymmetric_K_gt_M": true,
+    "log16pi_threshold": 0.8825424006106064,
+    "eps_sweep_results": [
+      {
+        "eps": 0.001,
+        "K_eps_observed": 5.554506316009003,
+        "M_eps_observed": 3.934830842195167,
+        "g_eps_L2sq_observed": 2.412697025557942,
+        "UB_predicted_from_chain": 5.087528825908606,
+        "c_eps_observed": 0.6130916339107517,
+        "c_eps_UB_from_chain": 1.2927944650336074,
+        "closes_chain": false
+      },
+      {
+        "eps": 0.01,
+        "K_eps_observed": 5.473359460399587,
+        "M_eps_observed": 3.89811585917722,
+        "g_eps_L2sq_observed": 2.384199031328514,
+        "UB_predicted_from_chain": 5.0285074087999915,
+        "c_eps_observed": 0.6058499945087805,
+        "c_eps_UB_from_chain": 1.2777965035541794,
+        "closes_chain": false
+      },
+      {
+        "eps": 0.03,
+        "K_eps_observed": 4.9457946270833375,
+        "M_eps_observed": 3.6573036520611604,
+        "g_eps_L2sq_observed": 2.188299426409858,
+        "UB_predicted_from_chain": 4.578023554528708,
+        "c_eps_observed": 0.55606984905754,
+        "c_eps_UB_from_chain": 1.1633238286431118,
+        "closes_chain": false
+      },
+      {
+        "eps": 0.1,
+        "K_eps_observed": 2.7102967269594527,
+        "M_eps_observed": 2.434188390518214,
+        "g_eps_L2sq_observed": 1.4126137086177277,
+        "UB_predicted_from_chain": 2.574880191483541,
+        "c_eps_observed": 0.35895996783967943,
+        "c_eps_UB_from_chain": 0.6543040783813332,
+        "closes_chain": true
+      },
+      {
+        "eps": 0.2,
+        "K_eps_observed": 1.8409539454421429,
+        "M_eps_observed": 1.7535869453898387,
+        "g_eps_L2sq_observed": 1.2419869321096635,
+        "UB_predicted_from_chain": 1.7808821883050754,
+        "c_eps_observed": 0.31560191330978565,
+        "c_eps_UB_from_chain": 0.45254085327104926,
+        "closes_chain": true
+      }
+    ]
+  },
+  "best_eps_per_M": [
+    {
+      "M": 1.275,
+      "best_eps": 0.3,
+      "best_c_eps": 1.8688847234435486,
+      "LB_via_conditional": null
+    },
+    {
+      "M": 1.28,
+      "best_eps": 0.3,
+      "best_c_eps": 1.8666894261633378,
+      "LB_via_conditional": null
+    },
+    {
+      "M": 1.3,
+      "best_eps": 0.3,
+      "best_c_eps": 1.8575955346797184,
+      "LB_via_conditional": null
+    },
+    {
+      "M": 1.35,
+      "best_eps": 0.3,
+      "best_c_eps": 1.8329791802565527,
+      "LB_via_conditional": null
+    },
+    {
+      "M": 1.378,
+      "best_eps": 0.3,
+      "best_c_eps": 1.8182421307013803,
+      "LB_via_conditional": null
+    },
+    {
+      "M": 1.4,
+      "best_eps": 0.3,
+      "best_c_eps": 1.8062827021131338,
+      "LB_via_conditional": null
+    },
+    {
+      "M": 1.42,
+      "best_eps": 0.3,
+      "best_c_eps": 1.7951659628559433,
+      "LB_via_conditional": null
+    }
+  ],
+  "verdict": {
+    "beats_1.2748_unconditionally": false,
+    "fatal_flaw_1_K_eps_inherits_K_unboundedness": "K_eps = int int f(x)f(y) phi_eps(x-y) dx dy. The crucial alt-bound K_eps <= K = ||f||_2^2 holds (taking phi_eps <= ||phi_eps||_inf gives the 1/eps bound, but phi_eps <= 1 also gives K_eps <= K). For asymmetric f, K is unbounded by M. Hence K_eps is still unbounded by M for the worst-case asymmetric f. The smoothing does not add a UNIFORM (over admissible f) upper bound on K_eps below the unconditional 1/eps. Same blocker.",
+    "fatal_flaw_2_naive_K_eps_1_over_eps_too_loose": "The naive bound K_eps <= 1/eps yields c_eps >> 1 for any eps in (0, 0.3], failing the Hyp_R target c_eps <= 0.88254 by 2-3 orders of magnitude.",
+    "fatal_flaw_3_support_enlargement": "Rescaling f_eps to [-1/4,1/4] inflates M to (1+2eps)*M, weakening mu(M) (by ~5% for eps=0.1). Plus the (1+eps)/eps factor on K_eps after rescaling. Both inflate c_eps.",
+    "why_5_3_d_fails": "The \u00a75.3(d) idea was: bound K_eps via 1/eps (uniformly in f) to replace the unbounded K. But the chain ((dagger)-rescaled) carries K_eps with a factor mu(M)*(1+eps)/eps that scales as ~ mu(M)/eps. For fixed eps, this is bounded but grows like 1/eps; for fixed mu, no eps gives c_eps < log(16)/pi at M ~ 1.28. The chain is hopeless in the relevant M range. AT LARGE M (e.g., M >> 1.5) the chain still gives c_eps > log(16)/pi (the (1+eps)/eps factor dominates).",
+    "derivation_md_was_correct_to_flag_as_untried": "derivation.md \u00a75.3(d) labels this as \"not yet attempted\" \u2014 and correctly so. After explicit derivation, the chain (dagger)-rescaled shows the smoothing creates an additional (1+eps)/eps factor on K_eps that wipes out the mu(M) gains uniformly.",
+    "numerical_test_supports_chain_for_specific_f": "On the specific MV-like seed (symmetric, M ~ 2.31, K ~ 2.31), the chain bound c_eps_UB ~ 0.84 at eps=0.001 and decreases with eps. On the synthetic 3-tent asymmetric (M ~ 3.94, K/M ~ 1.41), the chain closes at eps >= 0.1 with c_UB ~ 0.65. But these specific tests use the actual K_eps, not the worst-case 1/eps. The unconditional bound requires worst-case K_eps over admissible f, which is unbounded.",
+    "fatal_flaw_4_chain_bounds_wrong_quantity": "CRUCIAL: even if the chain produced c_eps < 1, the bound would be on ||g_eps||_2^2, not ||g||_2^2. The conditional theorem (MV/restricted_holder) requires a bound on ||g||_2^2 = ||f*f||_2^2 directly. Lifting an UB on ||g_eps||_2^2 to one on ||g||_2^2 requires ||g - g_eps||_2 to be controlled, which depends on the smoothness of g (i.e., on K = ||f||_2^2 via Young: ||g - g_eps||_2 <= ||g||_inf^{1/2} * (Cf eps^{alpha}) for some Hoelder exponent alpha depending on g. The quantitative rate depends on K --- closing this loop reintroduces the K-unboundedness blocker.",
+    "fatal_flaw_5_large_eps_makes_M_eff_unphysical": "At eps >= 0.5, M_eff = (1+2eps)*M >= 2 even for M = 1.28. mu(M_eff) > 1 in this regime, and the SDR proof of MO 2.14 requires M < 2 (otherwise the bathtub does not fit in support). So large-eps numerics that appear to give c < 1 are vacuous because mu(M_eff) is outside the valid range.",
+    "verdict_summary": "NEGATIVE: \u00a75.3(d) does NOT yield an unconditional LB > 1.2748. Five independent obstacles: (1) K_eps inherits K-unboundedness from f; (2) uniform K_eps <= 1/eps is too loose at small eps; (3) rescaling enlarges M and weakens mu; (4) the chain bounds ||g_eps||_2^2 not ||g||_2^2 -- lifting requires K which is unbounded; (5) large-eps numerics that appear to close are vacuous because M_eff > 2 violates MO 2.14 hypotheses. The smoothing approach is fundamentally blocked."
+  }
+}

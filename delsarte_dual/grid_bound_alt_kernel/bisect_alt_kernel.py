@@ -1,65 +1,121 @@
-"""Per-kernel N=1 Phi bisection sweep.
+"""Production driver: certify the Piterbarg-Bajaj-Vincent Bound
+``C_{1a} >= 1292/1000 = 1.292``.
 
-For each kernel in the sweep, we:
-  (1) Verify admissibility (supp, K>=0, int K=1 by construction; tilde K >= 0
-      via rigorous Bochner check up to n_max).
-  (2) Re-optimise the trig polynomial G(x) via the per-kernel QP (MOSEK/
-      CLARABEL), with weights w_j = hat_K_R(j/u).
-  (3) Compile rigorous PhiParams with the kernel's k_1 = hat_K_R(1),
-      K_2 = ||K||_2^2 (arb), and re-optimised coefficients.  A rigorous
-      lower bound on min_{[0,1/4]} G is certified by Taylor B&B
-      (``grid_bound/G_min.py``).
-  (4) Run the N=1 cell-search bisection (``grid_bound/cell_search.py``) on
-      M in a bracket; record the certified M_cert.
+Composes the package modules into a single end-to-end pipeline:
 
-Output: ``delsarte_dual/grid_bound_alt_kernel/kernel_sweep_results.json``.
+  1. Build the 3-scale arcsine kernel
+     ``K = sum_{i=1}^{3} lambda_i K_arc(delta_i; .)``
+     with the writeup parameters
 
-The output also includes non-admissible kernels with ``admissible: false``
-and ``M_cert: null`` entries so the full sweep is transparent.
+         ``(delta_1, delta_2, delta_3) = (138/1000, 55/1000, 25/1000)``
+         ``(lambda_1, lambda_2, lambda_3) = (85/100, 10/100, 5/100)``.
+
+  2. Solve the quadratic programme
+
+         ``min  sum_{j=1}^{N} a_j^2 / hat K(j/u)``
+         ``s.t. sum_{j=1}^{N} a_j cos(2 pi j x / u) >= 1  for x in [0, 1/4]``
+
+     for the re-optimised ``N = 200`` cosine multiplier
+     ``G(x) = sum_j a_j cos(2 pi j x / u)``; round to ``fmpq``.
+
+  3. Compile the five rigorous arb anchors
+     ``(k_1, K_2, S_1, min_G, gain_a)`` from the kernel and the rounded
+     coefficients (``compile_phi_params_for_kernel``).
+
+  4. Bisect on ``M`` in ``[M_lo_init, M_hi_init]`` using the cell-search
+     certifier ``CERTIFIED_FORBIDDEN`` predicate from
+     ``grid_bound.cell_search`` to find the largest ``M`` for which
+     ``Phi(M, y) < 0`` over the admissible box ``y in [0, mu(M)]``.
+
+  5. Emit a JSON certificate with the rational ``M_cert``, all input
+     parameters, the QP coefficients, the per-anchor arb enclosures, and
+     the terminal cells of the certifying cell search.
+
+Run with
+
+    ``python -m delsarte_dual.grid_bound_alt_kernel.bisect_alt_kernel``
+
+The default settings reproduce the writeup's ``M_cert >= 1292/1000``.
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
 import time
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 from flint import arb, fmpq, ctx
 
-from delsarte_dual.grid_bound.phi import PhiParams, phi_N1
-from delsarte_dual.grid_bound.bessel import j0_pi_j_delta_over_u
+from delsarte_dual.grid_bound.bisect import (
+    bisect_M_cert,
+    fmpq_to_float,
+    fmpq_to_str,
+)
 from delsarte_dual.grid_bound.cell_search import certify_phi_negative
 from delsarte_dual.grid_bound.G_min import min_G_lower_bound
-from delsarte_dual.grid_bound.bisect import bisect_M_cert, _fmpq_to_float, _fmpq_to_str
+from delsarte_dual.grid_bound.phi import PhiParams
 
-from .kernels import (
-    Kernel,
-    ArcsineKernel,
-    default_kernel_registry,
-)
+from .kernels import Kernel, MultiScaleArcsineKernel
 from .optimize_G import solve_qp_for_kernel
+
+
+# -----------------------------------------------------------------------------
+#  Writeup parameters (3-scale arcsine, N = 200)
+# -----------------------------------------------------------------------------
+
+#: Three arcsine half-widths (writeup Section 1.3).
+PROD_DELTAS: tuple = (fmpq(138, 1000), fmpq(55, 1000), fmpq(25, 1000))
+
+#: Mixture weights, summing to one.
+PROD_LAMBDAS: tuple = (fmpq(85, 100), fmpq(10, 100), fmpq(5, 100))
+
+#: Period parameter ``u = 1/2 + delta_1 = 638/1000``.
+PROD_U: fmpq = fmpq(638, 1000)
+
+#: Number of cosine modes in ``G``.
+PROD_N_COEFFS: int = 200
+
+#: Cutoff in the cross-Bessel ``K_2`` integral; the tail past ``T`` is
+#: bounded by ``4 / (pi^2 delta_i delta_j T)`` per cross pair.
+PROD_K2_CUTOFF_XI: fmpq = fmpq(10**5)
+
+
+def production_kernel() -> MultiScaleArcsineKernel:
+    """Return the 3-scale arcsine kernel of the writeup."""
+    return MultiScaleArcsineKernel(
+        deltas=list(PROD_DELTAS),
+        lambdas=list(PROD_LAMBDAS),
+        K2_cross_cutoff_xi=PROD_K2_CUTOFF_XI,
+        use_diag_surrogate=False,
+    )
+
+
+# -----------------------------------------------------------------------------
+#  Compile Phi parameters from a kernel + a list of fmpq G-coefficients
+# -----------------------------------------------------------------------------
 
 
 def compile_phi_params_for_kernel(
     kernel: Kernel,
-    coeffs: list,                 # list of fmpq from QP
-    u: fmpq = fmpq(638, 1000),
-    n_cells_min_G: int = 4096,
+    coeffs: List[fmpq],
+    u: fmpq = PROD_U,
+    n_cells_min_G: int = 32768,
     prec_bits: int = 256,
 ) -> PhiParams:
-    """Build a PhiParams object using kernel-specific k_1, K_2, and S_1.
+    """Build a ``PhiParams`` object using kernel-specific anchors.
 
-    The G-coefficients ``coeffs`` come from ``solve_qp_for_kernel(kernel)``;
-    they are the a_j values of G(x) = sum a_j cos(2 pi j x / u).
+    The G-coefficients are the rounded ``a_j`` values of
+    ``G(x) = sum_{j=1}^{N} a_j cos(2 pi j x / u)``.  All five anchors are
+    computed in arb at ``prec_bits``:
 
-    Rigorous quantities:
-      k_1 = hat_K_R(1)                 via kernel.K_tilde(1)
-      K_2 = ||K||_2^2                  via kernel.K_norm_sq()
-      S_1 = sum a_j^2 / hat_K_R(j/u)   via kernel.K_tilde_real(j/u)
-      min_G = rigorous Taylor B&B bound on min_{x in [0,1/4]} G
-      gain_a = (4/u) * min_G^2 / S_1
+      * ``k_1   = hat K(1)``                          (``kernel.K_tilde(1)``),
+      * ``K_2   = ||K||_2^2``                         (``kernel.K_norm_sq``),
+      * ``S_1   = sum a_j^2 / hat K(j/u)``,
+      * ``min_G = rigorous lower bound on min_{[0, 1/4]} G``  (Taylor B&B),
+      * ``gain_a = (4/u) * min_G^2 / S_1``.
     """
     delta = kernel.supp_halfwidth
     old = ctx.prec
@@ -68,35 +124,30 @@ def compile_phi_params_for_kernel(
         K2_arb = kernel.K_norm_sq(prec_bits=prec_bits)
         k1_arb = kernel.K_tilde(1, prec_bits=prec_bits)
 
-        # S_1 (per-kernel weighted objective)
         S1 = arb(0)
         for j, a_j in enumerate(coeffs, start=1):
             xi = arb(fmpq(j)) / arb(u)
             w_j = kernel.K_tilde_real(xi, prec_bits=prec_bits)
-            # Guard: if w_j <= 0 (Bochner fails), term is ill-defined; skip
-            # but flag in outputs.  (Safe: setting a_j = 0 at that j doesn't
-            # change S_1 by construction when Bochner-admissible.)
             if w_j.lower() <= 0:
                 a_j_f = float(a_j.p) / float(a_j.q)
                 if a_j_f != 0.0:
                     raise ValueError(
-                        f"kernel {kernel.name}: Bochner violated at j={j} "
-                        f"(w_j={w_j}), but coeff a_{j} != 0; cannot compile"
+                        f"{kernel.name}: Bochner violated at j={j} "
+                        f"(hat K(j/u) = {w_j}) but coefficient a_{j} != 0"
                     )
                 continue
             S1 = S1 + (arb(a_j) * arb(a_j)) / w_j
 
-        # min_G (Taylor B&B lower bound)
         min_G_encl, min_G_center = min_G_lower_bound(
             coeffs, u, n_cells=n_cells_min_G, prec_bits=prec_bits
         )
-        min_G_cert_arb = min_G_encl.lower()
-        if min_G_cert_arb.upper() <= 0:
+        min_G_lower = min_G_encl.lower()
+        if min_G_lower.upper() <= 0:
             raise ValueError(
-                f"{kernel.name}: min_G certified lower bound is non-positive: "
-                f"{min_G_cert_arb}"
+                f"{kernel.name}: certified min G lower bound is "
+                f"non-positive ({min_G_lower})"
             )
-        gain_a = (arb(4) / arb(u)) * (min_G_cert_arb * min_G_cert_arb) / S1
+        gain_a = (arb(4) / arb(u)) * (min_G_lower * min_G_lower) / S1
 
         return PhiParams(
             delta=delta,
@@ -104,7 +155,7 @@ def compile_phi_params_for_kernel(
             K2=K2_arb,
             k1=k1_arb,
             gain_a=gain_a,
-            min_G=min_G_cert_arb,
+            min_G=min_G_lower,
             S1=S1,
             n_coeffs=len(coeffs),
             min_G_center=min_G_center,
@@ -113,140 +164,152 @@ def compile_phi_params_for_kernel(
         ctx.prec = old
 
 
+# -----------------------------------------------------------------------------
+#  Run a single kernel end-to-end (admissibility -> QP -> Phi -> bisection)
+# -----------------------------------------------------------------------------
+
+
 @dataclass
-class KernelSweepEntry:
+class CertificationResult:
+    """End-to-end result for one kernel."""
+
     kernel_name: str
     admissible: bool
-    bochner_max_j_checked: int
-    bochner_ok: bool
-    tilde_K_1: float
-    K_norm_sq: float
-    S1: Optional[float]
-    min_G_cert: Optional[float]
-    gain_a: Optional[float]
-    M_cert: Optional[float]
+    K_norm_sq_float: float
+    k_1_float: float
+    S_1_float: Optional[float]
+    min_G_float: Optional[float]
+    gain_a_float: Optional[float]
+    M_cert_float: Optional[float]
     M_cert_q: Optional[str]
     bisect_history: Optional[list]
+    terminal_cells: Optional[list]
     note: str
     wall_time_sec: float
+    params: Optional[PhiParams] = None
+    coeffs: Optional[List[fmpq]] = None
 
 
 def run_single_kernel(
     kernel: Kernel,
-    u: fmpq = fmpq(638, 1000),
-    n_coeffs: int = 119,
+    *,
+    u: fmpq = PROD_U,
+    n_coeffs: int = PROD_N_COEFFS,
     n_grid_qp: int = 5001,
-    n_cells_min_G: int = 4096,
+    n_cells_min_G: int = 32768,
     M_lo_init: fmpq = fmpq(127, 100),
-    M_hi_init: fmpq = fmpq(1276, 1000),
+    M_hi_init: fmpq = fmpq(130, 100),
     tol_q: fmpq = fmpq(1, 10**4),
     max_cells_per_M: int = 50000,
     initial_splits: int = 32,
     bochner_max: int = 100,
-    prec_bits: int = 192,
+    prec_bits: int = 256,
     verbose: bool = True,
-) -> KernelSweepEntry:
-    """Run the full N=1 bisection pipeline for a single kernel.
+) -> CertificationResult:
+    """Run admissibility check, QP, Phi compilation and bisection for one kernel.
 
-    On admissibility failure (Bochner) or numerical issue, returns an entry
-    with ``admissible=False`` and ``M_cert=None``.
+    On any failure (Bochner violation, QP non-convergence, infeasible lower
+    bracket, ...) the returned ``CertificationResult`` records the reason
+    in ``note`` and leaves the optional fields as ``None``.
     """
     t0 = time.time()
-    note_parts = []
 
-    # Step 1: Bochner check
+    # (1) Bochner admissibility on the first ``bochner_max`` frequencies.
     bochner_ok = True
+    note_parts: list = []
     for j in range(1, bochner_max + 1):
         try:
             v = kernel.K_tilde(j, prec_bits=prec_bits)
-        except Exception as e:
+        except Exception as exc:  # pragma: no cover - defensive
             bochner_ok = False
-            note_parts.append(f"K_tilde({j}) raised: {e}")
+            note_parts.append(f"K_tilde({j}) raised: {exc}")
             break
         if v.lower() < 0:
             bochner_ok = False
-            note_parts.append(f"Bochner fails at j={j}: tilde_K(j) = {v}")
+            note_parts.append(f"Bochner fails at j={j}: tilde K(j) = {v}")
             break
 
-    tilde_K_1 = float(kernel.K_tilde(1, prec_bits=prec_bits).mid())
+    k1_float = float(kernel.K_tilde(1, prec_bits=prec_bits).mid())
     try:
-        K2_f = float(kernel.K_norm_sq(prec_bits=prec_bits).mid())
-    except Exception as e:
-        K2_f = float('nan')
-        note_parts.append(f"K_norm_sq raised: {e}")
+        K2_float = float(kernel.K_norm_sq(prec_bits=prec_bits).mid())
+    except Exception as exc:  # pragma: no cover - defensive
+        K2_float = float("nan")
+        note_parts.append(f"K_norm_sq raised: {exc}")
+
+    def _fail(extra: str = "") -> CertificationResult:
+        msg = " | ".join([*note_parts, extra]) if extra else " | ".join(note_parts)
+        return CertificationResult(
+            kernel_name=kernel.name,
+            admissible=bochner_ok,
+            K_norm_sq_float=K2_float,
+            k_1_float=k1_float,
+            S_1_float=None,
+            min_G_float=None,
+            gain_a_float=None,
+            M_cert_float=None,
+            M_cert_q=None,
+            bisect_history=None,
+            terminal_cells=None,
+            note=msg or "failure",
+            wall_time_sec=time.time() - t0,
+        )
 
     if not bochner_ok:
-        return KernelSweepEntry(
-            kernel_name=kernel.name,
-            admissible=False,
-            bochner_max_j_checked=bochner_max,
-            bochner_ok=False,
-            tilde_K_1=tilde_K_1,
-            K_norm_sq=K2_f,
-            S1=None, min_G_cert=None, gain_a=None,
-            M_cert=None, M_cert_q=None,
-            bisect_history=None,
-            note=" | ".join(note_parts) or "Bochner violation",
-            wall_time_sec=time.time() - t0,
-        )
+        return _fail("Bochner violation")
 
-    # Step 2: QP re-optimisation
+    # (2) QP re-optimisation of G against the kernel-specific weights.
     try:
-        qp_res = solve_qp_for_kernel(
-            kernel, n=n_coeffs, u=u, n_grid=n_grid_qp,
-            verbose=verbose,
+        qp = solve_qp_for_kernel(
+            kernel, n=n_coeffs, u=u, n_grid=n_grid_qp, verbose=verbose
         )
-    except Exception as e:
-        return KernelSweepEntry(
-            kernel_name=kernel.name,
-            admissible=True, bochner_max_j_checked=bochner_max, bochner_ok=True,
-            tilde_K_1=tilde_K_1, K_norm_sq=K2_f,
-            S1=None, min_G_cert=None, gain_a=None,
-            M_cert=None, M_cert_q=None,
-            bisect_history=None,
-            note=f"QP solve failed: {e}",
-            wall_time_sec=time.time() - t0,
-        )
+    except Exception as exc:
+        return _fail(f"QP solve failed: {exc}")
 
-    # Step 3: PhiParams compile
+    # (3) Compile Phi parameters.
     try:
         params = compile_phi_params_for_kernel(
-            kernel, qp_res.a_opt_fmpq, u=u,
-            n_cells_min_G=n_cells_min_G, prec_bits=prec_bits,
+            kernel,
+            qp.a_opt_fmpq,
+            u=u,
+            n_cells_min_G=n_cells_min_G,
+            prec_bits=prec_bits,
         )
-    except Exception as e:
-        return KernelSweepEntry(
-            kernel_name=kernel.name,
-            admissible=True, bochner_max_j_checked=bochner_max, bochner_ok=True,
-            tilde_K_1=tilde_K_1, K_norm_sq=K2_f,
-            S1=qp_res.S1_float, min_G_cert=None, gain_a=None,
-            M_cert=None, M_cert_q=None,
-            bisect_history=None,
-            note=f"PhiParams compile failed: {e}",
-            wall_time_sec=time.time() - t0,
-        )
+    except Exception as exc:
+        return _fail(f"PhiParams compile failed: {exc}")
 
-    S1_f = float(params.S1.mid())
-    min_G_f = float(params.min_G.mid())
-    gain_f = float(params.gain_a.mid())
+    S1_float = float(params.S1.mid())
+    min_G_float = float(params.min_G.mid())
+    gain_float = float(params.gain_a.mid())
     if verbose:
-        print(f"  {kernel.name}: k1={tilde_K_1:.5f} K2={K2_f:.4f} "
-              f"S1={S1_f:.4f} minG={min_G_f:.5f} gain={gain_f:.5f}")
+        print(
+            f"  {kernel.name}: "
+            f"k_1={k1_float:.6f}  K_2={K2_float:.4f}  "
+            f"S_1={S1_float:.4f}  min G={min_G_float:.6f}  "
+            f"gain a={gain_float:.6f}"
+        )
 
-    # Step 4: Bisection
-    # First confirm lower bracket is certifiable at M_lo_init; if not, retreat.
+    # (4) Bisect on M.  First confirm the lower bracket is certifiable;
+    # retreat to a smaller value if it is not.
     try:
-        check = certify_phi_negative(
-            arb(M_lo_init), params,
+        check_lo = certify_phi_negative(
+            arb(M_lo_init),
+            params,
             max_cells=max_cells_per_M,
             initial_splits=initial_splits,
             prec_bits=prec_bits,
         )
-        if check.verdict != "CERTIFIED_FORBIDDEN":
-            # Retreat: try lower starting bracket
-            for M_retry in [fmpq(125, 100), fmpq(12, 10), fmpq(115, 100), fmpq(110, 100)]:
+        if check_lo.verdict != "CERTIFIED_FORBIDDEN":
+            # Coarse retreat ladder for weaker kernels; the production
+            # kernel certifies at the default M_lo_init = 1.27 immediately.
+            for M_retry in (
+                fmpq(125, 100),
+                fmpq(120, 100),
+                fmpq(115, 100),
+                fmpq(110, 100),
+            ):
                 check2 = certify_phi_negative(
-                    arb(M_retry), params,
+                    arb(M_retry),
+                    params,
                     max_cells=max_cells_per_M,
                     initial_splits=initial_splits,
                     prec_bits=prec_bits,
@@ -255,27 +318,9 @@ def run_single_kernel(
                     M_lo_init = M_retry
                     break
             else:
-                return KernelSweepEntry(
-                    kernel_name=kernel.name,
-                    admissible=True, bochner_max_j_checked=bochner_max, bochner_ok=True,
-                    tilde_K_1=tilde_K_1, K_norm_sq=K2_f,
-                    S1=S1_f, min_G_cert=min_G_f, gain_a=gain_f,
-                    M_cert=None, M_cert_q=None,
-                    bisect_history=None,
-                    note=f"no certifiable M_lo bracket (tried 1.10-1.27)",
-                    wall_time_sec=time.time() - t0,
-                )
-    except Exception as e:
-        return KernelSweepEntry(
-            kernel_name=kernel.name,
-            admissible=True, bochner_max_j_checked=bochner_max, bochner_ok=True,
-            tilde_K_1=tilde_K_1, K_norm_sq=K2_f,
-            S1=S1_f, min_G_cert=min_G_f, gain_a=gain_f,
-            M_cert=None, M_cert_q=None,
-            bisect_history=None,
-            note=f"bracket check raised: {e}",
-            wall_time_sec=time.time() - t0,
-        )
+                return _fail("no certifiable lower bracket in [1.10, 1.27]")
+    except Exception as exc:
+        return _fail(f"lower bracket check raised: {exc}")
 
     try:
         bound = bisect_M_cert(
@@ -288,134 +333,201 @@ def run_single_kernel(
             prec_bits=prec_bits,
             verbose=False,
         )
-    except Exception as e:
-        return KernelSweepEntry(
-            kernel_name=kernel.name,
-            admissible=True, bochner_max_j_checked=bochner_max, bochner_ok=True,
-            tilde_K_1=tilde_K_1, K_norm_sq=K2_f,
-            S1=S1_f, min_G_cert=min_G_f, gain_a=gain_f,
-            M_cert=None, M_cert_q=None,
-            bisect_history=None,
-            note=f"bisect raised: {e}",
-            wall_time_sec=time.time() - t0,
-        )
+    except Exception as exc:
+        return _fail(f"bisect raised: {exc}")
 
-    return KernelSweepEntry(
+    terminal_cells = [
+        {
+            "cell": cr.cell.to_dict(),
+            "phi_upper_float": cr.phi_upper_float,
+            "phi_arb": cr.phi_arb_str,
+        }
+        for cr in bound.cell_search.terminal_cells
+    ]
+
+    return CertificationResult(
         kernel_name=kernel.name,
-        admissible=True, bochner_max_j_checked=bochner_max, bochner_ok=True,
-        tilde_K_1=tilde_K_1, K_norm_sq=K2_f,
-        S1=S1_f, min_G_cert=min_G_f, gain_a=gain_f,
-        M_cert=_fmpq_to_float(bound.M_cert_q),
-        M_cert_q=_fmpq_to_str(bound.M_cert_q),
+        admissible=True,
+        K_norm_sq_float=K2_float,
+        k_1_float=k1_float,
+        S_1_float=S1_float,
+        min_G_float=min_G_float,
+        gain_a_float=gain_float,
+        M_cert_float=fmpq_to_float(bound.M_cert_q),
+        M_cert_q=fmpq_to_str(bound.M_cert_q),
         bisect_history=bound.bisection_history,
-        note=" | ".join(note_parts) or "ok",
+        terminal_cells=terminal_cells,
+        note="ok",
         wall_time_sec=time.time() - t0,
+        params=params,
+        coeffs=qp.a_opt_fmpq,
     )
 
 
-def run_sweep(
-    kernels: Optional[list] = None,
-    out_path: str = "delsarte_dual/grid_bound_alt_kernel/kernel_sweep_results.json",
-    verbose: bool = True,
-    **kwargs,
-) -> list[KernelSweepEntry]:
-    if kernels is None:
-        kernels = default_kernel_registry()
-    results = []
-    for K in kernels:
-        if verbose:
-            print("=" * 60)
-            print(f"KERNEL: {K.name}")
-            print("=" * 60)
-        entry = run_single_kernel(K, verbose=verbose, **kwargs)
-        results.append(entry)
-        if verbose:
-            if entry.M_cert is not None:
-                print(f"  --> M_cert = {entry.M_cert:.6f}  ({entry.wall_time_sec:.1f}s)")
-            else:
-                print(f"  --> SKIPPED: {entry.note}  ({entry.wall_time_sec:.1f}s)")
+# -----------------------------------------------------------------------------
+#  JSON certificate
+# -----------------------------------------------------------------------------
 
-    # Persist results
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    serialisable = []
-    for r in results:
-        serialisable.append({
-            "kernel_name": r.kernel_name,
-            "admissible": r.admissible,
-            "bochner_max_j_checked": r.bochner_max_j_checked,
-            "bochner_ok": r.bochner_ok,
-            "tilde_K_1": r.tilde_K_1,
-            "K_norm_sq": r.K_norm_sq,
-            "S1": r.S1,
-            "min_G_cert": r.min_G_cert,
-            "gain_a": r.gain_a,
-            "M_cert": r.M_cert,
-            "M_cert_q": r.M_cert_q,
-            "bisect_history": r.bisect_history,
-            "note": r.note,
-            "wall_time_sec": r.wall_time_sec,
-        })
 
-    best = None
-    best_nonK1 = None
-    for r in results:
-        if r.M_cert is None:
-            continue
-        if best is None or r.M_cert > best["M_cert"]:
-            best = {"kernel_name": r.kernel_name, "M_cert": r.M_cert}
-        if r.kernel_name != "K1_arcsine":
-            if best_nonK1 is None or r.M_cert > best_nonK1["M_cert"]:
-                best_nonK1 = {"kernel_name": r.kernel_name, "M_cert": r.M_cert}
-
-    summary = {
-        "best_overall": best,
-        "best_nonK1": best_nonK1,
-        "beats_MV_1_2748": (best is not None and best["M_cert"] > 1.2748),
-        "breaks_1_28": (best is not None and best["M_cert"] > 1.28),
+def _arb_endpoints(a: arb) -> dict:
+    return {
+        "repr": str(a),
+        "mid_float": float(a.mid()),
+        "lower_float": float(a.lower()),
+        "upper_float": float(a.upper()),
     }
+
+
+def emit_certificate(
+    result: CertificationResult, kernel: MultiScaleArcsineKernel, filepath: str
+) -> str:
+    """Write a JSON certificate for ``result``; return its SHA-256 hex."""
+    if result.M_cert_q is None or result.params is None or result.coeffs is None:
+        raise ValueError("cannot emit certificate for a failed run")
+
+    p = result.params
     body = {
-        "kind": "grid_bound_alt_kernel_sweep",
-        "results": serialisable,
-        "summary": summary,
+        "format_version": 2,
+        "kind": "multiscale_arcsine_rigorous_certificate",
+        "description": (
+            "Rigorous lower bound on the Sidon autocorrelation constant "
+            "C_{1a} via the Matolcsi-Vinuesa master inequality with a "
+            "multi-scale arcsine kernel and a QP-reoptimised cosine "
+            "multiplier G."
+        ),
+        "kernel": {
+            "name": kernel.name,
+            "deltas_q": [fmpq_to_str(d) for d in kernel.deltas],
+            "lambdas_q": [fmpq_to_str(l) for l in kernel.lambdas],
+            "supp_halfwidth_q": fmpq_to_str(kernel.supp_halfwidth),
+            "K2_cross_cutoff_xi_q": fmpq_to_str(kernel.K2_cross_cutoff_xi),
+            "use_diag_surrogate": kernel.use_diag_surrogate,
+        },
+        "G": {
+            "n_coeffs": p.n_coeffs,
+            "u_q": fmpq_to_str(p.u),
+            "coeffs_q": [fmpq_to_str(c) for c in result.coeffs],
+        },
+        "anchors": {
+            "k_1": _arb_endpoints(p.k1),
+            "K_2": _arb_endpoints(p.K2),
+            "S_1": _arb_endpoints(p.S1),
+            "min_G": _arb_endpoints(p.min_G),
+            "gain_a": _arb_endpoints(p.gain_a),
+            "min_G_cell_center_q": fmpq_to_str(p.min_G_center),
+        },
+        "M_cert": {
+            "rational": result.M_cert_q,
+            "float": result.M_cert_float,
+        },
+        "cell_search_at_M_cert": {
+            "n_terminal_cells": len(result.terminal_cells),
+            "terminal_cells": result.terminal_cells,
+        },
+        "bisect_history": result.bisect_history,
+        "prec_bits": 256,
+        "wall_time_sec": result.wall_time_sec,
     }
     body_json = json.dumps(body, indent=2, sort_keys=True, default=str)
     digest = hashlib.sha256(body_json.encode("utf-8")).hexdigest()
     final = {"sha256_of_body": digest, "body": body}
-    with open(out_path, "w", encoding="utf-8") as f:
+    dirpath = os.path.dirname(filepath)
+    if dirpath:
+        os.makedirs(dirpath, exist_ok=True)
+    with open(filepath, "w", encoding="utf-8") as f:
         json.dump(final, f, indent=2, sort_keys=True, default=str)
-    if verbose:
-        print(f"\nResults: {out_path}")
-        print(f"SHA-256: {digest}")
-        print(f"Best: {best}")
-        print(f"Best non-K1: {best_nonK1}")
-    return results
+    return digest
+
+
+# -----------------------------------------------------------------------------
+#  CLI
+# -----------------------------------------------------------------------------
+
+
+def main(argv: Optional[List[str]] = None) -> CertificationResult:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Certify the Piterbarg-Bajaj-Vincent Bound "
+            "C_{1a} >= 1.292 via a 3-scale arcsine kernel and a "
+            "re-optimised 200-cosine multiplier."
+        )
+    )
+    parser.add_argument(
+        "--n-coeffs",
+        type=int,
+        default=PROD_N_COEFFS,
+        help="number of cosine modes in G",
+    )
+    parser.add_argument(
+        "--prec-bits", type=int, default=256, help="arb precision in bits"
+    )
+    parser.add_argument(
+        "--tol",
+        type=str,
+        default="1/10000",
+        help="bisection tolerance on M as p/q",
+    )
+    parser.add_argument(
+        "--M-lo",
+        type=str,
+        default="127/100",
+        help="initial lower bracket on M",
+    )
+    parser.add_argument(
+        "--M-hi",
+        type=str,
+        default="130/100",
+        help="initial upper bracket on M",
+    )
+    parser.add_argument(
+        "--max-cells-per-M",
+        type=int,
+        default=50000,
+        help="cell budget per Phi-certification call",
+    )
+    parser.add_argument(
+        "--out",
+        type=str,
+        default="delsarte_dual/grid_bound_alt_kernel/certificates/"
+        "multiscale_arcsine_1292.json",
+        help="output certificate path",
+    )
+    args = parser.parse_args(argv)
+
+    def parse_q(s: str) -> fmpq:
+        if "/" in s:
+            p, q = s.split("/", 1)
+            return fmpq(int(p), int(q))
+        return fmpq(int(s))
+
+    kernel = production_kernel()
+    result = run_single_kernel(
+        kernel,
+        n_coeffs=args.n_coeffs,
+        prec_bits=args.prec_bits,
+        tol_q=parse_q(args.tol),
+        M_lo_init=parse_q(args.M_lo),
+        M_hi_init=parse_q(args.M_hi),
+        max_cells_per_M=args.max_cells_per_M,
+        verbose=True,
+    )
+
+    print()
+    print("=" * 72)
+    if result.M_cert_q is not None:
+        print(
+            f"Certified M_cert = {result.M_cert_q} "
+            f"(~{result.M_cert_float:.6f})"
+        )
+        print(f"  wall time: {result.wall_time_sec:.1f}s")
+        digest = emit_certificate(result, kernel, args.out)
+        print(f"Certificate: {args.out}")
+        print(f"SHA-256:     {digest}")
+    else:
+        print(f"FAILED: {result.note}")
+    print("=" * 72)
+    return result
 
 
 if __name__ == "__main__":
-    import argparse
-    p = argparse.ArgumentParser()
-    p.add_argument("--quick", action="store_true",
-                   help="Reduced tolerance + fewer cells for quick run")
-    p.add_argument("--only-K1", action="store_true",
-                   help="Sanity: only run K1 arcsine")
-    p.add_argument("--out", default="delsarte_dual/grid_bound_alt_kernel/kernel_sweep_results.json")
-    args = p.parse_args()
-
-    ks = default_kernel_registry()
-    if args.only_K1:
-        ks = [ks[0]]
-
-    kwargs = dict(
-        u=fmpq(638, 1000),
-        n_coeffs=119,
-        n_grid_qp=3001 if args.quick else 5001,
-        n_cells_min_G=2048 if args.quick else 4096,
-        M_lo_init=fmpq(127, 100),
-        M_hi_init=fmpq(1276, 1000),
-        tol_q=fmpq(1, 10**3) if args.quick else fmpq(1, 10**4),
-        max_cells_per_M=20000 if args.quick else 50000,
-        initial_splits=32,
-        bochner_max=50 if args.quick else 100,
-        prec_bits=128 if args.quick else 192,
-    )
-    run_sweep(ks, out_path=args.out, verbose=True, **kwargs)
+    main()

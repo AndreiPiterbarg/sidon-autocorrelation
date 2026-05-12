@@ -1,0 +1,23 @@
+Building N=1 params...
+  built in 2.6s
+Bisecting at N=1, tol=1e-4...
+Initial bracket: [1.270000, 1.280000]  (N=1)
+  mid = 1.275000 -> NOT_CERTIFIED           (cells=200001)
+  mid = 1.272500 -> CERTIFIED_FORBIDDEN     (cells=20255)
+  mid = 1.273750 -> CERTIFIED_FORBIDDEN     (cells=54759)
+  mid = 1.274375 -> CERTIFIED_FORBIDDEN     (cells=152279)
+  mid = 1.274687 -> NOT_CERTIFIED           (cells=200001)
+  mid = 1.274531 -> NOT_CERTIFIED           (cells=200001)
+  mid = 1.274453 -> CERTIFIED_FORBIDDEN     (cells=188703)
+  bisected in 61.1s
+CERTIFIED M_cert = 1.274453  (rational 16313/12800)
+Certificate -> delsarte_dual/grid_bound/certificates/phase2_N1_smoke.json  sha256=a34a7defe79b82bf...
+Verifying...
+OK: SHA-256 = a34a7defe79b82bfff0b7ee274a405f3ae67009160f2e528000fa361e53d88d6
+OK: MV rationals match; N=1
+OK: recomputed gain_a = [0.07137046561836871872515938526783581924691696377855575820108958649226752304 +/- 5.19e-75]
+OK: recomputed k_1..k_N: ['[0.9092765512116033677521443335140104554109884005765981659817030249314055886684 +/- 7.62e-77]']
+Verifying M_cert = 16313/12800 (~1.274453)
+Re-checking 94352 terminal cells ...
+FAIL: cell 4 claims FILTER_REJECT but no filter rigorously rejects.
+  verified in 7.0s; accepted=False

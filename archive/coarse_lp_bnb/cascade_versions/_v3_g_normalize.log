@@ -1,0 +1,54 @@
+============================================================================
+Normalize v3 G so that min_G >= 1.0 rigorously
+============================================================================
+
+Loaded 119 coefficients from _cohn_elkies_128_greopt_coeffs.json
+  delta_1 = 0.1380  delta_2 = 0.0550  lambda_1 = 0.9312
+
+[Rigorous min_G_LB] re-evaluating v3 G at multiple grid sizes
+  grid= 200001  prec= 256  min_G_LB=0.9988874009  lip_rem<=1.102e-03  (0.4s)
+  grid= 400001  prec= 256  min_G_LB=0.9994386271  lip_rem<=5.512e-04  (0.8s)
+  grid= 800001  prec= 512  min_G_LB=0.9997142412  lip_rem<=2.756e-04  (2.2s)
+
+Best rigorous min_G_LB = 0.9997142412
+
+Target min_G_new >= 1.000100
+Picked rational divisor c_q = 199922855963629/200000000000000
+  c_q = 0.999614279818145
+  arb-certified  m_lo - c_q*1.0001 >= 1.536e-15  OK
+
+Rescaled 119 coefficients.  Common denominator = 199922855963629
+
+[Re-certify with normalized G at matching grid=800001, prec=512]
+  min_G_norm_LB (grid 800001, prec 512) = 1.0001000000  (lip_rem<=2.757e-04)
+
+[Run certify_combined with normalized G (grid 200001, xi_max 1e5)]
+  (delta_1, delta_2) = (0.1380, 0.0550)
+  (lambda_1, lambda_2) = (0.9312, 0.0688)
+  n_modes = 119  XI_MAX = 100000  prec = 256 bits
+  [arb] k_1 enclosure mid=0.9144970268  rad<=5.19e-77
+  [arb] min_G >= 0.99927284  (Lipschitz rem <= 1.10e-03)  G2 = OK  (0.5s)
+  [arb] S_1 <= 49.862143
+  [arb] K_2 in [4.35863809, 4.35915669]  tail <= 5.19e-04  (9.4s)
+  [arb] gain a >= 0.125556
+  [arb] certified M_* >= 1.28386120
+
+[Re-certify with ORIGINAL G  (for comparison)]
+  (delta_1, delta_2) = (0.1380, 0.0550)
+  (lambda_1, lambda_2) = (0.9312, 0.0688)
+  n_modes = 119  XI_MAX = 100000  prec = 256 bits
+  [arb] k_1 enclosure mid=0.9144970268  rad<=5.19e-77
+  [arb] min_G >= 0.99888740  (Lipschitz rem <= 1.10e-03)  G2 = OK  (0.4s)
+  [arb] S_1 <= 49.823685
+  [arb] K_2 in [4.35863809, 4.35915669]  tail <= 5.19e-04  (8.9s)
+  [arb] gain a >= 0.125556
+  [arb] certified M_* >= 1.28386120
+
+min_G(normalized)_LB (grid 800001/prec 512) = 1.0001000000  => >= 1.0 ?  YES
+
+M_cert ORIGINAL    = 1.28386120
+M_cert NORMALIZED  = 1.28386120
+|delta|            = 0.000e+00
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_cohn_elkies_128_v3_normalized.json
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_cohn_elkies_128_v3_normalized.py

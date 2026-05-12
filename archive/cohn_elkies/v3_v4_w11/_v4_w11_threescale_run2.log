@@ -1,0 +1,11 @@
+==============================================================================
+Cohn--Elkies multi-scale arcsine certifier v4 (large-N + 3-scale)
+==============================================================================
+
+--- 3-scale N=200 sweep (xi_max=10000) ---
+      d2     d3     l1     l2     M_cert     minG       S_1     K2hi    time
+(CVXPY) May 11 10:08:38 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:08:38 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+   0.040  0.015  0.800  0.080   1.275660   0.9987    20.969   5.8591    8.4s *

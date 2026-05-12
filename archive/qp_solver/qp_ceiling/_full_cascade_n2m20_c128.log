@@ -1,0 +1,222 @@
+
+======================================================================
+CPU CASCADE PROVER
+  n_half=2, m=20, d0=4, c_target=1.28
+  correction(m, n_half=2)=0.102500, effective threshold=1.382500
+  L0 compositions: 708,561
+  workers: 3 (logical CPUs: 16, effective: 16)
+  max refinement levels: 5
+======================================================================
+
+[L0 B&B] d=4, m=20, n_half=2.0, compositions=708,561
+     correction=0.102500, threshold=1.382500
+     6.57s: 371,503 leaves tested (of 708,561 total compositions)
+     B&B pruned: 337,058 branches, leaf pruned: 168,542, non-canonical: 101,423
+     survivors: 101,538
+     Checkpoint saved: ../../data_n2m20_c128\checkpoint_L0_survivors.npy (0.00 GB, 101,538 rows)
+
+[L1] d_parent=4 -> d_child=8, 101,538 parents
+     Survivor spool: 2.4 GB in-RAM (74,047,032 rows), then disk shards
+     (parallel: 3 workers, chunksize=1, numba_threads=1, mmap=0.00 GB)
+(CVXPY) May 10 08:26:52 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 08:26:52 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 08:26:52 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 08:26:52 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 08:26:52 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 10 08:26:52 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+     [3/101538] (0.0%) 80,973 survivors so far, shards=0, ETA 134.48h
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:532: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  Y = cp.bmat([[ones_11, cp.reshape(x, (1, d_parent))],
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:533: FutureWarning: 
+    You didn't specify the order of the reshape expression. The default order
+    used in CVXPY is Fortran ('F') order. This default will change to match NumPy's
+    default order ('C') in a future version of CVXPY.
+    To suppress this warning, please specify the order explicitly.
+    
+  [cp.reshape(x, (d_parent, 1)), X]])
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\cascade_opts.py:567: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=cp.SCS, verbose=False, max_iters=10000, eps=1e-8)
+     [39/101538] (0.0%) 3,189,302 survivors so far, shards=0, ETA 14.23h
+     [80/101538] (0.1%) 8,992,569 survivors so far, shards=0, ETA 8.70h
+     [120/101538] (0.1%) 13,645,612 survivors so far, shards=0, ETA 6.99h
+     [149/101538] (0.1%) 19,779,314 survivors so far, shards=0, ETA 6.60h
+     [181/101538] (0.2%) 23,843,225 survivors so far, shards=0, ETA 6.32h
+     [221/101538] (0.2%) 29,783,180 survivors so far, shards=0, ETA 5.82h
+     [256/101538] (0.3%) 32,591,049 survivors so far, shards=0, ETA 5.60h
+     [297/101538] (0.3%) 35,019,303 survivors so far, shards=0, ETA 5.36h
+     [319/101538] (0.3%) 39,247,736 survivors so far, shards=0, ETA 5.43h
+     [352/101538] (0.3%) 44,701,524 survivors so far, shards=0, ETA 5.37h
+     [387/101538] (0.4%) 49,485,753 survivors so far, shards=0, ETA 5.29h
+     [413/101538] (0.4%) 57,780,711 survivors so far, shards=0, ETA 5.32h
+     [460/101538] (0.5%) 63,909,133 survivors so far, shards=0, ETA 5.09h
+     [480/101538] (0.5%) 66,752,035 survivors so far, shards=0, ETA 5.19h
+     [537/101538] (0.5%) 69,923,544 survivors so far, shards=0, ETA 4.92h
+     Flushed shard 1: 74,237,599 unique rows (2.38 GB)
+     [553/101538] (0.5%) 74,338,619 survivors so far, shards=1, ETA 13.15h
+     Flushed shard 2: 74,104,285 unique rows (2.37 GB)
+     [952/101538] (0.9%) 148,442,904 survivors so far, shards=2, ETA 12.25h
+     [1000/101538] (1.0%) 158,198,038 survivors so far, shards=2, ETA 11.66h
+     Flushed shard 3: 75,770,412 unique rows (2.42 GB)
+     [1341/101538] (1.3%) 224,213,316 survivors so far, shards=3, ETA 12.05h
+     Flushed shard 4: 75,405,960 unique rows (2.41 GB)
+     [1733/101538] (1.7%) 299,619,276 survivors so far, shards=4, ETA 11.86h
+     [2000/101538] (2.0%) 347,820,324 survivors so far, shards=4, ETA 10.25h
+     Flushed shard 5: 74,932,724 unique rows (2.40 GB)
+     [2195/101538] (2.2%) 374,552,000 survivors so far, shards=5, ETA 11.28h
+     Flushed shard 6: 74,180,165 unique rows (2.37 GB)
+     [2673/101538] (2.6%) 448,732,165 survivors so far, shards=6, ETA 10.94h
+     [3000/101538] (3.0%) 493,472,484 survivors so far, shards=6, ETA 9.71h
+     Flushed shard 7: 74,702,364 unique rows (2.39 GB)
+     [3210/101538] (3.2%) 523,434,529 survivors so far, shards=7, ETA 10.41h
+     Flushed shard 8: 74,954,937 unique rows (2.40 GB)
+     [3763/101538] (3.7%) 598,389,466 survivors so far, shards=8, ETA 9.98h
+     [4000/101538] (3.9%) 636,388,799 survivors so far, shards=8, ETA 9.37h
+     Flushed shard 9: 75,357,247 unique rows (2.41 GB)
+     [4180/101538] (4.1%) 673,746,713 survivors so far, shards=9, ETA 10.00h
+     Flushed shard 10: 76,236,199 unique rows (2.44 GB)
+     [4596/101538] (4.5%) 749,982,912 survivors so far, shards=10, ETA 10.04h
+     Flushed shard 11: 74,160,114 unique rows (2.37 GB)
+     [4922/101538] (4.8%) 824,143,026 survivors so far, shards=11, ETA 10.22h
+     Checkpoint: 4,922/101,538 completed (../../data_n2m20_c128\_progress_L1.json)
+     [5000/101538] (4.9%) 838,444,294 survivors so far, shards=11, ETA 10.05h
+     Flushed shard 12: 74,141,726 unique rows (2.37 GB)
+     [5394/101538] (5.3%) 898,284,752 survivors so far, shards=12, ETA 10.09h
+     Flushed shard 13: 75,107,184 unique rows (2.40 GB)
+     [5732/101538] (5.6%) 973,391,936 survivors so far, shards=13, ETA 10.22h
+     [6000/101538] (5.9%) 1,018,063,891 survivors so far, shards=13, ETA 9.73h
+     Flushed shard 14: 74,528,769 unique rows (2.38 GB)
+     [6193/101538] (6.1%) 1,047,920,705 survivors so far, shards=14, ETA 10.08h
+     Flushed shard 15: 74,418,306 unique rows (2.38 GB)
+     [6523/101538] (6.4%) 1,122,339,011 survivors so far, shards=15, ETA 10.20h
+     Flushed shard 16: 74,091,009 unique rows (2.37 GB)
+     [6870/101538] (6.8%) 1,196,430,020 survivors so far, shards=16, ETA 10.28h
+     [7000/101538] (6.9%) 1,216,988,883 survivors so far, shards=16, ETA 10.07h
+     Flushed shard 17: 74,824,444 unique rows (2.39 GB)
+     [7307/101538] (7.2%) 1,271,254,464 survivors so far, shards=17, ETA 10.21h
+     Flushed shard 18: 73,785,211 unique rows (2.36 GB)
+     [7787/101538] (7.7%) 1,345,840,574 survivors so far, shards=18, ETA 10.06h
+     [8000/101538] (7.9%) 1,388,146,634 survivors so far, shards=18, ETA 9.77h
+     Flushed shard 19: 74,412,275 unique rows (2.38 GB)
+     [8160/101538] (8.0%) 1,420,252,849 survivors so far, shards=19, ETA 10.07h
+     Flushed shard 20: 74,332,395 unique rows (2.38 GB)
+     [8558/101538] (8.4%) 1,494,585,244 survivors so far, shards=20, ETA 10.05h
+     [9000/101538] (8.9%) 1,565,706,489 survivors so far, shards=20, ETA 9.51h
+     Flushed shard 21: 75,076,069 unique rows (2.40 GB)
+     [9022/101538] (8.9%) 1,569,661,313 survivors so far, shards=21, ETA 9.95h
+     Flushed shard 22: 74,234,437 unique rows (2.38 GB)
+     [9439/101538] (9.3%) 1,643,895,750 survivors so far, shards=22, ETA 9.89h
+     Flushed shard 23: 75,338,367 unique rows (2.41 GB)
+     [9826/101538] (9.7%) 1,719,234,117 survivors so far, shards=23, ETA 9.90h
+     Checkpoint: 9,826/101,538 completed (../../data_n2m20_c128\_progress_L1.json)
+     [10000/101538] (9.8%) 1,743,067,783 survivors so far, shards=23, ETA 9.71h
+     Flushed shard 24: 74,211,808 unique rows (2.37 GB)
+     [10315/101538] (10.2%) 1,793,445,925 survivors so far, shards=24, ETA 9.76h
+     Flushed shard 25: 74,781,347 unique rows (2.39 GB)
+     [10733/101538] (10.6%) 1,868,227,272 survivors so far, shards=25, ETA 9.72h
+     [11000/101538] (10.8%) 1,921,020,809 survivors so far, shards=25, ETA 9.45h
+Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 6080, in <module>
+    main()
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 5976, in main
+    info = run_cascade(
+           ^^^^^^^^^^^^
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 5416, in run_cascade
+    _flush_to_shard()
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\cloninger-steinerberger\cpu\run_cascade.py", line 5328, in _flush_to_shard
+    np.save(path, batch)
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\lib\_npyio_impl.py", line 584, in save
+    format.write_array(fid, arr, allow_pickle=allow_pickle,
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\lib\_format_impl.py", line 772, in write_array
+    array.tofile(fp)
+OSError: 605019648 requested and 0 written

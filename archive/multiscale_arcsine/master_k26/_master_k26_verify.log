@@ -1,0 +1,153 @@
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_verify_K26_independent.py:55: IntegrationWarning: The maximum number of subdivisions (400) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, xi_split, np.inf, limit=400, epsabs=1e-14, epsrel=1e-12)
+INDEPENDENT VERIFICATION (scipy.quad adaptive integration)
+======================================================================
+
+--- Baseline: pure arcsine at DELTA=0.138 ---
+[pure-arcsine]  k_1=0.909277  K_2=4.164481  S_1=87.8567  M_cert=1.274835
+
+--- Agent K26 best: (d1=0.138, d2=0.055, lam1=0.9312) ---
+[multi-scale-best]  k_1=0.914497  K_2=4.358690  S_1=54.6740  M_cert=1.279971
+
+--- Agent K26 alternative: (d1=0.138, d2=0.0525, lam1=0.935) ---
+[multi-scale-alt]  k_1=0.914294  K_2=4.357240  S_1=54.6925  M_cert=1.280032
+
+IMPROVEMENT (best vs baseline): +0.005136
+NUMERICAL LB CANDIDATE: M_cert = 1.27997
+Beats MV 1.27481?  True
+Beats CS17 1.2802? False
+
+--- Refined independent scan ---
+[d2=0.0400,l1=0.900]  k_1=0.917562  K_2=4.579976  S_1=45.7876  M_cert=1.276609
+[d2=0.0400,l1=0.910]  k_1=0.916733  K_2=4.532011  S_1=47.2626  M_cert=1.277477
+[d2=0.0400,l1=0.920]  k_1=0.915905  K_2=4.486083  S_1=48.9452  M_cert=1.278168
+[d2=0.0400,l1=0.930]  k_1=0.915076  K_2=4.441179  S_1=50.8879  M_cert=1.278717
+[d2=0.0400,l1=0.940]  k_1=0.914248  K_2=4.397618  S_1=53.1640  M_cert=1.279084
+[d2=0.0400,l1=0.950]  k_1=0.913419  K_2=4.355400  S_1=55.8790  M_cert=1.279241
+[d2=0.0450,l1=0.900]  k_1=0.917353  K_2=4.533400  S_1=46.6839  M_cert=1.277998
+[d2=0.0450,l1=0.910]  k_1=0.916546  K_2=4.491590  S_1=48.1820  M_cert=1.278619
+[d2=0.0450,l1=0.920]  k_1=0.915738  K_2=4.450874  S_1=49.8863  M_cert=1.279109
+[d2=0.0450,l1=0.930]  k_1=0.914930  K_2=4.411250  S_1=51.8485  M_cert=1.279454
+[d2=0.0450,l1=0.940]  k_1=0.914123  K_2=4.372719  S_1=54.1402  M_cert=1.279630
+[d2=0.0450,l1=0.950]  k_1=0.913315  K_2=4.335281  S_1=56.8634  M_cert=1.279613
+[d2=0.0500,l1=0.900]  k_1=0.917121  K_2=4.493364  S_1=47.6986  M_cert=1.279004
+[d2=0.0500,l1=0.910]  k_1=0.916336  K_2=4.456433  S_1=49.2130  M_cert=1.279444
+[d2=0.0500,l1=0.920]  k_1=0.915552  K_2=4.420404  S_1=50.9344  M_cert=1.279762
+[d2=0.0500,l1=0.930]  k_1=0.914768  K_2=4.385270  S_1=52.9134  M_cert=1.279942
+[d2=0.0500,l1=0.940]  k_1=0.913983  K_2=4.351029  S_1=55.2198  M_cert=1.279965
+[d2=0.0500,l1=0.950]  k_1=0.913199  K_2=4.317698  S_1=57.9521  M_cert=1.279808
+[d2=0.0550,l1=0.900]  k_1=0.916864  K_2=4.458354  S_1=49.1005  M_cert=1.279452
+[d2=0.0550,l1=0.910]  k_1=0.916106  K_2=4.425618  S_1=50.6477  M_cert=1.279743
+[d2=0.0550,l1=0.920]  k_1=0.915347  K_2=4.393626  S_1=52.4022  M_cert=1.279922
+[d2=0.0550,l1=0.930]  k_1=0.914588  K_2=4.362390  S_1=54.4126  M_cert=1.279973
+[d2=0.0550,l1=0.940]  k_1=0.913829  K_2=4.331887  S_1=56.7450  M_cert=1.279884
+[d2=0.0550,l1=0.950]  k_1=0.913071  K_2=4.302127  S_1=59.4914  M_cert=1.279634
+[d2=0.0600,l1=0.900]  k_1=0.916584  K_2=4.427280  S_1=51.2656  M_cert=1.279120
+[d2=0.0600,l1=0.910]  k_1=0.915853  K_2=4.398228  S_1=52.8169  M_cert=1.279342
+[d2=0.0600,l1=0.920]  k_1=0.915123  K_2=4.369782  S_1=54.5681  M_cert=1.279465
+[d2=0.0600,l1=0.930]  k_1=0.914392  K_2=4.341953  S_1=56.5642  M_cert=1.279476
+[d2=0.0600,l1=0.940]  k_1=0.913661  K_2=4.314743  S_1=58.8652  M_cert=1.279364
+[d2=0.0600,l1=0.950]  k_1=0.912930  K_2=4.288152  S_1=61.5533  M_cert=1.279111
+[d2=0.0650,l1=0.900]  k_1=0.916280  K_2=4.399276  S_1=53.0231  M_cert=1.279123
+[d2=0.0650,l1=0.910]  k_1=0.915580  K_2=4.373461  S_1=54.5853  M_cert=1.279260
+[d2=0.0650,l1=0.920]  k_1=0.914879  K_2=4.348164  S_1=56.3415  M_cert=1.279307
+[d2=0.0650,l1=0.930]  k_1=0.914179  K_2=4.323498  S_1=58.3332  M_cert=1.279248
+[d2=0.0650,l1=0.940]  k_1=0.913479  K_2=4.299231  S_1=60.6150  M_cert=1.279087
+[d2=0.0650,l1=0.950]  k_1=0.912778  K_2=4.275479  S_1=63.2604  M_cert=1.278803
+[d2=0.0700,l1=0.900]  k_1=0.915953  K_2=4.374187  S_1=54.3333  M_cert=1.279417
+[d2=0.0700,l1=0.910]  k_1=0.915285  K_2=4.351268  S_1=55.9229  M_cert=1.279446
+[d2=0.0700,l1=0.920]  k_1=0.914617  K_2=4.328781  S_1=57.7014  M_cert=1.279395
+[d2=0.0700,l1=0.930]  k_1=0.913950  K_2=4.306728  S_1=59.7070  M_cert=1.279256
+[d2=0.0700,l1=0.940]  k_1=0.913282  K_2=4.285108  S_1=61.9890  M_cert=1.279021
+[d2=0.0700,l1=0.950]  k_1=0.912615  K_2=4.263921  S_1=64.6130  M_cert=1.278681
+Traceback (most recent call last):
+  File "C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_verify_K26_independent.py", line 134, in <module>
+    print(f"\nIndependent refined best: M_cert={best[0]:.6f} at d2={best[1]}, \u03bb_1={best[2]}")
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u03bb' in position 57: character maps to <undefined>
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_recompute_pure.py:50: IntegrationWarning: The maximum number of subdivisions (800) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, split, np.inf, limit=800, epsabs=1e-14, epsrel=1e-12)
+======================================================================
+K26 PURE-FLOAT INDEPENDENT RECOMPUTATION
+======================================================================
+
+[Primary] Baseline pure-arcsine (delta=0.138, lambda=1.0):
+  [baseline]  method=quad  k_1=0.909277  K_2=4.164484  S_1=87.8567  M_cert=1.27483451998815
+
+[Primary] K26 best (delta_2=0.055, lambda_1=0.9312):
+  [K26-best]  method=quad  k_1=0.914497  K_2=4.358677  S_1=54.6740  M_cert=1.2799712515272843
+
+--- SANITY A: extreme parameters ---
+
+  A1: lambda_1=1.0 (pure single-scale)
+  [lam1=1.0]  method=quad  k_1=0.909277  K_2=4.164484  S_1=87.8567  M_cert=1.27483451998815
+
+  A2: lambda_1=0.0 (pure smaller delta_2=0.055)
+  [lam1=0.0]  method=quad  k_1=0.985156  K_2=10.449007  S_1=283.1678  M_cert=1.1149130526381268
+
+  A3: lambda_1=0.5 (intermediate)
+  [lam1=0.5]  method=quad  k_1=0.947216  K_2=6.377308  S_1=31.5397  M_cert=1.2275100178774228
+
+--- SANITY B: MV reproduction (delta=0.138, lambda=1.0) ---
+  [MV-reproduction]  method=quad  k_1=0.909277  K_2=4.164484  S_1=87.8567  M_cert=1.27483451998815
+  Compare: published MV ~1.27484 (with z_1) / 1.27437 (without)
+  Computed: 1.274835
+
+--- SANITY C: K_2 integration accuracy ---
+  At K26 best point.
+  quad:
+    K_2(quad) = 4.35867723
+    K_2(trap, XI_MAX=800.0, N=80001) = 4.35641158
+    K_2(trap, XI_MAX=1600.0, N=160001) = 4.35753207
+    K_2(trap, XI_MAX=2400.0, N=240001) = 4.35790691
+    K_2(trap, XI_MAX=3200.0, N=320001) = 4.35809450
+    K_2(trap, XI_MAX=4800.0, N=320001) = 4.35828171
+    K_2(trap, XI_MAX=4800.0, N=640001) = 4.35828171
+
+--- SANITY D: G admissibility on [0, 1/4] ---
+  min G on grid = 1.001570
+  Lipschitz L   = 812.8456
+  h/2*L         = 5.08e-04
+  certified min = 1.001062  (need >= 1)
+
+--- SANITY F: converged values via trapezoid (4800, 320001) ---
+  [baseline-trap]  method=trap  k_1=0.909277  K_2=4.164119  S_1=87.8567  M_cert=1.2748550992066467
+  [K26-best-trap]  method=trap  k_1=0.914497  K_2=4.358282  S_1=54.6740  M_cert=1.2799923871531225
+  [K26-alt-trap]  method=trap  k_1=0.914294  K_2=4.356830  S_1=54.6925  M_cert=1.2800542544008642
+
+======================================================================
+SUMMARY (high precision values)
+======================================================================
+  baseline pure-arcsine    quad : M_cert = 1.274835
+  baseline pure-arcsine    trap : M_cert = 1.274855
+  K26-best multi-scale     quad : M_cert = 1.279971
+  K26-best multi-scale     trap : M_cert = 1.279992
+  K26-alt  multi-scale     trap : M_cert = 1.280054
+
+  CLAIM: K26 produces M_cert ~= 1.28013   FALSE (actual ~1.27997)
+  CLAIM: baseline M_cert ~= 1.27499       CLOSE (actual ~1.27484)
+  IMPROVEMENT over MV pure-arcsine:       +0.005137
+  Beats CS17 1.2802?                      False
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_finer_scan.py:26: IntegrationWarning: The maximum number of subdivisions (800) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, split, np.inf, limit=800, epsabs=1e-14, epsrel=1e-12)
+  d2=0.0525 l1=0.930  M=1.280031  (over 1.28)
+  d2=0.0525 l1=0.935  M=1.280032  (over 1.28)
+
+Finest float optimum: M=1.280032 at d2=0.05250000000000001, l1=0.935

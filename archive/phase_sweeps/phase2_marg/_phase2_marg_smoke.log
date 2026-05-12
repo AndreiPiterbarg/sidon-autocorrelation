@@ -1,0 +1,15 @@
+Building N=2 params...
+  built in 2.7s
+
+=== M=1.27 (low M baseline) ===
+  -> CERTIFIED_FORBIDDEN  cells=2417  time=0.1s
+
+=== M=1.275 (beats MV by 1.9e-4) ===
+  -> NOT_CERTIFIED  cells=200001  time=11.1s
+  worst_live phi_upper = 0.0008470190775224717
+  worst cell: a in [0.3058, 0.3059], b in [-0.4007, -0.4005]
+
+=== M=1.276 (at MV-framework ceiling) ===
+  -> NOT_CERTIFIED  cells=200001  time=12.8s
+  worst_live phi_upper = 0.0036093442478282696
+  worst cell: a in [0.4914, 0.4916], b in [-0.1142, -0.1140]

@@ -1,0 +1,48 @@
+{
+  "d0": 2,
+  "S": 60,
+  "c_target": 1.281,
+  "max_levels": 3,
+  "use_joint": true,
+  "use_sdp": false,
+  "levels": [
+    {
+      "level": 1,
+      "d_child": 4,
+      "parents": 19,
+      "children": 11910,
+      "NO": 8816,
+      "J": 7,
+      "L": 0,
+      "uncert": 533,
+      "survivors_out": 2438,
+      "uncerts_out": 515,
+      "wall_sec": 0.5
+    },
+    {
+      "level": 2,
+      "d_child": 8,
+      "parents": 2953,
+      "children": 17417225,
+      "NO": 17357646,
+      "J": 8937,
+      "L": 0,
+      "uncert": 47961,
+      "survivors_out": 2681,
+      "uncerts_out": 47961,
+      "wall_sec": 204.8
+    }
+  ],
+  "rigorous_closure": false,
+  "reason_unclosed": "budget exceeded at L2: cumul 53,614 > 50,000 (mid-level abort)",
+  "l0": {
+    "survivors": 19,
+    "uncerts": 0,
+    "NO": 0,
+    "J": 0,
+    "L": 0,
+    "time": 0.31
+  },
+  "total_time": 205.77,
+  "final_parents": 50642
+}

@@ -1,0 +1,87 @@
+(CVXPY) May 11 06:14:04 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 06:14:04 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+
+=== SANITY 1: reoptimize at (DELTA, lambda_1=1.0) ===
+(MV's published a_j should be close to reoptimized a_j; M_cert ~ 1.2748)
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_reopt_full.py:54: IntegrationWarning: The maximum number of subdivisions (400) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, xi_split, np.inf, limit=400, epsabs=1e-13, epsrel=1e-11)
+  d=[0.138] l=[1.0] N=119: k_1=0.90928 K_2=4.1645 S_1=87.435 min_G=1.00000 M_cert=1.27496
+  MV S_1 (their coefs) = 87.8567
+  reopt S_1            = 87.4352
+  relative coef diff    = 0.0027
+  reopt S_1 should be <= MV S_1 (it is the QP optimum)
+  M_cert(MV)   = 1.274835
+  M_cert(reopt)= 1.274959
+
+=== Step 1: small (3x3) test sweep, N=119 ===
+
+=== Sweep level=small  N=119  (3x3=9 points) ===
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_reopt_full.py:54: IntegrationWarning: The maximum number of subdivisions (400) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, xi_split, np.inf, limit=400, epsabs=1e-13, epsrel=1e-11)
+  NEW BEST M=1.28717 at d2=0.0400 l1=0.8000 S1=25.97 (1.7s)
+  NEW BEST M=1.28945 at d2=0.0400 l1=0.8500 S1=30.05 (2.1s)
+  total 22.3s, best M_cert = 1.28945
+
+=== Step 2: full broad sweep, N=119 ===
+
+=== Sweep level=full  N=119  (15x14=210 points) ===
+  NEW BEST M=1.21646 at d2=0.0200 l1=0.6000 S1=14.54 (2.9s)
+  NEW BEST M=1.23000 at d2=0.0200 l1=0.6500 S1=15.60 (3.6s)
+  NEW BEST M=1.24381 at d2=0.0200 l1=0.7000 S1=16.91 (2.8s)
+  NEW BEST M=1.25740 at d2=0.0200 l1=0.7500 S1=18.60 (3.1s)
+  NEW BEST M=1.26514 at d2=0.0200 l1=0.7800 S1=19.88 (2.9s)
+  NEW BEST M=1.27000 at d2=0.0200 l1=0.8000 S1=20.88 (3.0s)
+  NEW BEST M=1.27454 at d2=0.0200 l1=0.8200 S1=22.05 (3.0s)
+  NEW BEST M=1.28050 at d2=0.0200 l1=0.8500 S1=24.21 (3.2s)
+  NEW BEST M=1.28510 at d2=0.0200 l1=0.8800 S1=27.11 (3.4s)
+  NEW BEST M=1.28716 at d2=0.0200 l1=0.9000 S1=29.67 (2.9s)
+  NEW BEST M=1.28818 at d2=0.0200 l1=0.9200 S1=33.06 (2.8s)
+  NEW BEST M=1.28889 at d2=0.0250 l1=0.9000 S1=31.30 (3.4s)
+  NEW BEST M=1.28896 at d2=0.0250 l1=0.9200 S1=34.84 (3.1s)
+  NEW BEST M=1.28915 at d2=0.0300 l1=0.8800 S1=30.21 (3.3s)
+  NEW BEST M=1.28942 at d2=0.0300 l1=0.9000 S1=33.03 (3.0s)
+  NEW BEST M=1.28945 at d2=0.0400 l1=0.8500 S1=30.05 (4.1s)
+  NEW BEST M=1.28960 at d2=0.0400 l1=0.8800 S1=33.52 (2.9s)
+  NEW BEST M=1.28965 at d2=0.0450 l1=0.8200 S1=28.67 (3.0s)
+  NEW BEST M=1.29005 at d2=0.0450 l1=0.8500 S1=31.44 (2.9s)
+  total 678.6s, best M_cert = 1.29005
+
+=== Step 3: refined sweep around (0.0450, 0.8500), N=119 ===
+
+Best after N=119 sweeps: M_cert = 1.29005
+
+=== Step 4: increase QP dimension N at best (delta_2, lambda_1) ===
+  d=[0.138, 0.045] l=[0.85, 0.15000000000000002] N=119: k_1=0.92139 K_2=4.7588 S_1=31.442 min_G=1.00000 M_cert=1.29005
+  d=[0.138, 0.045] l=[0.85, 0.15000000000000002] N=150: k_1=0.92139 K_2=4.7588 S_1=31.218 min_G=1.00000 M_cert=1.29056
+  d=[0.138, 0.045] l=[0.85, 0.15000000000000002] N=200: k_1=0.92139 K_2=4.7588 S_1=31.019 min_G=1.00000 M_cert=1.29102
+  d=[0.138, 0.045] l=[0.85, 0.15000000000000002] N=300: k_1=0.92139 K_2=4.7588 S_1=30.824 min_G=1.00000 M_cert=1.29148
+  d=[0.138, 0.045] l=[0.85, 0.15000000000000002] N=500: k_1=0.92139 K_2=4.7588 S_1=30.664 min_G=1.00000 M_cert=1.29186
+
+=== Step 5: refined sweep at N=200 ===
+
+=== Step 6: fine-grid verification of min_G at overall best ===
+  min_G on coarse grid (5001): 1.0000000
+  min_G on fine   grid (200001): 0.9999916
+  max_G on fine grid: 1.33173
+  M_cert with fine-grid min_G  = 1.2900477345616017
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_reopt_results.json
+
+======================================================================
+FINAL M_cert = 1.291021
+  delta_2 = 0.04500
+  lambda_1 = 0.85000
+  improvement over MV (1.27481) = +0.01621
+======================================================================

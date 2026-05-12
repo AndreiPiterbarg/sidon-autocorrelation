@@ -1,0 +1,10 @@
+==============================================================================
+v6 FOCUSED: N=1000 + xi_max=1e5 + 4 top candidates
+==============================================================================
+(CVXPY) May 11 10:04:31 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 10:04:31 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+  d2=0.055 d3=0.022 l1=0.850 l2=0.100 M=1.29295022 S1=28.880 minG=0.9968 K2hi=4.8179 (62.2s) *
+  d2=0.055 d3=0.020 l1=0.850 l2=0.120 M=1.29286034 S1=30.226 minG=0.9968 K2hi=4.7506 (54.7s)
+  d2=0.055 d3=0.020 l1=0.820 l2=0.150 M=1.29281954 S1=28.029 minG=0.9969 K2hi=4.8682 (49.4s)

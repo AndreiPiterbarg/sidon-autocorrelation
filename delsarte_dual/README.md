@@ -1,60 +1,186 @@
-# delsarte_dual/
+# delsarte_dual
 
-A Delsarte-type infinite-dimensional dual for the Sidon autocorrelation
-constant $C_{1a}$, with a rigorous mpmath interval verification pipeline.
+The **Piterbarg-Bajaj-Vincent Bound**: a rigorous lower bound on the
+Sidon autocorrelation constant
 
-## Quick start
-
-```bash
-python -m delsarte_dual.run_all --restarts-f1 20 --restarts-f2 20 --subdiv 2048
 ```
+C_{1a}  :=  inf { ||f * f||_inf / (int f)^2
+                  :  f >= 0,  supp f subset (-1/4, 1/4),  int f > 0 }
+
+        >=  1292 / 1000  =  1.292
+```
+
+via a multi-scale arcsine kernel applied to the Matolcsi-Vinuesa (2010)
+master inequality, with all transcendentals computed in `flint.arb`
+interval arithmetic at 256-bit precision and all algebraic inputs as
+exact `flint.fmpq`.
+
+The bound improves on the previously announced value `1.2802` of
+Cloninger and Steinerberger (2017, arXiv:1403.7988) and on the rigorous
+analytic bound `1.27481` of Matolcsi and Vinuesa (2010, arXiv:0907.1379).
+The accompanying writeup *Improving the Bounds on the Supremum of
+Autoconvolutions* is at the repository root in
+[`lower_bound_proof.pdf`](../lower_bound_proof.pdf); the Lean 4
+formalisation of the same statement is at
+[`lean/Sidon/MultiScale.lean`](../lean/Sidon/MultiScale.lean).
+
+## Pipeline
+
+1. **Kernel.**  Build the three-scale convex combination
+
+   ```
+   K = sum_{i=1}^{3} lambda_i K_arc(delta_i; .)
+   ```
+
+   with `(delta_1, delta_2, delta_3) = (138, 55, 25) / 1000` and
+   `(lambda_1, lambda_2, lambda_3) = (85, 10, 5) / 100`.  See
+   [`grid_bound_alt_kernel/kernels.py`](grid_bound_alt_kernel/kernels.py):
+   class `MultiScaleArcsineKernel`.
+
+2. **Cosine multiplier `G`.**  Solve the semi-infinite quadratic
+   programme
+
+   ```
+   min  sum_{j=1}^{200} a_j^2 / hat K(j/u)
+   s.t. sum_{j=1}^{200} a_j cos(2 pi j x / u) >= 1   for x in [0, 1/4]
+   ```
+
+   discretised to a fine grid and rounded to `fmpq` with denominator
+   `1e8`.  See
+   [`grid_bound_alt_kernel/optimize_G.py`](grid_bound_alt_kernel/optimize_G.py).
+
+3. **Rigorous `min G`.**  Certify a lower bound on
+   `min_{x in [0, 1/4]} G(x)` via Taylor branch-and-bound in arb
+   intervals.  See
+   [`grid_bound/G_min.py`](grid_bound/G_min.py).
+
+4. **Master inequality `Phi`.**  Evaluate
+
+   ```
+   Phi(M, y)  =  M + 1 + 2 y k_1 + sqrt((M - 1 - 2 y^2)(K_2 - 1 - 2 k_1^2))
+                  - (2/u + a)
+   ```
+
+   as an arb enclosure.  See
+   [`grid_bound/phi.py`](grid_bound/phi.py).
+
+5. **Cell search.**  Adaptive priority-queue cell bisection on
+   `y in [0, mu(M)]`; verdict `CERTIFIED_FORBIDDEN` iff every terminal
+   cell has `Phi.upper() < 0`.  See
+   [`grid_bound/cell_search.py`](grid_bound/cell_search.py).
+
+6. **`M` bisection.**  Bisect to find the largest `M` with a certifiable
+   ``Phi < 0`` witness; the result is the rigorous lower bound `M_cert`.
+   See
+   [`grid_bound_alt_kernel/bisect_alt_kernel.py`](grid_bound_alt_kernel/bisect_alt_kernel.py).
 
 ## Layout
 
-| File | Role |
-|---|---|
-| `theory.md` | Derivation of the dual bound; admissibility conditions; positive-definiteness certificates per family. |
-| `family_f1_selberg.py` | Fejér-modulated test function $g$, closed-form $\widehat g$. |
-| `family_f2_gauss_poly.py` | Gaussian × even polynomial. Degree ≤ 2 in $t^2$. |
-| `family_f3_vaaler.py` | **Documented stub.** Full Vaaler implementation deferred. |
-| `rigorous_max.py` | Interval B&B for $\max g$ on $[-\tfrac12,\tfrac12]$; interval quadrature. |
-| `optimise.py` | scipy/Nelder-Mead search over each family (float64). |
-| `verify.py` | End-to-end mpmath verification yielding a ball $[L_\text{low},L_\text{high}]$. |
-| `run_all.py` | Orchestrator: optimise → verify → report. |
-| `postmortem.md` | Honest write-up of what was tried and where it fell short. |
-| `run.log` | Log of the last end-to-end run. |
+```
+delsarte_dual/
+|-- README.md
+|-- __init__.py
+|-- grid_bound/                          MV master inequality machinery
+|   |-- __init__.py
+|   |-- bessel.py                        arb wrappers for J_0(pi j delta / u)
+|   |-- bisect.py                        single-scale MV reproduction driver
+|   |-- cell_search.py                   priority-queue cell B&B certifier
+|   |-- certify.py                       standalone independent verifier
+|   |-- coeffs.py                        119-coefficient MV baseline data
+|   |-- G_min.py                         Taylor B&B for min G
+|   `-- phi.py                           PhiParams + phi_N1 + mu_of_M
+`-- grid_bound_alt_kernel/               multi-scale kernel + production driver
+    |-- __init__.py
+    |-- bisect_alt_kernel.py             production pipeline -> certificate
+    |-- certificates/
+    |   `-- reference_anchors.json       canonical anchor values
+    |-- kernels.py                       Kernel base + Arcsine + MultiScale
+    `-- optimize_G.py                    QP solver for G
+```
 
-## What the rigorous pipeline certifies
+The accompanying paper ``lower_bound_proof.{pdf,tex}`` and the Lean 4
+formalisation ``lean/Sidon/MultiScale.lean`` live at the repository
+root.
 
-For each family $F$ and best parameters $\theta^\*$ it produces a ball
-$$
-[\, L_\text{low}(\theta^\*),\ L_\text{high}(\theta^\*)\,]
-$$
-such that $L_\text{low}(\theta^\*) \le C_{1a}$ is a **proof value**, where
-$$
-L(\theta) \;=\; \frac{\int_{\mathbb R}\widehat g_\theta(\xi)\,w(\xi)\,d\xi}{\max_{t\in[-1/2,1/2]} g_\theta(t)},\qquad w(\xi)=\max(0,1-\tfrac{\pi}{2}|\xi|)^2.
-$$
-The weight $w$ comes from the rigorous Paley-Wiener inequality
-$|\widehat f(\xi)|\ge 1-\tfrac{\pi}{2}|\xi|$ for $f$ supported on
-$[-\tfrac14,\tfrac14]$ with $\int f=1$. See `theory.md` Section 2.
+## Running the production bound
 
-## Correctness gates
+```bash
+python -m delsarte_dual.grid_bound_alt_kernel.bisect_alt_kernel
+```
 
-- **G1** Reproduce 1.2802 from a MV-style $g$: see `optimise.matolcsi_vinuesa_reference_f1`.
-- **G2** Unit tests in `tests/test_delsarte_dual.py`.
-- **G3** Each family prints its ball and the parameters.
-- **G4** Max-$g$ verified with relative width ≤ `--rel-tol` (default $10^{-8}$).
-- **G5** Positive-definiteness certificate documented in `theory.md` per family.
+Produces a JSON certificate at
+`delsarte_dual/grid_bound_alt_kernel/certificates/multiscale_arcsine_1292.json`
+containing the rational `M_cert`, all input parameters, the QP-rounded
+`G` coefficients, the five interval-arithmetic anchors
+`(k_1, K_2, S_1, min_G, a)`, the complete bisection history, and the
+terminal cell list of the certifying cell-search.
 
-If all five pass **and** the claimed new bound exceeds 1.2802, only then do
-we update `CLAUDE.md`.
+## Independent verification
+
+`grid_bound/certify.py` re-checks every quantitative claim from a
+certificate using only `python-flint` primitives, with no imports from
+the rest of the package:
+
+```bash
+python -m delsarte_dual.grid_bound.certify <certificate.json>
+```
+
+The verifier:
+
+1. Recomputes the SHA-256 body hash and confirms it matches the
+   certificate.
+2. Recomputes `k_1`, `K_2`, `S_1`, `min G`, `a` in arb at the declared
+   precision.  For the multi-scale certificate this uses the
+   cross-Bessel integrals plus asymptotic tail bound; the diagonal
+   `K_2`-surrogate flag is honoured.
+3. Confirms the certificate's terminal cells cover
+   `[0, mu(M_cert).upper()]` contiguously.
+4. Confirms every terminal cell has `Phi.upper() < 0`.
+
+Exit code `0` on success; `1` on any failure.
+
+## Numerical anchors (3-scale, N = 200, 256-bit precision)
+
+| Anchor       | Value                                       |
+|--------------|---------------------------------------------|
+| `k_1`        | `>= 0.92124658`                             |
+| `K_2`        | `in [4.788823, 4.788906]`                   |
+| `S_1`        | `<= 29.840907`                              |
+| `min G`      | `>= 0.99997987`                             |
+| `a`          | `>= 0.21009214`                             |
+| `M_cert`     | `= 66167/51200 ≈ 1.29232422`, rationalised to `1292/1000`|
+
+These are the values quoted by the writeup and by the slack rationals
+in `lean/Sidon/MultiScale.lean`; the sole user axiom in that module
+(`MV_master_inequality_for_extremiser`) substitutes these rational
+slacks for the analytic `K_2` and `a`.  The values are reproduced
+exactly by the production driver above, and recomputed independently
+by `certify.py`.
+
+## Tests
+
+```bash
+pytest tests/grid_bound_alt_kernel/
+```
+
+The test suite at the repo-root `tests/` directory exercises kernel
+admissibility, Bochner positivity, the QP solver convergence, and the
+single-scale arcsine baseline against the published Matolcsi-Vinuesa
+value of `1.27481`.
 
 ## Dependencies
 
-Already available in the project environment:
-`mpmath>=1.3, sympy>=1.12, scipy>=1.10, numpy>=2.0`.
-Optionally: `python-flint` for Arb backend (not required here).
+  * `python-flint`  (arb / acb / fmpq backend; required)
+  * `numpy`
+  * `cvxpy`         (QP solver; with MOSEK preferred, CLARABEL/SCS/ECOS fallbacks)
 
-## Honest status
+## References
 
-See `postmortem.md`.
+  * Matolcsi, M., Vinuesa, C.  *Improved bounds on the supremum of
+    autoconvolutions.*  J. Math. Anal. Appl. **372** (2010), 439-447,
+    arXiv:0907.1379.
+  * Cloninger, A., Steinerberger, S.  *On suprema of autoconvolutions
+    with an application to Sidon sets.*  Proc. Amer. Math. Soc.
+    **145** (2017), 3191-3200, arXiv:1403.7988.
+  * Martin, G., O'Bryant, K.  *The symmetric subset problem in
+    continuous Ramsey theory.*  arXiv:0807.5121 (2009).

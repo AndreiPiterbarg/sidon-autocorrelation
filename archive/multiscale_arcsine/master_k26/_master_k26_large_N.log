@@ -1,0 +1,45 @@
+(CVXPY) May 11 06:13:04 PM: Encountered unexpected exception importing solver GLOP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+(CVXPY) May 11 06:13:04 PM: Encountered unexpected exception importing solver PDLP:
+RuntimeError('Unrecognized new version of ortools (9.15.6755). Expected < 9.15.0. Please open a feature request on cvxpy to enable support for this version.')
+C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_large_N.py:58: IntegrationWarning: The maximum number of subdivisions (400) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v2, _ = quad(f, 20.0, np.inf, limit=400, epsabs=1e-14, epsrel=1e-12)
+================================================================================
+Master K26 large-N study
+  K26 best: d_1=0.138, d_2=0.045, lambda_1=0.85
+  MV baseline M_cert (G=MV-119, K=pure arcsine) = 1.27481
+================================================================================
+
+  k_1 = 0.921392   K_2 = 4.758755
+
+--- (1) M_cert vs N at fixed K26-best K ---
+    [N=119, solver=MOSEK, S_1=31.4420, min_G=1.000000, time=1.8s]
+  [K26@N=119, N=119] S_1=31.4420 min_G=0.999992 M_cert=1.290052  (d vs MV = +0.01524, QP 1.8s)
+    [N=200, solver=MOSEK, S_1=31.0189, min_G=1.000000, time=2.9s]
+  [K26@N=200, N=200] S_1=31.0189 min_G=0.999981 M_cert=1.291022  (d vs MV = +0.01621, QP 2.9s)
+    [N=500, solver=MOSEK, S_1=30.6636, min_G=1.000000, time=7.8s]
+  [K26@N=500, N=500] S_1=30.6636 min_G=0.999926 M_cert=1.291852  (d vs MV = +0.01704, QP 7.8s)
+    [N=1000, solver=MOSEK, S_1=30.5454, min_G=1.000000, time=15.8s]
+  [K26@N=1000, N=1000] S_1=30.5454 min_G=0.999776 M_cert=1.292113  (d vs MV = +0.01730, QP 15.8s)
+  S_1(N->inf) ~ 30.4273  ->  M_cert(N->inf, K26) ~ 1.2924312864893313
+
+--- (5) Joint (G, K) refinement at large N ---
+  N = 200,  |d2_grid|x|l1_grid| = 6x6 = 36
+  joint best at N=200: M_cert=1.291022 at d_2=0.045, lambda_1=0.85
+
+--- (5b) Confirm joint best at N=500 ---
+    [N=500, solver=MOSEK, S_1=30.6636, min_G=1.000000, time=13.1s]
+  [joint-N500-d20.0450-l10.850, N=500] S_1=30.6636 min_G=0.999926 M_cert=1.291852  (d vs MV = +0.01704, QP 13.1s)
+
+================================================================================
+BEST OVERALL
+  M_cert = 1.292113  (d vs MV=+0.01730)
+  Params: {'M_cert': 1.2921130073495588, 'label': 'K26@N=1000', 'N': 1000, 'delta_2': 0.045, 'lambda_1': 0.85, 'S_1': 30.545441331011467, 'min_G_fine': 0.9997761506587906, 'k_1': 0.9213917290771123, 'K_2': 4.758754709128284}
+================================================================================
+
+Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_master_k26_large_N.json

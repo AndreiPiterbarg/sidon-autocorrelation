@@ -1,0 +1,30 @@
+{
+  "d": 6,
+  "S": 12,
+  "c_target": 1.2,
+  "max_depth": 4,
+  "n_cells": 45,
+  "shor_alone_cert": 0,
+  "shor_alone_unsolved": 0,
+  "cum_cert_depth": {
+    "0": 0,
+    "1": 4,
+    "2": 6,
+    "3": 9,
+    "4": 14
+  },
+  "time_split_avg_ms": {
+    "0": 16.735458374023438,
+    "1": 32.64723353915745,
+    "2": 51.13645129733616,
+    "3": 67.72484249538846,
+    "4": 93.80676481458876
+  },
+  "time_shor_avg_ms": 10.033194224039715,
+  "method_counts": {
+    "uncert": 615,
+    "Shor:infeasible": 130,
+    "Joint": 2
+  },
+  "total_time_s": 39.88514709472656
+}

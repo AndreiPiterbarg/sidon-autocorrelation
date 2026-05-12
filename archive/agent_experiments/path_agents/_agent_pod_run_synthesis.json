@@ -1,0 +1,189 @@
+{
+  "runs": {
+    "d8S16": {
+      "d": 8,
+      "S": 16,
+      "c_target": 1.25,
+      "workers": 96,
+      "stage1_residue_count": 8104,
+      "stage1_survivor_count": 0,
+      "n_processed": 8104,
+      "open_count": 1434,
+      "closed_genuine": 6670,
+      "closure_rate": 0.823050345508391,
+      "closed_counts": {
+        "B1diag": 1228,
+        "L": 2791,
+        "F": 503,
+        "L_joint": 1245,
+        "B1": 222,
+        "B46_no_signal": 199,
+        "split": 681,
+        "split_sub1_fail": 1228,
+        "split_sub2_fail": 7
+      },
+      "elapsed_s": 50.66888213157654,
+      "total_wall_s": 50.707820892333984,
+      "rate_per_sec": 159.94037482326132,
+      "closure_per_sec": 131.6389807590268,
+      "sample_fail_tier_dist": {
+        "B46_no_signal": 40,
+        "split_sub1_fail": 10
+      },
+      "sample_palindromic": 0,
+      "sample_has_zero": 48,
+      "sample_depth_dist": {
+        "0": 40,
+        "6": 10
+      },
+      "sample_var_mean": 2.845,
+      "sample_var_min": 1.5,
+      "sample_var_max": 4.75,
+      "sample_bound_mean": -0.023273887028769858,
+      "sample_bound_min": -0.11992187499999987,
+      "sample_bound_max": 0.0
+    },
+    "d10S20": {
+      "d": 10,
+      "S": 20,
+      "c_target": 1.25,
+      "workers": 96,
+      "stage1_residue_count": 165784,
+      "stage1_survivor_count": 1,
+      "n_processed": 165784,
+      "open_count": 20493,
+      "closed_genuine": 145291,
+      "closure_rate": 0.8763873473917869,
+      "closed_counts": {
+        "B1diag": 37914,
+        "B1": 6056,
+        "F": 15531,
+        "L": 53824,
+        "L_joint": 22448,
+        "B46_no_signal": 5113,
+        "split": 9518,
+        "split_sub1_fail": 15071,
+        "split_sub2_fail": 309
+      },
+      "elapsed_s": 509.58587765693665,
+      "total_wall_s": 510.74461030960083,
+      "rate_per_sec": 325.33083680079744,
+      "closure_per_sec": 285.11582908860123,
+      "sample_fail_tier_dist": {
+        "B46_no_signal": 50
+      },
+      "sample_palindromic": 0,
+      "sample_has_zero": 50,
+      "sample_depth_dist": {
+        "0": 50
+      },
+      "sample_var_mean": 3.236,
+      "sample_var_min": 2.0,
+      "sample_var_max": 4.8,
+      "sample_bound_mean": -0.024236610230047695,
+      "sample_bound_min": -0.057692307692307626,
+      "sample_bound_max": -0.0006818181818181793
+    },
+    "d8S32": {
+      "d": 8,
+      "S": 32,
+      "c_target": 1.25,
+      "workers": 96,
+      "stage1_residue_count": 44991,
+      "stage1_survivor_count": 158,
+      "n_processed": 44991,
+      "open_count": 14617,
+      "closed_genuine": 30374,
+      "closure_rate": 0.6751128003378454,
+      "closed_counts": {
+        "L": 12922,
+        "F": 3010,
+        "B1diag": 1793,
+        "L_joint": 9105,
+        "B46_no_signal": 1267,
+        "B1": 269,
+        "split": 3275,
+        "split_sub1_fail": 13224,
+        "split_sub2_fail": 126
+      },
+      "elapsed_s": 233.078950881958,
+      "total_wall_s": 233.87554693222046,
+      "rate_per_sec": 193.02901368723565,
+      "closure_per_sec": 130.31635797684194,
+      "sample_fail_tier_dist": {
+        "B46_no_signal": 36,
+        "split_sub1_fail": 13,
+        "split_sub2_fail": 1
+      },
+      "sample_palindromic": 0,
+      "sample_has_zero": 30,
+      "sample_depth_dist": {
+        "0": 36,
+        "5": 14
+      },
+      "sample_var_mean": 8.135,
+      "sample_var_min": 4.0,
+      "sample_var_max": 16.0,
+      "sample_bound_mean": -0.009441538008432554,
+      "sample_bound_min": -0.02825055803571446,
+      "sample_bound_max": 0.0
+    }
+  },
+  "comparison": [
+    {
+      "name": "d8S16",
+      "d": 8,
+      "S": 16,
+      "n_processed": 8104,
+      "closure_rate": 0.823050345508391,
+      "rate_per_sec": 159.94037482326132,
+      "closure_per_sec": 131.6389807590268,
+      "open_count": 1434,
+      "wall_s": 50.707820892333984
+    },
+    {
+      "name": "d10S20",
+      "d": 10,
+      "S": 20,
+      "n_processed": 165784,
+      "closure_rate": 0.8763873473917869,
+      "rate_per_sec": 325.33083680079744,
+      "closure_per_sec": 285.11582908860123,
+      "open_count": 20493,
+      "wall_s": 510.74461030960083
+    },
+    {
+      "name": "d8S32",
+      "d": 8,
+      "S": 32,
+      "n_processed": 44991,
+      "closure_rate": 0.6751128003378454,
+      "rate_per_sec": 193.02901368723565,
+      "closure_per_sec": 130.31635797684194,
+      "open_count": 14617,
+      "wall_s": 233.87554693222046
+    }
+  ],
+  "scaling_analysis": {
+    "d8S16": {
+      "closure_rate": 0.823050345508391,
+      "open_per_residue": 0.17694965449160907
+    },
+    "d10S20": {
+      "closure_rate": 0.8763873473917869,
+      "open_per_residue": 0.1236126526082131
+    },
+    "d8S32": {
+      "closure_rate": 0.6751128003378454,
+      "open_per_residue": 0.3248871996621547
+    },
+    "note": "closure improves d=8 -> d=10 at matched S/d ratio (0.823 -> 0.876); but doubling S at fixed d=8 HURTS (0.823 -> 0.675), because finer grid creates more borderline cells"
+  },
+  "optimal_config_for_125": {
+    "d": 10,
+    "S": 20,
+    "rationale": "highest closure rate (0.876) and highest closure throughput (285/s); doubling S at fixed d makes things worse, but increasing d (with proportional S) makes things better",
+    "open_cells_remaining": 20493,
+    "observed_wall_s": 510.74461030960083
+  }
+}

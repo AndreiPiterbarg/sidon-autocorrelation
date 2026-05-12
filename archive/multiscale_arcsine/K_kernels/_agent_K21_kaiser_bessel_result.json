@@ -1,0 +1,171 @@
+{
+  "family": "Kaiser-Bessel",
+  "delta": 0.138,
+  "variants": [
+    {
+      "variant": "auto-conv",
+      "beta": 2.0,
+      "k_1": 0.9505573836867104,
+      "K_2": 5.493878865982747,
+      "S_1": 24590.40554603813,
+      "Z": 0.25025336104765095,
+      "phi_min": 1.0,
+      "bochner_min": 1.297593128986469e-11,
+      "phi_hat_at_2": 0.9023781230033555,
+      "phi_hat_at_3": 0.7894748829107668,
+      "M_cert": 1.1964299384922257,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 2.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -0.11435163557372437"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 4.0,
+      "k_1": 0.9652737423406882,
+      "K_2": 6.620052182691817,
+      "S_1": 4097483.11052386,
+      "Z": 0.9415021362070725,
+      "phi_min": 1.0,
+      "bochner_min": 1.1469846555556202e-10,
+      "phi_hat_at_2": 0.9313548883335641,
+      "phi_hat_at_3": 0.8507234011866929,
+      "M_cert": 1.1668021965420283,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 4.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -0.03176008951972587"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 6.0,
+      "k_1": 0.9742056933688539,
+      "K_2": 7.729153123972943,
+      "S_1": 5985317.002946994,
+      "Z": 4.639402612422359,
+      "phi_min": 1.0,
+      "bochner_min": 1.3877723183701261e-11,
+      "phi_hat_at_2": 0.9489197726807228,
+      "phi_hat_at_3": 0.8881619742721868,
+      "M_cert": 1.145461542358247,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 6.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -0.00573332516755749"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 8.0,
+      "k_1": 0.9796394053587849,
+      "K_2": 8.730153779927056,
+      "S_1": 140834601.5712537,
+      "Z": 25.710759737774367,
+      "phi_min": 1.0,
+      "bochner_min": 1.5676423027503262e-13,
+      "phi_hat_at_2": 0.9596183818381226,
+      "phi_hat_at_3": 0.9111568704682464,
+      "M_cert": 1.1304821286662345,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 8.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -0.000916251382720626"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 10.0,
+      "k_1": 0.9832192137441057,
+      "K_2": 9.636753126779842,
+      "S_1": 1953841827.6660478,
+      "Z": 151.98261366380362,
+      "phi_min": 1.0,
+      "bochner_min": 1.113745960325461e-15,
+      "phi_hat_at_2": 0.9666788633712661,
+      "phi_hat_at_3": 0.9264354765225453,
+      "M_cert": 1.1193813644268094,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 10.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -0.00015406331183608293"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 12.0,
+      "k_1": 0.9857405737100765,
+      "K_2": 10.468507246085153,
+      "S_1": 89414315796.95268,
+      "Z": 935.8400506167914,
+      "phi_min": 1.0,
+      "bochner_min": 2.054750328794336e-15,
+      "phi_hat_at_2": 0.9716595713518921,
+      "phi_hat_at_3": 0.9372702831376379,
+      "M_cert": 1.1107529106435483,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 12.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -2.8052403749812353e-05"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 15.0,
+      "k_1": 0.9883707928002858,
+      "K_2": 11.607396159462493,
+      "S_1": 13228759358990.695,
+      "Z": 15037.479913362273,
+      "phi_min": 1.0,
+      "bochner_min": 2.632400512313154e-22,
+      "phi_hat_at_2": 0.9768635046906488,
+      "phi_hat_at_3": 0.9486455295491462,
+      "M_cert": 1.1007939006110001,
+      "beats_MV": false,
+      "beats_127": false
+    },
+    {
+      "variant": "direct",
+      "beta": 15.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -1.9598759934763177e-06"
+    },
+    {
+      "variant": "auto-conv",
+      "beta": 20.0,
+      "M_cert": null,
+      "reason": "phi_hat(j/u)^2 ~ 0 at some j"
+    },
+    {
+      "variant": "direct",
+      "beta": 20.0,
+      "M_cert": null,
+      "reason": "Bochner violated: min K_hat(j) = -7.299962845074835e-09"
+    }
+  ],
+  "best_M_cert": 1.1964299384922257,
+  "best_beta": 2.0,
+  "best_variant": "auto-conv",
+  "beats_MV_1_2748": false,
+  "beats_127_numerical": false,
+  "refined": null
+}

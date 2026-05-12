@@ -1,0 +1,23 @@
+
+=== d=4 order=2 bandwidth=3 t=1.281 ===
+  -> status=FEASIBLE  n_y=70  wall=0.09s
+
+=== d=4 order=3 bandwidth=3 t=1.281 ===
+  -> status=FEASIBLE  n_y=210  wall=0.45s
+
+=== d=6 order=2 bandwidth=5 t=1.281 ===
+  -> status=FEASIBLE  n_y=210  wall=0.32s
+
+=== d=6 order=3 bandwidth=5 t=1.281 ===
+  -> status=FEASIBLE  n_y=924  wall=12.40s
+
+=== d=8 order=2 bandwidth=7 t=1.281 ===
+  -> status=FEASIBLE  n_y=495  wall=1.37s
+
+=== d=8 order=3 bandwidth=7 t=1.281 ===
+  -> status=FEASIBLE  n_y=3003  wall=311.74s
+
+=== d=10 order=2 bandwidth=9 t=1.281 ===
+  -> status=FEASIBLE  n_y=1001  wall=4.83s
+
+=== d=10 order=3 bandwidth=9 t=1.281 ===

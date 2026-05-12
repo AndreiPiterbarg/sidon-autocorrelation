@@ -1,0 +1,19 @@
+{
+  "n_cells": 30,
+  "n_certified": 24,
+  "n_failed": 6,
+  "wall_avg": 0.21014,
+  "wall_median": 0.00395,
+  "wall_p95": 0.9271149999999999,
+  "wall_total": 6.3042,
+  "stages": {
+    "residual_after_FQNL": 6,
+    "closed_at_F": 24
+  },
+  "config": {
+    "d": 4,
+    "S": 200,
+    "c_target": 1.281,
+    "m_target": 100
+  }
+}

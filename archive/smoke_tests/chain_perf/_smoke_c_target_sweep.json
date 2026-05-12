@@ -1,0 +1,421 @@
+{
+  "config": {
+    "n_half": 1,
+    "m": 20,
+    "d0": 2,
+    "S0": 80,
+    "c_targets": [
+      1.3,
+      1.32,
+      1.35,
+      1.4,
+      1.45
+    ],
+    "n_workers": 2,
+    "L1_parent_sample": 4
+  },
+  "L0_total_canonical": 41,
+  "results": [
+    {
+      "c_target": 1.3,
+      "L0_survivors": 26,
+      "L1_per_parent": [
+        {
+          "parent_idx": 0,
+          "parent": [
+            17,
+            63
+          ],
+          "n_children": 1152,
+          "n_F": 1152,
+          "n_FN": 1152,
+          "n_Q": 1152,
+          "n_QN": 1152,
+          "n_L": 0,
+          "wall_total_sec": 12.76
+        },
+        {
+          "parent_idx": 1,
+          "parent": [
+            18,
+            62
+          ],
+          "n_children": 1197,
+          "n_F": 1197,
+          "n_FN": 1197,
+          "n_Q": 1197,
+          "n_QN": 1197,
+          "n_L": 0,
+          "wall_total_sec": 12.49
+        },
+        {
+          "parent_idx": 2,
+          "parent": [
+            20,
+            60
+          ],
+          "n_children": 1281,
+          "n_F": 1281,
+          "n_FN": 1281,
+          "n_Q": 1281,
+          "n_QN": 1281,
+          "n_L": 0,
+          "wall_total_sec": 13.85
+        },
+        {
+          "parent_idx": 3,
+          "parent": [
+            26,
+            54
+          ],
+          "n_children": 1485,
+          "n_F": 1485,
+          "n_FN": 1485,
+          "n_Q": 1485,
+          "n_QN": 1485,
+          "n_L": 0,
+          "wall_total_sec": 20.86
+        }
+      ],
+      "L1_total_survivors": 0,
+      "L1_avg_survivors": 0.0,
+      "parents_sampled": 4,
+      "L0_chain": {
+        "n_in": 26,
+        "with_sp": false,
+        "n_FN": 26,
+        "t_FN": 0.023,
+        "n_Q": 26,
+        "t_Q": 0.5,
+        "n_QN": 26,
+        "t_QN": 0.09,
+        "n_L": 26,
+        "t_L": 1.568,
+        "n_SP": 26
+      },
+      "converging": true,
+      "note": "L1 avg per parent = 0; chain converges"
+    },
+    {
+      "c_target": 1.32,
+      "L0_survivors": 26,
+      "L1_per_parent": [
+        {
+          "parent_idx": 0,
+          "parent": [
+            27,
+            53
+          ],
+          "n_children": 1512,
+          "n_F": 1512,
+          "n_FN": 1512,
+          "n_Q": 1512,
+          "n_QN": 1512,
+          "n_L": 0,
+          "wall_total_sec": 22.18
+        },
+        {
+          "parent_idx": 1,
+          "parent": [
+            32,
+            48
+          ],
+          "n_children": 1617,
+          "n_F": 1617,
+          "n_FN": 1617,
+          "n_Q": 1617,
+          "n_QN": 1617,
+          "n_L": 0,
+          "wall_total_sec": 23.99
+        },
+        {
+          "parent_idx": 2,
+          "parent": [
+            22,
+            58
+          ],
+          "n_children": 1357,
+          "n_F": 1357,
+          "n_FN": 1357,
+          "n_Q": 1357,
+          "n_QN": 1357,
+          "n_L": 0,
+          "wall_total_sec": 17.32
+        },
+        {
+          "parent_idx": 3,
+          "parent": [
+            39,
+            41
+          ],
+          "n_children": 1680,
+          "n_F": 1680,
+          "n_FN": 1680,
+          "n_Q": 1680,
+          "n_QN": 1680,
+          "n_L": 0,
+          "wall_total_sec": 19.33
+        }
+      ],
+      "L1_total_survivors": 0,
+      "L1_avg_survivors": 0.0,
+      "parents_sampled": 4,
+      "L0_chain": {
+        "n_in": 27,
+        "with_sp": false,
+        "n_FN": 27,
+        "t_FN": 0.004,
+        "n_Q": 27,
+        "t_Q": 0.096,
+        "n_QN": 27,
+        "t_QN": 0.104,
+        "n_L": 26,
+        "t_L": 0.196,
+        "n_SP": 26
+      },
+      "converging": true,
+      "note": "L1 avg per parent = 0; chain converges"
+    },
+    {
+      "c_target": 1.35,
+      "L0_survivors": 27,
+      "L1_per_parent": [
+        {
+          "parent_idx": 0,
+          "parent": [
+            23,
+            57
+          ],
+          "n_children": 1392,
+          "n_F": 1392,
+          "n_FN": 1392,
+          "n_Q": 1392,
+          "n_QN": 1392,
+          "n_L": 0,
+          "wall_total_sec": 15.25
+        },
+        {
+          "parent_idx": 1,
+          "parent": [
+            18,
+            62
+          ],
+          "n_children": 1197,
+          "n_F": 1197,
+          "n_FN": 1197,
+          "n_Q": 1197,
+          "n_QN": 1197,
+          "n_L": 0,
+          "wall_total_sec": 13.53
+        },
+        {
+          "parent_idx": 2,
+          "parent": [
+            36,
+            44
+          ],
+          "n_children": 1665,
+          "n_F": 1665,
+          "n_FN": 1665,
+          "n_Q": 1665,
+          "n_QN": 1665,
+          "n_L": 0,
+          "wall_total_sec": 18.68
+        },
+        {
+          "parent_idx": 3,
+          "parent": [
+            15,
+            65
+          ],
+          "n_children": 1056,
+          "n_F": 1056,
+          "n_FN": 1056,
+          "n_Q": 1056,
+          "n_QN": 1056,
+          "n_L": 0,
+          "wall_total_sec": 13.52
+        }
+      ],
+      "L1_total_survivors": 0,
+      "L1_avg_survivors": 0.0,
+      "parents_sampled": 4,
+      "L0_chain": {
+        "n_in": 27,
+        "with_sp": false,
+        "n_FN": 27,
+        "t_FN": 0.0,
+        "n_Q": 27,
+        "t_Q": 0.097,
+        "n_QN": 27,
+        "t_QN": 0.079,
+        "n_L": 27,
+        "t_L": 0.14,
+        "n_SP": 27
+      },
+      "converging": true,
+      "note": "L1 avg per parent = 0; chain converges"
+    },
+    {
+      "c_target": 1.4,
+      "L0_survivors": 28,
+      "L1_per_parent": [
+        {
+          "parent_idx": 0,
+          "parent": [
+            28,
+            52
+          ],
+          "n_children": 1537,
+          "n_F": 1537,
+          "n_FN": 1537,
+          "n_Q": 1537,
+          "n_QN": 1537,
+          "n_L": 0,
+          "wall_total_sec": 22.06
+        },
+        {
+          "parent_idx": 1,
+          "parent": [
+            38,
+            42
+          ],
+          "n_children": 1677,
+          "n_F": 1677,
+          "n_FN": 1677,
+          "n_Q": 1677,
+          "n_QN": 1677,
+          "n_L": 0,
+          "wall_total_sec": 21.92
+        },
+        {
+          "parent_idx": 2,
+          "parent": [
+            40,
+            40
+          ],
+          "n_children": 1681,
+          "n_F": 1681,
+          "n_FN": 1681,
+          "n_Q": 1681,
+          "n_QN": 1681,
+          "n_L": 0,
+          "wall_total_sec": 21.84
+        },
+        {
+          "parent_idx": 3,
+          "parent": [
+            25,
+            55
+          ],
+          "n_children": 1456,
+          "n_F": 1456,
+          "n_FN": 1456,
+          "n_Q": 1456,
+          "n_QN": 1456,
+          "n_L": 0,
+          "wall_total_sec": 20.79
+        }
+      ],
+      "L1_total_survivors": 0,
+      "L1_avg_survivors": 0.0,
+      "parents_sampled": 4,
+      "L0_chain": {
+        "n_in": 28,
+        "with_sp": false,
+        "n_FN": 28,
+        "t_FN": 0.009,
+        "n_Q": 28,
+        "t_Q": 0.116,
+        "n_QN": 28,
+        "t_QN": 0.132,
+        "n_L": 28,
+        "t_L": 0.241,
+        "n_SP": 28
+      },
+      "converging": true,
+      "note": "L1 avg per parent = 0; chain converges"
+    },
+    {
+      "c_target": 1.45,
+      "L0_survivors": 30,
+      "L1_per_parent": [
+        {
+          "parent_idx": 0,
+          "parent": [
+            15,
+            65
+          ],
+          "n_children": 1056,
+          "n_F": 1056,
+          "n_FN": 1056,
+          "n_Q": 1056,
+          "n_QN": 1056,
+          "n_L": 0,
+          "wall_total_sec": 13.08
+        },
+        {
+          "parent_idx": 1,
+          "parent": [
+            29,
+            51
+          ],
+          "n_children": 1560,
+          "n_F": 1560,
+          "n_FN": 1560,
+          "n_Q": 1560,
+          "n_QN": 1560,
+          "n_L": 0,
+          "wall_total_sec": 19.46
+        },
+        {
+          "parent_idx": 2,
+          "parent": [
+            18,
+            62
+          ],
+          "n_children": 1197,
+          "n_F": 1197,
+          "n_FN": 1197,
+          "n_Q": 1197,
+          "n_QN": 1197,
+          "n_L": 0,
+          "wall_total_sec": 14.63
+        },
+        {
+          "parent_idx": 3,
+          "parent": [
+            39,
+            41
+          ],
+          "n_children": 1680,
+          "n_F": 1680,
+          "n_FN": 1680,
+          "n_Q": 1680,
+          "n_QN": 1680,
+          "n_L": 0,
+          "wall_total_sec": 18.49
+        }
+      ],
+      "L1_total_survivors": 0,
+      "L1_avg_survivors": 0.0,
+      "parents_sampled": 4,
+      "L0_chain": {
+        "n_in": 30,
+        "with_sp": false,
+        "n_FN": 30,
+        "t_FN": 0.0,
+        "n_Q": 30,
+        "t_Q": 0.103,
+        "n_QN": 30,
+        "t_QN": 0.092,
+        "n_L": 30,
+        "t_L": 0.201,
+        "n_SP": 30
+      },
+      "converging": true,
+      "note": "L1 avg per parent = 0; chain converges"
+    }
+  ],
+  "wall_total_sec": 359.86
+}

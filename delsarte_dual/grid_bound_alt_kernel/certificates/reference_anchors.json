@@ -1,0 +1,59 @@
+{
+  "description": "Reference numerical anchors for the production lower bound C_{1a} >= 1292/1000 = 1.292.  Produced by an arb-rigorous certifier at 256-bit precision; reproduced exactly by the Lean formalisation in lean/Sidon/MultiScale.lean and quoted in the accompanying paper at lower_bound_proof.tex (repository root).  Running `python -m delsarte_dual.grid_bound_alt_kernel.bisect_alt_kernel` emits a self-contained certificate that includes all bisection-history entries and terminal cell-search cells; this file records only the five interval-arithmetic anchors plus the rational target, for quick cross-checking and as the source of truth quoted by the Lean axioms.",
+  "kernel": {
+    "name": "multiscale_arcsine_3scale",
+    "deltas": [
+      "138/1000",
+      "55/1000",
+      "25/1000"
+    ],
+    "lambdas": [
+      "85/100",
+      "10/100",
+      "5/100"
+    ],
+    "u": "638/1000",
+    "K_2_cross_cutoff_xi": "100000",
+    "use_diag_surrogate": false
+  },
+  "G": {
+    "n_coeffs": 200,
+    "qp_fmpq_denominator": 100000000
+  },
+  "prec_bits": 256,
+  "anchors": {
+    "k_1": {
+      "value_mid": 0.9212465899364083,
+      "value_rad_upper": 6.9e-77,
+      "lean_theorem": "k_one_lower_bound  : K1LowerQ <= 92124658/100000000 (encodes certifier bound k_1 >= 0.92124658)"
+    },
+    "K_2": {
+      "lower": 4.7888234212494840,
+      "upper": 4.7889051816332423,
+      "bulk_integral_lower": 4.7888234212601094,
+      "bulk_integral_upper": 4.7888234212601094,
+      "tail_bound_upper": 0.0000817603822681,
+      "tail_bound_derivation": "|J_0(z)|^2 <= 2/(pi z) applied to both Bessel factors gives 4/(pi^4 d_i d_j xi^2); integrating yields 4/(pi^4 d_i d_j T) per half-line, summing+doubling gives 8 C^2 / (pi^4 T) with C = sum_i lambda_i/delta_i",
+      "lean_theorem": "K_two_upper_bound  : K2UpperQ >= 4788906/1000000 (encodes certifier bound K_2 <= 4.788906)"
+    },
+    "S_1": {
+      "upper": 29.8409064555132666,
+      "lean_theorem": "S_one_upper_bound  : S1UpperQ >= 2984091/100000 (encodes certifier bound S_1 <= 29.840907)"
+    },
+    "min_G": {
+      "method": "Taylor branch-and-bound on 32768 cells of [0, 1/4]",
+      "lower": 0.9999798743824747,
+      "lean_theorem": "min_G_lower_bound  : minGLowerQ <= 9999798/10000000 (encodes certifier bound min G >= 0.99997987)"
+    },
+    "gain_a": {
+      "lower": 0.2100921474866837,
+      "lean_theorem": "gain_lower_bound   : gainLowerQ <= 21009214/100000000 (encodes certifier bound a >= 0.21009214)"
+    },
+    "M_cert": {
+      "rational": "1292/1000",
+      "float": 1.292,
+      "rigorous_lower_at_anchors": 1.2921564960222152,
+      "lean_theorem": "autoconvolution_ratio_ge_1292_1000"
+    }
+  }
+}

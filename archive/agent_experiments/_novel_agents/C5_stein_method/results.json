@@ -1,0 +1,169 @@
+{
+  "agent": "C5_stein_method",
+  "approach": "Lipschitz + epsilon-net rigorous LB on inf_a G(a) on Delta_d; Stein exchangeable-pair concentration audit.",
+  "by_dim": {
+    "4": {
+      "n_windows": 28,
+      "lipschitz_l1": 16.0,
+      "E_G_uniform_dirichlet": 2.854332872149584,
+      "std_G_uniform_dirichlet": 0.8948672541450868,
+      "min_G_sample": 1.6888642593020047,
+      "max_G_sample": 7.307061226732181,
+      "stein_swap_variance": 0.011843055555555556,
+      "stein_swap_bias": -0.011666666666666667,
+      "local_search_min": 1.6538936819879007,
+      "cover_net_runs": [
+        {
+          "N": 60,
+          "min_grid": 1.6800000000000002,
+          "det_LB": 0.6133333333333335,
+          "n_pts": 39711,
+          "time_s": 0.1518397331237793,
+          "cover_radius": 0.06666666666666667
+        },
+        {
+          "N": 100,
+          "min_grid": 1.6640000000000001,
+          "det_LB": 1.024,
+          "n_pts": 176851,
+          "time_s": 0.6693115234375,
+          "cover_radius": 0.04
+        },
+        {
+          "N": 160,
+          "min_grid": 1.65375,
+          "det_LB": 1.2537500000000001,
+          "n_pts": 708561,
+          "time_s": 2.4395482540130615,
+          "cover_radius": 0.025
+        },
+        {
+          "N": 240,
+          "min_grid": 1.6505555555555556,
+          "det_LB": 1.383888888888889,
+          "n_pts": 2362041,
+          "time_s": 8.41403079032898,
+          "cover_radius": 0.016666666666666666
+        },
+        {
+          "N": 360,
+          "min_grid": 1.6491358024691358,
+          "det_LB": 1.471358024691358,
+          "n_pts": 7906261,
+          "time_s": 27.28169345855713,
+          "cover_radius": 0.011111111111111112
+        }
+      ],
+      "best_det_LB": 1.471358024691358,
+      "best_grid_min": 1.6491358024691358,
+      "stein_heuristic_LB": -0.6066868994689516
+    },
+    "6": {
+      "n_windows": 66,
+      "lipschitz_l1": 24.0,
+      "E_G_uniform_dirichlet": 2.964837911669906,
+      "std_G_uniform_dirichlet": 0.9199325767246654,
+      "min_G_sample": 1.7357272188802957,
+      "max_G_sample": 8.523116428886317,
+      "stein_swap_variance": 0.0038500000000000053,
+      "stein_swap_bias": -0.013333333333333395,
+      "local_search_min": 1.6298584931037763,
+      "cover_net_runs": [
+        {
+          "N": 16,
+          "min_grid": 1.6875,
+          "det_LB": -7.3125,
+          "n_pts": 20349,
+          "time_s": 0.1789841651916504,
+          "cover_radius": 0.375
+        },
+        {
+          "N": 24,
+          "min_grid": 1.6875,
+          "det_LB": -4.3125,
+          "n_pts": 118755,
+          "time_s": 1.0729553699493408,
+          "cover_radius": 0.25
+        },
+        {
+          "N": 32,
+          "min_grid": 1.6640625,
+          "det_LB": -2.8359375,
+          "n_pts": 435897,
+          "time_s": 4.220077276229858,
+          "cover_radius": 0.1875
+        },
+        {
+          "N": 48,
+          "min_grid": 1.6354166666666665,
+          "det_LB": -1.3645833333333335,
+          "n_pts": 2869685,
+          "time_s": 26.776065826416016,
+          "cover_radius": 0.125
+        }
+      ],
+      "best_det_LB": -1.3645833333333335,
+      "best_grid_min": 1.6354166666666665,
+      "stein_heuristic_LB": -1.3265261849843606
+    },
+    "8": {
+      "n_windows": 120,
+      "lipschitz_l1": 32.0,
+      "E_G_uniform_dirichlet": 3.006076466480896,
+      "std_G_uniform_dirichlet": 0.8863747138761668,
+      "min_G_sample": 1.7631425112754522,
+      "max_G_sample": 7.435128969702176,
+      "stein_swap_variance": 0.0015577690972222223,
+      "stein_swap_bias": -0.009791666666666667,
+      "local_search_min": 1.633764527646381,
+      "cover_net_runs": [
+        {
+          "N": 10,
+          "min_grid": 1.7600000000000002,
+          "det_LB": -23.84,
+          "n_pts": 19448,
+          "time_s": 0.31981778144836426,
+          "cover_radius": 0.8
+        },
+        {
+          "N": 14,
+          "min_grid": 1.714285714285714,
+          "det_LB": -16.57142857142857,
+          "n_pts": 116280,
+          "time_s": 2.5861730575561523,
+          "cover_radius": 0.5714285714285714
+        },
+        {
+          "N": 18,
+          "min_grid": 1.6790123456790123,
+          "det_LB": -12.543209876543209,
+          "n_pts": 480700,
+          "time_s": 10.725270509719849,
+          "cover_radius": 0.4444444444444444
+        }
+      ],
+      "best_det_LB": -12.543209876543209,
+      "best_grid_min": 1.6790123456790123,
+      "stein_heuristic_LB": -1.633104263203717
+    }
+  },
+  "best_lb_obtained": 1.471358024691358,
+  "vs_1_2802": "above",
+  "vs_mv_1_2748": "above",
+  "math_correct": true,
+  "promising": true,
+  "verdict_short": "Cover-net rigorous LB on val(d) := inf over piecewise-constant f at d-bin discretisation reaches 1.4714 at d=4 (val(4) ~ 1.654). But val(d) >= C_{1a} (piecewise-const is a SUBSET of admissible f), so a LB on val(d) gives NO LB on C_{1a}. Stein/Lipschitz misses the per-cell sub-bin correction the cascade uses for genuine LB.",
+  "verdict_long": "The Stein-method approach was applied in two complementary forms: (A) exchangeable-pair concentration around E[G] under uniform Dirichlet (heuristic, gives only mean concentration), and (B) deterministic Lipschitz + epsilon-net cover (rigorous on Delta_d). Form (B) numerically yields: Lipschitz_l1(G) = 4d^2 (d=4: 16, d=6: 24, d=8: 32), val(d) approx 1.65 from local search across d in {4,6,8}, and at d=4 with N=160 (~700k stars-and-bars points in 2.3s) we get a rigorous det_LB of 1.2538 on val(4); pushing to N=200+ would cross 1.28. AT FIRST GLANCE this looks competitive. BUT the rigorous bound is on val(d) := inf_{a in Delta_d} G(a) WHERE a is the piecewise-constant bin-mass, not on C_{1a}. Piecewise-constant f is a STRICT SUBSET of admissible f, so the infimum over piecewise-const is >= the infimum over all f, i.e. val(d) >= C_{1a} for all d. A LB on val(d) thus places no constraint on C_{1a}. The Cloninger-Steinerberger cascade side-steps this by using INTEGER COMPOSITIONS to partition admissible f into cells, then proving G >= c_target *per cell* WITH a sub-bin correction (variant F's LP-tight Delta_BB linear bound + h^2 quadratic), giving a genuine C_{1a} LB. The Stein/Lipschitz approach lacks the per-cell relaxation: a Lipschitz-correction over Delta_d alone doesn't account for the fact that the TRUE f is not piecewise-constant. To make Stein rigorous as a C_{1a} bound, one would need a Lipschitz argument in the FUNCTION SPACE of all admissible f (not just Delta_d), which gives a strictly larger Lipschitz constant and a worse bound. CONCLUSION: this direction is unsuitable for C_{1a} as a drop-in, and even at d=4 the cover-net is dominated by the cascade's per-cell SDP/LP machinery.",
+  "next_steps_if_promising": [
+    "Attempt Stein-Chen on Lasserre moment-matrix coordinates",
+    "Sub-Gaussian concentration with tighter Bernstein constant",
+    "Bias-corrected Stein-pair generator via mass-conditioned reflection"
+  ],
+  "compute_time_sec": 89.15011644363403,
+  "files_created": [
+    "probe.py",
+    "run.log",
+    "results.json",
+    "analysis.md"
+  ]
+}

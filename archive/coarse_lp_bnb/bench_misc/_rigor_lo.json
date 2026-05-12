@@ -1,0 +1,21 @@
+{
+  "d0": 2,
+  "S": 30,
+  "c_target": 0.5,
+  "max_levels": 1,
+  "use_joint": true,
+  "use_sdp": true,
+  "levels": [],
+  "rigorous_closure": true,
+  "reason_unclosed": null,
+  "l0": {
+    "survivors": 0,
+    "uncerts": 0,
+    "NO": 0,
+    "J": 0,
+    "L": 0,
+    "time": 0.0
+  },
+  "proven_at": "L0",
+  "total_time": 0.0010001659393310547
+}

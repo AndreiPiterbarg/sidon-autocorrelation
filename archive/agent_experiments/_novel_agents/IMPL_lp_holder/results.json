@@ -1,0 +1,142 @@
+{
+  "generated": "2026-05-10T16:52:33.351370",
+  "approach": "4-point Hausdorff Lasserre for L^2 Hoelder chain",
+  "math_correct": true,
+  "math_chain": [
+    "C_{1a} = inf_f ||f*f||_inf (admissible f >= 0, supp [-1/4, 1/4], int f = 1)",
+    ">= inf_f ||f*f||_2^2  (Hoelder p=2 chain: ||g||_inf >= ||g||_2^2 / ||g||_1, ||g||_1 = 1)",
+    "= inf_f ||r_f||_2^2  (Plancherel: ||f*f||_2 = ||r_f||_2 where r_f = autocorr)",
+    "= 4 * inf_tilde_f ||tilde_R||_2^2  (rescaling v = 4u)",
+    ">= 4 * inf_nu sum_{j=0}^{N_leg} rho_j(nu)^2  (Bessel truncation, valid for any orthonormal)",
+    ">= 4 * SDP_value  (4-point Hausdorff Lasserre relaxation, tilde_f^{otimes 4} -> nu)",
+    "Each step is rigorous (no shortcuts)."
+  ],
+  "rigorous": true,
+  "configs_run": [
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      5,
+      5
+    ]
+  ],
+  "results": [
+    {
+      "k": 2,
+      "N_leg": 2,
+      "status": "optimal",
+      "sdp_value_rescaled": 0.2499999984722491,
+      "lb_C1a": 0.9999999938889964,
+      "wall_time_sec": 0.16730284690856934,
+      "build_seconds": 0.02451467514038086,
+      "solve_seconds": 0.14278817176818848,
+      "build_info": {
+        "k": 2,
+        "N_leg": 2,
+        "n_orbits": 8,
+        "block_sizes": [
+          15,
+          5,
+          5,
+          5,
+          5,
+          3,
+          2,
+          4
+        ],
+        "n_constraints": 9
+      }
+    },
+    {
+      "k": 3,
+      "N_leg": 3,
+      "status": "optimal",
+      "sdp_value_rescaled": 0.24999999803396974,
+      "lb_C1a": 0.999999992135879,
+      "wall_time_sec": 0.7537543773651123,
+      "build_seconds": 0.13412714004516602,
+      "solve_seconds": 0.6196272373199463,
+      "build_info": {
+        "k": 3,
+        "N_leg": 3,
+        "n_orbits": 17,
+        "block_sizes": [
+          35,
+          15,
+          15,
+          15,
+          15,
+          4,
+          3,
+          5
+        ],
+        "n_constraints": 9
+      }
+    },
+    {
+      "k": 4,
+      "N_leg": 4,
+      "status": "optimal",
+      "sdp_value_rescaled": 0.2500000005017092,
+      "lb_C1a": 1.0000000020068367,
+      "wall_time_sec": 2.7083730697631836,
+      "build_seconds": 0.5411844253540039,
+      "solve_seconds": 2.1671886444091797,
+      "build_info": {
+        "k": 4,
+        "N_leg": 4,
+        "n_orbits": 32,
+        "block_sizes": [
+          70,
+          35,
+          35,
+          35,
+          35,
+          5,
+          4,
+          6
+        ],
+        "n_constraints": 9
+      }
+    },
+    {
+      "k": 5,
+      "N_leg": 5,
+      "status": "optimal",
+      "sdp_value_rescaled": 0.2499999999122883,
+      "lb_C1a": 0.9999999996491532,
+      "wall_time_sec": 13.847392559051514,
+      "build_seconds": 2.231440782546997,
+      "solve_seconds": 11.615951776504517,
+      "build_info": {
+        "k": 5,
+        "N_leg": 5,
+        "n_orbits": 55,
+        "block_sizes": [
+          126,
+          70,
+          70,
+          70,
+          70,
+          6,
+          5,
+          7
+        ],
+        "n_constraints": 9
+      }
+    }
+  ],
+  "best_lb_C1a": 1.0000000020068367,
+  "vs_1_2802": "below",
+  "vs_mv_1_2748": "below"
+}

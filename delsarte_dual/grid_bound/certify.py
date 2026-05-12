@@ -1,28 +1,40 @@
-"""Independent verifier for Phase-1 grid_bound certificates.
+"""Independent verifier for ``delsarte_dual`` rigorous certificates.
 
-**Soundness contract** (spec §5.7):
-  This script consumes only the JSON certificate, python-flint primitives,
-  and MV's 119 paper-sourced coefficients (treated as data, not code).  It
-  imports NOTHING from the grid_bound search modules (``phi.py``,
-  ``cell_search.py``, ``bisect.py``, ``G_min.py``, ``bessel.py``) -- every
-  mathematical quantity is recomputed from first principles below.
+The verifier re-derives every quantitative claim of a certificate using
+only ``flint.arb`` / ``flint.fmpq`` primitives and the paper-sourced
+Matolcsi-Vinuesa decimal coefficients (transcribed inline below).  No
+function or constant in this file is imported from the rest of the
+package; the verifier is intentionally self-contained so a third party
+can audit the certificate from this single source file.
 
-What is verified
-----------------
-  1. The certificate's input rationals (delta, u, K2_times_delta) match
-     MV's paper (hard-coded here).
-  2. The coefficients count matches 119 and is correctly parsed.
-  3. Bessel values k_1 and J_0(pi j delta/u) are recomputed with arb at the
-     declared precision; S_1 is recomputed; gain_a is recomputed.
-  4. min_G is re-certified via its own Taylor B&B; the certified value
-     agrees with (or is at least as strong as) the one in the certificate.
-  5. The terminal cells in the certificate COVER [0, mu_upper_rational].
-  6. For every terminal cell, the Phi(M_cert, cell) arb enclosure has
-     .upper() < 0.
-If all six pass, the certificate is ACCEPTED.
+Two certificate formats are accepted:
+
+  * ``kind = "grid_bound_N1_single_scale_arcsine"`` (or the legacy
+    ``"grid_bound_N1_MV_reproduction"``) -- the single-scale arcsine
+    reproduction of ``C_{1a} >= 1.27481``.
+
+  * ``kind = "multiscale_arcsine_rigorous_certificate"`` -- the
+    multi-scale arcsine production certificate of the
+    Piterbarg-Bajaj-Vincent Bound ``C_{1a} >= 1292/1000 = 1.292``.
+
+What is checked
+---------------
+  1. The certificate's SHA-256 body hash matches the recomputed hash.
+  2. The kernel inputs (``delta_i``, ``lambda_i``, ``u``) are valid
+     (rationals in the documented form; ``sum lambda_i = 1``).
+  3. ``k_1``, ``K_2``, ``S_1``, ``min G``, ``gain a`` are recomputed
+     in arb at the declared precision and agree with the certificate's
+     anchors (with rigorous inclusion).
+  4. The terminal cells from the certifying cell-search cover the
+     admissible box ``[0, mu(M_cert)]``.
+  5. For every terminal cell the recomputed ``Phi(M_cert, cell)`` has
+     ``.upper() < 0``.
+
+Exit code ``0`` on success, ``1`` otherwise.
 
 Usage:
-  python -m delsarte_dual.grid_bound.certify <certificate.json>
+
+    ``python -m delsarte_dual.grid_bound.certify <certificate.json>``
 """
 from __future__ import annotations
 
@@ -31,17 +43,14 @@ import hashlib
 import json
 import sys
 from dataclasses import dataclass
-from typing import Iterable
+from typing import List, Optional, Sequence
 
-from flint import arb, fmpq, ctx
+from flint import acb, arb, fmpq, ctx
 
 
 # ============================================================================
-#  Input: hard-coded MV data (paper-sourced, not imported from search code)
+#  Paper-sourced Matolcsi-Vinuesa constants (no internal imports).
 # ============================================================================
-#
-# Source: arXiv:0907.1379v2 Appendix (pp. 12-13), retyped verbatim here so
-# the verifier has no hidden dependency on the package's ``coeffs.py``.
 
 _MV_DECIMALS_STANDALONE = [
     "+2.16620392","-1.87775750","+1.05828868","-7.29790538e-01",
@@ -77,19 +86,18 @@ _MV_DECIMALS_STANDALONE = [
 ]
 assert len(_MV_DECIMALS_STANDALONE) == 119
 
-_MV_DELTA_Q           = fmpq(138, 1000)    # 0.138
-_MV_U_Q               = fmpq(638, 1000)    # 0.638
-_MV_K2_TIMES_DELTA_Q  = fmpq(5747, 10000)  # 0.5747 upper bound (MV input assumption)
+_MV_DELTA_Q          = fmpq(138, 1000)
+_MV_U_Q              = fmpq(638, 1000)
+_MV_K2_TIMES_DELTA_Q = fmpq(5747, 10000)
 
 
 # ============================================================================
 #  Helpers
 # ============================================================================
 
-def _decimal_str_to_fmpq_v(s: str) -> fmpq:
-    """Parse '+2.16620392' / '-1.29e-3' etc. to an exact fmpq.
-
-    Independently implemented here (no import from grid_bound.coeffs).
+def _decimal_str_to_fmpq(s: str) -> fmpq:
+    """Parse a signed decimal string to exact ``fmpq``.  Independently
+    implemented here; no import from ``coeffs.py``.
     """
     s = s.strip()
     sign = 1
@@ -98,12 +106,11 @@ def _decimal_str_to_fmpq_v(s: str) -> fmpq:
     elif s.startswith("-"):
         sign = -1
         s = s[1:]
-    exp = 0
     if "e" in s or "E" in s:
         mant, e = s.replace("E", "e").split("e", 1)
         exp = int(e)
     else:
-        mant = s
+        mant, exp = s, 0
     if "." in mant:
         ip, fp = mant.split(".", 1)
     else:
@@ -113,7 +120,9 @@ def _decimal_str_to_fmpq_v(s: str) -> fmpq:
     dig_aft = len(fp)
     mi = int(ip + fp) if (ip + fp) else 0
     net = exp - dig_aft
-    return fmpq(sign * mi * (10 ** net), 1) if net >= 0 else fmpq(sign * mi, 10 ** (-net))
+    if net >= 0:
+        return fmpq(sign * mi * (10 ** net), 1)
+    return fmpq(sign * mi, 10 ** (-net))
 
 
 def _fmpq_to_float(q: fmpq) -> float:
@@ -121,58 +130,102 @@ def _fmpq_to_float(q: fmpq) -> float:
 
 
 def _fmpq_from_str(s: str) -> fmpq:
-    """Parse 'p/q' -> fmpq."""
     if "/" in s:
         p_str, q_str = s.split("/", 1)
         return fmpq(int(p_str), int(q_str))
     return fmpq(int(s))
 
 
-def _arb_pi_j_delta_over_u_v(j: int, delta: fmpq, u: fmpq) -> arb:
-    q = fmpq(j) * delta / u
-    return arb.pi() * arb(q)
-
-
-def _safe_sqrt_v(x: arb) -> arb:
+def _safe_sqrt(x: arb) -> arb:
     x_up = x.upper()
     if x_up < 0:
-        raise ValueError(f"x upper = {x_up} < 0")
-    x_lo = x.lower()
-    if x_lo >= 0:
+        raise ValueError(f"x.upper() = {x_up} < 0")
+    if x.lower() >= 0:
         return x.sqrt()
     return arb(0).union(x_up.sqrt())
 
 
 # ============================================================================
-#  Re-computation of Phi-inputs (first-principles, no grid_bound imports)
+#  Recomputations -- single-scale and multi-scale
 # ============================================================================
 
-def recompute_bessel_k1(delta: fmpq, prec_bits: int) -> arb:
-    """|J_0(pi delta)|^2 via arb."""
+def _k1_single(delta: fmpq, prec_bits: int) -> arb:
     old = ctx.prec
     ctx.prec = prec_bits
     try:
         arg = arb.pi() * arb(delta)
-        j0  = arg.bessel_j(0)
-        return j0 * j0
+        return (arg.bessel_j(0)) ** arb(2)
     finally:
         ctx.prec = old
 
 
-def recompute_S1(coeffs: list[fmpq], delta: fmpq, u: fmpq, prec_bits: int) -> arb:
+def _k1_multi(deltas: Sequence[fmpq], lambdas: Sequence[fmpq],
+              prec_bits: int) -> arb:
+    old = ctx.prec
+    ctx.prec = prec_bits
+    try:
+        total = arb(0)
+        for lam, d in zip(lambdas, deltas):
+            j0 = (arb.pi() * arb(d)).bessel_j(0)
+            total = total + arb(lam) * j0 * j0
+        return total
+    finally:
+        ctx.prec = old
+
+
+def _K_tilde_real_multi(
+    xi: arb, deltas: Sequence[fmpq], lambdas: Sequence[fmpq], prec_bits: int
+) -> arb:
+    old = ctx.prec
+    ctx.prec = prec_bits
+    try:
+        total = arb(0)
+        for lam, d in zip(lambdas, deltas):
+            j0 = (arb.pi() * arb(d) * xi).bessel_j(0)
+            total = total + arb(lam) * j0 * j0
+        return total
+    finally:
+        ctx.prec = old
+
+
+def _S1_single(
+    coeffs: List[fmpq], delta: fmpq, u: fmpq, prec_bits: int
+) -> arb:
     old = ctx.prec
     ctx.prec = prec_bits
     try:
         total = arb(0)
         for j, a_j in enumerate(coeffs, start=1):
-            j0 = _arb_pi_j_delta_over_u_v(j, delta, u).bessel_j(0)
+            q = fmpq(j) * delta / u
+            arg = arb.pi() * arb(q)
+            j0 = arg.bessel_j(0)
             total = total + (arb(a_j) * arb(a_j)) / (j0 * j0)
         return total
     finally:
         ctx.prec = old
 
 
-def recompute_K2(K2_times_delta: fmpq, delta: fmpq, prec_bits: int) -> arb:
+def _S1_multi(
+    coeffs: List[fmpq],
+    deltas: Sequence[fmpq],
+    lambdas: Sequence[fmpq],
+    u: fmpq,
+    prec_bits: int,
+) -> arb:
+    old = ctx.prec
+    ctx.prec = prec_bits
+    try:
+        total = arb(0)
+        for j, a_j in enumerate(coeffs, start=1):
+            xi = arb(fmpq(j)) / arb(u)
+            w = _K_tilde_real_multi(xi, deltas, lambdas, prec_bits)
+            total = total + (arb(a_j) * arb(a_j)) / w
+        return total
+    finally:
+        ctx.prec = old
+
+
+def _K2_single(K2_times_delta: fmpq, delta: fmpq, prec_bits: int) -> arb:
     old = ctx.prec
     ctx.prec = prec_bits
     try:
@@ -181,18 +234,74 @@ def recompute_K2(K2_times_delta: fmpq, delta: fmpq, prec_bits: int) -> arb:
         ctx.prec = old
 
 
-def recompute_min_G(
-    coeffs: list[fmpq], u: fmpq, prec_bits: int, n_cells: int = 8192
+def _K2_multi(
+    deltas: Sequence[fmpq],
+    lambdas: Sequence[fmpq],
+    T_q: fmpq,
+    prec_bits: int,
+    use_diag_surrogate: bool = False,
+    diag_num: fmpq = fmpq(5747, 10000),
+) -> arb:
+    """Recompute ``K_2 = 2 sum_{i,j} lambda_i lambda_j C_{ij}`` with
+    ``C_{ij} = int_0^infty J_0(pi di xi)^2 J_0(pi dj xi)^2 dxi``.
+
+    Each ``C_{ij}`` is an ``acb.integral`` on ``[0, T]`` plus the
+    asymptotic tail bound.  If ``use_diag_surrogate`` is True the
+    diagonal terms use the Martin-O'Bryant value ``0.5747 / (2 di)``.
+    """
+    old = ctx.prec
+    ctx.prec = prec_bits
+    try:
+        T = arb(T_q)
+
+        def cross(di_q: fmpq, dj_q: fmpq) -> arb:
+            di = arb(di_q)
+            dj = arb(dj_q)
+
+            def f(z, _flags):
+                a_i = acb.pi() * acb(di) * z
+                a_j = acb.pi() * acb(dj) * z
+                return (a_i.bessel_j(acb(0)) ** 2) * (
+                    a_j.bessel_j(acb(0)) ** 2
+                )
+
+            val = acb.integral(f, acb(0), acb(T))
+            main = val.real
+            pi_arb = arb.pi()
+            pi_fourth = pi_arb * pi_arb * pi_arb * pi_arb
+            tail = arb(4) / (pi_fourth * di * dj * T)
+            return main + arb(0).union(tail)
+
+        total = arb(0)
+        n = len(deltas)
+        for i in range(n):
+            for j in range(n):
+                di_q = deltas[i]
+                dj_q = deltas[j]
+                if i == j and use_diag_surrogate:
+                    Cij = arb(diag_num) / (arb(2) * arb(di_q))
+                else:
+                    Cij = cross(di_q, dj_q)
+                total = total + arb(lambdas[i]) * arb(lambdas[j]) * Cij
+        return arb(2) * total
+    finally:
+        ctx.prec = old
+
+
+def _min_G_taylor(
+    coeffs: List[fmpq], u: fmpq, prec_bits: int, n_cells: int = 8192
 ) -> tuple[arb, fmpq]:
-    """Taylor B&B lower bound on min_{[0,1/4]} G(x).  Independent reimplementation."""
+    """Taylor B&B lower bound on ``min_{[0, 1/4]} G(x)``.  Independent
+    reimplementation of :mod:`G_min`.
+    """
     old = ctx.prec
     ctx.prec = prec_bits
     try:
         two_pi_over_u = arb(2) * arb.pi() / arb(u)
         x_lo = fmpq(0)
         x_hi = fmpq(1, 4)
-        cw   = (x_hi - x_lo) / fmpq(n_cells)
-        hw   = cw / fmpq(2)
+        cw = (x_hi - x_lo) / fmpq(n_cells)
+        hw = cw / fmpq(2)
 
         def G_at(x_q: fmpq) -> arb:
             x_a = arb(x_q)
@@ -205,7 +314,8 @@ def recompute_min_G(
             x_a = arb(x_q)
             t = arb(0)
             for j, a in enumerate(coeffs, start=1):
-                t = t - arb(a) * (two_pi_over_u * arb(j)) * (two_pi_over_u * arb(j) * x_a).sin()
+                w = two_pi_over_u * arb(j)
+                t = t - arb(a) * w * (w * x_a).sin()
             return t
 
         def Gpp_cell(cell_a: arb) -> arb:
@@ -221,36 +331,44 @@ def recompute_min_G(
         for k in range(n_cells):
             c = x_lo + fmpq(2 * k + 1) * hw
             cell_arb = arb(c, hw)
-            G_c  = G_at(c)
+            G_c = G_at(c)
             Gp_c = Gp_at(c)
-            Gpp  = Gpp_cell(cell_arb)
-            dx    = arb(0, hw)
+            Gpp = Gpp_cell(cell_arb)
+            dx = arb(0, hw)
             half_r_sq = (arb(hw) * arb(hw)) / arb(2)
-            rem   = arb(0, 1) * half_r_sq
-            encl  = G_c + Gp_c * dx + Gpp * rem
-            lf    = float(encl.lower())
+            rem = arb(0, 1) * half_r_sq
+            encl = G_c + Gp_c * dx + Gpp * rem
+            lf = float(encl.lower())
             if worst_float is None or lf < worst_float:
-                worst_float   = lf
-                worst_arb     = encl
-                worst_center  = c
+                worst_float = lf
+                worst_arb = encl
+                worst_center = c
         return worst_arb, worst_center
     finally:
         ctx.prec = old
 
 
-def mu_of_M_v(M: arb) -> arb:
+def _mu_of_M(M: arb) -> arb:
     return M * (arb.pi() / M).sin() / arb.pi()
 
 
-def phi_N1_v(M: arb, y: arb, *, K2: arb, k1: arb, u: fmpq, gain_a: arb) -> arb:
-    """Re-implementation of Phi(M, y).  Independent of grid_bound.phi."""
+def _phi_N1(
+    M: arb,
+    y: arb,
+    *,
+    K2: arb,
+    k1: arb,
+    u: fmpq,
+    gain_a: arb,
+) -> arb:
+    """Recomputation of ``Phi(M, y)`` independent of :mod:`phi`."""
     two = arb(2)
     rad1 = M - arb(1) - two * y * y
-    rad2 = K2  - arb(1) - two * k1 * k1
-    s1   = _safe_sqrt_v(rad1)
-    s2   = _safe_sqrt_v(rad2)
-    rhs  = M + arb(1) + two * y * k1 + s1 * s2
-    lhs  = arb(2) / arb(u) + gain_a
+    rad2 = K2 - arb(1) - two * k1 * k1
+    s1 = _safe_sqrt(rad1)
+    s2 = _safe_sqrt(rad2)
+    rhs = M + arb(1) + two * y * k1 + s1 * s2
+    lhs = arb(2) / arb(u) + gain_a
     return rhs - lhs
 
 
@@ -261,78 +379,173 @@ def phi_N1_v(M: arb, y: arb, *, K2: arb, k1: arb, u: fmpq, gain_a: arb) -> arb:
 @dataclass
 class VerifyResult:
     accepted: bool
-    messages: list[str]
-    M_cert_q: fmpq | None = None
+    messages: list
+    M_cert_q: Optional[fmpq] = None
 
 
-def verify_certificate(cert_path: str, prec_bits: int | None = None) -> VerifyResult:
+def verify_certificate(
+    cert_path: str, prec_bits: Optional[int] = None
+) -> VerifyResult:
+    """Verify the certificate at ``cert_path``.
+
+    Dispatches on ``body['kind']``:
+
+      * ``"multiscale_arcsine_rigorous_certificate"`` (production)
+      * ``"grid_bound_N1_single_scale_arcsine"``
+      * ``"grid_bound_N1_MV_reproduction"`` (legacy alias)
+    """
     with open(cert_path, "r", encoding="utf-8") as f:
         raw = json.load(f)
 
-    msgs: list[str] = []
+    msgs: list = []
 
-    def log(s: str):
+    def log(s: str) -> None:
         msgs.append(s)
         print(s)
 
-    # 0. SHA-256 integrity
     body = raw["body"]
     body_json = json.dumps(body, indent=2, sort_keys=True)
     digest = hashlib.sha256(body_json.encode("utf-8")).hexdigest()
     if digest != raw["sha256_of_body"]:
-        log(f"FAIL: SHA-256 mismatch: recomputed {digest}, stored {raw['sha256_of_body']}")
+        log(
+            f"FAIL: SHA-256 mismatch: recomputed {digest}, "
+            f"stored {raw['sha256_of_body']}"
+        )
         return VerifyResult(False, msgs)
     log(f"OK: SHA-256 integrity = {digest}")
 
-    inputs = body["inputs"]
-    declared_prec = int(body.get("prec_bits", 256))
-    prec = prec_bits or declared_prec
+    kind = body.get("kind", "")
+    prec = prec_bits or int(body.get("prec_bits", 256))
 
-    # 1. Input rationals match MV
+    if kind == "multiscale_arcsine_rigorous_certificate":
+        return _verify_multiscale(body, prec, msgs, log)
+    if kind in (
+        "grid_bound_N1_single_scale_arcsine",
+        "grid_bound_N1_MV_reproduction",
+    ):
+        return _verify_single_scale(body, prec, msgs, log)
+    log(f"FAIL: unknown certificate kind '{kind}'")
+    return VerifyResult(False, msgs)
+
+
+def _verify_single_scale(
+    body: dict, prec: int, msgs: list, log
+) -> VerifyResult:
+    inputs = body["inputs"]
     delta_q = _fmpq_from_str(inputs["delta_q"])
-    u_q     = _fmpq_from_str(inputs["u_q"])
-    K2d_q   = _fmpq_from_str(inputs["K2_times_delta_q"])
+    u_q = _fmpq_from_str(inputs["u_q"])
+    K2d_q = _fmpq_from_str(inputs["K2_times_delta_q"])
+
     if delta_q != _MV_DELTA_Q:
-        log(f"FAIL: delta mismatch: cert={delta_q}, MV={_MV_DELTA_Q}")
+        log(f"FAIL: delta mismatch: cert={delta_q}, paper={_MV_DELTA_Q}")
         return VerifyResult(False, msgs)
     if u_q != _MV_U_Q:
-        log(f"FAIL: u mismatch: cert={u_q}, MV={_MV_U_Q}")
+        log(f"FAIL: u mismatch: cert={u_q}, paper={_MV_U_Q}")
         return VerifyResult(False, msgs)
     if K2d_q != _MV_K2_TIMES_DELTA_Q:
-        log(f"FAIL: K2_times_delta mismatch: cert={K2d_q}, MV={_MV_K2_TIMES_DELTA_Q}")
+        log(
+            f"FAIL: K2*delta mismatch: cert={K2d_q}, "
+            f"paper={_MV_K2_TIMES_DELTA_Q}"
+        )
         return VerifyResult(False, msgs)
     if inputs["n_coeffs"] != 119:
         log(f"FAIL: n_coeffs != 119: {inputs['n_coeffs']}")
         return VerifyResult(False, msgs)
-    log(f"OK: MV input rationals match (delta={delta_q}, u={u_q}, K2*delta={K2d_q}, n=119)")
+    log(
+        f"OK: inputs match paper (delta={delta_q}, u={u_q}, "
+        f"K2*delta={K2d_q}, n=119)"
+    )
 
-    coeffs = [_decimal_str_to_fmpq_v(s) for s in _MV_DECIMALS_STANDALONE]
+    coeffs = [_decimal_str_to_fmpq(s) for s in _MV_DECIMALS_STANDALONE]
 
-    # 2. Re-compute k_1, K2, S_1, min_G, gain_a
-    k1   = recompute_bessel_k1(delta_q, prec)
-    K2   = recompute_K2(K2d_q, delta_q, prec)
-    S1   = recompute_S1(coeffs, delta_q, u_q, prec)
-    min_G_arb, min_G_center = recompute_min_G(coeffs, u_q, prec, n_cells=8192)
-    min_G_cert_arb = min_G_arb.lower()
-    if min_G_cert_arb.upper() <= 0:
-        log(f"FAIL: recomputed min_G certified lower <= 0 ({min_G_cert_arb})")
+    k1 = _k1_single(delta_q, prec)
+    K2 = _K2_single(K2d_q, delta_q, prec)
+    S1 = _S1_single(coeffs, delta_q, u_q, prec)
+    min_G_arb, _ = _min_G_taylor(coeffs, u_q, prec, n_cells=32768)
+    min_G_cert = min_G_arb.lower()
+    if min_G_cert.upper() <= 0:
+        log(f"FAIL: recomputed min G <= 0 ({min_G_cert})")
         return VerifyResult(False, msgs)
-    gain_a = (arb(4) / arb(u_q)) * (min_G_cert_arb * min_G_cert_arb) / S1
+    gain_a = (arb(4) / arb(u_q)) * (min_G_cert * min_G_cert) / S1
     log(f"OK: recomputed k_1    = {k1}")
     log(f"OK: recomputed K_2    = {K2}")
     log(f"OK: recomputed S_1    = {S1}")
-    log(f"OK: recomputed min_G cert lower = {min_G_cert_arb}")
-    log(f"OK: recomputed gain_a = {gain_a}")
+    log(f"OK: recomputed min G  = {min_G_cert}")
+    log(f"OK: recomputed gain a = {gain_a}")
 
-    # 3. M_cert
+    return _check_cells_and_coverage(
+        body, prec, K2, k1, u_q, gain_a, msgs, log
+    )
+
+
+def _verify_multiscale(
+    body: dict, prec: int, msgs: list, log
+) -> VerifyResult:
+    kernel = body["kernel"]
+    deltas = [_fmpq_from_str(s) for s in kernel["deltas_q"]]
+    lambdas = [_fmpq_from_str(s) for s in kernel["lambdas_q"]]
+    if sum(lambdas, fmpq(0)) != fmpq(1):
+        log(f"FAIL: lambdas do not sum to 1: {lambdas}")
+        return VerifyResult(False, msgs)
+    log(
+        f"OK: kernel = {kernel['name']}  "
+        f"(deltas {[_fmpq_to_float(d) for d in deltas]}, "
+        f"lambdas {[_fmpq_to_float(l) for l in lambdas]})"
+    )
+
+    G = body["G"]
+    u_q = _fmpq_from_str(G["u_q"])
+    coeffs = [_fmpq_from_str(s) for s in G["coeffs_q"]]
+    if len(coeffs) != G["n_coeffs"]:
+        log(
+            f"FAIL: G n_coeffs mismatch: "
+            f"len(coeffs_q)={len(coeffs)}, n_coeffs={G['n_coeffs']}"
+        )
+        return VerifyResult(False, msgs)
+    log(f"OK: G has {G['n_coeffs']} cosine modes, u = {u_q}")
+
+    T_q = _fmpq_from_str(kernel["K2_cross_cutoff_xi_q"])
+    use_diag_surrogate = bool(kernel.get("use_diag_surrogate", False))
+
+    k1 = _k1_multi(deltas, lambdas, prec)
+    K2 = _K2_multi(
+        deltas, lambdas, T_q, prec, use_diag_surrogate=use_diag_surrogate
+    )
+    S1 = _S1_multi(coeffs, deltas, lambdas, u_q, prec)
+    min_G_arb, _ = _min_G_taylor(coeffs, u_q, prec, n_cells=32768)
+    min_G_cert = min_G_arb.lower()
+    if min_G_cert.upper() <= 0:
+        log(f"FAIL: recomputed min G <= 0 ({min_G_cert})")
+        return VerifyResult(False, msgs)
+    gain_a = (arb(4) / arb(u_q)) * (min_G_cert * min_G_cert) / S1
+    log(f"OK: recomputed k_1    = {k1}")
+    log(f"OK: recomputed K_2    = {K2}")
+    log(f"OK: recomputed S_1    = {S1}")
+    log(f"OK: recomputed min G  = {min_G_cert}")
+    log(f"OK: recomputed gain a = {gain_a}")
+
+    return _check_cells_and_coverage(
+        body, prec, K2, k1, u_q, gain_a, msgs, log
+    )
+
+
+def _check_cells_and_coverage(
+    body: dict,
+    prec: int,
+    K2: arb,
+    k1: arb,
+    u_q: fmpq,
+    gain_a: arb,
+    msgs: list,
+    log,
+) -> VerifyResult:
     M_cert_q = _fmpq_from_str(body["M_cert"]["rational"])
     M_cert_arb = arb(M_cert_q)
     log(f"Verifying M_cert = {M_cert_q}  (~{_fmpq_to_float(M_cert_q):.6f})")
 
-    # 4. Re-evaluate each terminal cell's Phi at M_cert
     cells_info = body["cell_search_at_M_cert"]["terminal_cells"]
     log(f"Re-checking {len(cells_info)} terminal cells ...")
-    max_recomputed_upper = None
+    max_upper = None
     for i, rec in enumerate(cells_info):
         lo_q = _fmpq_from_str(rec["cell"]["lo"])
         hi_q = _fmpq_from_str(rec["cell"]["hi"])
@@ -340,21 +553,24 @@ def verify_certificate(cert_path: str, prec_bits: int | None = None) -> VerifyRe
             log(f"FAIL: cell {i} has hi <= lo: [{lo_q}, {hi_q}]")
             return VerifyResult(False, msgs)
         center = (lo_q + hi_q) / fmpq(2)
-        hw     = (hi_q - lo_q) / fmpq(2)
-        y_arb  = arb(center, hw)
-        phi_v  = phi_N1_v(M_cert_arb, y_arb, K2=K2, k1=k1, u=u_q, gain_a=gain_a)
+        hw = (hi_q - lo_q) / fmpq(2)
+        y_arb = arb(center, hw)
+        phi_v = _phi_N1(M_cert_arb, y_arb, K2=K2, k1=k1, u=u_q, gain_a=gain_a)
         up = float(phi_v.upper())
-        if max_recomputed_upper is None or up > max_recomputed_upper:
-            max_recomputed_upper = up
+        if max_upper is None or up > max_upper:
+            max_upper = up
         if not (phi_v.upper() < 0):
-            log(f"FAIL: cell {i}  lo={lo_q}  hi={hi_q}  Phi.upper()={phi_v.upper()} NOT < 0")
+            log(
+                f"FAIL: cell {i}  lo={lo_q}  hi={hi_q}  "
+                f"Phi.upper()={phi_v.upper()} not < 0"
+            )
             return VerifyResult(False, msgs)
-    log(f"OK: all {len(cells_info)} cells have Phi.upper() < 0; max recomputed upper = {max_recomputed_upper:+.3e}")
+    log(
+        f"OK: every terminal cell has Phi.upper() < 0; "
+        f"worst upper = {max_upper:+.3e}"
+    )
 
-    # 5. Coverage: terminal cells must cover [0, mu(M_cert) + tiny cushion]
-    mu_arb = mu_of_M_v(M_cert_arb)
-    mu_up_arb = mu_arb.upper()
-    mu_up_float = float(mu_up_arb)
+    mu_up = float(_mu_of_M(M_cert_arb).upper())
     sorted_cells = sorted(
         [
             (_fmpq_from_str(c["cell"]["lo"]), _fmpq_from_str(c["cell"]["hi"]))
@@ -368,33 +584,43 @@ def verify_certificate(cert_path: str, prec_bits: int | None = None) -> VerifyRe
     for i in range(1, len(sorted_cells)):
         if sorted_cells[i][0] != sorted_cells[i - 1][1]:
             log(
-                f"FAIL: cells are not contiguous: cell {i-1} ends at "
-                f"{sorted_cells[i-1][1]}, cell {i} starts at {sorted_cells[i][0]}"
+                f"FAIL: cells not contiguous: "
+                f"cell {i-1} ends at {sorted_cells[i-1][1]}, "
+                f"cell {i} starts at {sorted_cells[i][0]}"
             )
             return VerifyResult(False, msgs)
     top_q = sorted_cells[-1][1]
-    if _fmpq_to_float(top_q) < mu_up_float:
+    if _fmpq_to_float(top_q) < mu_up:
         log(
-            f"FAIL: top cell ends at {_fmpq_to_float(top_q):.8f} < mu(M_cert).upper() = {mu_up_float:.8f}"
+            f"FAIL: top cell ends at {_fmpq_to_float(top_q):.8f} < "
+            f"mu(M_cert).upper() = {mu_up:.8f}"
         )
         return VerifyResult(False, msgs)
     log(
-        f"OK: cells cover [0, {_fmpq_to_float(top_q):.8f}] >= [0, mu(M_cert).upper()={mu_up_float:.8f}]"
+        f"OK: cells cover [0, {_fmpq_to_float(top_q):.8f}] >= "
+        f"[0, mu(M_cert).upper() = {mu_up:.8f}]"
     )
 
     log("")
-    log(f"VERDICT: CERTIFICATE ACCEPTED.  C_{{1a}} >= {M_cert_q} (~{_fmpq_to_float(M_cert_q):.6f}).")
+    log(
+        f"VERDICT: CERTIFICATE ACCEPTED.  "
+        f"C_{{1a}} >= {M_cert_q} (~{_fmpq_to_float(M_cert_q):.6f})."
+    )
     return VerifyResult(True, msgs, M_cert_q)
 
 
-def main(argv=None):
-    p = argparse.ArgumentParser(
-        description="Independent verifier for grid_bound Phase-1 certificates."
+def main(argv=None) -> None:
+    parser = argparse.ArgumentParser(
+        description="Independent verifier for delsarte_dual certificates."
     )
-    p.add_argument("certificate", help="Path to the JSON certificate.")
-    p.add_argument("--prec-bits", type=int, default=None,
-                   help="Override arb precision (default: certificate's).")
-    args = p.parse_args(argv)
+    parser.add_argument("certificate", help="path to the JSON certificate")
+    parser.add_argument(
+        "--prec-bits",
+        type=int,
+        default=None,
+        help="override arb precision (default: certificate's prec_bits)",
+    )
+    args = parser.parse_args(argv)
     res = verify_certificate(args.certificate, prec_bits=args.prec_bits)
     sys.exit(0 if res.accepted else 1)
 

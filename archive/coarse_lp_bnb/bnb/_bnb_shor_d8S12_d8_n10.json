@@ -1,0 +1,82 @@
+{
+  "d": 8,
+  "S": 12,
+  "c_target": 1.2,
+  "n_cells_target": 10,
+  "n_cells_actual": 10,
+  "max_depth": 8,
+  "by_depth": {
+    "1": {
+      "n_cert": 2,
+      "cert_rate": 0.2,
+      "avg_time_s": 1.1662700653076172,
+      "med_time_s": 1.1773278713226318,
+      "max_time_s": 1.4283220767974854,
+      "avg_shor_calls": 2.3,
+      "elapsed_s": 11.662700653076172
+    },
+    "2": {
+      "n_cert": 2,
+      "cert_rate": 0.2,
+      "avg_time_s": 1.1426295995712281,
+      "med_time_s": 1.1069670915603638,
+      "max_time_s": 1.5265591144561768,
+      "avg_shor_calls": 3.2,
+      "elapsed_s": 11.42629599571228
+    },
+    "3": {
+      "n_cert": 4,
+      "cert_rate": 0.4,
+      "avg_time_s": 1.4721776485443114,
+      "med_time_s": 1.3594197034835815,
+      "max_time_s": 2.466099739074707,
+      "avg_shor_calls": 4.6,
+      "elapsed_s": 14.721776485443115
+    },
+    "4": {
+      "n_cert": 6,
+      "cert_rate": 0.6,
+      "avg_time_s": 1.9512800693511962,
+      "med_time_s": 1.9317151308059692,
+      "max_time_s": 3.0529351234436035,
+      "avg_shor_calls": 6.3,
+      "elapsed_s": 19.512800693511963
+    },
+    "5": {
+      "n_cert": 8,
+      "cert_rate": 0.8,
+      "avg_time_s": 4.237156724929809,
+      "med_time_s": 3.318609833717346,
+      "max_time_s": 10.858617544174194,
+      "avg_shor_calls": 10.1,
+      "elapsed_s": 42.371567249298096
+    },
+    "6": {
+      "n_cert": 8,
+      "cert_rate": 0.8,
+      "avg_time_s": 5.06502685546875,
+      "med_time_s": 3.8663002252578735,
+      "max_time_s": 18.577031135559082,
+      "avg_shor_calls": 10.3,
+      "elapsed_s": 50.6502685546875
+    },
+    "7": {
+      "n_cert": 8,
+      "cert_rate": 0.8,
+      "avg_time_s": 5.117359590530396,
+      "med_time_s": 4.478190660476685,
+      "max_time_s": 12.678526639938354,
+      "avg_shor_calls": 10.7,
+      "elapsed_s": 51.173595905303955
+    },
+    "8": {
+      "n_cert": 8,
+      "cert_rate": 0.8,
+      "avg_time_s": 6.305732989311219,
+      "med_time_s": 5.765747427940369,
+      "max_time_s": 15.834843397140503,
+      "avg_shor_calls": 10.9,
+      "elapsed_s": 63.05732989311218
+    }
+  }
+}

@@ -1,0 +1,323 @@
+{
+  "configuration": {
+    "delta_1": 0.138,
+    "u": 0.638,
+    "rational_denominator": 1000000000000,
+    "arb_grid_default": 200001,
+    "prec_bits": 256
+  },
+  "summary_best_per_plan": {
+    "threescale_N1000_finepoint": {
+      "deltas": [
+        0.138,
+        0.055,
+        0.025
+      ],
+      "lambdas": [
+        0.85,
+        0.1,
+        0.05
+      ],
+      "n_scales": 3,
+      "n_modes": 1000,
+      "xi_max": 100000,
+      "prec_bits": 256,
+      "arb_grid": 200001,
+      "k_1_mid": 0.9212465899364083,
+      "k_1_rad": 7.024115177119155e-77,
+      "min_G_lower": 0.996863720699537,
+      "lip_remainder_upper": 0.0029087893658704084,
+      "G2_OK": true,
+      "S_1_upper": 29.387661446946268,
+      "K_2_lower": 4.788823421259034,
+      "K_2_upper": 4.789630363787504,
+      "K_2_bulk_lower": 4.788823421260266,
+      "K_2_bulk_upper": 4.788823421260266,
+      "K_2_tail_upper": 0.0008069425260069316,
+      "a_gain_lower": 0.21200488411742108,
+      "M_cert_lower": 1.2930229106490116,
+      "time_K2_seconds": 15.686010599136353,
+      "time_minG_seconds": 3.7478411197662354
+    },
+    "threescale_N500_finepoint": {
+      "deltas": [
+        0.138,
+        0.055,
+        0.025
+      ],
+      "lambdas": [
+        0.85,
+        0.1,
+        0.05
+      ],
+      "n_scales": 3,
+      "n_modes": 500,
+      "xi_max": 100000,
+      "prec_bits": 256,
+      "M_cert_lower": 1.2928932780558777,
+      "G2_OK": true,
+      "note": "N=500 finepoint at v4 optimum (d=(0.138,0.055,0.025), l=(0.85,0.10,0.05)); xi_max=1e5"
+    }
+  },
+  "all_runs": [
+    {
+      "deltas": [
+        0.138,
+        0.055,
+        0.025
+      ],
+      "lambdas": [
+        0.85,
+        0.1,
+        0.05
+      ],
+      "n_scales": 3,
+      "n_modes": 1000,
+      "xi_max": 10000,
+      "prec_bits": 256,
+      "arb_grid": 200001,
+      "k_1_mid": 0.9212465899364083,
+      "k_1_rad": 7.024115177119155e-77,
+      "min_G_lower": 0.996863720699537,
+      "lip_remainder_upper": 0.0029087893658704084,
+      "G2_OK": true,
+      "S_1_upper": 29.387661446946268,
+      "K_2_lower": 4.788597555719483,
+      "K_2_upper": 4.7966669810169185,
+      "K_2_bulk_lower": 4.788597555738166,
+      "K_2_bulk_upper": 4.788597555738166,
+      "K_2_tail_upper": 0.008069425260069317,
+      "a_gain_lower": 0.21200488411742108,
+      "M_cert_lower": 1.292673708395262,
+      "time_K2_seconds": 1.8325669765472412,
+      "time_minG_seconds": 3.858896255493164
+    },
+    {
+      "deltas": [
+        0.138,
+        0.055,
+        0.025
+      ],
+      "lambdas": [
+        0.85,
+        0.1,
+        0.05
+      ],
+      "n_scales": 3,
+      "n_modes": 1000,
+      "xi_max": 100000,
+      "prec_bits": 256,
+      "arb_grid": 200001,
+      "k_1_mid": 0.9212465899364083,
+      "k_1_rad": 7.024115177119155e-77,
+      "min_G_lower": 0.996863720699537,
+      "lip_remainder_upper": 0.0029087893658704084,
+      "G2_OK": true,
+      "S_1_upper": 29.387661446946268,
+      "K_2_lower": 4.788823421259034,
+      "K_2_upper": 4.789630363787504,
+      "K_2_bulk_lower": 4.788823421260266,
+      "K_2_bulk_upper": 4.788823421260266,
+      "K_2_tail_upper": 0.0008069425260069316,
+      "a_gain_lower": 0.21200488411742108,
+      "M_cert_lower": 1.2930229106490116,
+      "time_K2_seconds": 15.686010599136353,
+      "time_minG_seconds": 3.7478411197662354
+    }
+  ],
+  "best_overall": {
+    "deltas": [
+      0.138,
+      0.055,
+      0.025
+    ],
+    "lambdas": [
+      0.85,
+      0.1,
+      0.05
+    ],
+    "n_scales": 3,
+    "n_modes": 1000,
+    "xi_max": 100000,
+    "prec_bits": 256,
+    "arb_grid": 200001,
+    "k_1_mid": 0.9212465899364083,
+    "k_1_rad": 7.024115177119155e-77,
+    "min_G_lower": 0.996863720699537,
+    "lip_remainder_upper": 0.0029087893658704084,
+    "G2_OK": true,
+    "S_1_upper": 29.387661446946268,
+    "K_2_lower": 4.788823421259034,
+    "K_2_upper": 4.789630363787504,
+    "K_2_bulk_lower": 4.788823421260266,
+    "K_2_bulk_upper": 4.788823421260266,
+    "K_2_tail_upper": 0.0008069425260069316,
+    "a_gain_lower": 0.21200488411742108,
+    "M_cert_lower": 1.2930229106490116,
+    "time_K2_seconds": 15.686010599136353,
+    "time_minG_seconds": 3.7478411197662354
+  },
+  "v4_best_reference": 1.2921565,
+  "v3_best_reference": 1.28984106,
+  "focused_neighborhood_N1000_xi1e5": [
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.85,
+      "l2": 0.1,
+      "M_cert_lower": 1.29295022,
+      "S_1_upper": 28.88,
+      "min_G_lower": 0.9968,
+      "K_2_upper": 4.8179,
+      "n_modes": 1000,
+      "xi_max": 100000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.85,
+      "l2": 0.12,
+      "M_cert_lower": 1.29286034,
+      "S_1_upper": 30.226,
+      "min_G_lower": 0.9968,
+      "K_2_upper": 4.7506,
+      "n_modes": 1000,
+      "xi_max": 100000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.82,
+      "l2": 0.15,
+      "M_cert_lower": 1.29281954,
+      "S_1_upper": 28.029,
+      "min_G_lower": 0.9969,
+      "K_2_upper": 4.8682,
+      "n_modes": 1000,
+      "xi_max": 100000
+    }
+  ],
+  "partial_fine_sweep_N500_xi1e4": [
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.82,
+      "l2": 0.15,
+      "M_cert_lower": 1.292328,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.82,
+      "l2": 0.13,
+      "M_cert_lower": 1.292166,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.82,
+      "l2": 0.11,
+      "M_cert_lower": 1.291089,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.85,
+      "l2": 0.12,
+      "M_cert_lower": 1.29239,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.85,
+      "l2": 0.1,
+      "M_cert_lower": 1.292374,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.85,
+      "l2": 0.08,
+      "M_cert_lower": 1.291413,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.88,
+      "l2": 0.09,
+      "M_cert_lower": 1.291834,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.88,
+      "l2": 0.07,
+      "M_cert_lower": 1.291992,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.02,
+      "l1": 0.88,
+      "l2": 0.05,
+      "M_cert_lower": 1.291174,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.82,
+      "l2": 0.15,
+      "M_cert_lower": 1.292275,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.82,
+      "l2": 0.13,
+      "M_cert_lower": 1.292284,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.82,
+      "l2": 0.11,
+      "M_cert_lower": 1.291468,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.85,
+      "l2": 0.12,
+      "M_cert_lower": 1.292309,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.85,
+      "l2": 0.1,
+      "M_cert_lower": 1.292454,
+      "xi_max": 10000
+    },
+    {
+      "d2": 0.055,
+      "d3": 0.022,
+      "l1": 0.85,
+      "l2": 0.08,
+      "M_cert_lower": 1.291747,
+      "xi_max": 10000
+    }
+  ],
+  "notes": "v6 best rigorous M_cert: 1.29302291 at deltas=(0.138, 0.055, 0.025), lambdas=(0.85, 0.10, 0.05), N=1000, xi_max=1e5. Focused neighborhood test (d3 in {0.020, 0.022}, l1 in {0.82, 0.85}) at N=1000+xi_max=1e5 did not improve on the v4-optimum centerpoint. Partial 47-pt fine sweep at N=500+xi_max=1e4 (interrupted at 15 points by external file cleanup) also showed the v4 centerpoint dominates. v3 best was 1.28984; v4 best was 1.29216; v6 gain = +0.00086."
+}

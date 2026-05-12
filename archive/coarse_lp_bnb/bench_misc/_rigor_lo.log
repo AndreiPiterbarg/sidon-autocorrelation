@@ -1,0 +1,7 @@
+
+=== RIGOR CASCADE  d0=2  S=30  c=0.5  J=True  L=True ===
+
+[L0] d=2, S=30, compositions=31, x_cap=15
+     0.00s: NO=0 J=0 L=0 surv=0  uncert=0
+[L0] surv=0  uncert=0  (0.00s)
+[L0] *** RIGOROUSLY PROVEN at L0 *** (cell_cert_shor)

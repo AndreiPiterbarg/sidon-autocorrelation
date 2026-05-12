@@ -1,0 +1,184 @@
+F4_free_probability agent starting.
+Direction: Voiculescu R-transform / free convolution as alternative to classical convolution.
+
+Plan:
+1. Implement R-transform numerically via Stieltjes inversion.
+2. Verify on known case: uniform measure on [-1/4, 1/4] -> mu boxed_plus mu (free convolution).
+3. Compare ||mu * mu||_inf (classical) vs ||mu boxed_plus mu||_inf (free) for:
+   - CS step minimizer (d=8 known config)
+   - MV-arcsine
+   - Random configurations
+4. Test hypothesis: ||mu boxed_plus mu||_inf <= ||mu * mu||_inf  (would let us bound classical from below by free)
+5. Look for free-side LB > 1.2802.
+
+Log entries follow.
+[   0.00s] Begin probe
+[   0.00s] --- Test 1: uniform measure on [-1/4, 1/4] ---
+[   0.00s]   classical: max f*f = 1.997500, expected 2.000000
+[   2.43s]   free: solver succeeded at 387/401 grid points
+[   2.43s]   free: max rho = 1.480920
+[   2.43s]   free: integral of rho = 0.998294 (expect ~2 since rho_free integrates to 1, hmm)
+[   2.43s]   Note: integral of rho should be 1 (free conv preserves total mass)
+[   2.43s] --- Test 2: CS-step-like configuration at d=8 ---
+[   2.43s]   classical: max f*f = 2.228722
+[   3.95s]   free solver succeeded at 566/601 pts
+[   3.95s]   free: max rho = 1.4229334892855137
+[   3.95s] --- Test 3: random configs d=10, n=12 ---
+[   5.23s]   trial 0: classical=2.6671  free=1.7261  ratio f/c=0.6472
+[   6.44s]   trial 1: classical=2.3285  free=2.4474  ratio f/c=1.0511
+[   7.64s]   trial 2: classical=2.3801  free=2.3898  ratio f/c=1.0041
+[   9.06s]   trial 3: classical=2.3746  free=1.8073  ratio f/c=0.7611
+[  10.53s]   trial 4: classical=2.6887  free=1.8193  ratio f/c=0.6766
+[  11.99s]   trial 5: classical=6.1192  free=5.6214  ratio f/c=0.9186
+[  13.13s]   trial 6: classical=3.3478  free=3.0448  ratio f/c=0.9095
+[  14.18s]   trial 7: classical=2.3314  free=1.7219  ratio f/c=0.7386
+[  15.35s]   trial 8: classical=2.9556  free=1.7751  ratio f/c=0.6006
+[  16.50s]   trial 9: classical=3.5804  free=1.8885  ratio f/c=0.5275
+[  17.56s]   trial 10: classical=2.0753  free=2.0587  ratio f/c=0.9920
+[  18.55s]   trial 11: classical=2.7971  free=2.9125  ratio f/c=1.0413
+[  18.55s]   Hypothesis check: ratio free/classical: min=0.5275, max=1.0511, mean=0.8223
+[  18.55s] --- Search: minimize over random configs, d=10, n=20 ---
+[  23.58s]   after 5 trials: best classical=2.0306, best free=1.5846
+[  27.73s]   after 10 trials: best classical=2.0306, best free=1.4393
+[  31.62s]   after 15 trials: best classical=2.0306, best free=1.3821
+[  35.10s]   after 20 trials: best classical=2.0306, best free=1.3821
+[  35.10s] Best classical_max found: 2.030630
+[  35.10s] Best free_max found:      1.382076
+[  35.10s] Total time: 35.10s
+[   0.00s] Begin probe
+[   0.00s] --- Test 1: uniform measure on [-1/4, 1/4] ---
+[   0.00s]   classical: max f*f = 1.997500, expected 2.000000
+[   1.79s]   free: solver succeeded at 387/401 grid points
+[   1.79s]   free: max rho = 1.480920
+[   1.79s]   free: integral of rho = 0.998294 (expect ~2 since rho_free integrates to 1, hmm)
+[   1.80s]   Note: integral of rho should be 1 (free conv preserves total mass)
+[   1.80s] --- Test 2: CS-step-like configuration at d=8 ---
+[   1.80s]   classical: max f*f = 2.228722
+[   3.19s]   free solver succeeded at 566/601 pts
+[   3.19s]   free: max rho = 1.4229334892855137
+[   3.19s] --- Test 3: random configs d=10, n=12 ---
+[   4.44s]   trial 0: classical=2.6671  free=1.7261  ratio f/c=0.6472
+[   5.47s]   trial 1: classical=2.3285  free=2.4474  ratio f/c=1.0511
+[   6.33s]   trial 2: classical=2.3801  free=2.3898  ratio f/c=1.0041
+[   7.14s]   trial 3: classical=2.3746  free=1.8073  ratio f/c=0.7611
+[   7.92s]   trial 4: classical=2.6887  free=1.8193  ratio f/c=0.6766
+[   8.86s]   trial 5: classical=6.1192  free=5.6214  ratio f/c=0.9186
+[   9.76s]   trial 6: classical=3.3478  free=3.0448  ratio f/c=0.9095
+[  10.60s]   trial 7: classical=2.3314  free=1.7219  ratio f/c=0.7386
+[  11.54s]   trial 8: classical=2.9556  free=1.7751  ratio f/c=0.6006
+[  12.38s]   trial 9: classical=3.5804  free=1.8885  ratio f/c=0.5275
+[  13.17s]   trial 10: classical=2.0753  free=2.0587  ratio f/c=0.9920
+[  13.96s]   trial 11: classical=2.7971  free=2.9125  ratio f/c=1.0413
+[  13.96s]   Hypothesis check: ratio free/classical: min=0.5275, max=1.0511, mean=0.8223
+[  13.96s] --- Search: minimize over random configs, d=10, n=20 ---
+[  17.85s]   after 5 trials: best classical=2.0306, best free=1.5846
+[  21.64s]   after 10 trials: best classical=2.0306, best free=1.4393
+[  26.09s]   after 15 trials: best classical=2.0306, best free=1.3821
+[  30.26s]   after 20 trials: best classical=2.0306, best free=1.3821
+[  30.26s] Best classical_max found: 2.030630
+[  30.26s] Best free_max found:      1.382076
+[  30.27s] Total time: 30.27s
+[  30.27s] Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\F4_free_probability\results.json
+[probe2    0.00s] Begin probe2
+[probe2    0.00s] --- (a) Semicircle sanity ---
+[probe2    0.00s]   Theory: input peak = 2.5465, output peak (free) = 1.8006
+[probe2    0.00s]   Step semicircle input max density: 2.5446
+[probe2    0.01s]   Classical f*f peak = 2.1591
+[probe2   12.21s]   Free solver: 397/401 pts ok
+[probe2   12.21s]   Free f boxed_plus f peak = 1.7891  (theory = 1.8006)
+[probe2   12.21s]   Relative error vs theory = 0.64%
+[probe2   12.21s] --- (b) Symmetric search d=10, n=30 ---
+[probe2   27.96s]   trial 10: best free_max so far = 1.3793
+[probe2   40.06s]   trial 20: best free_max so far = 1.3215
+[probe2   50.27s]   trial 30: best free_max so far = 1.2830
+[probe2   50.27s]   Best symmetric: free_max = 1.2830, classical_max at that pt = 2.6531
+[probe2   50.27s] --- (c) Edge concentration study d=12 ---
+[probe2   51.46s]   eps=0.0: classical=1.9967, free=1.4778043050546237
+[probe2   52.78s]   eps=0.1: classical=2.0913, free=1.3476433125488756
+[probe2   54.11s]   eps=0.2: classical=2.3819, free=1.249756327759998
+[probe2   55.41s]   eps=0.3: classical=2.8684, free=1.2884914480838778
+[probe2   56.75s]   eps=0.5: classical=4.4292, free=1.4824510586270283
+[probe2   58.10s]   eps=0.7: classical=6.7737, free=1.8436087162938684
+[probe2   59.52s]   eps=0.9: classical=9.9020, free=2.5233166715201394
+[probe2   59.52s] --- (d) Two-spike d=20 ---
+[probe2   61.03s]   gap_idx=1: classical=19.8000, free=14.223884822452632
+[probe2   62.70s]   gap_idx=2: classical=19.6000, free=8.008061675417247
+[probe2   64.39s]   gap_idx=3: classical=19.6000, free=6.548413871077548
+[probe2   66.47s]   gap_idx=5: classical=19.6000, free=5.197842683369041
+[probe2   68.56s]   gap_idx=7: classical=19.6000, free=4.517667460091072
+[probe2   70.73s]   gap_idx=9: classical=19.6000, free=4.075609971187037
+[probe2   70.73s] --- (e) Support comparison d=12 ---
+[probe2   72.16s]   classical: support detected via density>0.001:
+[probe2   72.16s]     [-0.3340, 0.3320]  (theoretical: [-1/2, 1/2] = [-0.5, 0.5])
+[probe2   72.16s]   free: support detected via density>0.001:
+[probe2   72.16s]     [-0.6000, 0.6000]
+[probe2   72.16s]   Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\F4_free_probability\results_probe2.json
+[probe3    0.00s] Begin probe3
+[probe3    0.00s] --- (1) Big symmetric search d=10 n=80 ---
+[probe3    9.02s]   after 20: best free=1.3262, best classical=2.1085
+[probe3   16.86s]   after 40: best free=1.3262, best classical=2.1085
+[probe3   24.22s]   after 60: best free=1.2609, best classical=2.0365
+[probe3   33.47s]   after 80: best free=1.2609, best classical=2.0365
+[probe3   33.47s]   Final: best free_max = 1.260851
+[probe3   33.47s]   Final: best classical_max = 2.036486
+[probe3   33.47s]   Free distribution: min=1.2609, median=1.6604, max=5.6564
+[probe3   33.48s] --- (2) Local search around best, sigma=0.02, n=30 ---
+[probe3   33.97s]   initial f_max = 1.260851
+[probe3   36.03s]     step 4: improved to 1.250246
+[probe3   36.43s]     step 5: improved to 1.232033
+[probe3   37.84s]     after step 10: best = 1.232033
+[probe3   38.60s]     step 11: improved to 1.226340
+[probe3   38.94s]     step 12: improved to 1.218788
+[probe3   41.44s]     step 19: improved to 1.216576
+[probe3   41.44s]     after step 20: best = 1.216576
+[probe3   45.13s]     after step 30: best = 1.216576
+[probe3   45.13s] After local search around best: free_max = 1.216576
+[probe3   45.13s] --- (3) Correlation between free and classical maxes ---
+[probe3   45.13s]   N = 80 configurations
+[probe3   45.13s]   Pearson correlation: 0.6218
+[probe3   45.14s]   Log-log fit: log(free_max) = -0.0021 + 0.5181 * log(classical_max)
+[probe3   45.14s]   Equivalently: free_max ~ 0.9979 * classical_max^0.5181
+[probe3   45.14s] --- (4) MV-arcsine discretized at d=20 ---
+[probe3   45.14s]   classical max = 2.3936
+[probe3   45.85s]   free solver: 376/401
+[probe3   45.85s]   free max = 1.2796993002368617
+[probe3   45.85s] --- (5) ||mu boxed_plus mu||_inf restricted to |t|<=1/2 ---
+[probe3   49.74s]   trial 10: best = 1.337558
+[probe3   53.09s]   trial 20: best = 1.337558
+[probe3   56.12s]   trial 30: best = 1.337558
+[probe3   59.12s]   trial 40: best = 1.274460
+[probe3   59.12s]   Final: min free_max (on |t|<=1/2) = 1.274460
+[probe3   59.12s] Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\F4_free_probability\results_probe3.json
+[probe4    0.00s] Begin probe4
+[probe4    0.00s] --- (c) Analytic arcsine free conv ---
+[probe4    0.02s]   Analytic arcsine free conv: max = -0.175121, succeeded 6/401
+[probe4    0.02s]   Note: arcsine is NOT supported on [-1/4, 1/4] in the proper sense
+[probe4    0.02s]        (it has weight diverging at endpoints), but supp is [-1/4, 1/4].
+[probe4    0.02s] --- (d) Classical_max minimization d=10 n=80 ---
+[probe4    0.04s]   trial 20: best classical_max = 2.592685
+[probe4    0.04s]   trial 40: best classical_max = 2.433655
+[probe4    0.04s]   trial 60: best classical_max = 2.433655
+[probe4    0.05s]   trial 80: best classical_max = 2.433655
+[probe4    0.05s]   After local search: best classical_max = 2.004571
+[probe4    0.05s] --- (e) Free_max at the classical minimizer ---
+[probe4    0.32s]   At classical-near-min config: free_max = 1.4143343709337588
+[probe4    0.32s]   Free entropy of classical-min: chi = -0.4775
+[probe4    0.32s] Wrote C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_novel_agents\F4_free_probability\results_probe4.json
+
+=== FINAL SUMMARY ===
+Math correct: YES (semicircle benchmark verified to 0.64% accuracy).
+Best LB obtained: NULL (none derivable from this direction).
+vs 1.2802: BELOW (min free max ~ 1.22 -- so even reverse-direction LB doesn't help).
+Promising: NO. Direction is dead.
+
+Key reasons:
+1. supp(mu boxed_plus mu) can EXCEED [-1/2, 1/2] (broken support correspondence)
+2. ||free||_inf vs ||classical||_inf has no consistent ordering: ratio in [0.53, 1.05] across random configs
+3. min ||free||_inf ~ 1.22 < 1.28: no useful LB transfer
+4. Log-log scaling: free_max ~ classical_max^0.52 (incompatible scaling)
+5. Pearson correlation only 0.62
+
+Verdict: Free probability gives a structurally different convolution that does
+not bound classical convolution from either direction usefully.
+
+Total time: ~3 minutes wall clock.

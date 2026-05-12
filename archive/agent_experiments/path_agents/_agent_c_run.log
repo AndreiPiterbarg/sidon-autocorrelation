@@ -1,0 +1,71 @@
+================================================================================
+Hard-constrained adversarial attack on Hyp_R(M_max = 1.378)
+================================================================================
+c_star = log(16)/pi = 0.8825424006
+M_max = 1.378
+
+[Golden] BL witness: M=1.652001, c_emp=0.901599 (PL formula: M=1.652001, c=0.901565)
+
+[Sanity] Anchor analysis: lowest-M shapes available:
+  N=100: min anchor M = 1.7173 c_emp = 0.8734 (k_ratio=1000.0)
+  N=200: min anchor M = 1.6682 c_emp = 0.8931 (k_ratio=1000.0)
+  N=575: min anchor M = 1.6554 c_emp = 0.8977 (k_ratio=1000.0)
+  BL@N=575 cannot be projected to M <= 1.378
+
+Using 8 worker processes
+
+Total jobs: 2100
+  progress: 100/2100, elapsed 2s, ETA 44s
+  progress: 200/2100, elapsed 2s, ETA 21s
+  progress: 300/2100, elapsed 2s, ETA 14s
+  progress: 400/2100, elapsed 2s, ETA 10s
+  progress: 500/2100, elapsed 2s, ETA 8s
+  progress: 600/2100, elapsed 3s, ETA 6s
+  progress: 700/2100, elapsed 3s, ETA 5s
+  progress: 800/2100, elapsed 3s, ETA 4s
+  progress: 900/2100, elapsed 3s, ETA 4s
+  progress: 1000/2100, elapsed 3s, ETA 3s
+  progress: 1100/2100, elapsed 3s, ETA 3s
+  progress: 1200/2100, elapsed 3s, ETA 2s
+  progress: 1300/2100, elapsed 3s, ETA 2s
+  progress: 1400/2100, elapsed 3s, ETA 2s
+  progress: 1500/2100, elapsed 3s, ETA 1s
+  progress: 1600/2100, elapsed 3s, ETA 1s
+  progress: 1700/2100, elapsed 3s, ETA 1s
+  progress: 1800/2100, elapsed 3s, ETA 1s
+  progress: 1900/2100, elapsed 4s, ETA 0s
+  progress: 2000/2100, elapsed 4s, ETA 0s
+  progress: 2100/2100, elapsed 4s, ETA 0s
+
+All 2100 jobs done in 4s
+
+================================================================================
+FINAL REPORT
+================================================================================
+Total trials: 2078
+In-regime trials (M <= 1.378): 0
+
+No in-regime trials -- projection failed everywhere.
+
+Per-strategy best in-regime (c_emp):
+  strategy             best c_emp        M          method
+  dirichlet                (none)
+  sparse_spikes            (none)
+  hermite                  (none)
+  chebyshev                (none)
+  smoothed_BL              (none)
+  BL_baseline              (none)
+  BL_MV_interp             (none)
+  bimodal                  (none)
+  cosine_modulated         (none)
+  positive_trig            (none)
+  fejer                    (none)
+  jacobi                   (none)
+  random_osc               (none)
+  MV                       (none)
+  BL                       (none)
+  BL_padded                (none)
+
+JSON: C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_agent_c_hypR_hard_constrained.json
+Plot: C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_agent_c_hypR_hard_constrained_scatter.png
+Findings: C:\Users\andre\OneDrive - PennO365\Desktop\compact_sidon\_agent_c_findings.md

@@ -1,0 +1,26 @@
+
+=== RIGOR CASCADE  d0=2  S=30  c=1.281  J=True  L=True ===
+
+[L0] d=2, S=30, compositions=31, x_cap=24
+     0.29s: NO=0 J=0 L=0 surv=10  uncert=0
+[L0] surv=10  uncert=0  (0.29s)
+
+--- L1: d=2->4  parents=10  x_cap=16 ---
+   [8/10] children=1,092 NO=758 J=1 L=8 surv=225 uncert=100
+L1: 1,603 children -> NO=1,102 J=1 L=14 uncert=141 surv_next=318 unc_next=131 (11.9s)
+
+--- L2: d=4->8  parents=449  x_cap=12 ---
+   [10/449] children=33,562 NO=33,436 J=43 L=37 surv=0 uncert=46
+   [11/449] children=37,090 NO=36,689 J=137 L=67 surv=0 uncert=197
+   [12/449] children=41,458 NO=40,928 J=156 L=114 surv=0 uncert=260
+   [13/449] children=44,098 NO=43,386 J=245 L=127 surv=0 uncert=340
+   [14/449] children=47,554 NO=46,660 J=304 L=149 surv=0 uncert=441
+   [15/449] children=51,922 NO=50,883 J=331 L=187 surv=0 uncert=521
+   [16/449] children=56,530 NO=55,420 J=342 L=218 surv=0 uncert=550
+   [19/449] children=65,278 NO=64,055 J=380 L=242 surv=0 uncert=601
+   [21/449] children=72,730 NO=71,396 J=412 L=262 surv=0 uncert=660
+   [24/449] children=86,878 NO=85,471 J=439 L=282 surv=0 uncert=686
+   [35/449] children=122,501 NO=121,010 J=459 L=305 surv=0 uncert=727
+   [36/449] children=125,504 NO=123,934 J=460 L=335 surv=0 uncert=775
+   [37/449] children=129,144 NO=127,389 J=475 L=401 surv=0 uncert=879
+   [38/449] children=132,504 NO=130,262 J=565 L=457 surv=4 uncert=1,216
