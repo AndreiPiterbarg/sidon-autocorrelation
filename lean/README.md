@@ -9,7 +9,7 @@ Bound**, the rigorous lower bound
            ≥ 1292/1000  =  1.292,
 ```
 
-established in *Improving the Bounds on the Supremum of
+established in *A New Lower Bound for the Supremum of
 Autoconvolutions*.  The proof builds a 3-scale arcsine kernel and
 applies the Matolcsi–Vinuesa (2010) master inequality.  All numerical
 anchors are discharged by a `flint.arb` certifier at 256-bit precision;

@@ -18,7 +18,7 @@ exact `flint.fmpq`.
 The bound improves on the previously announced value `1.2802` of
 Cloninger and Steinerberger (2017, arXiv:1403.7988) and on the rigorous
 analytic bound `1.27481` of Matolcsi and Vinuesa (2010, arXiv:0907.1379).
-The accompanying writeup *Improving the Bounds on the Supremum of
+The accompanying writeup *A New Lower Bound for the Supremum of
 Autoconvolutions* is at the repository root in
 [`lower_bound_proof.pdf`](../lower_bound_proof.pdf); the Lean 4
 formalisation of the same statement is at

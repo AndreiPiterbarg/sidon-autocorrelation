@@ -8,7 +8,7 @@ Matolcsi-Vinuesa dual framework that certifies
                        : f >= 0,  supp f subset (-1/4, 1/4),  int f > 0 }
               >= 1292 / 1000  =  1.292``.
 
-The accompanying writeup *Improving the Bounds on the Supremum of
+The accompanying writeup *A New Lower Bound for the Supremum of
 Autoconvolutions* is at the repository root in
 ``lower_bound_proof.pdf`` (LaTeX source ``lower_bound_proof.tex``); the
 Lean 4 formalisation of the same bound is at ``lean/Sidon/MultiScale.lean``.

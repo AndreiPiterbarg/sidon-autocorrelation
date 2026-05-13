@@ -3,7 +3,7 @@ Sidon Autocorrelation Constant: Rigorous Lower Bound `C_{1a} ≥ 1.292`
 The Piterbarg-Bajaj-Vincent Bound
 =====================================================================
 
-This module formalises the headline theorem of *Improving the Bounds on
+This module formalises the headline theorem of *A New Lower Bound for
 the Supremum of Autoconvolutions* (Piterbarg, Bajaj, Vincent).
 
 The autoconvolution ratio of an admissible test function `f`,

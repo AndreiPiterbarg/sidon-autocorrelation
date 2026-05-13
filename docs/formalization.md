@@ -73,7 +73,7 @@ appear in the dependency closure of the headline theorem.
 
 ## Correspondence with the paper
 
-The Lean module is consistent with the paper *Improving the Bounds on
+The Lean module is consistent with the paper *A New Lower Bound for
 the Supremum of Autoconvolutions*, which proposes the
 Piterbarg--Bajaj--Vincent Bound:
 

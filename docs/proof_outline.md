@@ -1,8 +1,8 @@
 # Proof outline
 
 A short mathematical summary of the proof that $C_{1a} \ge 1292/1000 =
-1.292$ — the **Piterbarg--Bajaj--Vincent Bound** of *Improving the
-Bounds on the Supremum of Autoconvolutions*. Full statements, proofs,
+1.292$ — the **Piterbarg--Bajaj--Vincent Bound** of *A New Lower Bound
+for the Supremum of Autoconvolutions*. Full statements, proofs,
 and bibliography are in the paper
 [`../lower_bound_proof.pdf`](../lower_bound_proof.pdf). For the Lean
 encoding see [`formalization.md`](formalization.md); for the

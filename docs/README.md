@@ -2,7 +2,7 @@
 
 Publication-facing documentation for the **Piterbarg--Bajaj--Vincent
 Bound**, the rigorous lower bound $C_{1a} \ge 1292/1000 = 1.292$ on the
-Sidon autocorrelation constant established in *Improving the Bounds on
+Sidon autocorrelation constant established in *A New Lower Bound for
 the Supremum of Autoconvolutions*.
 
 The headline artefacts (paper, Lean module, certifier driver) live at

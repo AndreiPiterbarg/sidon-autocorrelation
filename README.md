@@ -1,30 +1,18 @@
-# Improving the Bounds on the Supremum of Autoconvolutions
+# A New Lower Bound for the Supremum of Autoconvolutions
 
-## The Piterbarg-Bajaj-Vincent Bound
+This repository accompanies the preprint *A New Lower Bound for the Supremum of Autoconvolutions* (Piterbarg, Bajaj, Vincent), in which we propose a new lower bound on the Sidon autocorrelation constant:
 
-This repository accompanies the preprint *Improving the Bounds on the
-Supremum of Autoconvolutions* (Piterbarg, Bajaj, Vincent), in which we
-propose the **Piterbarg-Bajaj-Vincent Bound** on the Sidon autocorrelation
-constant:
-$$C_{1a} \;\ge\; \frac{1292}{1000} \;=\; 1.292.$$
-This improves on the previously announced lower bound of $1.2802$ due to
-Cloninger and Steinerberger (2017) and on the rigorous analytic bound of
-$1.27481$ established by Matolcsi and Vinuesa (2010). The argument
-extends the Matolcsi-Vinuesa dual framework: the single arcsine
-kernel in their master inequality is replaced by a convex combination of
-three arcsine kernels, and the cosine multiplier is re-optimized as a
-$200$-mode expansion. The five resulting functionals are evaluated
-rigorously in `flint.arb` interval arithmetic at 256-bit precision, and
-the analytic chain is mechanized in Lean 4.
+$$C_{1a} \ge \frac{1292}{1000} = 1.292.$$
+
+This improves on the previously announced lower bound of $1.2802$ due to Cloninger and Steinerberger (2017) and on the rigorous analytic bound of $1.27481$ established by Matolcsi and Vinuesa (2010). The argument extends the Matolcsi-Vinuesa dual framework: the single arcsine kernel in their master inequality is replaced by a convex combination of three arcsine kernels, and the cosine multiplier is re-optimized as a $200$-mode expansion. The five resulting functionals are evaluated rigorously in `flint.arb` interval arithmetic at 256-bit precision, and the analytic chain is mechanized in Lean 4.
 
 ## Problem statement
 
-Let $\mathcal{F} = \{ f \in L^1(\mathbb{R}) : f \ge 0,\ \operatorname{supp}(f)
-\subseteq (-\tfrac14, \tfrac14),\ \int f > 0 \}$. The autoconvolution constant
-is
-$$C_{1a} \;=\; \inf_{f \in \mathcal{F}} \frac{\|f * f\|_{L^\infty}}{(\int f)^2}.$$
-By homogeneity one may normalize $\int f = 1$, in which case
-$C_{1a} = \inf_f \|f * f\|_\infty \ge 1$.
+Let $\mathcal{F} = \{ f \in L^1(\mathbb{R}) : f \ge 0,\ \mathrm{supp}(f) \subseteq (-1/4,\, 1/4),\ \int f > 0 \}$. The autoconvolution constant is
+
+$$C_{1a} = \inf_{f \in \mathcal{F}} \frac{\|f * f\|_{L^\infty}}{(\int f)^2}.$$
+
+By homogeneity one may normalize $\int f = 1$, in which case $C_{1a} = \inf_f \|f * f\|_\infty \ge 1$.
 
 ## Repository layout
 

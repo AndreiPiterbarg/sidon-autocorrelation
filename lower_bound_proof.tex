@@ -26,9 +26,9 @@
   linkcolor=MidnightBlue,
   citecolor=MidnightBlue,
   urlcolor=MidnightBlue,
-  pdftitle={Improving the Bounds on the Supremum of Autoconvolutions},
+  pdftitle={A New Lower Bound for the Supremum of Autoconvolutions},
   pdfauthor={Andrei Piterbarg, Jai Bajaj, Derrick Vincent},
-  pdfsubject={The Piterbarg-Bajaj-Vincent Bound: a computer-assisted lower bound for the autoconvolution constant}
+  pdfsubject={A computer-assisted lower bound for the autoconvolution constant}
 }
 \captionsetup{font=small, labelfont=bf}
 \setlist{topsep=4pt, itemsep=2pt, parsep=0pt}
@@ -43,13 +43,13 @@
 \predate{\begin{center}\small}
 \postdate{\par\end{center}\vspace{0.6em}}
 
-% Sections: centered, sans-serif, no bold (uses tgheros via \sffamily)
+% Sections: centered, serif bold (matches the Abstract title font)
 \titleformat{\section}[block]
-  {\normalfont\Large\sffamily\centering}
+  {\normalfont\Large\bfseries\centering}
   {\thesection.}{0.55em}{}
-% Subsections: left-aligned, sans-serif, no bold
+% Subsections: left-aligned, serif bold (matches the Abstract title font)
 \titleformat{\subsection}[hang]
-  {\normalfont\large\sffamily}
+  {\normalfont\large\bfseries}
   {\thesubsection.}{0.5em}{}
 \titlespacing*{\section}{0pt}{2.6ex plus 0.8ex minus 0.3ex}{1.4ex}
 \titlespacing*{\subsection}{0pt}{1.8ex plus 0.5ex minus 0.2ex}{0.8ex}
@@ -103,21 +103,20 @@
 
 % ══════════════════════════════════════════════════════════════════════
 \title{\texorpdfstring{%
-  Improving the Bounds on the\\
-  Supremum of Autoconvolutions:\\
-  The Piterbarg--Bajaj--Vincent Bound
-}{Improving the Bounds on the Supremum of Autoconvolutions: The Piterbarg-Bajaj-Vincent Bound}}
-\author{Andrei Piterbarg, Jai Bajaj, and Derrick Vincent}
+  A New Lower Bound for the\\
+  Supremum of Autoconvolutions
+}{A New Lower Bound for the Supremum of Autoconvolutions}}
+\author{Andrei Piterbarg, Jai Bajaj and Derrick Vincent}
 \date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We propose the \emph{Piterbarg--Bajaj--Vincent Bound} on the
+We establish a lower bound on the
 autoconvolution constant
 $C_{1a}=\inf_f \|f*f\|_{\Linf}/(\int f)^2$, taken over nonnegative
-$f\in L^1(\R)$ supported on $(-\tfrac14,\tfrac14)$:
+$f\in L^1(\R)$ supported on $(-1/4,1/4)$:
 \[
   C_{1a}\;\ge\;1292/1000\;=\;1.292.
 \]
@@ -151,7 +150,7 @@ theorems (see Section~\ref{sec:proof}).
 \subsection{The Constant \texorpdfstring{$C_{1a}$}{C1a}}\label{subsec:intro-constant}
 
 Let $\mathcal{F}=\{f\in L^1(\R) : f\ge 0,\
-\supp(f)\subseteq(-\tfrac14,\tfrac14),\ \int f>0\}$.  The
+\supp(f)\subseteq(-1/4,1/4),\ \int f>0\}$.  The
 \emph{autoconvolution constant} is
 \[
   C_{1a}
@@ -176,9 +175,10 @@ improvement to $1.2802$ via a discrete branch-and-prune search.  All
 subsequent progress on the constant has been on the upper-bound
 side, where a recent AI-assisted search lowered the ceiling to
 $1.5029$~\cite{AlphaEvolve25}.  The present work raises the
-lower bound to $1.292$ (Theorem~\ref{thm:main}), which we refer to
-as the \emph{Piterbarg--Bajaj--Vincent Bound}, by refining the kernel
-class entering the Matolcsi--Vinuesa dual framework.
+lower bound to $1.292$ (Theorem~\ref{thm:main}), which we refer to as
+the \emph{Piterbarg--Bajaj--Vincent Bound} (henceforth, the
+\emph{PBV~bound}), by refining the kernel class entering the
+Matolcsi--Vinuesa dual framework.
 
 \begin{table}[ht]
 \centering
@@ -191,7 +191,7 @@ class entering the Matolcsi--Vinuesa dual framework.
   Lower bound & $\ge 1.262$   & Martin \& O'Bryant~\cite{MO2009} \\
   Lower bound & $\ge 1.27481$ & Matolcsi \& Vinuesa~\cite{MV10} \\
   Lower bound & $\ge 1.2802$  & Cloninger \& Steinerberger~\cite{CS17} \\
-  Lower bound & $\ge 1.292$   & \textbf{This work (Piterbarg--Bajaj--Vincent Bound)} \\
+  Lower bound & $\ge 1.292$   & \textbf{This work} \\
   \bottomrule
 \end{tabular}
 \caption[Published bounds on C1a in the normalization used here.]{Published bounds on $C_{1a}$ in the normalization used here.}
@@ -216,10 +216,10 @@ quadratic inequality $\Phi(M)\ge\tau$ fails strictly at the rational
 witness $M=1292/1000$, with margin $9.6\times 10^{-5}$ from the
 rational anchors, giving the main result.
 
-\begin{theorem}[Main result: the Piterbarg--Bajaj--Vincent Bound]
+\begin{theorem}[Main result]
 \label{thm:main}
 Let $f:\R\to\R$ be nonnegative with
-$\supp(f)\subseteq(-\tfrac14,\tfrac14)$, $\int f>0$, and
+$\supp(f)\subseteq(-1/4,1/4)$, $\int f>0$, and
 $\|f*f\|_{\Linf}<\infty$.  Then
 \[
   \frac{\|f*f\|_{\Linf}}{\left(\int f\right)^2}
@@ -248,7 +248,7 @@ $M=R(f)=\|f*f\|_{\Linf}$.
 
 \begin{definition}[Bochner-admissible kernel]
 \label{def:bochner}
-Fix $\delta\in(0,\tfrac14]$ and set $u=\tfrac12+\delta$.  A function
+Fix $\delta\in(0,1/4]$ and set $u=1/2+\delta$.  A function
 $K:\R\to\R$ is \emph{Bochner-admissible at scale $\delta$} if
 \begin{enumerate}[label=\textnormal{(K\arabic*)}, leftmargin=2.4em]
 \item $K\ge 0$ a.e.\ on $\R$;
@@ -266,7 +266,7 @@ We write $K_2:=\|K\|_{L^2(\R)}^2$.
 Fix $u$ and $N\in\N$.  A trigonometric polynomial
 $G(x)=\sum_{j=1}^{N}a_j\cos(2\pi jx/u)$ with $a_j\in\R$ is
 \emph{admissible} if there is $m_G>0$ with $G(x)\ge m_G$ for every
-$x\in[0,\tfrac14]$.  Define
+$x\in[0,1/4]$.  Define
 \begin{equation}\label{eq:S1-a}
   S_1 \;=\; \sum_{j=1}^{N}\frac{a_j^{\,2}}{\widetilde{K}(j)},
   \qquad
@@ -278,7 +278,7 @@ $x\in[0,\tfrac14]$.  Define
 
 \begin{theorem}[Master inequality, $z_1$-free form]
 \label{thm:mv-master}
-Let $K$ be Bochner-admissible at scale $\delta$, $u=\tfrac12+\delta$,
+Let $K$ be Bochner-admissible at scale $\delta$, $u=1/2+\delta$,
 and $G$ admissible of degree $N$ with constant $m_G$, defining $S_1$
 and $a$ by~\eqref{eq:S1-a}.  Then for every $f\in\mathcal{F}$ with
 $\int f>0$,
@@ -327,7 +327,7 @@ $\tau=2/u+a$, $C_{1a}\ge M_*$.
 \end{lemma}
 
 \begin{proof}
-For $M>1$, $\Phi'(M)=1+\tfrac12\sqrt{(K_2-1)/(M-1)}>1$, so $\Phi$ is
+For $M>1$, $\Phi'(M)=1+\sqrt{(K_2-1)/(M-1)}/2>1$, so $\Phi$ is
 strictly increasing on $(1,\infty)$ and continuous at $M=1$ from the
 right.  Existence, uniqueness, and the conclusion follow from the
 intermediate value theorem and Theorem~\ref{thm:mv-master}.
@@ -342,7 +342,7 @@ remainder of the paper raises $M_*$ by enlarging the kernel class.
 
 \subsection{Single-Scale Arcsine and the Sonine Identity}\label{subsec:kernel-single}
 
-For $\delta\in(0,\tfrac14]$, let
+For $\delta\in(0,1/4]$, let
 \[
   \eta_\delta(x)
   \;:=\;
@@ -350,8 +350,8 @@ For $\delta\in(0,\tfrac14]$, let
   \frac{2/\pi}{\sqrt{1-(2x/\delta)^2}}\,
   \mathbf{1}_{|x|<\delta/2}
 \]
-denote the arcsine density on $(-\tfrac\delta2,\tfrac\delta2)$ (the
-pushforward of the arcsine density on $(-\tfrac12,\tfrac12)$ under
+denote the arcsine density on $(-\delta/2,\delta/2)$ (the
+pushforward of the arcsine density on $(-1/2,1/2)$ under
 $u\mapsto\delta u$).  By the Sonine--Bessel
 identity~\cite[\S 13.46]{Watson}, $\widehat{\eta_\delta}(\xi)
 =J_0(\pi\delta\xi)$.  The \emph{arcsine kernel at scale $\delta$} is the
@@ -389,7 +389,7 @@ Fix
   \;=\;
   \bigl(\tfrac{85}{100},\tfrac{10}{100},\tfrac{5}{100}\bigr),
 \end{equation}
-and set $u=\tfrac12+\delta_1=\tfrac{638}{1000}$.  The
+and set $u=1/2+\delta_1=638/1000$.  The
 \emph{three-scale arcsine kernel} is
 \[
   \Kms(x)
@@ -421,7 +421,7 @@ across the three scales.}
 \begin{theorem}[Admissibility]
 \label{thm:admissibility}
 The kernel $\Kms$ is Bochner-admissible at scale
-$\delta_1=138/1000<\tfrac14$, with periodic coefficients
+$\delta_1=138/1000<1/4$, with periodic coefficients
 \begin{equation}\label{eq:Ktilde}
   \widetilde{\Kms}(j)
   \;=\;
@@ -763,8 +763,8 @@ Lemmas~\ref{lem:k1}--\ref{lem:a}.
 An explicit finiteness hypothesis $\|f*f\|_{\Linf}<\infty$ appears in
 the Lean statement because of the \texttt{ENNReal.toReal} encoding;
 this is harmless for the infimum.  The support hypothesis is stated
-as $\texttt{Function.support}\,f\subseteq(-\tfrac14,\tfrac14)$, i.e.\
-$f$ vanishes pointwise off $(-\tfrac14,\tfrac14)$; for any
+as $\texttt{Function.support}\,f\subseteq(-1/4,1/4)$, i.e.\
+$f$ vanishes pointwise off $(-1/4,1/4)$; for any
 $f\in\mathcal{F}$ in the sense of Section~\ref{subsec:intro-constant},
 its representative obtained by zero-extending off the essential
 support satisfies the pointwise condition and has the same

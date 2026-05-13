@@ -3,7 +3,7 @@ Sidon Autocorrelation Constant: rigorous lower bound `C_{1a} ≥ 1.292`
 — the Piterbarg-Bajaj-Vincent Bound.
 
 This is the top-level entry point of the Lean formalisation of the
-paper *Improving the Bounds on the Supremum of Autoconvolutions*.  The
+paper *A New Lower Bound for the Supremum of Autoconvolutions*.  The
 proof of the headline theorem lives in `Sidon.MultiScale`.
 
 Construction.  Three-scale arcsine kernel applied to the

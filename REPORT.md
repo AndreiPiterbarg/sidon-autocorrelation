@@ -1,4 +1,4 @@
-# Project Report: The Piterbarg-Bajaj-Vincent Bound
+# Project Report: A New Lower Bound for the Supremum of Autoconvolutions
 
 > A new lower bound on the autoconvolution constant
 > $$ C_{1a} \;\ge\; \frac{1292}{1000} \;=\; 1.292, $$
@@ -15,10 +15,7 @@
 | **Manuscript** | [`lower_bound_proof.tex`](lower_bound_proof.tex) / [`lower_bound_proof.pdf`](lower_bound_proof.pdf) (9 pages, 841 lines TeX) |
 | **Lean formalization** | [`lean/Sidon/`](lean/Sidon/) (594 lines across 4 files) |
 | **Numerical certificate** | [`delsarte_dual/grid_bound_alt_kernel/certificates/reference_anchors.json`](delsarte_dual/grid_bound_alt_kernel/certificates/reference_anchors.json) |
-| **Audit** | `python audit_consistency.py` &mdash; 50 checks, 0 failed |
-| **First commit** | 2026-02-03 |
-| **Latest commit** | 2026-05-12 |
-| **Total commits** | 528 |
+
 
 ---
 
@@ -41,7 +38,7 @@ $[1.292, 1.5029]$. The improvement is
 | Martin-O'Bryant (2009) | $1.262$ | arXiv:0807.5121 |
 | Matolcsi-Vinuesa (2010) | $1.27481$ | arXiv:0907.1379 |
 | Cloninger-Steinerberger (2017) | $1.2802$ | arXiv:1403.7988 |
-| **This work (Piterbarg-Bajaj-Vincent)** | **$1.292$** | manuscript at root |
+| **This work Piterbarg-Bajaj-Vincent (2026)** | **$1.292$** | manuscript at root |
 
 The lift over the prior published lower bound is
 $1.292 - 1.2802 = 0.0118$; over the rigorous analytic
@@ -329,25 +326,6 @@ The published bound rests on the following components:
 
 No component is required beyond those listed.
 
-## 10. Open Items
-
-- The audit framework is comprehensive but only checks **consistency**;
-  it does not verify the slack-anchor bisection at finer resolutions.
-  The production driver's sharper bound $M_{\rm cert} \ge 1.29232422$
-  could be used as the headline rational target ($1.292 \to 1.2923$)
-  if the cost-benefit case for the tighter Lean target is worthwhile.
-- The strict-failure margin $307/3190000 \approx 9.6 \times 10^{-5}$
-  is comfortable but not large. Tightening the rational slacks on
-  $S_1$ (currently $\le 29.841$ vs the certifier's $29.840907$)
-  would widen it without recomputing.
-- The `MV_master_inequality_for_extremiser` axiom remains
-  external. Internalizing it as a Lean theorem (by porting the
-  Fourier-reduction proof of Matolcsi-Vinuesa Lemma 3.1 to Lean)
-  would eliminate the only user axiom in the closure.
-- Two figures &mdash; a plot of the three-scale kernel and a plot of the
-  periodic coefficients $j \mapsto \widetilde{K_{\rm ms}}(j)$
-  &mdash; would substantially aid §3 of the manuscript and are not
-  currently included.
 
 ## References
 
