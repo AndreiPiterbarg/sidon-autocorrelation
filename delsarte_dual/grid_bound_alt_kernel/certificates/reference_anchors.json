@@ -28,10 +28,8 @@
       "lean_theorem": "k_one_lower_bound  : K1LowerQ <= 92124658/100000000 (encodes certifier bound k_1 >= 0.92124658)"
     },
     "K_2": {
-      "lower": 4.7888234212494840,
-      "upper": 4.7889051816332423,
-      "bulk_integral_lower": 4.7888234212601094,
-      "bulk_integral_upper": 4.7888234212601094,
+      "lower": 4.7888234212591545,
+      "upper": 4.7889051816332424,
       "tail_bound_upper": 0.0000817603822681,
       "tail_bound_derivation": "|J_0(z)|^2 <= 2/(pi z) applied to both Bessel factors gives 4/(pi^4 d_i d_j xi^2); integrating yields 4/(pi^4 d_i d_j T) per half-line, summing+doubling gives 8 C^2 / (pi^4 T) with C = sum_i lambda_i/delta_i",
       "lean_theorem": "K_two_upper_bound  : K2UpperQ >= 4788906/1000000 (encodes certifier bound K_2 <= 4.788906)"

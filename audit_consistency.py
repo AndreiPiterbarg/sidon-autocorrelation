@@ -47,6 +47,9 @@ Requires ``python-flint``.  Run from the repository root.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
+import os
 import sys
 from fractions import Fraction
 from typing import Callable, List, Optional, Tuple
@@ -62,7 +65,17 @@ from delsarte_dual.grid_bound_alt_kernel.bisect_alt_kernel import (
     compile_phi_params_for_kernel,
     production_kernel,
 )
-from delsarte_dual.grid_bound_alt_kernel.optimize_G import solve_qp_for_kernel
+
+# Production certificate (source of truth: produced by
+# bisect_alt_kernel.py and committed to the repository).  The audit reads
+# its pinned QP coefficients rather than re-solving the QP each run.
+PRODUCTION_CERT_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "delsarte_dual",
+    "grid_bound_alt_kernel",
+    "certificates",
+    "multiscale_arcsine_1292.json",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -187,22 +200,53 @@ def section_A_kernel_params(rep: Reporter) -> None:
 # ---------------------------------------------------------------------------
 
 
+def load_pinned_coefficients(cert_path: str = PRODUCTION_CERT_PATH) -> List[fmpq]:
+    """Load the QP-rationalized coefficients from the production certificate.
+
+    Reading the committed coefficients (rather than re-solving the QP) makes
+    the audit fully deterministic: the QP solver introduces floating-point
+    jitter that varies across machines and library versions, but the
+    rationalized coefficients stored in the certificate are exact and
+    invariant.  The certificate's SHA-256 body hash is verified to catch
+    accidental modification.
+    """
+    with open(cert_path) as f:
+        cert = json.load(f)
+    body = cert["body"]
+    expected_hash = cert["sha256_of_body"]
+    body_json = json.dumps(body, indent=2, sort_keys=True, default=str)
+    actual_hash = hashlib.sha256(body_json.encode("utf-8")).hexdigest()
+    if actual_hash != expected_hash:
+        raise RuntimeError(
+            f"certificate body hash mismatch:\n"
+            f"  expected: {expected_hash}\n"
+            f"  computed: {actual_hash}\n"
+            f"the file {cert_path} appears to have been modified."
+        )
+    coeffs_q = body["G"]["coeffs_q"]
+    out = []
+    for s in coeffs_q:
+        if "/" in s:
+            num_s, den_s = s.split("/", 1)
+            out.append(fmpq(int(num_s), int(den_s)))
+        else:
+            out.append(fmpq(int(s)))
+    return out
+
+
 def compile_ground_truth():
-    """Re-run the production pipeline and return the arb anchors."""
+    """Compile the arb anchors from the pinned QP coefficients.
+
+    Uses the certificate's committed coefficients as input so the resulting
+    arb anchors are fully deterministic across machines.
+    """
     ctx.prec = 256
     kernel = production_kernel()
-    qp = solve_qp_for_kernel(
-        kernel,
-        n=PROD_N_COEFFS,
-        u=PROD_U,
-        n_grid=5001,
-        fmpq_denom=10**8,
-        verbose=False,
-    )
+    coeffs = load_pinned_coefficients()
     params = compile_phi_params_for_kernel(
-        kernel, qp.a_opt_fmpq, u=PROD_U, n_cells_min_G=32768, prec_bits=256
+        kernel, coeffs, u=PROD_U, n_cells_min_G=32768, prec_bits=256
     )
-    return kernel, qp, params
+    return kernel, None, params
 
 
 def arb_as_fraction_lower(a: arb) -> Fraction:
@@ -573,8 +617,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = parser.parse_args(argv)
     rep = Reporter(verbose=args.verbose)
 
-    print("Re-running production pipeline (n=200, prec=256, "
-          "n_cells_min_G=32768) ...")
+    print(
+        f"Loading pinned QP coefficients from\n  {PRODUCTION_CERT_PATH}\n"
+        "and recomputing arb anchors at prec=256, n_cells_min_G=32768 ..."
+    )
     _, _, params = compile_ground_truth()
     print(
         f"  k_1   in [{float(params.k1.lower()):.16f}, "
