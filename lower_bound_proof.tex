@@ -54,6 +54,18 @@
 \titlespacing*{\section}{0pt}{2.6ex plus 0.8ex minus 0.3ex}{1.4ex}
 \titlespacing*{\subsection}{0pt}{1.8ex plus 0.5ex minus 0.2ex}{0.8ex}
 
+% Abstract: match the \section heading style (centered, \Large\bfseries,
+% serif) so the "Abstract" title is the same size as "1. Introduction".
+% Body keeps the article-class \small + quotation framing.
+\renewenvironment{abstract}{%
+  \vspace{2.6ex plus 0.8ex minus 0.3ex}%
+  \begin{center}{\normalfont\Large\bfseries\abstractname}\end{center}%
+  \vspace{1.4ex}%
+  \small\quotation
+}{%
+  \endquotation
+}
+
 % ── Theorem environments ──
 \newtheoremstyle{paperplain}
   {8pt}{8pt}{\itshape}{}{\bfseries}{.}{0.5em}{}
@@ -141,8 +153,6 @@ the quadratic inversion and the slack-soundness statements are Lean
 theorems (see Section~\ref{sec:proof}).
 \end{abstract}
 
-\medskip
-
 % ======================================================================
 \section{Introduction}\label{sec:intro}
 % ======================================================================
@@ -160,7 +170,10 @@ Let $\mathcal{F}=\{f\in L^1(\R) : f\ge 0,\
   R(f) \;:=\; \frac{\|f*f\|_{\Linf}}{\left(\int f\right)^2}.
 \]
 By homogeneity we may normalize $\int f=1$, in which case
-$R(f)=\|f*f\|_{\Linf}\ge 1$.  The constant $C_{1a}$ is the continuous
+$R(f)=\|f*f\|_{\Linf}\ge 1$.  Heuristically, $R(f)$ measures the
+peak height of the self-convolution $f*f$ relative to its $L^1$
+mass, so $C_{1a}$ identifies the flattest autoconvolution achievable
+in the class $\mathcal{F}$.  This constant is the continuous
 analogue of the Sidon-set extremal problem~\cite{ET41,MO2009};
 improving its lower bound tightens known asymptotic results on
 $B_2^{+}[1]$ sets and related Sidon variants.
@@ -203,7 +216,9 @@ Matolcsi--Vinuesa dual framework.
 The Matolcsi--Vinuesa~\cite{MV10} dual framework
 (Section~\ref{sec:mv}) parametrizes a Bochner-admissible kernel $K$ and
 a cosine multiplier $G$, producing a quadratic lower bound on $R(f)$
-in five real functionals $(k_1,K_2,S_1,m_G,a)$.  MV~2010 takes $K$ to
+in five real functionals $(k_1,K_2,S_1,m_G,a)$, of which $(k_1,K_2)$
+are extracted from the kernel and $(S_1,m_G,a)$ from the multiplier
+(with $a=(4/u)\,m_G^{\,2}/S_1$ a derived gain functional).  MV~2010 takes $K$ to
 be the arcsine kernel at half-width $\delta=138/1000$ and $G$ a
 $119$-cosine expansion, achieving $R(f)\ge 1.27481$.  The present
 construction (i)~replaces the single arcsine by a three-scale convex
@@ -242,7 +257,11 @@ We summarize the dual framework of~\cite[\S 3]{MV10}; proofs of the
 four ingredient lemmas and of the resulting quadratic are recorded
 in that reference.  Throughout, $f\in\mathcal{F}$ with $\int f=1$,
 $\widehat{h}(\xi)=\int h(x)e^{-2\pi i\xi x}\,dx$, and
-$M=R(f)=\|f*f\|_{\Linf}$.
+$M=R(f)=\|f*f\|_{\Linf}$.  The framework converts the desired lower
+bound on $M$ into a quadratic inequality whose coefficients depend on
+two auxiliary objects of our choice, a positive-definite kernel $K$
+and a trigonometric multiplier $G$, so that any rigorous numerical
+control over $(K,G)$ translates into a rigorous lower bound on $M$.
 
 \subsection{Admissible Kernels and Multipliers}\label{subsec:mv-defs}
 
@@ -298,7 +317,12 @@ form
   \;\ge\;
   \frac{2}{u} + a,
 \end{equation}
-where $k_1=\widetilde{K}(1)$ and $z_1=\widehat{f}(1/u)$.  Their proof
+where $k_1=\widetilde{K}(1)$ and $z_1=\widehat{f}(1/u)$.  The
+\emph{$z_1$-free} designation reflects that $z_1$ is a Fourier
+coefficient of the (unknown) extremal $f$, so it cannot be controlled
+analytically; the Cauchy--Schwarz step below absorbs $z_1$ (together
+with $k_1$) into the kernel-side quantity $K_2$, leaving an inequality
+that depends only on quantities we can certify.  Their proof
 uses the arcsine kernel only through Bochner-admissibility
 (Definition~\ref{def:bochner}); the same derivation therefore applies
 to any admissible $K$, in particular to the convex
@@ -469,7 +493,15 @@ drops $S_1$ from $\approx 87.4$ (single-scale) to $\le 29.841$
 \subsection{The Five Certified Anchors}\label{subsec:cert-anchors}
 
 For the master inequality applied to $(\Kms,G)$ we need rigorous
-bounds on five real functionals.  The cosine multiplier
+bounds on five real functionals.  We replace each by a rational
+\emph{anchor}: a floor when the functional enters the master
+inequality on the side that weakens the bound under understatement
+(i.e.\ with a $\ge$ sign), a ceiling on the side that weakens it
+under overstatement ($\le$), in both cases obtained by outward
+rounding of the certifier's arb interval enclosure.  Anchoring at
+exact rationals lets the final inversion (Section~\ref{sec:proof}) be
+carried out in exact rational arithmetic, independent of the
+floating-point pipeline that produced the enclosures.  The cosine multiplier
 $G(x)=\sum_{j=1}^{N}a_j\cos(2\pi jx/u)$ with $N=200$ has rational
 coefficients $a_j\in\Q$ with denominator $10^{8}$, obtained by
 rounding the solution of the convex QP that minimizes
@@ -645,7 +677,14 @@ accompanying repository.
 \subsection{The Strict-Failure Witness}\label{subsec:proof-witness}
 
 We close the master inequality using the anchors of
-Table~\ref{tab:anchors}.  Set $\tau:=2/u+a$ and recall
+Table~\ref{tab:anchors}.  The strategy is to exhibit a rational
+\emph{witness} $M_0=1292/1000$ for which $\Phi(M_0)<\tau$ holds
+strictly; combined with the master inequality $\Phi(R(f))\ge\tau$,
+this rules out $R(f)\le M_0$ by strict monotonicity of $\Phi$
+(Lemma~\ref{lem:inversion}), forcing $R(f)>M_0$.  No analytic
+optimization over $M$ is needed: the rational $M_0$ is fixed in
+advance and the verification is purely arithmetic.
+Set $\tau:=2/u+a$ and recall
 $\Phi(M):=M+1+\sqrt{(M-1)(K_2-1)}$ from Lemma~\ref{lem:inversion}.
 With the certified rationals from Table~\ref{tab:anchors},
 \[

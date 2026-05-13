@@ -7,13 +7,13 @@
 > (2010). The argument is closed by interval arithmetic in
 > `flint.arb` at 256-bit precision and mechanized in Lean 4 with a
 > single user axiom. The end-to-end audit (`audit_consistency.py`)
-> reports **50/50 checks passing**.
+> passes with verdict `ALL CHECKS PASS`.
 
 | | |
 |---|---|
 | **Authors** | Andrei Piterbarg, Jai Bajaj, Derrick Vincent |
-| **Manuscript** | [`lower_bound_proof.tex`](lower_bound_proof.tex) / [`lower_bound_proof.pdf`](lower_bound_proof.pdf) (9 pages, 841 lines TeX) |
-| **Lean formalization** | [`lean/Sidon/`](lean/Sidon/) (594 lines across 4 files) |
+| **Manuscript** | [`lower_bound_proof.tex`](lower_bound_proof.tex) / [`lower_bound_proof.pdf`](lower_bound_proof.pdf) |
+| **Lean formalization** | [`lean/Sidon/`](lean/Sidon/) |
 | **Numerical certificate** | [`delsarte_dual/grid_bound_alt_kernel/certificates/reference_anchors.json`](delsarte_dual/grid_bound_alt_kernel/certificates/reference_anchors.json) |
 
 
@@ -156,14 +156,14 @@ certifier-reported decimals.
 
 ```
 compact_sidon/
-├── lower_bound_proof.tex             # The 841-line manuscript
-├── lower_bound_proof.pdf             # 9-page compiled output
-├── audit_consistency.py              # 50-check cross-source audit
+├── lower_bound_proof.tex             # The manuscript
+├── lower_bound_proof.pdf             # Compiled output
+├── audit_consistency.py              # Cross-source audit
 ├── REPORT.md                         # This file
 ├── README.md                         # Project overview
 │
 ├── lean/                             # Lean 4 formalization
-│   ├── Sidon/MultiScale.lean         # Headline theorem + 1 axiom + 6 theorems
+│   ├── Sidon/MultiScale.lean         # Headline theorem, slack-soundness theorems, one user axiom
 │   ├── Sidon/Defs.lean               # Shared definitions
 │   ├── Sidon.lean                    # Top-level module entry
 │   └── AxiomCheck.lean               # Prints axiom inventory
@@ -201,7 +201,7 @@ pdflatex -interaction=nonstopmode lower_bound_proof.tex
 ```
 
 (No external `.bib` file: the bibliography is inlined via
-`thebibliography`.) Output: 9 pages, no overfull/underfull/undefined
+`thebibliography`.) Output: no overfull/underfull/undefined
 warnings.
 
 ### Regenerate the numerical certificate
@@ -211,8 +211,7 @@ pip install python-flint cvxpy numpy
 python -m delsarte_dual.grid_bound_alt_kernel.bisect_alt_kernel
 ```
 
-Wall time $\approx 11\ \text{s}$ on a modern laptop at 256-bit
-precision. The driver emits
+The driver runs at 256-bit precision and emits
 `delsarte_dual/grid_bound_alt_kernel/certificates/multiscale_arcsine_1292.json`
 with the five anchors, the bisection history, the terminal cell
 list, and a SHA-256 body hash.
@@ -245,7 +244,7 @@ Expected: Lean's three core axioms (`Classical.choice`, `propext`,
 ### Run the cross-source audit
 
 ```bash
-python audit_consistency.py             # 50 checks, summary verdict
+python audit_consistency.py             # summary verdict
 python audit_consistency.py --verbose   # print every individual check
 ```
 
@@ -288,7 +287,7 @@ sections:
 | G | $K_2 = \text{bulk} + \text{tail}$ decomposition (Watson tail bound and the constant $C = \sum_i \lambda_i / \delta_i$). |
 | H | Published bound consistency ($M_{\rm cert}$ production $\ge 1.29232422$; slack-anchor bisection $\ge 1.29215650$; headline $\ge 1292/1000$). |
 
-**Current status: 50 / 50 checks pass, verdict `ALL CHECKS PASS`.**
+**Current status: every check passes, verdict `ALL CHECKS PASS`.**
 
 ## 8. Project History (Selected)
 

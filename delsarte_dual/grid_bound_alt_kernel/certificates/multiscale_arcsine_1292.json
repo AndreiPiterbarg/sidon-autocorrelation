@@ -2346,7 +2346,7 @@
     },
     "kind": "multiscale_arcsine_rigorous_certificate",
     "prec_bits": 256,
-    "wall_time_sec": 115.37195110321045
+    "wall_time_sec": 133.71361756324768
   },
-  "sha256_of_body": "07c083b46d6d48ae2c12f0b35811907bd0e09d6750292b954b99e7ebaa6011b1"
+  "sha256_of_body": "5fa9ae372b23d07f73f41d73c1740926115eb494b6ba3840551458ba8143a7c2"
 }
