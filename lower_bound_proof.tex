@@ -133,7 +133,7 @@ $f\in L^1(\R)$ supported on $(-1/4,1/4)$:
   C_{1a}\;\ge\;1292/1000\;=\;1.292.
 \]
 This improves on the previously announced bound of
-$1.2802$ due to Cloninger and Steinerberger~\cite{CS17} and on the
+$1.28$ due to Cloninger and Steinerberger~\cite{CS17} and on the
 rigorous analytic bound of $1.27481$ established by Matolcsi and
 Vinuesa~\cite{MV10}.  The argument extends the Matolcsi--Vinuesa
 master inequality: the single arcsine kernel is
@@ -184,10 +184,10 @@ Prior lower bounds on $C_{1a}$ are summarized in
 Table~\ref{tab:published-bounds}.  Matolcsi--Vinuesa~\cite{MV10}
 established the rigorous analytic value $1.27481$ in 2010, and
 Cloninger and Steinerberger~\cite{CS17} announced a computational
-improvement to $1.2802$ via a discrete branch-and-prune search.  All
+improvement to $1.28$ via a discrete branch-and-prune search.  All
 subsequent progress on the constant has been on the upper-bound
 side, where a recent AI-assisted search lowered the ceiling to
-$1.5029$~\cite{AlphaEvolve25}.  The present work raises the
+$1.5032$~\cite{AlphaEvolve25}.  The present work raises the
 lower bound to $1.292$ (Theorem~\ref{thm:main}), which we refer to as
 the \emph{Piterbarg--Bajaj--Vincent Bound} (henceforth, the
 \emph{PBV~bound}), by refining the kernel class entering the
@@ -199,11 +199,11 @@ Matolcsi--Vinuesa dual framework.
   \toprule
   \textbf{Bound} & \textbf{Value} & \textbf{Reference} \\
   \midrule
-  Upper bound & $\le 1.5029$  & Georgiev et al.~\cite{AlphaEvolve25} (AlphaEvolve) \\
-  Upper bound & $\le 1.50992$ & Matolcsi \& Vinuesa~\cite{MV10} \\
+  Upper bound & $\le 1.5032$  & Georgiev et al.~\cite{AlphaEvolve25} (AlphaEvolve) \\
+  Upper bound & $\le 1.50972$ & Matolcsi \& Vinuesa~\cite{MV10} \\
   Lower bound & $\ge 1.262$   & Martin \& O'Bryant~\cite{MO2009} \\
   Lower bound & $\ge 1.27481$ & Matolcsi \& Vinuesa~\cite{MV10} \\
-  Lower bound & $\ge 1.2802$  & Cloninger \& Steinerberger~\cite{CS17} \\
+  Lower bound & $\ge 1.28$    & Cloninger \& Steinerberger~\cite{CS17} \\
   Lower bound & $\ge 1.292$   & \textbf{This work} \\
   \bottomrule
 \end{tabular}
@@ -309,32 +309,37 @@ $\int f>0$,
 \end{theorem}
 
 \begin{proof}
-Matolcsi--Vinuesa~\cite[Eq.~(7), Lemma~3.1]{MV10} prove the sharper
+Matolcsi--Vinuesa~\cite[Lemma~3.3, Eq.~(10)]{MV10} prove the sharper
 form
 \begin{equation}\label{eq:mv-sharp}
-  M + 1 + 2 z_1 k_1
-  + \sqrt{(M-1-2z_1^{\,2})(K_2-1-2k_1^{\,2})}
+  M + 1 + 2 z_1^{\,2} k_1
+  + \sqrt{(M-1-2z_1^{\,4})(K_2-1-2k_1^{\,2})}
   \;\ge\;
   \frac{2}{u} + a,
 \end{equation}
-where $k_1=\widetilde{K}(1)$ and $z_1=\widehat{f}(1/u)$.  The
-\emph{$z_1$-free} designation reflects that $z_1$ is a Fourier
-coefficient of the (unknown) extremal $f$, so it cannot be controlled
-analytically; the Cauchy--Schwarz step below absorbs $z_1$ (together
-with $k_1$) into the kernel-side quantity $K_2$, leaving an inequality
-that depends only on quantities we can certify.  Their proof
-uses the arcsine kernel only through Bochner-admissibility
-(Definition~\ref{def:bochner}); the same derivation therefore applies
-to any admissible $K$, in particular to the convex
-combination~$\Kms$.  The radicand of~\eqref{eq:mv-sharp} is nonnegative
-by the same Parseval-type bounds as in~\cite[\S 3]{MV10}: Bessel's
-inequality gives $2z_1^{\,2}\le M-1$ for $f\in\mathcal{F}$ with
-$\int f=1$, and $2k_1^{\,2}\le K_2-1$ holds for any Bochner-admissible
-$K$ with $\int K=1$.  Inequality~\eqref{eq:master} then follows from
-\eqref{eq:mv-sharp} by the Cauchy--Schwarz estimate
+where $k_1=\widehat{K}(1)$ and $z_1=|\widehat{f}(1)|$ are
+period-$1$ Fourier coefficients (so that $\widetilde{K}(j)
+=\widehat{K}(j/u)$ of Definition~\ref{def:bochner} is the
+period-$u$ companion).  The \emph{$z_1$-free} designation reflects
+that $z_1$ is a Fourier coefficient of the (unknown) extremal $f$,
+so it cannot be controlled analytically; the Cauchy--Schwarz step
+below absorbs $z_1$ (together with $k_1$) into the kernel-side
+quantity $K_2$, leaving an inequality that depends only on quantities
+we can certify.  Their proof uses the arcsine kernel only through
+Bochner-admissibility (Definition~\ref{def:bochner}); the same
+derivation therefore applies to any admissible $K$, in particular
+to the convex combination~$\Kms$.  The radicand of~\eqref{eq:mv-sharp}
+is nonnegative by the same Parseval-type bounds as in~\cite[\S 3]{MV10}:
+since $f$ is supported in $[-1/4,1/4]$, period-$1$ Plancherel gives
+$\sum_{j\in\Z}|\widehat{f}(j)|^{4}=\|f*f\|_{L^{2}}^{2}\le\|f*f\|_{\Linf}=M$,
+so $2z_1^{\,4}\le M-1$ for $f\in\mathcal{F}$ with $\int f=1$; similarly
+$\sum_{j\in\Z}|\widehat{K}(j)|^{2}=\|K\|_{L^{2}}^{2}=K_2$ gives
+$2k_1^{\,2}\le K_2-1$ for any Bochner-admissible $K$ with $\int K=1$.
+Inequality~\eqref{eq:master} then follows from~\eqref{eq:mv-sharp}
+by the Cauchy--Schwarz estimate
 $\sqrt{ac}+\sqrt{bd}\le\sqrt{(a+b)(c+d)}$ applied to the nonnegative
 quadruple
-$(a,b,c,d)=(2z_1^{\,2},\,M-1-2z_1^{\,2},\,2k_1^{\,2},\,K_2-1-2k_1^{\,2})$.
+$(a,b,c,d)=(2z_1^{\,4},\,M-1-2z_1^{\,4},\,2k_1^{\,2},\,K_2-1-2k_1^{\,2})$.
 \end{proof}
 
 \begin{lemma}[Quadratic inversion]
@@ -376,9 +381,9 @@ For $\delta\in(0,1/4]$, let
 \]
 denote the arcsine density on $(-\delta/2,\delta/2)$ (the
 pushforward of the arcsine density on $(-1/2,1/2)$ under
-$u\mapsto\delta u$).  By the Sonine--Bessel
-identity~\cite[\S 13.46]{Watson}, $\widehat{\eta_\delta}(\xi)
-=J_0(\pi\delta\xi)$.  The \emph{arcsine kernel at scale $\delta$} is the
+$u\mapsto\delta u$).  By the Mehler--Sonine integral
+representation $J_0(z)=(2/\pi)\int_0^1\!\cos(zt)/\sqrt{1-t^2}\,dt$
+\cite[\S 10.9.4]{DLMF}, $\widehat{\eta_\delta}(\xi)=J_0(\pi\delta\xi)$.  The \emph{arcsine kernel at scale $\delta$} is the
 auto-convolution
 \[
   \Karc(\delta;\cdot)
@@ -546,8 +551,8 @@ $K_2 = 2\int_0^{T}\widehat{\Kms}(\xi)^2\,d\xi
 + 2\int_{T}^{\infty}\widehat{\Kms}(\xi)^2\,d\xi$ with $T=10^{5}$.
 The bulk integral is computed by arb adaptive Gauss--Legendre
 quadrature and certified at $4.78882342\ldots$ with arb radius
-below $10^{-10}$.  For the tail, the standard uniform bound
-$|J_0(z)|^2\le 2/(\pi z)$~\cite[\S 7.21]{Watson} holds for $z\ge 1$;
+below $10^{-10}$.  For the tail, the uniform bound
+$|J_0(z)|^2\le 2/(\pi z)$~\cite{Landau} holds for $z>0$;
 since $\xi\ge T=10^{5}$ in the tail forces $z=\pi\delta_i\xi\ge
 \pi(25/1000)(10^{5})\approx 7854$, the bound applies, and applied to
 both Bessel factors gives
@@ -730,8 +735,9 @@ Combining with $\tau\ge 4267003/1276000=3.344046\ldots$ yields
 \]
 The conclusion is independently re-certified by an arb cell-search
 bisection at $256$-bit precision, which returns the sharper enclosure
-$\Mcert\ge 1.29215$ when the script's tighter (non-rational) interval
-bounds on $m_G$ and $S_1$ are used.
+$\Mcert\ge 1.29232$ when the certifier's full arb interval bounds on
+all five functionals (rather than the rounded rational anchors of
+Table~\ref{tab:anchors}) are used.
 \end{proof}
 
 \subsection{Assembly}\label{subsec:proof-assembly}
@@ -817,7 +823,7 @@ $L^1$-equivalence-class formulation of $C_{1a}$ without loss.
 We thank M\'at\'e Matolcsi and Carlos Vinuesa, whose dual
 framework~\cite{MV10} is the foundation of this argument; and
 Alexander Cloninger and Stefan Steinerberger~\cite{CS17}, whose
-announced bound of $1.2802$ motivated this line of work.  The
+announced bound of $1.28$ motivated this line of work.  The
 formalization rests on the Lean~4 theorem prover~\cite{Lean} and the
 Mathlib library~\cite{Mathlib}; the certifier rests on
 FLINT/Arb~\cite{Flint}.  We thank the authors and contributors of
@@ -874,6 +880,16 @@ pp.~367--381.
 \bibitem[Wat44]{Watson}
 George Neville Watson, \emph{A Treatise on the Theory of Bessel
 Functions}, 2nd ed., Cambridge University Press, 1944.
+
+\bibitem[Lan00]{Landau}
+L.~J. Landau, \emph{Bessel functions: monotonicity and bounds},
+J. London Math. Soc.\ (2) \textbf{61} (2000), no.~1, 197--215.
+
+\bibitem[DLMF]{DLMF}
+NIST Digital Library of Mathematical Functions,
+F.~W.~J. Olver, A.~B. Olde Daalhuis, D.~W. Lozier, B.~I. Schneider,
+R.~F. Boisvert, C.~W. Clark, B.~R. Miller, B.~V. Saunders, H.~S. Cohl,
+and M.~A. McClain (eds.), \url{https://dlmf.nist.gov/}, Release 1.2.x.
 
 \end{thebibliography}
 
