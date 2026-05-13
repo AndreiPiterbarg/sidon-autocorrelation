@@ -290,7 +290,7 @@ body {
 
 .viz-panel canvas {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
@@ -344,7 +344,7 @@ body {
 
 .moments-panel canvas {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
   background: var(--panel-bg);
   border: 1px solid var(--border);
@@ -387,7 +387,7 @@ body {
 
 #pg-hist {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
   background: var(--panel-bg);
   border: 1px solid var(--border);
@@ -549,7 +549,7 @@ body {
 
 #fk-canvas {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
   background: var(--panel-bg);
   border: 1px solid var(--border);
@@ -604,7 +604,7 @@ body {
 
 #conv-canvas {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 

@@ -1,8 +1,12 @@
 // Section 3: Moment Matrices & PSD
 // Left: distribution + moment matrix grid. Right: eigenvalue visualization.
+// Both panels use the same d=3 distribution for consistency.
 
 import { eigenvalues3x3 } from './lasserre-data.js';
-import { tween, delay, lerp, clamp } from './animate.js';
+import { tween, delay, lerp, clamp, setupHiDPI } from './animate.js';
+
+const LW = 440, LH = 380;
+const RW = 440, RH = 380;
 
 const COL = {
   bg: '#1a1d27', grid: '#2a2d3a', text: '#e0e0e0', textLight: '#999',
@@ -12,39 +16,46 @@ const COL = {
 };
 
 let distCanvas, distCtx, psdCanvas, psdCtx;
-let dist = [0.3, 0.2, 0.15, 0.35];
+const D = 3;
+let dist = [0.40, 0.25, 0.35];
 let hoveredCell = null;
-let animPhase = 0;
 let tamperAmount = 0;
 
-function momentMatrix(d) {
-  const M = Array.from({ length: d }, () => new Float64Array(d));
-  for (let i = 0; i < d; i++)
-    for (let j = 0; j < d; j++)
+function momentMatrix() {
+  const M = Array.from({ length: D }, () => new Float64Array(D));
+  for (let i = 0; i < D; i++)
+    for (let j = 0; j < D; j++)
       M[i][j] = dist[i] * dist[j];
   return M;
 }
 
+function tamperedMatrix() {
+  const M = momentMatrix();
+  if (tamperAmount > 0) {
+    M[0][1] += tamperAmount * 0.15;
+    M[1][0] += tamperAmount * 0.15;
+    M[0][2] -= tamperAmount * 0.10;
+    M[2][0] -= tamperAmount * 0.10;
+  }
+  return M;
+}
+
 function drawDistPanel() {
-  const W = 440, H = 300;
   const ctx = distCtx;
   ctx.fillStyle = COL.bg;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, LW, LH);
 
-  const d = dist.length;
-  const barW = 50, gap = 12;
-  const totalW = d * barW + (d - 1) * gap;
-  const startX = (W - totalW) / 2;
-  const barTop = 30, barMaxH = 90;
+  const barW = 80, gap = 20;
+  const totalW = D * barW + (D - 1) * gap;
+  const startX = (LW - totalW) / 2;
+  const barTop = 40, barMaxH = 90;
 
-  // Title
   ctx.font = 'bold 12px system-ui';
   ctx.fillStyle = COL.text;
   ctx.textAlign = 'center';
-  ctx.fillText('Distribution (d = 4 bins)', W / 2, 20);
+  ctx.fillText('Distribution (d = 3 bins)', LW / 2, 22);
 
-  // Bars
-  for (let i = 0; i < d; i++) {
+  for (let i = 0; i < D; i++) {
     const x = startX + i * (barW + gap);
     const h = dist[i] * barMaxH / 0.5;
     const y = barTop + barMaxH - h;
@@ -59,24 +70,24 @@ function drawDistPanel() {
     ctx.textAlign = 'center';
     ctx.fillText(`bin ${i + 1}`, x + barW / 2, barTop + barMaxH + 16);
     ctx.fillStyle = COL.text;
-    ctx.fillText(dist[i].toFixed(2), x + barW / 2, y - 6);
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillText(dist[i].toFixed(2), x + barW / 2, y - 8);
   }
 
-  // Moment matrix grid
-  const M = momentMatrix(d);
-  const gridSize = 48, gridGap = 3;
-  const gridTotalW = d * gridSize + (d - 1) * gridGap;
-  const gridX = (W - gridTotalW) / 2;
-  const gridY = 155;
+  const M = momentMatrix();
+  const gridSize = 52, gridGap = 3;
+  const gridTotalW = D * gridSize + (D - 1) * gridGap;
+  const gridX = (LW - gridTotalW) / 2;
+  const gridY = 170;
 
   ctx.font = 'bold 11px system-ui';
   ctx.fillStyle = COL.textLight;
   ctx.textAlign = 'center';
-  ctx.fillText('Moment Matrix  M(y)', W / 2, gridY - 10);
+  ctx.fillText('Moment Matrix  M[i, j] = bin_i × bin_j', LW / 2, gridY - 12);
 
-  const maxVal = Math.max(...M.flat());
-  for (let i = 0; i < d; i++) {
-    for (let j = 0; j < d; j++) {
+  const maxVal = Math.max(...Array.from({ length: D * D }, (_, k) => M[Math.floor(k / D)][k % D]));
+  for (let i = 0; i < D; i++) {
+    for (let j = 0; j < D; j++) {
       const x = gridX + j * (gridSize + gridGap);
       const y = gridY + i * (gridSize + gridGap);
       const v = M[i][j];
@@ -96,67 +107,47 @@ function drawDistPanel() {
       }
 
       ctx.fillStyle = t > 0.5 ? '#fff' : COL.textLight;
-      ctx.font = '10px system-ui';
+      ctx.font = '11px system-ui';
       ctx.textAlign = 'center';
       ctx.fillText(v.toFixed(3), x + gridSize / 2, y + gridSize / 2 + 4);
     }
   }
 
-  // Row/col labels
   ctx.font = '10px system-ui';
   ctx.fillStyle = COL.textLight;
-  for (let i = 0; i < d; i++) {
+  for (let i = 0; i < D; i++) {
     ctx.textAlign = 'right';
-    ctx.fillText(`${i + 1}`, gridX - 6, gridY + i * (gridSize + gridGap) + gridSize / 2 + 4);
+    ctx.fillText(`${i + 1}`, gridX - 8, gridY + i * (gridSize + gridGap) + gridSize / 2 + 4);
     ctx.textAlign = 'center';
-    ctx.fillText(`${i + 1}`, gridX + i * (gridSize + gridGap) + gridSize / 2, gridY + d * (gridSize + gridGap) + 12);
+    ctx.fillText(`${i + 1}`, gridX + i * (gridSize + gridGap) + gridSize / 2, gridY + D * (gridSize + gridGap) + 14);
   }
 }
 
 function drawPSDPanel() {
-  const W = 440, H = 300;
   const ctx = psdCtx;
   ctx.fillStyle = COL.bg;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, RW, RH);
 
-  // Build a 3x3 moment matrix from first 3 bins
-  const M = [
-    [dist[0] * dist[0], dist[0] * dist[1], dist[0] * dist[2]],
-    [dist[1] * dist[0], dist[1] * dist[1], dist[1] * dist[2]],
-    [dist[2] * dist[0], dist[2] * dist[1], dist[2] * dist[2]],
-  ];
-
-  // Apply tampering
-  if (tamperAmount > 0) {
-    M[0][1] += tamperAmount * 0.15;
-    M[1][0] += tamperAmount * 0.15;
-    M[0][2] -= tamperAmount * 0.10;
-    M[2][0] -= tamperAmount * 0.10;
-  }
-
+  const M = tamperedMatrix();
   const eigs = eigenvalues3x3(M);
   const isPSD = eigs.every(e => e >= -1e-10);
 
-  // Title
   ctx.font = 'bold 12px system-ui';
   ctx.fillStyle = COL.text;
   ctx.textAlign = 'center';
-  ctx.fillText('Eigenvalues of 3x3 Moment Matrix', W / 2, 20);
+  ctx.fillText('Same Matrix — Eigenvalue Check', RW / 2, 22);
 
-  // Matrix display (small)
-  const cellSize = 52, gapM = 3;
-  const mGridX = 40, mGridY = 45;
-  ctx.font = 'bold 11px system-ui';
-  ctx.fillStyle = COL.textLight;
-  ctx.textAlign = 'left';
-  ctx.fillText('Matrix:', mGridX, 40);
+  const cellSize = 48, gapM = 2;
+  const mTotalW = D * cellSize + (D - 1) * gapM;
+  const mGridX = (RW - mTotalW) / 2;
+  const mGridY = 42;
 
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
+  for (let i = 0; i < D; i++) {
+    for (let j = 0; j < D; j++) {
       const x = mGridX + j * (cellSize + gapM);
-      const y = mGridY + 10 + i * (cellSize + gapM);
+      const y = mGridY + i * (cellSize + gapM);
       const v = M[i][j];
-      const t = clamp(Math.abs(v) / 0.15, 0, 1);
+      const t = clamp(Math.abs(v) / 0.2, 0, 1);
       ctx.fillStyle = v < -0.001
         ? `rgba(239,83,80,${0.2 + t * 0.5})`
         : `rgb(${Math.round(26 + t * 40)}, ${Math.round(29 + t * 80)}, ${Math.round(39 + t * 150)})`;
@@ -169,65 +160,63 @@ function drawPSDPanel() {
     }
   }
 
-  // Eigenvalue bars
-  const barX = 240, barY = 60, barW = 160, barH = 24, barGap = 12;
+  const eigSectionY = mGridY + D * (cellSize + gapM) + 24;
   ctx.font = 'bold 11px system-ui';
   ctx.fillStyle = COL.textLight;
   ctx.textAlign = 'left';
-  ctx.fillText('Eigenvalues:', barX, 55);
+  ctx.fillText('Eigenvalues:', 30, eigSectionY);
 
+  const barX = 30, barW = 240, barH = 20, barGap = 10;
   const maxAbs = Math.max(0.01, ...eigs.map(Math.abs));
 
   for (let i = 0; i < 3; i++) {
-    const y = barY + i * (barH + barGap);
+    const y = eigSectionY + 10 + i * (barH + barGap);
     const e = eigs[i];
     const w = (Math.abs(e) / maxAbs) * barW;
 
-    ctx.fillStyle = COL.grid;
-    ctx.fillRect(barX, y, barW, barH);
-
     ctx.fillStyle = e >= -1e-10 ? COL.green : COL.red;
-    ctx.fillRect(barX, y, w, barH);
-
     ctx.font = '11px system-ui';
-    ctx.fillStyle = e >= -1e-10 ? COL.green : COL.red;
     ctx.textAlign = 'left';
-    ctx.fillText(`λ${i + 1} = ${e.toFixed(5)}`, barX + barW + 8, y + barH / 2 + 4);
+    ctx.fillText(`λ${i + 1} = ${e.toFixed(4)}`, barX, y + 4);
+
+    const bx = barX + 120;
+    ctx.fillStyle = COL.grid;
+    ctx.fillRect(bx, y - 6, barW - 100, barH);
+
+    ctx.fillStyle = e >= -1e-10 ? COL.green : COL.red;
+    const bw = (Math.abs(e) / maxAbs) * (barW - 100);
+    ctx.fillRect(bx, y - 6, bw, barH);
   }
 
-  // Verdict
-  const verdictY = barY + 3 * (barH + barGap) + 20;
+  const verdictY = eigSectionY + 10 + 3 * (barH + barGap) + 16;
   ctx.font = 'bold 16px system-ui';
   ctx.textAlign = 'center';
   if (isPSD) {
     ctx.fillStyle = COL.green;
-    ctx.fillText('PSD — Consistent', W / 2, verdictY);
+    ctx.fillText('✓ PSD — Consistent', RW / 2, verdictY);
     ctx.font = '12px system-ui';
     ctx.fillStyle = COL.textLight;
-    ctx.fillText('These moments could come from a real distribution', W / 2, verdictY + 20);
+    ctx.fillText('These moments could come from a real distribution', RW / 2, verdictY + 22);
   } else {
     ctx.fillStyle = COL.red;
-    ctx.fillText('NOT PSD — Impossible!', W / 2, verdictY);
+    ctx.fillText('✗ NOT PSD — Impossible!', RW / 2, verdictY);
     ctx.font = '12px system-ui';
     ctx.fillStyle = COL.textLight;
-    ctx.fillText('No real distribution produces these moments', W / 2, verdictY + 20);
+    ctx.fillText('No real distribution produces these moments', RW / 2, verdictY + 22);
   }
 
-  // Tamper slider label
   ctx.font = '11px system-ui';
   ctx.fillStyle = COL.textLight;
   ctx.textAlign = 'center';
-  const tampLabel = tamperAmount > 0 ? `Tampered: ${(tamperAmount * 100).toFixed(0)}%` : 'Valid moments';
-  ctx.fillText(tampLabel, W / 2, H - 10);
+  const tampLabel = tamperAmount > 0 ? `Tampered: ${(tamperAmount * 100).toFixed(0)}%` : 'Valid moments (from distribution on left)';
+  ctx.fillText(tampLabel, RW / 2, RH - 12);
 }
 
 async function autoPlayPSD() {
-  // Phase 1: valid moments
   tamperAmount = 0;
   drawPSDPanel();
-  await delay(1500);
+  await delay(2000);
 
-  // Phase 2: gradually tamper
   for (let i = 0; i <= 20; i++) {
     tamperAmount = i / 20;
     drawPSDPanel();
@@ -236,7 +225,6 @@ async function autoPlayPSD() {
 
   await delay(2000);
 
-  // Phase 3: revert
   for (let i = 20; i >= 0; i--) {
     tamperAmount = i / 20;
     drawPSDPanel();
@@ -246,27 +234,25 @@ async function autoPlayPSD() {
 
 export function initMoments() {
   distCanvas = document.getElementById('mom-dist');
-  distCtx = distCanvas.getContext('2d');
+  distCtx = setupHiDPI(distCanvas, LW, LH);
   psdCanvas = document.getElementById('mom-psd');
-  psdCtx = psdCanvas.getContext('2d');
+  psdCtx = setupHiDPI(psdCanvas, RW, RH);
 
-  // Mouse hover on moment matrix
   distCanvas.addEventListener('mousemove', (e) => {
     const rect = distCanvas.getBoundingClientRect();
-    const scaleX = 440 / rect.width;
-    const scaleY = 300 / rect.height;
+    const scaleX = LW / rect.width;
+    const scaleY = LH / rect.height;
     const mx = (e.clientX - rect.left) * scaleX;
     const my = (e.clientY - rect.top) * scaleY;
 
-    const d = dist.length;
-    const gridSize = 48, gridGap = 3;
-    const gridTotalW = d * gridSize + (d - 1) * gridGap;
-    const gridX = (440 - gridTotalW) / 2;
-    const gridY = 155;
+    const gridSize = 52, gridGap = 3;
+    const gridTotalW = D * gridSize + (D - 1) * gridGap;
+    const gridX = (LW - gridTotalW) / 2;
+    const gridY = 170;
 
     hoveredCell = null;
-    for (let i = 0; i < d; i++) {
-      for (let j = 0; j < d; j++) {
+    for (let i = 0; i < D; i++) {
+      for (let j = 0; j < D; j++) {
         const x = gridX + j * (gridSize + gridGap);
         const y = gridY + i * (gridSize + gridGap);
         if (mx >= x && mx <= x + gridSize && my >= y && my <= y + gridSize) {

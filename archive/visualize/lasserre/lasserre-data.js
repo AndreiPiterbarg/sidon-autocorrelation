@@ -66,7 +66,7 @@ export const BOUND_HISTORY = [
   { year: 2010, author: 'Matolcsi & Vinuesa', type: 'upper', value: 1.5029 },
   { year: 2003, author: 'Kolountzakis & Révész', type: 'lower', value: 1.000 },
   { year: 2017, author: 'Cloninger & Steinerberger', type: 'lower', value: 1.2802 },
-  { year: 2026, author: 'This work (Lasserre SDP)', type: 'lower', value: 1.320, projected: true },
+  { year: 2026, author: 'This work (Lasserre SDP)', type: 'lower', value: 1.285 },
 ];
 
 // Window matrices for d=3 (for the simplex heatmap in Section 1)

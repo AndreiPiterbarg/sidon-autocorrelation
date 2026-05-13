@@ -2,7 +2,7 @@
 // Ternary simplex heatmap showing val(d) = min max_W mu^T M_W mu
 
 import { buildWindowMatrices, computeMaxWindow, baryToXY } from './lasserre-data.js';
-import { tween, delay, lerp, clamp } from './animate.js';
+import { tween, delay, lerp, clamp, setupHiDPI } from './animate.js';
 
 const W = 700, H = 460;
 const TRI_CX = 300, TRI_CY = 260, TRI_R = 200;
@@ -131,12 +131,17 @@ function drawWindowBars(mu) {
   const barW = BAR_W / n - 2;
 
   ctx.fillStyle = COL.bg;
-  ctx.fillRect(BAR_X - 10, BAR_TOP - 20, BAR_W + 30, BAR_H + 50);
+  ctx.fillRect(BAR_X - 14, BAR_TOP - 44, BAR_W + 40, BAR_H + 80);
 
-  ctx.font = '11px system-ui';
-  ctx.fillStyle = COL.textLight;
+  ctx.font = 'bold 12px system-ui';
+  ctx.fillStyle = COL.text;
   ctx.textAlign = 'center';
-  ctx.fillText('Window values', BAR_X + BAR_W / 2, BAR_TOP - 6);
+  ctx.fillText('Autoconvolution', BAR_X + BAR_W / 2, BAR_TOP - 30);
+  ctx.fillText('window checks', BAR_X + BAR_W / 2, BAR_TOP - 16);
+
+  ctx.font = '10px system-ui';
+  ctx.fillStyle = COL.textLight;
+  ctx.fillText(`${n} windows at d=3`, BAR_X + BAR_W / 2, BAR_TOP - 2);
 
   for (let i = 0; i < n; i++) {
     const barH = (vals[i] / 6) * BAR_H;
@@ -149,10 +154,14 @@ function drawWindowBars(mu) {
     ctx.globalAlpha = 1;
   }
 
-  ctx.fillStyle = COL.gold;
-  ctx.font = 'bold 14px system-ui';
+  ctx.fillStyle = COL.red;
+  ctx.font = 'bold 13px system-ui';
   ctx.textAlign = 'left';
-  ctx.fillText(`max = ${maxV.toFixed(3)}`, BAR_X, BAR_TOP + BAR_H + 20);
+  ctx.fillText(`Worst peak: ${maxV.toFixed(3)}`, BAR_X, BAR_TOP + BAR_H + 18);
+
+  ctx.font = '10px system-ui';
+  ctx.fillStyle = COL.textLight;
+  ctx.fillText('Goal: minimize this', BAR_X, BAR_TOP + BAR_H + 34);
 }
 
 function drawTitle() {
@@ -255,7 +264,7 @@ function resetAnimation() {
 
 export function initProblem() {
   canvas = document.getElementById('prob-canvas');
-  ctx = canvas.getContext('2d');
+  ctx = setupHiDPI(canvas, W, H);
 
   windows3 = buildWindowMatrices(3);
   heatmapData = precomputeHeatmap();

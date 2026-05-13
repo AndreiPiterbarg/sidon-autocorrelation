@@ -2,7 +2,7 @@
 // Draggable bar chart + constraint toggle switches
 
 import { buildWindowMatrices, computeMaxWindow, PLAYGROUND_BOUNDS, VAL_D } from './lasserre-data.js';
-import { tween, clamp } from './animate.js';
+import { tween, clamp, setupHiDPI } from './animate.js';
 
 const W = 440, H = 220;
 const PAD = { top: 30, right: 16, bottom: 36, left: 46 };
@@ -10,6 +10,7 @@ const PAD = { top: 30, right: 16, bottom: 36, left: 46 };
 const COL = {
   bg: '#1a1d27', grid: '#2a2d3a', text: '#e0e0e0', textLight: '#999',
   blue: '#4ea8de', blueLight: '#64b5f6', green: '#81c784', gold: '#ffb74d',
+  red: '#ef5350',
 };
 
 let canvas, ctx;
@@ -56,7 +57,6 @@ function drawHist() {
   const plotH = H - PAD.top - PAD.bottom;
   const barW = plotW / d - 4;
 
-  // Grid lines
   ctx.strokeStyle = COL.grid;
   ctx.lineWidth = 0.5;
   for (let i = 0; i <= 4; i++) {
@@ -71,7 +71,6 @@ function drawHist() {
     ctx.fillText((i * M / 4).toFixed(0), PAD.left - 6, y + 3);
   }
 
-  // Bars
   for (let i = 0; i < d; i++) {
     const x = PAD.left + i * (plotW / d) + 2;
     const h = (masses[i] / M) * plotH;
@@ -91,30 +90,43 @@ function drawHist() {
     ctx.fillText(`bin ${i + 1}`, x + barW / 2, H - PAD.bottom + 14);
   }
 
-  // Title
   ctx.font = 'bold 11px system-ui';
   ctx.fillStyle = COL.textLight;
   ctx.textAlign = 'center';
   ctx.fillText(`Mass distribution (total = ${M})`, W / 2, 16);
 }
 
-function updateTrueVal() {
+function updateDisplays() {
   const mu = masses.map(m => m / M);
   const { value } = computeMaxWindow(mu, windows4);
-  document.getElementById('pg-trueval-num').textContent = value.toFixed(4);
-}
-
-function updateBoundDisplay() {
   const bound = getBound();
   const valD = VAL_D[4];
-  const maxBound = valD;
-  const pct = clamp(bound / maxBound * 100, 0, 100);
 
+  document.getElementById('pg-trueval-num').textContent = value.toFixed(4);
+
+  const pct = clamp((bound / valD) * 100, 0, 100);
   document.getElementById('pg-bound-bar').style.width = `${pct}%`;
   document.getElementById('pg-bound-val').textContent = bound.toFixed(3);
+  document.getElementById('pg-gap-pct').textContent = `${pct.toFixed(1)}%`;
 
-  const gc = bound > 1 ? ((bound - 1) / (valD - 1)) * 100 : 0;
-  document.getElementById('pg-gap-pct').textContent = `${gc.toFixed(1)}%`;
+  const compEl = document.getElementById('pg-comparison');
+  if (compEl) {
+    const holds = value >= bound - 0.001;
+    compEl.innerHTML = `
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+        <div><span style="color:${COL.gold};font-weight:700;">Your peak: ${value.toFixed(4)}</span></div>
+        <div style="color:${COL.textLight};">≥</div>
+        <div><span style="color:${COL.blue};font-weight:700;">SDP bound: ${bound.toFixed(3)}</span></div>
+        <div style="color:${COL.textLight};">≥</div>
+        <div><span style="color:${COL.textLight};">true val(4) = ${valD.toFixed(3)}</span></div>
+      </div>
+      <div style="margin-top:6px;font-size:12px;color:${COL.textLight};">
+        ${holds
+          ? 'The SDP bound holds for <em>every</em> distribution — try to get your peak close to it!'
+          : ''}
+      </div>
+    `;
+  }
 }
 
 function buildConstraintStack() {
@@ -151,22 +163,23 @@ function buildConstraintStack() {
     input.addEventListener('change', () => {
       c.on = input.checked;
 
-      // Auto-enable prerequisites
-      if (c.key === 'psd3') {
-        for (const cc of CONSTRAINTS) cc.on = true;
-      }
-      if (c.key === 'win' || c.key === 'loc') {
-        CONSTRAINTS.find(x => x.key === 'psd2').on = true;
-        CONSTRAINTS.find(x => x.key === 'nonneg').on = true;
-        CONSTRAINTS.find(x => x.key === 'norm').on = true;
-      }
-      if (c.key === 'psd2' || c.key === 'psd1') {
-        CONSTRAINTS.find(x => x.key === 'nonneg').on = true;
-        CONSTRAINTS.find(x => x.key === 'norm').on = true;
+      if (input.checked) {
+        if (c.key === 'psd3') {
+          for (const cc of CONSTRAINTS) cc.on = true;
+        }
+        if (c.key === 'win' || c.key === 'loc') {
+          CONSTRAINTS.find(x => x.key === 'psd2').on = true;
+          CONSTRAINTS.find(x => x.key === 'nonneg').on = true;
+          CONSTRAINTS.find(x => x.key === 'norm').on = true;
+        }
+        if (c.key === 'psd2' || c.key === 'psd1') {
+          CONSTRAINTS.find(x => x.key === 'nonneg').on = true;
+          CONSTRAINTS.find(x => x.key === 'norm').on = true;
+        }
       }
 
       buildConstraintStack();
-      updateBoundDisplay();
+      updateDisplays();
     });
   }
 }
@@ -228,22 +241,20 @@ function setPreset(name) {
       break;
   }
   drawHist();
-  updateTrueVal();
+  updateDisplays();
 }
 
 export function initPlayground() {
   canvas = document.getElementById('pg-hist');
-  ctx = canvas.getContext('2d');
+  ctx = setupHiDPI(canvas, W, H);
   windows4 = buildWindowMatrices(4);
 
   buildConstraintStack();
 
-  // Presets
   document.querySelectorAll('#playground .preset-row .btn-sm').forEach(btn => {
     btn.addEventListener('click', () => setPreset(btn.dataset.preset));
   });
 
-  // Drag interaction
   canvas.addEventListener('mousedown', (e) => {
     const result = handleDrag(e);
     if (result && result.idx >= 0) {
@@ -251,7 +262,7 @@ export function initPlayground() {
       dragIdx = result.idx;
       redistributeMass(result.idx, result.newMass);
       drawHist();
-      updateTrueVal();
+      updateDisplays();
     }
   });
 
@@ -261,13 +272,12 @@ export function initPlayground() {
     if (result && result.idx >= 0) {
       redistributeMass(result.idx, result.newMass);
       drawHist();
-      updateTrueVal();
+      updateDisplays();
     }
   });
 
   window.addEventListener('mouseup', () => { dragging = false; dragIdx = -1; });
 
   drawHist();
-  updateTrueVal();
-  updateBoundDisplay();
+  updateDisplays();
 }

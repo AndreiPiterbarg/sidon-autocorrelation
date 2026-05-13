@@ -2,7 +2,7 @@
 // Binary search animation on a number line
 
 import { BISECTION_D4_O3, BISECTION_D6_O3 } from './lasserre-data.js';
-import { tween, delay, lerp, clamp } from './animate.js';
+import { tween, delay, lerp, clamp, setupHiDPI } from './animate.js';
 
 const W = 900, H = 340;
 const PAD = { left: 60, right: 60, top: 60, bottom: 80 };
@@ -32,13 +32,11 @@ function drawNumberLine() {
   const lineY = 140;
   const lo = 0.95, hi = 1.20;
 
-  // Title
   ctx.font = 'bold 13px system-ui';
   ctx.fillStyle = COL.text;
   ctx.textAlign = 'center';
   ctx.fillText(`Binary Search for Lower Bound  (${currentLabel})`, W / 2, 28);
 
-  // Main line
   ctx.strokeStyle = COL.grid;
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -46,7 +44,6 @@ function drawNumberLine() {
   ctx.lineTo(W - PAD.right, lineY);
   ctx.stroke();
 
-  // Tick marks
   ctx.font = '11px system-ui';
   ctx.fillStyle = COL.textLight;
   ctx.textAlign = 'center';
@@ -61,7 +58,6 @@ function drawNumberLine() {
     ctx.fillText(t.toFixed(2), x, lineY + 22);
   }
 
-  // Reference line: val(d)
   const valD = currentData === BISECTION_D4_O3 ? 1.102 : 1.171;
   const valX = xForT(valD);
   ctx.strokeStyle = COL.gold;
@@ -76,7 +72,6 @@ function drawNumberLine() {
   ctx.fillStyle = COL.gold;
   ctx.fillText(`val(d) = ${valD}`, valX, lineY - 46);
 
-  // Current search bracket
   if (steps.length > 0) {
     let bracketLo = 0.95, bracketHi = 1.20;
     for (let i = 0; i <= Math.min(animStep, steps.length - 1); i++) {
@@ -85,53 +80,39 @@ function drawNumberLine() {
       else bracketHi = Math.min(bracketHi, s.t);
     }
 
-    // Proven region (green)
-    const provenX = xForT(bracketLo);
-    ctx.fillStyle = COL.greenPale;
-    ctx.fillRect(PAD.left, lineY - 30, provenX - PAD.left, 60);
+    // Proven region (green, growing from left as we prove higher bounds)
+    if (bracketLo > 0.95) {
+      const provenX = xForT(bracketLo);
+      ctx.fillStyle = COL.greenPale;
+      ctx.fillRect(PAD.left, lineY - 30, provenX - PAD.left, 60);
 
-    // Excluded region (red)
-    const excludedX = xForT(bracketHi);
-    ctx.fillStyle = COL.redPale;
-    ctx.fillRect(excludedX, lineY - 30, W - PAD.right - excludedX, 60);
-
-    // Bracket labels
-    ctx.font = 'bold 12px system-ui';
-    ctx.fillStyle = COL.green;
-    ctx.textAlign = 'center';
-    ctx.fillText(`lb >= ${bracketLo.toFixed(4)}`, (PAD.left + provenX) / 2, lineY - 36);
-
-    if (bracketHi < 1.20) {
-      ctx.fillStyle = COL.red;
-      ctx.fillText(`infeasible`, (excludedX + W - PAD.right) / 2, lineY - 36);
+      ctx.font = 'bold 12px system-ui';
+      ctx.fillStyle = COL.green;
+      ctx.textAlign = 'center';
+      ctx.fillText(`Proven: val(d) ≥ ${bracketLo.toFixed(4)}`, (PAD.left + provenX) / 2, lineY - 36);
     }
   }
 
-  // Draw each step marker
   for (let i = 0; i <= Math.min(animStep, steps.length - 1); i++) {
     const s = steps[i];
     const x = xForT(s.t);
     const markerY = lineY;
 
-    // Marker
     ctx.fillStyle = s.feasible ? COL.green : COL.red;
     ctx.beginPath();
     ctx.arc(x, markerY, 8, 0, Math.PI * 2);
     ctx.fill();
 
-    // Checkmark or X
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 12px system-ui';
     ctx.textAlign = 'center';
     ctx.fillText(s.feasible ? '✓' : '✗', x, markerY + 4);
 
-    // Step number
     ctx.font = '9px system-ui';
     ctx.fillStyle = COL.textLight;
     ctx.fillText(`${i + 1}`, x, markerY + 24);
   }
 
-  // Legend
   const legY = H - 40;
   ctx.font = '12px system-ui';
 
@@ -141,16 +122,15 @@ function drawNumberLine() {
   ctx.fill();
   ctx.fillStyle = COL.textLight;
   ctx.textAlign = 'left';
-  ctx.fillText('Feasible (solution exists at t)', PAD.left + 24, legY + 4);
+  ctx.fillText('Certificate found → val(d) > t (bound proven!)', PAD.left + 24, legY + 4);
 
   ctx.fillStyle = COL.red;
   ctx.beginPath();
-  ctx.arc(PAD.left + 310, legY, 6, 0, Math.PI * 2);
+  ctx.arc(PAD.left + 410, legY, 6, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = COL.textLight;
-  ctx.fillText('Infeasible (no solution) = bound is proven!', PAD.left + 324, legY + 4);
+  ctx.fillText('No certificate → can\'t prove val(d) > t', PAD.left + 424, legY + 4);
 
-  // Step counter
   if (animStep >= 0) {
     ctx.font = 'bold 13px system-ui';
     ctx.fillStyle = COL.blue;
@@ -193,7 +173,7 @@ function resetAnimation() {
 
 export function initFarkas() {
   canvas = document.getElementById('fk-canvas');
-  ctx = canvas.getContext('2d');
+  ctx = setupHiDPI(canvas, W, H);
 
   steps = [...currentData];
   animStep = -1;

@@ -2,7 +2,7 @@
 // Animated number line showing proven region extending
 
 import { LASSERRE_RESULTS, VAL_D, BOUND_HISTORY } from './lasserre-data.js';
-import { tween, delay, lerp, clamp } from './animate.js';
+import { tween, delay, lerp, clamp, setupHiDPI } from './animate.js';
 
 const W = 900, H = 380;
 const PAD = { left: 60, right: 40, top: 70, bottom: 60 };
@@ -29,7 +29,7 @@ const POINTS = LASSERRE_RESULTS.map(r => ({
 
 const PROJECTED = [
   { label: 'd=16 O2', lb: 1.133, gc: 41.7, time: 2714, d: 16, order: 2, projected: true },
-  { label: 'd=16 O3', lb: 1.290, gc: 91.0, time: null, d: 16, order: 3, projected: true },
+  { label: 'd=16 O3', lb: 1.285, gc: 89.5, time: null, d: 16, order: 3, projected: true },
 ];
 
 function xForVal(v) {
@@ -254,7 +254,7 @@ function resetAnimation() {
 
 export function initConvergence() {
   canvas = document.getElementById('conv-canvas');
-  ctx = canvas.getContext('2d');
+  ctx = setupHiDPI(canvas, W, H);
 
   visiblePoints = POINTS.length;
   drawScene();

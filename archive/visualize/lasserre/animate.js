@@ -70,4 +70,15 @@ export function clamp(v, lo, hi) {
   return Math.max(lo, Math.min(hi, v));
 }
 
+export function setupHiDPI(canvas, logicalW, logicalH) {
+  const dpr = Math.max(window.devicePixelRatio || 1, 2);
+  canvas.width = logicalW * dpr;
+  canvas.height = logicalH * dpr;
+  canvas.style.width = logicalW + 'px';
+  canvas.style.height = logicalH + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return ctx;
+}
+
 export { EASINGS };
