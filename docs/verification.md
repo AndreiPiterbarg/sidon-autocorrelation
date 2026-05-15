@@ -22,8 +22,11 @@ Authoritative artefacts:
 
 These are the values quoted by the certifier and consumed by Lean. All
 quantities are computed in `flint.arb` interval arithmetic at $256$-bit
-precision; the Lean axioms quote rational slack relaxations of the
-endpoints.
+precision; the Lean verifiable-by-computation axioms quote rational
+slack relaxations of the endpoints. (Recall: "verifiable-by-computation
+axiom" denotes a logically decidable inequality about specific real
+numbers, backed by a reproducible algorithm, currently un-formalised in
+Lean only because mathlib lacks a Bessel interval-arithmetic library.)
 
 ### Kernel parameters (exact rationals)
 
@@ -121,7 +124,8 @@ unimodality, smoothness, or log-concavity of $K$.
 
 ### 7. Sufficiency of the $z_1$-free form at $M = 1.292$
 
-The Lean axiom uses the $z_1$-free form
+The Lean theorem `MV_master_inequality_for_extremiser` uses the
+$z_1$-free form
 $M + 1 + \sqrt{(M - 1)(K_2 - 1)} \ge 2/u + a$. Plug in the rational
 anchors and verify that at $M = 1.292$ the left-hand side equals
 $66879/20000 = 3.34395$, the right-hand side equals
@@ -152,18 +156,47 @@ the certificate's $S_1 \le 29.841$.
 
 ### 10. Lean module sanity
 
-`lake build Sidon.MultiScale` returns exit code zero with no `sorry`
-warnings. The module declares exactly one user axiom,
-`MV_master_inequality_for_extremiser` (the three-scale MV master
-inequality with the slack rationals `K2UpperQ = 47897/10000` and
-`gainLowerQ = 20925/100000` substituted for the analytic `K_2` and
-`a`); the quadratic inversion `master_inequality_M_lower` and the
+`lake build Sidon` returns exit code zero with no `sorry` warnings,
+across all fifteen Lean modules under `lean/Sidon/` (`Defs`, `Bessel`,
+`FourierAux`, `TorusParseval`, `MVLemmas`, `MasterFromLemmas`,
+`BundleDefs`, `BundleEq1`, `BundleEq2Schwartz`, `BundleEq3Schwartz`,
+`BundleEq4`, `BilinearParseval`, `MultiScale`, `MultiScaleSchwartz`,
+`SchwartzAtomicDischarge`; ~8650 lines total on top of `mathlib`
+pinned to `v4.29.1` / commit
+`5e932f97dd25535344f80f9dd8da3aab83df0fe6`). All modules are
+axiom-free except `MultiScale`, which declares exactly **two
+verifiable-by-computation axioms** (rigorously certified numerical
+assertions) in the headline's dependency closure:
+
+- `K2_analytic_le_K2UpperQ` -- the analytic functional
+  $K_2(K_{\rm ms}) := \int K_{\rm ms}(x)^2\,dx$ is at most
+  $\texttt{K2UpperQ} = 47897/10000$; verified by `flint.arb` at
+  256-bit precision (analogue of MV 2010's Mathematica citation of
+  $K_2$).
+- `gain_analytic_ge_gainLowerQ` -- the analytic gain
+  $\texttt{gain\_analytic} = (4/u) \cdot m_G^2 / S_G$ is at least
+  $\texttt{gainLowerQ} = 20925/100000$; certifier-coupled in arb
+  (analogue of MV 2010's Mathematica citation of $a$).
+
+The previous macro axiom `MV_master_inequality_for_extremiser` is
+now a Lean *theorem*, derived from the two verifiable-by-computation
+axioms plus the analytic admissibility-bundle hypothesis
+`ExtremiserPrimitives f` that the headline takes as its fifth
+argument. The bundle encodes the four MV Lemma 3.1 outputs
+(Eqs.(1)--(4)) for the pair $(f, K_{\rm ms})$; its existence for an
+arbitrary admissible $f$ is the analogue of MV invoking "by Lemma
+3.1 (Martin--O'Bryant)" and is the residual gap on the Lean side.
+
+The quadratic inversion `master_inequality_M_lower`, the
+slack-monotonicity lift `MV_master_via_slack_monotonicity`, the
+full chain `MV_master_inequality_from_MV_lemmas`, the master
+inequality theorem `MV_master_inequality_for_extremiser`, and the
 five slack-soundness statements (`K_two_upper_bound`,
 `k_one_lower_bound`, `S_one_upper_bound`, `min_G_lower_bound`,
-`gain_lower_bound`) are Lean *theorems*.  The `#print axioms` listing
-for `autoconvolution_ratio_ge_1292_1000` is the sole user axiom plus
-Lean's three core axioms (`propext`, `Classical.choice`,
-`Quot.sound`).
+`gain_lower_bound`) are Lean *theorems*. The `#print axioms`
+listing for `autoconvolution_ratio_ge_1292_1000` reports the two
+verifiable-by-computation user axioms plus Lean's three core logical
+axioms (`propext`, `Classical.choice`, `Quot.sound`).
 
 ### 11. Reproducibility and certificate hash
 
@@ -198,13 +231,13 @@ Watson asymptotic; the (incorrect) conjecture $I(a,b) =
 
 The Python certifier uses the refined MV form
 $\Phi(M, y) = M + 1 + 2 y k_1 + \sqrt{(M-1-2y^2)(K_2-1-2k_1^2)}
-- (2/u + a)$ (cell-search over $y \in [0, \mu(M)]$).  The Lean axiom
-uses only the (weaker) $z_1$-free form obtained from the refined form
-by Cauchy--Schwarz on the two square-root pairs.  The $z_1$-free form
-alone must suffice at the rational target $M = 1292/1000$ (see check
-7); the refined form is used only inside the Python bisection to
-certify the (sharper) anchor $M_{\text{cert}} = 66167/51200 \approx
-1.29232422$.
+- (2/u + a)$ (cell-search over $y \in [0, \mu(M)]$).  The Lean
+theorem `MV_master_inequality_for_extremiser` uses only the (weaker)
+$z_1$-free form obtained from the refined form by Cauchy--Schwarz on
+the two square-root pairs.  The $z_1$-free form alone must suffice
+at the rational target $M = 1292/1000$ (see check 7); the refined
+form is used only inside the Python bisection to certify the
+(sharper) anchor $M_{\text{cert}} = 66167/51200 \approx 1.29232422$.
 
 ## Acceptance
 
