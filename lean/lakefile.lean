@@ -13,4 +13,4 @@ lean_lib Sidon where
   roots := #[`Sidon]
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4" @ "f897ebcf72cd16f89ab4577d0c826cd14afaafc7"
+  "https://github.com/leanprover-community/mathlib4" @ "5e932f97dd25535344f80f9dd8da3aab83df0fe6"
