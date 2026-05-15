@@ -146,16 +146,133 @@ The five resulting functionals are evaluated rigorously in
 no-$z_1$ quadratic master inequality, applied to the rounded rational
 anchors, yields strict failure at $M=1292/1000$ with margin
 $\tau-\Phi(M)\ge 9.6\times 10^{-5}$.  The analytic reduction is
-formalized in Lean~4: the headline theorem in
-\texttt{lean/Sidon/MultiScale.lean} reaches a single user axiom
-(the three-scale MV master inequality, stated at the rational slacks);
-the quadratic inversion and the slack-soundness statements are Lean
-theorems (see Section~\ref{sec:proof}).
+formalized in Lean~4 across $15$ modules ($\approx 8650$ lines of
+code) rooted at \texttt{lean/Sidon/MultiScale.lean}; the headline
+theorem \texttt{autoconvolution\_ratio\_ge\_1292\_1000} reaches the
+three Lean core axioms (\texttt{propext}, \texttt{Classical.choice},
+\texttt{Quot.sound}) and exactly two numerical user axioms
+(\texttt{K2\_analytic\_le\_K2UpperQ} and
+\texttt{gain\_analytic\_ge\_gainLowerQ}) that record the certifier's
+outputs at the rational slacks; the quadratic inversion and the
+slack-soundness statements are Lean theorems (see
+Section~\ref{sec:proof}).
 \end{abstract}
 
 % ======================================================================
 \section{Introduction}\label{sec:intro}
 % ======================================================================
+
+\subsection{Overview}\label{subsec:intro-overview}
+
+This subsection is an informal account of what is proved and why it
+matters; the precise definitions, the numerical record, and the formal
+statement of the result follow in
+Sections~\ref{subsec:intro-constant}--\ref{subsec:intro-strategy}.
+
+\paragraph{The question.}
+Fix a nonnegative function $f$ on the real line, supported in the short
+interval $(-1/4,1/4)$ and normalized so that $\int f=1$; think of $f$
+as a probability density.  If $X$ and $Y$ are independent random
+variables each with density $f$, then their sum $X+Y$ has density the
+autoconvolution $f*f$, itself a probability density, now supported in
+$(-1/2,1/2)$.  Since $f*f$ integrates to $1$ over an interval of
+length $1$, its peak value $\|f*f\|_{\Linf}$ is at least $1$, with
+equality only if $f*f$ were the uniform density on $(-1/2,1/2)$ --- a
+shape no admissible $f$ produces.  The \emph{autoconvolution constant}
+\[
+  C_{1a}
+  \;=\;
+  \inf_{f}\ \|f*f\|_{\Linf}\Big/\Bigl(\textstyle\int f\Bigr)^{2}
+\]
+measures \emph{how flat} an autoconvolution can be made: it is the
+smallest peak attainable as $f$ ranges over all admissible shapes.
+Its exact value is unknown; the problem is to trap it between explicit
+numerical bounds, and in particular to push the lower bound upward.
+
+\paragraph{Why it matters.}
+This continuous extremal problem is the analytic shadow of a classical
+question in additive combinatorics going back to Erd\H{o}s and
+Tur\'an~\cite{ET41}: how large can a set of integers be if no integer
+has too many representations as a sum of two of its elements (a Sidon,
+or $B_2$, condition)?  Martin and O'Bryant~\cite{MO2009} made the link
+precise, showing that the asymptotics of such extremal sets are
+controlled by this same constant $C_{1a}$.  Each improvement to the
+\emph{rigorous} lower bound on $C_{1a}$ sharpens the corresponding
+asymptotic results for $B_2^{+}[1]$ and related Sidon variants, which
+is why the constant has drawn sustained attention for several decades.
+
+\paragraph{Why lower bounds are hard.}
+Exhibiting one function $f$ can only ever yield an \emph{upper} bound
+on the infimum $C_{1a}$.  A \emph{lower} bound is a statement of a
+different kind: it must certify, simultaneously and for \emph{every}
+admissible $f$, that the peak cannot be small.  Matolcsi and
+Vinuesa~\cite{MV10} supply exactly such a certificate.  From an
+auxiliary pair chosen by us --- a nonnegative ``kernel'' $K$ whose
+Fourier coefficients are also nonnegative (a \emph{Bochner-admissible}
+kernel) together with a trigonometric ``multiplier'' $G$ --- their
+duality produces a single quadratic inequality that every admissible
+$f$ must satisfy, and hence a rigorous lower bound on $C_{1a}$.  Any
+valid pair $(K,G)$ yields \emph{some} bound; the entire game is to
+construct a pair that yields a \emph{good} one.  With a single arcsine
+kernel and a $119$-term cosine multiplier, Matolcsi and Vinuesa
+obtained $C_{1a}\ge 1.27481$; on the other side, the constant is known
+to be at most $\approx 1.5032$~\cite{AlphaEvolve25}.
+
+\paragraph{What is new here.}
+We enlarge the class of certificates.  Matolcsi and Vinuesa worked with
+a kernel at a \emph{single} scale.  We use that a convex combination of
+arcsine kernels at \emph{several} scales is still Bochner-admissible
+(Theorem~\ref{thm:admissibility}), and that mixing scales removes a
+structural bottleneck.  A single-scale arcsine kernel has ``blind
+spots'': frequencies at which its Fourier transform nearly vanishes,
+namely the zeros of a Bessel function.  Each near-zero sits in a
+denominator of the certificate and inflates a critical quantity
+$S_1$, throttling the resulting bound.  Different scales place their
+blind spots at different frequencies, so a three-scale blend keeps the
+Fourier transform uniformly away from zero: $S_1$ falls from
+$\approx 87.4$ to $\le 29.841$, and the bound rises in proportion.
+Capturing the gain also requires re-optimizing the multiplier $G$ for
+the blended kernel, which we do by convex programming with $200$
+cosine terms.  The resulting three-scale construction --- arcsine
+half-widths $(138,55,25)/1000$ with weights $(85,10,5)/100$ --- gives
+the new lower bound
+\[
+  C_{1a}\ \ge\ 1292/1000\ =\ 1.292,
+\]
+which we call the \emph{PBV bound} (Theorem~\ref{thm:main}).
+
+\paragraph{In what sense this is rigorous.}
+Closing the certificate reduces to controlling five real numbers
+extracted from $(K,G)$.  These are not merely estimated in floating
+point: each is enclosed in a mathematically guaranteed interval using
+\texttt{flint.arb} arbitrary-precision interval arithmetic at $256$-bit
+precision~\cite{Flint}, and each interval is then rounded
+\emph{outward} to an exact rational.  The final quadratic step that
+produces $1.292$ is carried out in exact rational arithmetic, so the
+conclusion is independent of any floating-point rounding.
+Independently, the entire analytic reduction --- the master
+inequality, its inversion, and the admissibility of the three-scale
+kernel --- is mechanized in the Lean~4 proof
+assistant~\cite{Lean,Mathlib} ($15$ modules, $\approx 8650$ lines, no
+\texttt{sorry}).  The machine-checked headline theorem rests only on
+Lean's three logical axioms together with exactly two explicitly
+identified numerical inputs: decidable inequalities about specific real
+numbers, the precise analogues of the ``Mathematica computed this
+value'' citations in~\cite{MV10}, but here backed by certified interval
+arithmetic rather than heuristic numerics.  A bundle of standard
+Fourier-analytic facts is taken as a hypothesis of the general theorem
+and discharged outright for Schwartz-class $f$
+(Section~\ref{subsec:proof-lean}).
+
+\paragraph{Roadmap.}
+Section~\ref{sec:mv} recalls the Matolcsi--Vinuesa master inequality
+and its inversion in the form we need.
+Section~\ref{sec:kernel} introduces the three-scale arcsine kernel and
+proves its admissibility.  Section~\ref{sec:cert} certifies the five
+governing functionals as exact rational bounds via interval
+arithmetic.  Section~\ref{sec:proof} closes the inequality at the
+rational witness $M=1292/1000$, proving the main theorem, and
+summarizes the Lean formalization.
 
 \subsection{The Constant \texorpdfstring{$C_{1a}$}{C1a}}\label{subsec:intro-constant}
 
@@ -777,22 +894,62 @@ gives $C_{1a}\ge 1292/1000=1.292$.\qedhere
 
 \subsection{Lean Formalization}\label{subsec:proof-lean}
 
-The analytic chain above is mechanized in Lean~4 in the file
+The analytic chain above is mechanized in Lean~4 across $15$ modules
+totalling $\approx 8650$ lines of code rooted at
 \texttt{lean/Sidon/MultiScale.lean}, which builds cleanly under
 Mathlib~\cite{Mathlib,Lean} with zero \texttt{sorry} tactics and
-produces the headline theorem.  The headline theorem reaches exactly
-\emph{one} user axiom in its dependency closure:
-\texttt{MV\_master\_inequality\_for\_extremiser}, the three-scale
-extension of \cite[Lemma~3.1]{MV10} (whose proof is a verbatim repeat of
-the single-scale Fourier reduction with each $J_0(\pi\delta\xi)^2$
-replaced by $\sum_i\lambda_i J_0(\pi\delta_i\xi)^2$), stated with the
-rational slacks $\texttt{K2UpperQ}=47897/10000$ and
-$\texttt{gainLowerQ}=20925/100000$ substituted for $K_2$ and $a$
-respectively.  This substitution is sound because the master inequality
-is monotone in $K_2-1$ and $a$, and the slack rationals are true bounds
-on the analytic functionals: those bounds (Lemmas~\ref{lem:k1}--\ref{lem:a})
-are discharged externally by the \texttt{flint.arb} certifier in
-\texttt{delsarte\_dual/grid\_bound\_alt\_kernel/}.
+produces the headline theorem
+\texttt{autoconvolution\_ratio\_ge\_1292\_1000}.  The module layout
+factors the proof into:
+\texttt{Sidon.\{Defs, Bessel, FourierAux, TorusParseval, MVLemmas,
+MasterFromLemmas, BundleDefs, BundleEq1, BundleEq2Schwartz,
+BundleEq3Schwartz, BundleEq4, BilinearParseval, MultiScale,
+MultiScaleSchwartz, SchwartzAtomicDischarge\}}.
+The headline theorem reaches exactly \emph{two} numerical user axioms
+in its dependency closure (alongside the three Lean core axioms
+\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}):
+\begin{itemize}[leftmargin=2em]
+\item \texttt{K2\_analytic\_le\_K2UpperQ}: the certified upper bound
+$K_2(\Kms)\le\texttt{K2UpperQ}=47897/10000$ from
+Lemma~\ref{lem:K2}.
+\item \texttt{gain\_analytic\_ge\_gainLowerQ}: the certified lower bound
+$a\ge\texttt{gainLowerQ}=20925/100000$ from Lemma~\ref{lem:a}.
+\end{itemize}
+Both are analogues of \emph{``Mathematica computed this value''} in
+MV~2010~\cite{MV10}, with the underlying numerical work performed
+here by the \texttt{flint.arb} certifier at $256$-bit precision (in
+\texttt{delsarte\_dual/grid\_bound\_alt\_kernel/}).  The three-scale
+master inequality at the analytic anchors is itself a Lean
+\emph{theorem} (\texttt{MV\_master\_inequality\_from\_MV\_lemmas},
+composed from the four MV-Lemma-3.1 atomic conclusions formalised in
+\texttt{Sidon.MVLemmas}); slack-monotonicity then lifts it to the
+rational anchors used in the strict-failure step.
+
+\paragraph{Sound definitions of \texorpdfstring{$f\circ f$}{f circ f}
+and \texorpdfstring{$\Karc$}{K\_arc}.}
+The Lean formalisation defines the convolutional autocorrelation as
+$(f\circ f)(x):=\int_{\R}f(t)\,f(x+t)\,dt$ (matching the MV
+notation~\cite[\S 3]{MV10}; this is \texttt{autocorr} in
+\texttt{Sidon.FourierAux}), and the arcsine kernel as the
+autoconvolution $\Karc(\delta,\cdot):=\eta_\delta*\eta_\delta$ of the
+half-arcsine density $\eta_\delta$ supported on
+$(-\delta/2,\delta/2)$.  This matches the analytic definitions used
+throughout Sections~\ref{sec:mv}--\ref{sec:kernel} of the present
+paper and the Python certifier.
+
+\paragraph{Theorem statements.}
+The headline theorem
+\texttt{autoconvolution\_ratio\_ge\_1292\_1000} takes a bundle
+\texttt{ExtremiserPrimitives f} packaging the four MV-Lemma-3.1
+atomic primitives for $(f,\Kms)$ as hypotheses; the Schwartz
+specialisation
+\texttt{autoconvolution\_ratio\_ge\_1292\_1000\_schwartz}
+discharges the bundle from a single record
+\texttt{SchwartzAtomic f\_s} of Schwartz-class atomic Fourier
+identities, and the slim variant
+\texttt{autoconvolution\_ratio\_ge\_1292\_1000\_schwartz\_residual}
+reduces the latter to the residual \texttt{SchwartzAtomicResidual}
+hypotheses.
 
 Six further statements are Lean \emph{theorems}: the algebraic
 inversion \texttt{master\_inequality\_M\_lower} (corresponding to
