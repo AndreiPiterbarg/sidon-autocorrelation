@@ -1,0 +1,6 @@
+import Sidon.TorusParseval
+
+#print axioms Sidon.TorusParseval.period_u_coef_of_convolution_self_complex
+#print axioms Sidon.TorusParseval.period_u_coef_of_pointwiseAutocorr
+#print axioms Sidon.TorusParseval.bilinear_parseval_addCircle_Lp
+#print axioms Sidon.TorusParseval.bilinear_parseval_addCircle_Lp_tsum
