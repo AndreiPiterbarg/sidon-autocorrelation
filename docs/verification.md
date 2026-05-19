@@ -209,9 +209,13 @@ hash.
 
 ### 12. Cross-comparison with the prior baseline
 
-The chain $1.27481 < 1.2802 < 1.292$ states that this proof strictly
-improves on Matolcsi--Vinuesa~(2010) and on the announced
-Cloninger--Steinerberger~(2017) bound.  Each rational inequality is
+The chain $1.27481 < 1.28 < 1.292$ states that this proof strictly
+improves on the rigorous Matolcsi--Vinuesa~(2010) bound and on the
+published Cloninger--Steinerberger~(2017) bound $1.28$.  (The
+unpublished $1.2802$ listed in Tao's `optimizationproblems` `1a.md` is
+attributed there to Xie~(2026, Grok), **not** to
+Cloninger--Steinerberger, and is not part of this chain.)  Each
+rational inequality is
 `norm_num`-decidable; the hypothesis sets of the three results agree
 (nonnegativity, support in $(-1/4, 1/4)$, positive integral, finite
 $\|f * f\|_\infty$).

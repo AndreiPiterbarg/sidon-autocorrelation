@@ -4,7 +4,9 @@ This repository accompanies the preprint *A New Lower Bound for the Supremum of 
 
 $$C_{1a} \ge \frac{1292}{1000} = 1.292.$$
 
-This improves on the previously announced lower bound of $1.2802$ due to Cloninger and Steinerberger (2017) and on the rigorous analytic bound of $1.27481$ established by Matolcsi and Vinuesa (2010). The argument extends the Matolcsi-Vinuesa dual framework: the single arcsine kernel in their master inequality is replaced by a convex combination of three arcsine kernels, and the cosine multiplier is re-optimized as a $200$-mode expansion. The five resulting functionals are evaluated rigorously in `flint.arb` interval arithmetic at 256-bit precision, and the analytic chain is mechanized in Lean 4 (the headline reaches exactly two *verifiable-by-computation* user axioms — rigorously certified numerical assertions, not conjectural — plus an analytic admissibility-bundle hypothesis).
+This improves on the published lower bound of $1.28$ due to Cloninger and Steinerberger (2017) and on the rigorous analytic bound of $1.27481$ established by Matolcsi and Vinuesa (2010). (A separate *unpublished* $1.2802$ is attributed in Tao's `optimizationproblems` repository to Xie (2026, AI-assisted, unaudited) — **not** to Cloninger–Steinerberger.) The argument extends the Matolcsi-Vinuesa dual framework: the single arcsine kernel in their master inequality is replaced by a convex combination of three arcsine kernels, and the cosine multiplier is re-optimized as a $200$-mode expansion.
+
+The bound is **conditional**. Precisely: *assuming the Matolcsi–Vinuesa analytic primitives (Lemma 3.1) for the three-scale kernel, and assuming two independently certified numerical inequalities verified externally in `flint.arb` interval arithmetic at 256-bit precision, Lean 4 machine-checks the MV algebraic chain and the quadratic inversion, yielding $C_{1a} \ge 1.292$.* The two numerical inequalities are **new** assertions specific to the three-scale kernel and the 200-mode multiplier — analogous *in role* to the Mathematica citations in Matolcsi–Vinuesa, **not** facts contained in their paper.
 
 ## Problem statement
 
@@ -173,7 +175,12 @@ a clean answer here: **no**. Both numerical axioms are provable;
 they are simply not yet formalised in Lean for engineering reasons.
 
 **Caveats.** (i) The headline is conditional on
-`ExtremiserPrimitives f`, not unconditional. (ii) The two
+`ExtremiserPrimitives f` (`SchwartzAtomic` in the Schwartz variant),
+not unconditional. This bundle is **genuine analytic content** — the
+$L^1 \cap L^2$ Plancherel + period-$u$ Parseval bridge — and is **not**
+a Bessel interval-arithmetic engineering gap; the "no Bessel
+interval-arithmetic library in mathlib" caveat applies *only* to the
+two numerical axioms in (ii), never to the bundle. (ii) The two
 verifiable-by-computation axioms depend on trusting `flint.arb`
 (peer-reviewed, Johansson 2017 IEEE TC, but not Lean-verified).
 (iii) Replacing them with verified Lean numerics would require a

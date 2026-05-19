@@ -586,10 +586,11 @@ upper endpoint with margin `≈ 8.4 × 10⁻⁵`.
 *Provenance.* The published Matolcsi–Vinuesa (2010) proof assumes the
 analogous bound `‖K‖₂² ≤ 0.5747/δ` for the single-scale arcsine kernel
 (citing Mathematica / the Martin–O'Bryant Lemma 3.2 surrogate); this
-axiom is the strictly-more-rigorous multi-scale analogue, certified by
-`flint.arb` interval arithmetic rather than heuristic CAS numerics. It
-is therefore not a *new* assumption relative to the prior literature —
-it is the same numerical fact, established to higher rigour. -/
+axiom plays the strictly-more-rigorous multi-scale *analogous role*,
+certified by `flint.arb` interval arithmetic rather than heuristic CAS
+numerics. It is **not the same fact**: it is a *new* numerical
+inequality specific to the three-scale kernel `K_ms`, not a statement
+contained in MV 2010. -/
 axiom K2_analytic_le_K2UpperQ : K2_analytic ≤ (K2UpperQ : ℝ)
 
 /-- (NUMERICAL AXIOM 2, paper Lemmas 4.3-4.5) `gain_analytic ≥ gainLowerQ`.
@@ -612,11 +613,12 @@ certifier's lower endpoint with margin `≈ 8.4 × 10⁻⁴`.
 *Provenance.* The published Matolcsi–Vinuesa (2010) proof assumes the
 analogous gain value `a = 0.0713` for its single-scale construction
 (citing Mathematica for `m_G`, `S_1` and the resulting `a`); this axiom
-is the strictly-more-rigorous multi-scale analogue (the larger value
-`≥ 0.20925` is what the re-optimised 200-cosine `G` buys), certified by
-`flint.arb` rather than heuristic CAS numerics. It is therefore not a
-*new* assumption relative to the prior literature — it is the same kind
-of numerical certificate, established to higher rigour. -/
+plays the strictly-more-rigorous multi-scale *analogous role* (the
+larger value `≥ 0.20925` is what the re-optimised 200-cosine `G` buys),
+certified by `flint.arb` rather than heuristic CAS numerics. It is
+**not the same fact**: it is a *new* numerical inequality specific to
+the three-scale kernel and the re-optimised 200-cosine `G`, not a
+statement contained in MV 2010. -/
 axiom gain_analytic_ge_gainLowerQ : gain_analytic ≥ (gainLowerQ : ℝ)
 
 /-! ## Slack-rational soundness theorems
